@@ -1,0 +1,193 @@
+[
+  {
+    "id": "exam-jee-main",
+    "name": "JEE Main (Joint Entrance Examination Main)",
+    "conducting_body": "National Testing Agency (NTA)",
+    "category": "Engineering",
+    "purpose": "Admission to B.Tech/B.Arch programs at NITs, IIITs, CFTIs, and qualifying examination for JEE Advanced.",
+    "eligibility": "10+2 passed or appearing with Physics, Mathematics, and Chemistry/Biology/Technical Vocational subject.",
+    "important_subjects": [
+      "Physics",
+      "Mathematics",
+      "Chemistry"
+    ],
+    "timeline_status": "Session 1 in January, Session 2 in April (Annual cycle)",
+    "application_window": "November - December for Session 1; February - March for Session 2",
+    "exam_pattern": "CBT mode, 90 questions (attempt 75), 300 marks total. MCQs and Numerical Value questions.",
+    "official_website": "https://jeemain.nta.nic.in"
+  },
+  {
+    "id": "exam-jee-adv",
+    "name": "JEE Advanced",
+    "conducting_body": "One of the 7 Zonal IITs (under Joint Admission Board - JAB)",
+    "category": "Engineering",
+    "purpose": "Exclusive gateway for B.Tech, BS, Dual Degree programs across all 23 Indian Institutes of Technology (IITs).",
+    "eligibility": "Top 2,50,000 successful candidates from JEE Main + 75% aggregate in 12th Board (65% for SC/ST/PwD) or in top 20 percentile.",
+    "important_subjects": [
+      "Physics",
+      "Chemistry",
+      "Mathematics"
+    ],
+    "timeline_status": "Conducted in May/June annually",
+    "application_window": "Opens right after JEE Main Session 2 results in late April / early May",
+    "exam_pattern": "Two mandatory Computer Based papers (Paper 1 & Paper 2) on the same day. Highly conceptual problem-solving.",
+    "official_website": "https://jeeadv.ac.in"
+  },
+  {
+    "id": "exam-neet-ug",
+    "name": "NEET UG (National Eligibility cum Entrance Test)",
+    "conducting_body": "National Testing Agency (NTA)",
+    "category": "Medical",
+    "purpose": "Single uniform entrance examination for admission to MBBS, BDS, BAMS, BUMS, BHMS, and B.Sc Nursing seats nationwide.",
+    "eligibility": "10+2 passed or appearing with Physics, Chemistry, Biology/Biotechnology, and English. Minimum 17 years of age.",
+    "important_subjects": [
+      "Physics",
+      "Chemistry",
+      "Biology (Botany & Zoology)"
+    ],
+    "timeline_status": "Conducted on the first Sunday of May annually",
+    "application_window": "February to March",
+    "exam_pattern": "Pen and Paper (OMR) mode. 200 questions (attempt 180), 720 marks total. +4 for correct, -1 for incorrect.",
+    "official_website": "https://exams.nta.ac.in/NEET"
+  },
+  {
+    "id": "exam-eapcet",
+    "name": "State EAPCET / EAMCET (Engineering, Agriculture & Pharmacy Common Entrance Test)",
+    "conducting_body": "State Council of Higher Education (APSCHE / TGCHE)",
+    "category": "State Entrance",
+    "purpose": "Admission to 1st year B.Tech, B.Pharm, B.Sc Agriculture, Pharm.D across all university and affiliated colleges in the State.",
+    "eligibility": "10+2 with MPC (for Engineering/Tech) or BiPC (for Agri/Pharmacy/Biotech). Minimum 45% marks (40% for reserved).",
+    "important_subjects": [
+      "Mathematics/Biology (80 Qs)",
+      "Physics (40 Qs)",
+      "Chemistry (40 Qs)"
+    ],
+    "timeline_status": "Conducted in May annually",
+    "application_window": "March to April",
+    "exam_pattern": "Computer Based Test (CBT), 160 questions, 160 marks, 3 hours duration. No negative marking.",
+    "official_website": "https://cets.apsche.ap.gov.in"
+  },
+  {
+    "id": "exam-ecet",
+    "name": "State ECET (Engineering Common Entrance Test for Diploma & B.Sc)",
+    "conducting_body": "State Council of Higher Education (APSCHE / TGCHE)",
+    "category": "Lateral Entry",
+    "purpose": "Lateral entry admission directly into 2nd year (3rd semester) B.Tech / B.E. / B.Pharmacy in state colleges.",
+    "eligibility": "3-Year Diploma in Engineering/Technology or B.Sc (Maths) with minimum 45% marks (40% for reserved).",
+    "important_subjects": [
+      "Mathematics (50 M)",
+      "Physics (25 M)",
+      "Chemistry (25 M)",
+      "Branch Engineering Subject (100 M)"
+    ],
+    "timeline_status": "Conducted in May annually",
+    "application_window": "March to April",
+    "exam_pattern": "Computer Based Test, 200 questions, 200 marks, 3 hours. Direct 2nd year seat allotment via web counselling.",
+    "official_website": "https://cets.apsche.ap.gov.in/ECET"
+  },
+  {
+    "id": "exam-polycet",
+    "name": "State POLYCET (Polytechnic Common Entrance Test)",
+    "conducting_body": "State Board of Technical Education & Training (SBTET AP / Telangana)",
+    "category": "Polytechnic Diploma",
+    "purpose": "Admission into 3-Year Engineering & Non-Engineering Diploma courses in government, aided, and private polytechnic colleges.",
+    "eligibility": "Passed or appearing in SSC / 10th Class examination with Mathematics and Science.",
+    "important_subjects": [
+      "Mathematics (50 Qs)",
+      "Physics (40 Qs)",
+      "Chemistry (30 Qs)"
+    ],
+    "timeline_status": "Conducted in April / May annually",
+    "application_window": "March to April",
+    "exam_pattern": "Offline OMR test, 120 questions, 120 marks, 2 hours duration. No negative marking.",
+    "official_website": "https://polycetap.nic.in"
+  },
+  {
+    "id": "exam-cuet-ug",
+    "name": "CUET UG (Common University Entrance Test Undergraduate)",
+    "conducting_body": "National Testing Agency (NTA)",
+    "category": "University Admissions",
+    "purpose": "Single window admission to undergraduate programs in Central Universities (DU, BHU, JNU, JMI, AMU) and participating state/private universities.",
+    "eligibility": "10+2 passed or appearing from any recognized board in India.",
+    "important_subjects": [
+      "Section IA/IB: Language",
+      "Section II: Domain Specific Subjects",
+      "Section III: General Test"
+    ],
+    "timeline_status": "Conducted in May/June annually",
+    "application_window": "February to March",
+    "exam_pattern": "Hybrid (CBT & OMR) mode, multiple choice questions based on NCERT Class 12 syllabus.",
+    "official_website": "https://cuetug.ntaonline.in"
+  },
+  {
+    "id": "exam-cat",
+    "name": "CAT (Common Admission Test)",
+    "conducting_body": "Indian Institutes of Management (IIMs)",
+    "category": "Management",
+    "purpose": "Admission to Post-Graduate Programs in Management (MBA / PGDM) across all 21 IIMs and over 1,200 non-IIM institutions.",
+    "eligibility": "Bachelor Degree with at least 50% marks or equivalent CGPA (45% for SC, ST, and PwD). Final year students eligible.",
+    "important_subjects": [
+      "VARC (Verbal Ability & Reading Comprehension)",
+      "DILR (Data Interpretation & Logical Reasoning)",
+      "QA (Quantitative Aptitude)"
+    ],
+    "timeline_status": "Conducted on the last Sunday of November annually",
+    "application_window": "August to mid-September",
+    "exam_pattern": "Computer Based Test, 66 questions, 198 marks, 120 minutes (40 minutes per section with sectional timer).",
+    "official_website": "https://iimcat.ac.in"
+  },
+  {
+    "id": "exam-clat",
+    "name": "CLAT (Common Law Admission Test)",
+    "conducting_body": "Consortium of National Law Universities",
+    "category": "Law",
+    "purpose": "Admission to 5-Year Integrated BA/BBA LLB (UG) and 1-Year LLM (PG) programs at 24 participating National Law Universities.",
+    "eligibility": "UG: 10+2 passed with minimum 45% marks (40% for SC/ST). No upper age limit.",
+    "important_subjects": [
+      "English Language",
+      "Current Affairs including GK",
+      "Legal Reasoning",
+      "Logical Reasoning",
+      "Quantitative Techniques"
+    ],
+    "timeline_status": "Conducted on the first Sunday of December annually",
+    "application_window": "July to November",
+    "exam_pattern": "Pen & Paper (OMR) mode, 120 comprehension-based questions, 120 marks, 2 hours. Negative marking -0.25.",
+    "official_website": "https://consortiumofnlus.ac.in"
+  },
+  {
+    "id": "exam-nda",
+    "name": "UPSC NDA & NA Examination",
+    "conducting_body": "Union Public Service Commission (UPSC)",
+    "category": "Defence",
+    "purpose": "Selection of candidates for the Army, Navy, and Air Force wings of National Defence Academy and Indian Naval Academy course.",
+    "eligibility": "12th pass (Army) or 12th with Physics & Maths (Air Force/Navy). Unmarried candidates aged 16.5 to 19.5.",
+    "important_subjects": [
+      "Mathematics (Algebra, Trigonometry, Calculus - 300 M)",
+      "General Ability Test (English 200 M + GK/Science 400 M)"
+    ],
+    "timeline_status": "Conducted twice a year (NDA I in April, NDA II in September)",
+    "application_window": "NDA I: December - January; NDA II: May - June",
+    "exam_pattern": "Offline written exam (900 marks total) followed by 5-Day SSB testing (900 marks).",
+    "official_website": "https://upsc.gov.in"
+  },
+  {
+    "id": "exam-bitsat",
+    "name": "BITSAT (BITS Admission Test)",
+    "conducting_body": "Birla Institute of Technology and Science (BITS Pilani)",
+    "category": "Engineering",
+    "purpose": "Admission to Integrated First Degree programmes (B.E., M.Sc.) at BITS Pilani, Goa, and Hyderabad campuses.",
+    "eligibility": "12th pass with minimum 75% aggregate in PCM/PCB with at least 60% in each subject.",
+    "important_subjects": [
+      "Physics (30 Qs)",
+      "Chemistry (30 Qs)",
+      "Mathematics/Biology (40 Qs)",
+      "English Proficiency (10 Qs)",
+      "Logical Reasoning (20 Qs)"
+    ],
+    "timeline_status": "Session 1 in May, Session 2 in June",
+    "application_window": "January to April",
+    "exam_pattern": "CBT mode, 130 questions, 390 marks. Bonus 12 questions available if candidate completes 130 questions within time.",
+    "official_website": "https://www.bitsadmission.com"
+  }
+]

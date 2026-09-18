@@ -1,0 +1,178 @@
+[
+  {
+    "id": "def-nda",
+    "title": "National Defence Academy & Naval Academy (NDA & NA)",
+    "organization": "Indian Armed Forces (Army, Navy, Air Force) via UPSC",
+    "entry_type": "After 12th Class (Officer Entry)",
+    "qualification": "12th Class pass of 10+2 pattern (Army Wing); 12th with Physics & Mathematics (Air Force & Navy Wings). Appearing students eligible.",
+    "age_limit": "16.5 to 19.5 years at time of course commencement",
+    "gender_marital": "Unmarried Male and Female candidates",
+    "physical_standards": "Minimum Height: 157 cm (162.5 cm for Air Force Flying Branch; 152 cm for female candidates). Good physical endurance (run 2.4 km in 15 mins, push-ups, chin-ups).",
+    "medical_standards": "Standard vision guidelines (6/6 or correctable as per service rules). No skeletal deformity or colour blindness for Air Force.",
+    "selection_stages": [
+      "Stage 1: UPSC Written Examination (Paper 1: Mathematics - 300 marks; Paper 2: General Ability Test - 600 marks)",
+      "Stage 2: 5-Day Services Selection Board (SSB) Interview (Officer Intelligence Rating, PPDT, Psychological Tests, Group Testing Officer Tasks, Personal Interview, Board Conference)",
+      "Stage 3: Medical Examination at Military Hospital",
+      "Stage 4: Final All India Merit List based on Written (900) + SSB (900) = 1800 marks"
+    ],
+    "training_academy": "National Defence Academy (Khadakwasla, Pune) for 3 years (grants JNU B.Sc/BA/B.Tech degree) + 1 year at IMA/INA/AFA",
+    "rank_on_commission": "Lieutenant (Army) / Sub Lieutenant (Navy) / Flying Officer (Air Force)",
+    "pay_scale": "7th CPC Level 10 (Rs 56,100 - 1,77,500) + Military Service Pay (MSP Rs 15,500/month) + DA + allowances",
+    "application_cycle": "Conducted twice a year (NDA I notification in December, exam in April; NDA II notification in May, exam in September)",
+    "official_website": "https://upsc.gov.in"
+  },
+  {
+    "id": "def-army-tes",
+    "title": "10+2 Technical Entry Scheme (TES) - Indian Army",
+    "organization": "Indian Army",
+    "entry_type": "After 12th Class (Technical Officer Entry - Direct SSB)",
+    "qualification": "10+2 pass with minimum 60% aggregate in Physics, Chemistry, and Mathematics (PCM) + Mandatory appearance in JEE (Main).",
+    "age_limit": "16.5 to 19.5 years",
+    "gender_marital": "Unmarried Male candidates",
+    "physical_standards": "Min height 157 cm, healthy physique, standard eyesight (myopia not exceeding -3.50D).",
+    "selection_stages": [
+      "Shortlisting based on JEE (Main) Common Rank List (CRL) cutoff",
+      "Direct 5-Day SSB Interview call at Selection Centres (Allahabad, Bhopal, Bengaluru, Jalandhar)",
+      "Special Medical Board (SMB)",
+      "All India Merit List"
+    ],
+    "training_academy": "4 Years total: 1 Year Basic Military Training at Cadets Training Wing (CME Pune / MCTE Mhow / MCEME Secunderabad) + 3 Years Technical degree course (Grants B.Tech in Engineering).",
+    "rank_on_commission": "Lieutenant (Permanent Commission in Corps of Engineers, Signals, or EME)",
+    "pay_scale": "7th CPC Level 10 (Rs 56,100) + MSP Rs 15,500 + allowances",
+    "official_website": "https://joinindianarmy.nic.in"
+  },
+  {
+    "id": "def-navy-btech",
+    "title": "10+2 (B.Tech) Cadet Entry Scheme - Indian Navy",
+    "organization": "Indian Navy",
+    "entry_type": "After 12th Class (Naval Officer Entry - Direct SSB)",
+    "qualification": "10+2 with minimum 70% aggregate in PCM and minimum 50% marks in English (10th or 12th) + Mandatory valid JEE (Main) B.E./B.Tech rank.",
+    "age_limit": "16.5 to 19.5 years",
+    "gender_marital": "Unmarried Male and Female candidates",
+    "physical_standards": "Min height: 157 cm (Male), 152 cm (Female). Standard naval eyesight and colour perception standards.",
+    "selection_stages": [
+      "Shortlisting based on JEE Main All India Rank",
+      "Services Selection Board (SSB) 5-Day Interview at Bhopal, Bangalore, Visakhapatnam, or Kolkata",
+      "Naval Medical Examination at designated Naval Hospital",
+      "All India Merit List"
+    ],
+    "training_academy": "4-Year B.Tech course at Indian Naval Academy (INA Ezhimala, Kerala) in Applied Electronics & Communication, Mechanical, or Electronics (degree awarded by JNU). All training expenses borne by Indian Navy.",
+    "rank_on_commission": "Sub Lieutenant (Executive, Engineering, or Electrical Branch)",
+    "pay_scale": "7th CPC Level 10 (Rs 56,100) + MSP Rs 15,500 + Sea Duty Allowances",
+    "official_website": "https://joinindiannavy.gov.in"
+  },
+  {
+    "id": "def-agniveer-all",
+    "title": "Agnipath Scheme (Army, Navy & Air Force)",
+    "organization": "Ministry of Defence (Indian Armed Forces)",
+    "entry_type": "Soldier / Sailor / Airman Entry (10th & 12th Passed)",
+    "qualification": "Army General Duty / Navy MR: 10th pass with 45% aggregate; Army Technical / Navy SSR / Air Force Vayu Science: 10+2 with Physics, Chemistry/Maths with 50% aggregate.",
+    "age_limit": "17.5 to 21 years",
+    "gender_marital": "Unmarried Male & Female candidates",
+    "selection_stages": [
+      "Stage 1: Online Common Entrance Examination (CEE / STAR / INET)",
+      "Stage 2: Physical Fitness Test (PFT: 1.6 km run in 5.5 - 6 mins, beam pull-ups, 9ft ditch, zig-zag balance)",
+      "Stage 3: Physical Measurement Test (PMT) & Adaptability Test",
+      "Stage 4: Medical Examination"
+    ],
+    "tenure_benefits": "4 Years tenure with 25% selected into permanent regular cadre. Monthly package: 1st Year Rs 30,000 to 4th Year Rs 40,000. Upon exit: Seva Nidhi corpus (~Rs 11.71 Lakhs tax-free) + Skill Certificate + reservation in CAPFs & State Police.",
+    "official_website": "https://joinindianarmy.nic.in"
+  },
+  {
+    "id": "def-cds",
+    "title": "Combined Defence Services (CDS Examination)",
+    "organization": "Indian Armed Forces via UPSC",
+    "entry_type": "Graduate Officer Entry (After Any Degree / B.Tech)",
+    "qualification": "Degree of a recognized University for IMA & OTA; Degree in Engineering for INA; Degree with Physics & Maths at 10+2 or Bachelor of Engineering for Air Force Academy.",
+    "age_limit": "IMA: 19-24 years; INA: 19-24 years; AFA: 20-24 years; OTA (Men & Women): 19-25 years",
+    "gender_marital": "IMA, INA, AFA: Unmarried Males; OTA: Unmarried Males, Unmarried Females, and Issueless Widows",
+    "selection_stages": [
+      "Written Examination by UPSC (IMA/INA/AFA: English, GK, Elementary Maths - 300 marks; OTA: English & GK - 200 marks)",
+      "5-Day Services Selection Board (SSB) Interview (Stage I: OIR & PPDT screening; Stage II: Psychology, GTO indoor/outdoor ground tasks, Personal Interview, Final Conference)",
+      "Comprehensive Medical Examination at Special Medical Board (SMB)",
+      "Final Merit List based on aggregate Written + SSB scores"
+    ],
+    "academies": "Indian Military Academy (Dehradun), Indian Naval Academy (Ezhimala), Air Force Academy (Dundigal Hyderabad), Officers Training Academy (Chennai)",
+    "rank_on_commission": "Lieutenant / Sub Lieutenant / Flying Officer",
+    "pay_scale": "7th CPC Level 10 (Rs 56,100 - 1,77,500) + MSP Rs 15,500 + allowances",
+    "official_website": "https://upsc.gov.in"
+  },
+  {
+    "id": "def-afcat",
+    "title": "Air Force Common Admission Test (AFCAT)",
+    "organization": "Indian Air Force (IAF)",
+    "entry_type": "Graduate Officer Entry (Flying, Technical, Ground Duty)",
+    "qualification": "Flying Branch: Min 50% in Maths & Physics at 10+2 + Graduation (min 60%) or B.Tech (min 60%); Technical Branch: B.E./B.Tech (min 60%) in Electronics / Mechanical / Allied; Ground Duty Non-Tech: Graduate degree (min 60%) in any stream.",
+    "age_limit": "Flying Branch: 20 to 24 years; Ground Duty (Tech / Non-Tech): 20 to 26 years",
+    "gender_marital": "Men and Women candidates (Permanent Commission for Men; Short Service Commission for Men & Women)",
+    "selection_stages": [
+      "Computer Based Test (AFCAT online test: Verbal Ability, Numerical Ability, Reasoning & Military Aptitude, General Awareness - 300 marks)",
+      "Air Force Selection Board (AFSB) 5-Day Testing at Dehradun, Mysuru, Gandhinagar, or Varanasi",
+      "Computerised Pilot Selection System (CPSS) for Flying Branch candidates (once in a lifetime test)",
+      "Medical Examination at Air Force Central Medical Establishment (AFCME)"
+    ],
+    "training_academy": "Air Force Academy (Dundigal, Hyderabad) - 74 weeks for Flying & Tech; 52 weeks for Non-Tech",
+    "rank_on_commission": "Flying Officer",
+    "pay_scale": "7th CPC Level 10 (Rs 56,100) + MSP Rs 15,500 + Flying Allowance (Rs 25,000/mo for pilots)",
+    "official_website": "https://afcat.cdac.in"
+  },
+  {
+    "id": "def-army-tgc",
+    "title": "Technical Graduate Course (TGC) - Indian Army",
+    "organization": "Indian Army",
+    "entry_type": "Engineering Degree Holder Entry (Direct SSB)",
+    "qualification": "B.E. / B.Tech in relevant engineering streams (Civil, Mechanical, Electrical, ECE, CSE, IT, Metallurgy, Chemical, Architecture) with required cutoff percentage. Final year students eligible.",
+    "age_limit": "20 to 27 years",
+    "gender_marital": "Unmarried Male candidates",
+    "selection_stages": [
+      "Shortlisting based on engineering cumulative percentage / CGPA cutoff",
+      "Direct 5-Day SSB Interview (No written exam needed)",
+      "Medical Examination by Military Medical Board",
+      "All India Merit List"
+    ],
+    "training_academy": "Indian Military Academy (IMA Dehradun) for 49 weeks",
+    "commission_type": "Permanent Commission (PC) as Lieutenant",
+    "pay_scale": "7th CPC Level 10 (Rs 56,100) + MSP Rs 15,500 + High Altitude / Field Allowances",
+    "official_website": "https://joinindianarmy.nic.in"
+  },
+  {
+    "id": "def-army-ssc-tech",
+    "title": "Short Service Commission (Tech) Men & Women - Indian Army",
+    "organization": "Indian Army",
+    "entry_type": "Engineering Degree Holder Entry (Direct SSB)",
+    "qualification": "B.E. / B.Tech in specified engineering disciplines with cut-off marks. Final year students eligible.",
+    "age_limit": "20 to 27 years",
+    "gender_marital": "Unmarried Male and Unmarried Female candidates",
+    "selection_stages": [
+      "Shortlisting based on B.Tech percentage cutoff",
+      "Direct 5-Day SSB Interview at Selection Centres",
+      "Medical Board Examination",
+      "Merit List"
+    ],
+    "training_academy": "Officers Training Academy (OTA Chennai) for 49 weeks",
+    "commission_type": "Short Service Commission (10 years initial, extendable up to 14 years or eligible for Permanent Commission option)",
+    "rank_on_commission": "Lieutenant",
+    "pay_scale": "7th CPC Level 10 (Rs 56,100) + MSP Rs 15,500",
+    "official_website": "https://joinindianarmy.nic.in"
+  },
+  {
+    "id": "def-navy-ssc-tech",
+    "title": "Indian Navy SSC Officer (Executive & Technical Branches)",
+    "organization": "Indian Navy",
+    "entry_type": "Engineering Degree Holder Entry (Direct SSB)",
+    "qualification": "B.E. / B.Tech with minimum 60% aggregate in Mechanical, Electrical, Electronics, Computer Science, IT, Naval Architecture, Civil, Marine Engineering.",
+    "age_limit": "19.5 to 25 years",
+    "gender_marital": "Men & Women candidates",
+    "selection_stages": [
+      "Shortlisting based on normalised B.Tech marks",
+      "Direct 5-Day SSB Interview at Bhopal, Bangalore, Visakhapatnam, Coimbatore",
+      "Naval Medical Examination",
+      "Merit List"
+    ],
+    "training_academy": "Indian Naval Academy (INA Ezhimala, Kerala) for 22 weeks basic naval orientation",
+    "branches": "Executive (General Service, Hydro, IT, Pilot, Observer, Air Traffic Controller), Technical (Engineering Branch, Electrical Branch, Naval Architect)",
+    "rank_on_commission": "Sub Lieutenant",
+    "pay_scale": "7th CPC Level 10 (Rs 56,100) + MSP Rs 15,500 + Submarine/Flight/Sea allowances",
+    "official_website": "https://joinindiannavy.gov.in"
+  }
+]

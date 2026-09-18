@@ -1,0 +1,192 @@
+[
+  {
+    "category": "National Testing & Admissions Portals",
+    "links": [
+      {
+        "name": "National Testing Agency (NTA)",
+        "description": "Conducts JEE Main, NEET UG, CUET, UGC NET",
+        "url": "https://nta.ac.in"
+      },
+      {
+        "name": "JEE Main Official Portal",
+        "description": "Application, admit card, results for JEE Main",
+        "url": "https://jeemain.nta.nic.in"
+      },
+      {
+        "name": "JEE Advanced Official Portal",
+        "description": "IIT Joint Entrance Examination Advanced portal",
+        "url": "https://jeeadv.ac.in"
+      },
+      {
+        "name": "JoSAA (Joint Seat Allocation Authority)",
+        "description": "Centralized seat allocation for IITs, NITs, IIITs, CFTIs",
+        "url": "https://josaa.nic.in"
+      },
+      {
+        "name": "CSAB (Central Seat Allocation Board)",
+        "description": "Special round counselling for NIT+ system seats",
+        "url": "https://csab.nic.in"
+      },
+      {
+        "name": "NEET UG Portal (NTA)",
+        "description": "National medical undergraduate entrance portal",
+        "url": "https://exams.nta.ac.in/NEET"
+      },
+      {
+        "name": "Medical Counselling Committee (MCC)",
+        "description": "All India Quota counselling for MBBS/BDS/B.Sc Nursing",
+        "url": "https://mcc.nic.in"
+      },
+      {
+        "name": "CUET UG Portal",
+        "description": "Common University Entrance Test for Central Universities",
+        "url": "https://cuetug.ntaonline.in"
+      },
+      {
+        "name": "GATE Official Portal",
+        "description": "Graduate Aptitude Test in Engineering by IITs/IISc",
+        "url": "https://gate2025.iitr.ac.in"
+      },
+      {
+        "name": "Consortium of National Law Universities (CLAT)",
+        "description": "Law entrance for 24 National Law Universities",
+        "url": "https://consortiumofnlus.ac.in"
+      },
+      {
+        "name": "IIM CAT Portal",
+        "description": "Common Admission Test for 21 IIMs",
+        "url": "https://iimcat.ac.in"
+      }
+    ]
+  },
+  {
+    "category": "Defence Recruitment Portals",
+    "links": [
+      {
+        "name": "Join Indian Army Official Portal",
+        "description": "Officer entries (NDA, TES, TGC, SSC Tech) and Agniveer Army",
+        "url": "https://joinindianarmy.nic.in"
+      },
+      {
+        "name": "Join Indian Navy Official Portal",
+        "description": "Executive, Technical, 10+2 B.Tech, and Agniveer Navy entries",
+        "url": "https://joinindiannavy.gov.in"
+      },
+      {
+        "name": "Career Indian Air Force (IAF)",
+        "description": "Air Force officer commissions and airmen recruitment",
+        "url": "https://careerindianairforce.cdac.in"
+      },
+      {
+        "name": "AFCAT CDAC Portal",
+        "description": "Air Force Common Admission Test online exam and results portal",
+        "url": "https://afcat.cdac.in"
+      },
+      {
+        "name": "Join Indian Coast Guard",
+        "description": "Assistant Commandant and Navik/Yantrik recruitment",
+        "url": "https://joinindiancoastguard.cdac.in"
+      }
+    ]
+  },
+  {
+    "category": "Government Recruitment Bodies & PSUs",
+    "links": [
+      {
+        "name": "Union Public Service Commission (UPSC)",
+        "description": "Civil Services (IAS/IPS), NDA, CDS, ESE/IES, Central Armed Police Forces",
+        "url": "https://upsc.gov.in"
+      },
+      {
+        "name": "Staff Selection Commission (SSC)",
+        "description": "SSC CGL, SSC CHSL, SSC JE, SSC CPO, Multi-Tasking Staff",
+        "url": "https://ssc.gov.in"
+      },
+      {
+        "name": "Railway Recruitment Board (RRB)",
+        "description": "RRB ALP, RRB Technician, RRB JE, RRB NTPC online applications",
+        "url": "https://rrbapply.gov.in"
+      },
+      {
+        "name": "Institute of Banking Personnel Selection (IBPS)",
+        "description": "PO, Clerk, Specialist Officer exams for 11 Public Sector Banks",
+        "url": "https://www.ibps.in"
+      },
+      {
+        "name": "ISRO Careers Portal",
+        "description": "Scientist/Engineer, Technical Assistant, and Apprentice recruitments",
+        "url": "https://www.isro.gov.in/Careers.html"
+      },
+      {
+        "name": "DRDO Careers & RAC",
+        "description": "Scientist B recruitment and CEPTAM technical staff admissions",
+        "url": "https://www.drdo.gov.in/drdo/careers"
+      },
+      {
+        "name": "BARC OCES Exam Portal",
+        "description": "Scientific Officer training and DGFS entry in Dept of Atomic Energy",
+        "url": "https://barcocesexam.in"
+      }
+    ]
+  },
+  {
+    "category": "Education Regulators, Textbooks & Digital Learning",
+    "links": [
+      {
+        "name": "University Grants Commission (UGC)",
+        "description": "Higher education regulatory body and university recognitions",
+        "url": "https://www.ugc.gov.in"
+      },
+      {
+        "name": "All India Council for Technical Education (AICTE)",
+        "description": "Regulator for engineering, diploma, management, and MCA institutions",
+        "url": "https://www.aicte-india.org"
+      },
+      {
+        "name": "NCERT Textbooks Online",
+        "description": "Free, official digital textbooks for Class 1 to 12 in PDF",
+        "url": "https://ncert.nic.in/textbook.php"
+      },
+      {
+        "name": "NPTEL (National Programme on Technology Enhanced Learning)",
+        "description": "Free online IIT/IISc certification courses in engineering & sciences",
+        "url": "https://nptel.ac.in"
+      },
+      {
+        "name": "SWAYAM Government Learning Platform",
+        "description": "Free online courses with university credit transfer",
+        "url": "https://swayam.gov.in"
+      },
+      {
+        "name": "National Career Service (NCS)",
+        "description": "Ministry of Labour & Employment career counselling and job portal",
+        "url": "https://www.ncs.gov.in"
+      }
+    ]
+  },
+  {
+    "category": "Scholarships, Certificates & Apprenticeships",
+    "links": [
+      {
+        "name": "National Scholarship Portal (NSP)",
+        "description": "One-stop portal for all Central & State government scholarship schemes",
+        "url": "https://scholarships.gov.in"
+      },
+      {
+        "name": "DigiLocker Official Portal",
+        "description": "Govt. platform for legally valid digital marksheets, certificates, and Aadhaar",
+        "url": "https://www.digilocker.gov.in"
+      },
+      {
+        "name": "NATS (National Apprenticeship Training Scheme)",
+        "description": "Paid industrial apprenticeship for Engineering Degree and Diploma holders",
+        "url": "https://nats.education.gov.in"
+      },
+      {
+        "name": "NAPS (National Apprenticeship Promotion Scheme)",
+        "description": "Apprenticeship portal for 10th passed and ITI certified students",
+        "url": "https://www.apprenticeshipindia.gov.in"
+      }
+    ]
+  }
+]

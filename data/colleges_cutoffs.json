@@ -1,0 +1,302 @@
+{
+  "disclaimer": "Previous-year cutoffs are for reference only. Actual cutoffs can change each year based on seats, competition, category, preferences and other factors.",
+  "colleges": [
+    {
+      "id": "col-iit-bombay",
+      "name": "Indian Institute of Technology (IIT) Bombay",
+      "location": "Mumbai, Maharashtra",
+      "type": "Government (Institute of National Importance)",
+      "nirf_rank": "#3 in Overall / #3 in Engineering",
+      "accepted_exams": [
+        "JEE Advanced",
+        "GATE",
+        "UCEED",
+        "CEED",
+        "IIT JAM"
+      ],
+      "popular_branches": [
+        "Computer Science & Engineering",
+        "Electrical Engineering",
+        "Mechanical Engineering",
+        "Aerospace Engineering",
+        "Chemical Engineering",
+        "Data Science & AI"
+      ],
+      "fees_per_year": "Approx Rs 2.2 Lakhs / year (100% Tuition Fee waiver for SC/ST/PwD and families under Rs 1 Lakh income)",
+      "official_website": "https://www.iitb.ac.in"
+    },
+    {
+      "id": "col-iit-madras",
+      "name": "Indian Institute of Technology (IIT) Madras",
+      "location": "Chennai, Tamil Nadu",
+      "type": "Government (Institute of National Importance)",
+      "nirf_rank": "#1 in Overall & Engineering (Consistently)",
+      "accepted_exams": [
+        "JEE Advanced",
+        "GATE",
+        "IIT JAM"
+      ],
+      "popular_branches": [
+        "Computer Science",
+        "Electrical",
+        "Mechanical",
+        "Aerospace",
+        "Ocean Engineering",
+        "Biomedical"
+      ],
+      "official_website": "https://www.iitm.ac.in"
+    },
+    {
+      "id": "col-nit-warangal",
+      "name": "National Institute of Technology (NIT) Warangal",
+      "location": "Warangal, Telangana",
+      "type": "Government (Institute of National Importance)",
+      "nirf_rank": "Top 25 Engineering",
+      "accepted_exams": [
+        "JEE Main (via JoSAA/CSAB)",
+        "GATE (via CCMT)",
+        "NIMCET (MCA)"
+      ],
+      "popular_branches": [
+        "CSE",
+        "ECE",
+        "EEE",
+        "Mechanical",
+        "Civil",
+        "Chemical",
+        "Biotechnology",
+        "MCA"
+      ],
+      "official_website": "https://www.nitw.ac.in"
+    },
+    {
+      "id": "col-nit-trichy",
+      "name": "National Institute of Technology (NIT) Tiruchirappalli",
+      "location": "Tiruchirappalli, Tamil Nadu",
+      "type": "Government (Institute of National Importance)",
+      "nirf_rank": "#1 among all NITs in India",
+      "accepted_exams": [
+        "JEE Main (JoSAA)",
+        "GATE (CCMT)",
+        "NIMCET"
+      ],
+      "popular_branches": [
+        "CSE",
+        "ECE",
+        "EEE",
+        "Mechanical",
+        "Instrumentation & Control",
+        "Production",
+        "Architecture"
+      ],
+      "official_website": "https://www.nitt.edu"
+    },
+    {
+      "id": "col-iiit-hyderabad",
+      "name": "International Institute of Information Technology (IIIT) Hyderabad",
+      "location": "Hyderabad, Telangana",
+      "type": "Autonomous (Not-for-profit Public-Private Partnership)",
+      "nirf_rank": "Premier CS/AI Research Hub",
+      "accepted_exams": [
+        "JEE Main",
+        "UGEE (Undergraduate Engineering Entrance Exam)",
+        "PGEE"
+      ],
+      "popular_branches": [
+        "B.Tech CSE",
+        "B.Tech ECE",
+        "Dual Degree B.Tech + MS in Computer Science / Computational Natural Sciences / Linguistics"
+      ],
+      "official_website": "https://www.iiit.ac.in"
+    },
+    {
+      "id": "col-bits-pilani",
+      "name": "Birla Institute of Technology and Science (BITS) Pilani",
+      "location": "Pilani, Rajasthan (with Goa & Hyderabad Campuses)",
+      "type": "Deemed University (Institute of Eminence)",
+      "nirf_rank": "Top 25 Overall / Premier Private Tier-1",
+      "accepted_exams": [
+        "BITSAT"
+      ],
+      "popular_branches": [
+        "B.E. Computer Science",
+        "B.E. Electronics & Communication",
+        "B.E. Electrical",
+        "B.E. Mechanical",
+        "M.Sc Dual Degree (Eco, Maths, Physics)"
+      ],
+      "official_website": "https://www.bits-pilani.ac.in"
+    },
+    {
+      "id": "col-aiims-delhi",
+      "name": "All India Institute of Medical Sciences (AIIMS) New Delhi",
+      "location": "New Delhi",
+      "type": "Government (Apex Medical Institute of National Importance)",
+      "nirf_rank": "#1 Medical Institute in India",
+      "accepted_exams": [
+        "NEET UG (via MCC All India Counselling)",
+        "INI CET"
+      ],
+      "popular_branches": [
+        "MBBS",
+        "B.Sc (Hons) Nursing",
+        "B.Sc Paramedical",
+        "MD/MS/M.Ch"
+      ],
+      "fees_per_year": "Nominal (Approx Rs 1,628 total course fee)",
+      "official_website": "https://www.aiims.edu"
+    },
+    {
+      "id": "col-nlsiu-bengaluru",
+      "name": "National Law School of India University (NLSIU)",
+      "location": "Bengaluru, Karnataka",
+      "type": "State University / National Law University",
+      "nirf_rank": "#1 Law School in India",
+      "accepted_exams": [
+        "CLAT UG",
+        "CLAT PG"
+      ],
+      "popular_branches": [
+        "BA LLB (Hons) 5-Year Integrated",
+        "LLM Master of Laws"
+      ],
+      "official_website": "https://www.nls.ac.in"
+    },
+    {
+      "id": "col-jntuh",
+      "name": "JNTUH University College of Engineering",
+      "location": "Hyderabad, Telangana",
+      "type": "State Government University",
+      "nirf_rank": "Premier State Engineering College",
+      "accepted_exams": [
+        "TG EAPCET (Engineering)",
+        "TG ECET (Lateral Entry)",
+        "GATE / TS PGECET"
+      ],
+      "popular_branches": [
+        "CSE",
+        "CSE (AI&ML)",
+        "ECE",
+        "EEE",
+        "Mechanical",
+        "Civil",
+        "Chemical",
+        "Metallurgy"
+      ],
+      "official_website": "https://jntuh.ac.in"
+    },
+    {
+      "id": "col-au-engg",
+      "name": "Andhra University College of Engineering (AUCE)",
+      "location": "Visakhapatnam, Andhra Pradesh",
+      "type": "State Government University (A++ NAAC)",
+      "nirf_rank": "Top Historic State University in AP",
+      "accepted_exams": [
+        "AP EAPCET (Engineering)",
+        "AP ECET (Lateral Entry)",
+        "GATE / AP PGECET"
+      ],
+      "popular_branches": [
+        "CSE",
+        "Information Technology",
+        "ECE",
+        "EEE",
+        "Mechanical",
+        "Civil",
+        "Marine Engineering",
+        "Chemical"
+      ],
+      "official_website": "https://www.andhrauniversity.edu.in"
+    }
+  ],
+  "cutoffs_reference": [
+    {
+      "exam": "JEE Main (JoSAA)",
+      "year": "2024 (Round 5 Reference)",
+      "college": "NIT Warangal",
+      "branch": "Computer Science & Engineering",
+      "category": "OPEN (Gender-Neutral)",
+      "quota": "Home State (HS)",
+      "opening_rank": 1245,
+      "closing_rank": 3240,
+      "notes": "Verified historical closing rank range."
+    },
+    {
+      "exam": "JEE Main (JoSAA)",
+      "year": "2024 (Round 5 Reference)",
+      "college": "NIT Warangal",
+      "branch": "Computer Science & Engineering",
+      "category": "OPEN (Gender-Neutral)",
+      "quota": "Other State (OS)",
+      "opening_rank": 890,
+      "closing_rank": 2125,
+      "notes": "Verified historical closing rank range."
+    },
+    {
+      "exam": "JEE Advanced (JoSAA)",
+      "year": "2024 (Round 5 Reference)",
+      "college": "IIT Bombay",
+      "branch": "Computer Science & Engineering",
+      "category": "OPEN (Gender-Neutral)",
+      "quota": "All India (AI)",
+      "opening_rank": 1,
+      "closing_rank": 68,
+      "notes": "Most preferred B.Tech program in India."
+    },
+    {
+      "exam": "JEE Advanced (JoSAA)",
+      "year": "2024 (Round 5 Reference)",
+      "college": "IIT Madras",
+      "branch": "Electrical Engineering",
+      "category": "OPEN (Gender-Neutral)",
+      "quota": "All India (AI)",
+      "opening_rank": 310,
+      "closing_rank": 1020,
+      "notes": "Premier core branch."
+    },
+    {
+      "exam": "State EAPCET",
+      "year": "2024 (Final Round Reference)",
+      "college": "JNTUH College of Engineering Hyderabad",
+      "branch": "Computer Science & Engineering",
+      "category": "OC_GEN_OU (Open Category General)",
+      "quota": "State University Region",
+      "opening_rank": 240,
+      "closing_rank": 850,
+      "notes": "Top cutoff in Telangana State EAPCET."
+    },
+    {
+      "exam": "State EAPCET",
+      "year": "2024 (Final Round Reference)",
+      "college": "Andhra University College of Engineering (A)",
+      "branch": "Computer Science & Engineering",
+      "category": "OC_GEN_AU",
+      "quota": "AU Region",
+      "opening_rank": 420,
+      "closing_rank": 1280,
+      "notes": "Top cutoff in Andhra Pradesh State EAPCET."
+    },
+    {
+      "exam": "State ECET (Lateral Entry)",
+      "year": "2024 Reference",
+      "college": "JNTUH College of Engineering Hyderabad",
+      "branch": "CSE (Lateral Entry 2nd Year)",
+      "category": "OC_GEN",
+      "quota": "Integrated State Rank",
+      "opening_rank": 1,
+      "closing_rank": 18,
+      "notes": "Highly competitive lateral entry allocation."
+    },
+    {
+      "exam": "NEET UG (MCC)",
+      "year": "2024 (Round 1 Reference)",
+      "college": "AIIMS New Delhi",
+      "branch": "MBBS",
+      "category": "General (UR)",
+      "quota": "All India 100%",
+      "opening_rank": 1,
+      "closing_rank": 57,
+      "notes": "Highest cutoff medical program in India."
+    }
+  ]
+}

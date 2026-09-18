@@ -1,0 +1,139 @@
+{
+  "10th": {
+    "title": "Options After Class 10th",
+    "description": "Comprehensive pathways: Intermediate (MPC, BiPC, MEC, CEC, Arts), Polytechnic Diploma, ITI, Defence routes, Vocational training, and Apprenticeships.",
+    "paths": [
+      {
+        "id": "10-inter",
+        "category": "Intermediate (11th-12th)",
+        "duration": "2 Years",
+        "eligibility": "10th Pass (CBSE/ICSE/State SSC)",
+        "admission": "Merit / State Junior College admission",
+        "streams": [
+          {
+            "code": "MPC",
+            "name": "Maths, Physics, Chemistry",
+            "careers": "Engineering (B.Tech), NDA Defence, Architecture (B.Arch), Pure Sciences (B.Sc), Aviation",
+            "exams": [
+              "JEE Main",
+              "JEE Advanced",
+              "State EAPCET",
+              "NDA",
+              "BITSAT"
+            ]
+          },
+          {
+            "code": "BiPC",
+            "name": "Biology, Physics, Chemistry",
+            "careers": "Medicine (MBBS, BDS), AYUSH, Pharmacy, B.Sc Agriculture, Veterinary, Nursing, Biotechnology",
+            "exams": [
+              "NEET UG",
+              "State EAPCET Agri",
+              "ICAR AIEEA"
+            ]
+          },
+          {
+            "code": "MEC",
+            "name": "Maths, Economics, Commerce",
+            "careers": "Chartered Accountancy (CA), CMA, CS, B.Com, BBA, Actuarial Science, Data Analytics",
+            "exams": [
+              "CA Foundation",
+              "CUET UG",
+              "IPMAT",
+              "CSEET"
+            ]
+          },
+          {
+            "code": "CEC",
+            "name": "Commerce, Economics, Civics",
+            "careers": "Corporate Finance, Banking, Law (5-yr Integrated LLB), B.Com, Civil Services preparation",
+            "exams": [
+              "CLAT",
+              "CUET UG",
+              "State Law CET"
+            ]
+          },
+          {
+            "code": "Arts/HEC",
+            "name": "History, Economics, Civics/Arts",
+            "careers": "Civil Services (UPSC), Journalism, Law, Public Policy, Psychology, Teaching",
+            "exams": [
+              "CUET UG",
+              "CLAT",
+              "State Entrances"
+            ]
+          }
+        ],
+        "official_url": "https://www.cbse.gov.in"
+      },
+      {
+        "id": "10-diploma",
+        "category": "Polytechnic / Diploma in Engineering",
+        "duration": "3 Years",
+        "eligibility": "10th Pass with Maths & Science (min 35-50%)",
+        "admission": "State POLYCET (e.g. AP POLYCET, TS POLYCET, JEECUP, Delhi CET)",
+        "branches": [
+          "Computer Science & Engineering",
+          "Electronics & Communication (ECE)",
+          "Electrical & Electronics (EEE)",
+          "Mechanical Engineering",
+          "Civil Engineering",
+          "Automobile Engineering",
+          "Chemical Engineering"
+        ],
+        "lateral_entry": "Eligible for direct admission to 2nd year B.Tech via State ECET / JELET / LEET",
+        "job_roles": "Junior Engineer (RRB JE, SSC JE), Plant Technician (L&T, Tata Motors, BHEL), Substation Operator, DRDO/ISRO Technical Assistant",
+        "official_url": "https://polycetap.nic.in"
+      },
+      {
+        "id": "10-iti",
+        "category": "Industrial Training Institutes (ITI)",
+        "duration": "1 to 2 Years",
+        "eligibility": "10th Pass (8th pass for select trades)",
+        "admission": "State Directorate of Employment & Training counselling",
+        "trades": [
+          "Electrician (2 yrs)",
+          "Fitter (2 yrs)",
+          "COPA - Computer Operator & Programming Assistant (1 yr)",
+          "Electronics Mechanic (2 yrs)",
+          "Welder / Machinist / Motor Mechanic"
+        ],
+        "future_options": "Direct jobs as Railway ALP / Technician, PSU Apprentice, DRDO Technician A, or lateral entry into 2nd year Polytechnic Diploma",
+        "official_url": "https://ncvtmis.gov.in"
+      },
+      {
+        "id": "10-defence",
+        "category": "Defence Routes (Agniveer & Pre-NDA)",
+        "duration": "4 Years (Agniveer) / NDA pathway preparation",
+        "eligibility": "10th Pass with 45% aggregate & 33% per subject. Age: 17.5 to 21 years.",
+        "routes": [
+          "Indian Army Agniveer (General Duty & Tradesmen)",
+          "Indian Navy Agniveer (Matric Recruit - MR)",
+          "Preparation for UPSC NDA & NA exam during 11th-12th"
+        ],
+        "official_url": "https://joinindianarmy.nic.in"
+      },
+      {
+        "id": "10-vocational",
+        "category": "Vocational Education & Skill Courses",
+        "duration": "6 Months to 2 Years",
+        "eligibility": "10th Pass",
+        "options": [
+          "Paramedical & DMLT Foundation",
+          "Digital Marketing & Web Design",
+          "EV Two-Wheeler Servicing & Automotive",
+          "Culinary Arts & Hotel Operations"
+        ],
+        "official_url": "https://www.skillindiadigital.gov.in"
+      },
+      {
+        "id": "10-apprenticeship",
+        "category": "Apprenticeships (NAPS)",
+        "duration": "1 to 2 Years with Monthly Stipend",
+        "eligibility": "10th Pass or 10th + ITI",
+        "details": "Govt. National Apprenticeship Promotion Scheme (NAPS) with practical industry training in PSUs and private plants, leading to National Apprenticeship Certificate (NAC).",
+        "official_url": "https://www.apprenticeshipindia.gov.in"
+      }
+    ]
+  }
+}

@@ -1,0 +1,112 @@
+[
+  {
+    "id": "lib-ncert-physics-11",
+    "title": "NCERT Physics Class 11 (Parts 1 & 2)",
+    "category": "JEE & NEET Basics",
+    "source": "National Council of Educational Research and Training (NCERT)",
+    "format": "Official Free PDF",
+    "description": "The fundamental authoritative textbook prescribed for CBSE and foundational for JEE Main/Advanced and NEET UG Physics. Free, legal public access.",
+    "license": "Government of India - Free Educational Access",
+    "url": "https://ncert.nic.in/textbook.php"
+  },
+  {
+    "id": "lib-ncert-chemistry-12",
+    "title": "NCERT Chemistry Class 12 (Organic & Inorganic)",
+    "category": "JEE & NEET Basics",
+    "source": "NCERT Official Portal",
+    "format": "Official Free PDF",
+    "description": "Essential textbook for NEET and JEE Main inorganic and organic chemistry. Virtually all direct theoretical questions in NEET are drawn from this text.",
+    "license": "Government of India - Free Educational Access",
+    "url": "https://ncert.nic.in/textbook.php"
+  },
+  {
+    "id": "lib-gate-pyq-cse",
+    "title": "GATE Computer Science & IT Official Previous Years Papers (2015-2025) with Answer Keys",
+    "category": "GATE Resources",
+    "source": "IIT GATE National Coordination Board",
+    "format": "Official IIT PDF Archive",
+    "description": "Official question papers and master answer keys released by organizing IITs (IIT Roorkee, IISc, IIT Kanpur, IIT Kharagpur) for Computer Science and Information Technology.",
+    "license": "Official Public Exam Archive",
+    "url": "https://gate2025.iitr.ac.in"
+  },
+  {
+    "id": "lib-gate-pyq-ece",
+    "title": "GATE Electronics & Communication Official Question Papers & Keys",
+    "category": "GATE Resources",
+    "source": "IIT GATE Archive",
+    "format": "Official PDF Collection",
+    "description": "Verified past examination question papers and final answer keys for Electronics and Communication Engineering.",
+    "license": "Official Public Exam Archive",
+    "url": "https://gate2025.iitr.ac.in"
+  },
+  {
+    "id": "lib-nptel-dsa",
+    "title": "Programming, Data Structures and Algorithms Using Python / C",
+    "category": "Programming & Computer Science",
+    "source": "NPTEL / SWAYAM (IIT Madras / Chennai Mathematical Institute)",
+    "format": "Free Online Video Lectures & Lecture Transcripts",
+    "description": "Comprehensive open courseware covering algorithmic complexity, sorting, searching, linked lists, binary trees, dynamic programming, and graph algorithms.",
+    "license": "Creative Commons / Ministry of Education NPTEL Open Access",
+    "url": "https://nptel.ac.in/courses/106106145"
+  },
+  {
+    "id": "lib-nptel-dbms",
+    "title": "Database Management Systems (DBMS)",
+    "category": "Programming & Computer Science",
+    "source": "NPTEL (IIT Kharagpur - Prof. P.P. Das)",
+    "format": "Free Video Lectures & Slides",
+    "description": "Essential database concepts for software engineering interviews and GATE CS: Relational Algebra, SQL, Normalization (1NF to BCNF), Transaction Processing, Concurrency Control, and Indexing.",
+    "license": "Ministry of Education NPTEL Open Access",
+    "url": "https://nptel.ac.in/courses/106105175"
+  },
+  {
+    "id": "lib-nptel-networks",
+    "title": "Computer Networks and Internet Protocol",
+    "category": "Programming & Computer Science",
+    "source": "NPTEL (IIT Kharagpur)",
+    "format": "Free Video Lectures & Notes",
+    "description": "OSI model, TCP/IP stack, routing algorithms (OSPF, BGP), congestion control, socket programming, and network security fundamentals.",
+    "license": "Ministry of Education NPTEL Open Access",
+    "url": "https://nptel.ac.in/courses/106105183"
+  },
+  {
+    "id": "lib-upsc-nda-pyq",
+    "title": "UPSC NDA & NA Previous 5 Years Question Papers with Official Solutions",
+    "category": "Defence Resources",
+    "source": "Union Public Service Commission (UPSC)",
+    "format": "Official UPSC PDF Repository",
+    "description": "Original authentic test papers for Mathematics and General Ability Test (GAT) directly downloaded from UPSC repository.",
+    "license": "Government of India - Public Domain Educational Document",
+    "url": "https://upsc.gov.in/examinations/previous-question-papers"
+  },
+  {
+    "id": "lib-upsc-cds-pyq",
+    "title": "UPSC CDS Previous Question Papers (English, GK & Elementary Maths)",
+    "category": "Defence Resources",
+    "source": "Union Public Service Commission (UPSC)",
+    "format": "Official UPSC PDF Repository",
+    "description": "Verified previous examination papers for Combined Defence Services (CDS) for IMA, INA, AFA, and OTA aspirants.",
+    "license": "Government of India - Public Domain Educational Document",
+    "url": "https://upsc.gov.in/examinations/previous-question-papers"
+  },
+  {
+    "id": "lib-ncs-career-guide",
+    "title": "National Career Service (NCS) Career Information Handbooks",
+    "category": "Career Guidance",
+    "source": "Ministry of Labour and Employment, Govt. of India",
+    "format": "Official E-Book Handbook",
+    "description": "Detailed sector-by-sector career profiles across engineering, defence, agriculture, healthcare, and IT produced by the Directorate General of Employment.",
+    "license": "Government of India - Public Career Resource",
+    "url": "https://www.ncs.gov.in"
+  },
+  {
+    "id": "lib-aptitude-quant",
+    "title": "Quantitative Aptitude & Logical Reasoning Formula Handbook",
+    "category": "Aptitude & Reasoning",
+    "source": "CareerCompass Open Educational Resource",
+    "format": "Interactive Quick-Reference Guide",
+    "description": "Consolidated formula sheet covering Speed Math, Percentages, Profit & Loss, Time & Work, Time Speed Distance, Permutations & Combinations, Syllogisms, and Blood Relations for campus placements and bank exams.",
+    "license": "Open Educational Resource (OER)",
+    "url": "#aptitude-sheet"
+  }
+]

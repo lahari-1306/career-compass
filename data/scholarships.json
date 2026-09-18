@@ -1,0 +1,110 @@
+[
+  {
+    "id": "sch-nsp-central-sector",
+    "name": "Central Sector Scheme of Scholarship for College and University Students",
+    "provider": "Department of Higher Education, Ministry of Education, Govt. of India",
+    "target_qualification": "Class 12th passed students pursuing regular graduation (Engineering, Medicine, Arts, Science, Commerce)",
+    "eligibility": "Students above the 80th percentile of successful candidates in relevant stream from respective State/Central Examination Board (CBSE/ICSE/State Board). Regular full-time mode only.",
+    "income_criteria": "Gross family income must not exceed Rs 4.50 Lakhs per annum.",
+    "amount": "Rs 12,000 per annum for first 3 years of Graduation; Rs 20,000 per annum at Post-Graduation level.",
+    "application_window": "August to November on National Scholarship Portal (NSP)",
+    "required_documents": [
+      "Class 12th Marksheet",
+      "Income Certificate issued by competent government authority (Tahsildar / Revenue Officer)",
+      "Aadhaar Card (Aadhaar linked Bank Account)",
+      "Bonafide Student Certificate from College / University",
+      "Bank Account Passbook copy with IFSC code"
+    ],
+    "official_url": "https://scholarships.gov.in"
+  },
+  {
+    "id": "sch-aicte-pragati",
+    "name": "AICTE Pragati Scholarship Scheme for Girl Students",
+    "provider": "All India Council for Technical Education (AICTE), Ministry of Education",
+    "target_qualification": "Female students admitted into 1st year or 2nd year (via Lateral Entry) of AICTE-approved B.Tech or Polytechnic Diploma courses",
+    "eligibility": "Maximum two girl children per family. Must be admitted to AICTE approved technical institution through centralized state counselling.",
+    "income_criteria": "Family income not exceeding Rs 8.00 Lakhs per annum.",
+    "amount": "Rs 50,000 per annum for every year of study (credited directly via DBT) to cover college fee, books, equipment, laptops.",
+    "application_window": "September to December annually via National Scholarship Portal",
+    "required_documents": [
+      "10th / 12th / Diploma Marksheet",
+      "Allotment letter issued by Centralized Counselling Authority",
+      "Annual family income certificate in prescribed format",
+      "Two girl child certificate / self-declaration"
+    ],
+    "official_url": "https://www.aicte-india.org/schemes/students-development-schemes/Pragati"
+  },
+  {
+    "id": "sch-aicte-saksham",
+    "name": "AICTE Saksham Scholarship Scheme for Specially-Abled Students",
+    "provider": "All India Council for Technical Education (AICTE)",
+    "target_qualification": "Specially-abled students pursuing Technical Degree (B.Tech) or Diploma in AICTE approved institutions",
+    "eligibility": "Disability percentage of not less than 40% certified by competent medical authority. Admitted through centralized merit process.",
+    "income_criteria": "Family income not exceeding Rs 8.00 Lakhs per annum.",
+    "amount": "Rs 50,000 per annum for each year of duration of the course.",
+    "application_window": "September to December on NSP portal",
+    "required_documents": [
+      "Disability Certificate from Government Medical Board",
+      "Admission allotment letter & fee receipt",
+      "Income certificate & Aadhaar copy"
+    ],
+    "official_url": "https://scholarships.gov.in"
+  },
+  {
+    "id": "sch-dst-inspire",
+    "name": "INSPIRE Scholarship for Higher Education (SHE)",
+    "provider": "Department of Science and Technology (DST), Ministry of Science & Technology, Govt. of India",
+    "target_qualification": "Undergraduate students pursuing B.Sc / BS / Integrated M.Sc in Basic and Natural Sciences (Physics, Chemistry, Maths, Biology, Geology, Statistics)",
+    "eligibility": "Top 1% ranking in Class 12th Board Examinations OR rank within top 10,000 in JEE Main / JEE Advanced / NEET UG pursuing pure sciences.",
+    "income_criteria": "Merit-based (No family income ceiling specified).",
+    "amount": "Total scholarship value of Rs 80,000 per annum (Rs 60,000 cash grant + Rs 20,000 summer research mentorship project component).",
+    "application_window": "November to January on INSPIRE web portal",
+    "required_documents": [
+      "Class 12th Marksheet & Board Eligibility Note",
+      "Endorsement Form signed by Principal/Director of College",
+      "Valid SBI Bank Account details"
+    ],
+    "official_url": "https://online-inspire.gov.in"
+  },
+  {
+    "id": "sch-pmsss-jk",
+    "name": "Prime Minister's Special Scholarship Scheme (PMSSS) for J&K and Ladakh",
+    "provider": "AICTE & Ministry of Education",
+    "target_qualification": "12th pass students from UTs of Jammu & Kashmir and Ladakh pursuing General Degree, Professional (B.Tech/Pharmacy/Nursing), or Medical programs outside the UTs",
+    "eligibility": "Domicile of J&K or Ladakh, passed 10+2 from JKBOSE or CBSE affiliated schools in J&K/Ladakh.",
+    "income_criteria": "Family income not exceeding Rs 8.00 Lakhs per annum.",
+    "amount": "Academic fee up to Rs 1.25 Lakhs (Engineering) or Rs 3.00 Lakhs (Medical) + Maintenance allowance of Rs 1.00 Lakh per annum.",
+    "official_url": "https://www.aicte-india.org/bureaus/jk"
+  },
+  {
+    "id": "sch-post-matric-sc-st",
+    "name": "Centrally Sponsored Post-Matric Scholarship for SC / ST / OBC Students",
+    "provider": "Ministry of Social Justice & Empowerment / Ministry of Tribal Affairs (Implemented via State Portals)",
+    "target_qualification": "Post-Matriculation or Post-Secondary courses in recognized institutions (Polytechnic, Degree, Engineering, Medicine, PG)",
+    "eligibility": "Belonging to SC, ST, or OBC categories studying in recognized government or private institutions.",
+    "income_criteria": "Family income ceiling of Rs 2.50 Lakhs per annum.",
+    "amount": "100% compulsory non-refundable college fees reimbursed + Monthly maintenance allowance as per course group.",
+    "official_url": "https://scholarships.gov.in"
+  },
+  {
+    "id": "sch-state-epass",
+    "name": "State ePASS & Fee Reimbursement Schemes (AP & Telangana)",
+    "provider": "Departments of Social Welfare & Backward Classes, AP & TS State Governments",
+    "target_qualification": "Intermediate, Polytechnic Diploma, B.Tech, B.Pharm, Degree, MBA, MCA courses",
+    "eligibility": "Students allotted through centralized state counselling (POLYCET, EAPCET, ECET, ICET) in eligible colleges.",
+    "income_criteria": "Non-creamy layer / White Ration Card holders (Income ceiling Rs 2 Lakhs to Rs 2.5 Lakhs).",
+    "amount": "Full Tuition Fee Reimbursement to colleges + Vasathi Deevena / Maintenance hostel grant directly into student/mother's bank account.",
+    "official_url": "https://telanganaepass.cgg.gov.in"
+  },
+  {
+    "id": "sch-reliance-found",
+    "name": "Reliance Foundation Undergraduate & Postgraduate Scholarships",
+    "provider": "Reliance Foundation (Philanthropic Initiative)",
+    "target_qualification": "1st year students enrolled in any full-time undergraduate degree program in India",
+    "eligibility": "Minimum 60% in Class 12th Board exams. Selection through an online aptitude test.",
+    "income_criteria": "Household income up to Rs 15 Lakhs (Preference given to under Rs 2.5 Lakhs).",
+    "amount": "Up to Rs 2 Lakhs total grant for UG degree; Up to Rs 6 Lakhs for PG in Artificial Intelligence & Computer Science.",
+    "application_window": "August to October annually",
+    "official_url": "https://www.scholarships.reliancefoundation.org"
+  }
+]
