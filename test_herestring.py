@@ -1,1 +1,0 @@
-﻿print("PowerShell Here-String Works Perfectly!")

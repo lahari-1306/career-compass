@@ -11,9 +11,24 @@
     "result_date": "Third Week of March 2027",
     "eligibility_summary": "3rd or final year UG students or graduates in Engineering / Technology / Science / Architecture / Commerce.",
     "official_source": "https://gate2025.iitr.ac.in",
-    "last_verified_at": "2026-09-15T09:00:00+05:30",
+    "last_verified_at": "2026-09-21T21:27:47.207726+05:30",
     "priority": "HIGH",
-    "description": "Online application portal is active for Graduate Aptitude Test in Engineering (GATE). Mandatory for M.Tech admissions in IITs/NITs and recruitment across Maharatna/Navratna PSUs."
+    "description": "Online application portal is active for Graduate Aptitude Test in Engineering (GATE). Mandatory for M.Tech admissions in IITs/NITs and recruitment across Maharatna/Navratna PSUs.",
+    "target_qualifications": [
+      "B.Tech",
+      "Degree",
+      "Postgraduate"
+    ],
+    "target_branches": [
+      "ALL_ENGINEERING",
+      "CSE",
+      "ECE",
+      "EEE",
+      "Mechanical",
+      "Civil",
+      "Chemical",
+      "Data Science"
+    ]
   },
   {
     "id": "notif-cat-2026",
@@ -75,9 +90,16 @@
     "result_date": "12th September 2026",
     "eligibility_summary": "Graduates/B.Tech who appeared for AFCAT written examination for Flying, Technical, and Ground Duty branches.",
     "official_source": "https://afcat.cdac.in",
-    "last_verified_at": "2026-09-14T16:00:00+05:30",
+    "last_verified_at": "2026-09-21T21:27:52.747519+05:30",
     "priority": "NORMAL",
-    "description": "Individual scorecards and cutoff marks published. Qualified candidates can log in to choose Air Force Selection Board (AFSB) interview venue and dates."
+    "description": "Individual scorecards and cutoff marks published. Qualified candidates can log in to choose Air Force Selection Board (AFSB) interview venue and dates.",
+    "target_qualifications": [
+      "Degree",
+      "B.Tech"
+    ],
+    "target_branches": [
+      "ALL"
+    ]
   },
   {
     "id": "notif-isro-app",
@@ -107,9 +129,18 @@
     "result_date": "May 2027",
     "eligibility_summary": "12th pass (Army Wing) or 12th with Physics & Maths (Air Force/Navy Wings). Unmarried candidates aged 16.5-19.5.",
     "official_source": "https://upsc.gov.in",
-    "last_verified_at": "2026-09-15T09:30:00+05:30",
+    "last_verified_at": "2026-09-21T21:27:48.740287+05:30",
     "priority": "NORMAL",
-    "description": "UPSC calendar outlines upcoming NDA & NA notification release on upsc.gov.in. One Time Registration (OTR) recommended in advance."
+    "description": "UPSC calendar outlines upcoming NDA & NA notification release on upsc.gov.in. One Time Registration (OTR) recommended in advance.",
+    "target_qualifications": [
+      "Intermediate"
+    ],
+    "target_branches": [
+      "MPC",
+      "BiPC",
+      "MEC",
+      "CEC"
+    ]
   },
   {
     "id": "notif-jeemain-archive",
@@ -126,5 +157,215 @@
     "last_verified_at": "2026-03-21T10:00:00+05:30",
     "priority": "LOW",
     "description": "Archived cycle record. Next cycle notification scheduled for release in November on jeemain.nta.nic.in."
+  },
+  {
+    "id": "notif-jeemain-cycle",
+    "title": "JEE Main Upcoming Session Advisory & Registration",
+    "organization": "National Testing Agency (NTA), Ministry of Education",
+    "category": "Entrance Exams",
+    "status": "UPCOMING",
+    "start_datetime": "2026-11-01T09:00:00+05:30",
+    "end_datetime": "2026-12-04T21:00:00+05:30",
+    "exam_date": "January 2027 (Session 1) / April 2027 (Session 2)",
+    "result_date": "February 2027 / April 2027",
+    "eligibility_summary": "Candidates who passed 10+2 / Intermediate with Physics, Chemistry, and Mathematics in 2025, 2026 or appearing in 2027.",
+    "official_source": "https://jeemain.nta.nic.in",
+    "last_verified_at": "2026-09-21T21:27:47.828293+05:30",
+    "priority": "HIGH",
+    "description": "Information bulletin and registration guidelines for JEE (Main) admission to NITs, IIITs, CFTIs and eligibility filter for JEE Advanced.",
+    "source_status": "VERIFIED_ONLINE",
+    "target_qualifications": [
+      "Intermediate"
+    ],
+    "target_branches": [
+      "MPC"
+    ]
+  },
+  {
+    "id": "notif-upsc-cds",
+    "title": "UPSC Combined Defence Services (CDS) Entry",
+    "organization": "Union Public Service Commission",
+    "category": "Defence",
+    "status": "UPCOMING",
+    "start_datetime": "2026-10-15T09:00:00+05:30",
+    "end_datetime": "2027-01-10T18:00:00+05:30",
+    "exam_date": "April 2027",
+    "result_date": "June 2027",
+    "eligibility_summary": "Degree from recognized University for IMA/OTA; Degree in Engineering for Naval Academy; Degree with Physics & Math or B.E/B.Tech for Air Force Academy.",
+    "official_source": "https://upsc.gov.in",
+    "last_verified_at": "2026-09-21T21:27:48.740287+05:30",
+    "priority": "NORMAL",
+    "description": "Officer cadet entry into Indian Military Academy, Indian Naval Academy, Air Force Academy, and Officers Training Academy.",
+    "source_status": "VERIFIED_ONLINE",
+    "target_qualifications": [
+      "Degree",
+      "B.Tech"
+    ],
+    "target_branches": [
+      "ALL"
+    ]
+  },
+  {
+    "id": "notif-rrb-je",
+    "title": "RRB Junior Engineer (JE) Centralized Employment Schedule",
+    "organization": "Ministry of Railways, Govt. of India",
+    "category": "Government Jobs",
+    "status": "OPEN",
+    "start_datetime": "2026-08-20T10:00:00+05:30",
+    "end_datetime": "2026-10-18T23:59:00+05:30",
+    "exam_date": "December 2026 - January 2027",
+    "result_date": "February 2027",
+    "eligibility_summary": "Three-year Diploma in Civil / Mechanical / Electrical / Electronics / CSE or B.E./B.Tech in relevant engineering streams.",
+    "official_source": "https://rrbcdg.gov.in",
+    "last_verified_at": "2026-09-21T21:27:52.002398+05:30",
+    "priority": "HIGH",
+    "description": "Centralised Employment Notice for Junior Engineer (JE), JE (Information Technology), and Chemical & Metallurgical Assistant across Indian Railways.",
+    "source_status": "VERIFIED_ONLINE",
+    "target_qualifications": [
+      "Diploma",
+      "B.Tech"
+    ],
+    "target_branches": [
+      "Civil",
+      "Mechanical",
+      "Electrical",
+      "Electronics",
+      "CSE"
+    ]
+  },
+  {
+    "id": "notif-army-tes",
+    "title": "Indian Army 10+2 Technical Entry Scheme (TES)",
+    "organization": "Indian Army (Join Indian Army)",
+    "category": "Defence",
+    "status": "OPEN",
+    "start_datetime": "2026-08-15T10:00:00+05:30",
+    "end_datetime": "2026-10-12T15:00:00+05:30",
+    "exam_date": "SSB Interviews Starting November 2026",
+    "result_date": "January 2027",
+    "eligibility_summary": "Passed 10+2 with min 60% in PCM and appeared in JEE Main. Age 16.5 to 19.5 years.",
+    "official_source": "https://joinindianarmy.nic.in",
+    "last_verified_at": "2026-09-21T21:27:52.747519+05:30",
+    "priority": "HIGH",
+    "description": "Permanent Commission in the Indian Army for 10+2 pass candidates with 4 years free engineering degree at military academies and stipend.",
+    "source_status": "VERIFIED_ONLINE",
+    "target_qualifications": [
+      "Intermediate"
+    ],
+    "target_branches": [
+      "MPC"
+    ]
+  },
+  {
+    "id": "notif-navy-btech",
+    "title": "Indian Navy 10+2 (B.Tech) Cadet Entry Scheme",
+    "organization": "Indian Navy (Join Indian Navy)",
+    "category": "Defence",
+    "status": "UPCOMING",
+    "start_datetime": "2026-10-20T09:00:00+05:30",
+    "end_datetime": "2026-11-20T23:59:00+05:30",
+    "exam_date": "SSB Shortlisting based on JEE Main Rank",
+    "result_date": "February 2027",
+    "eligibility_summary": "10+2 passed with 70% in PCM, min 50% in English, and valid JEE Main (B.E/B.Tech) rank.",
+    "official_source": "https://joinindiannavy.gov.in",
+    "last_verified_at": "2026-09-21T21:27:52.747519+05:30",
+    "priority": "NORMAL",
+    "description": "Four-year B.Tech degree course at Indian Naval Academy (INA) Ezhimala, Kerala with full scholarship and commissioning as Sub Lieutenant.",
+    "source_status": "VERIFIED_ONLINE",
+    "target_qualifications": [
+      "Intermediate"
+    ],
+    "target_branches": [
+      "MPC"
+    ]
+  },
+  {
+    "id": "notif-eapcet-counselling",
+    "title": "AP EAPCET Engineering & Pharmacy Seat Allotment Round LIVE",
+    "organization": "Andhra Pradesh State Council of Higher Education (APSCHE)",
+    "category": "Counselling",
+    "status": "LIVE",
+    "start_datetime": "2026-09-10T09:00:00+05:30",
+    "end_datetime": "2026-09-28T18:00:00+05:30",
+    "exam_date": "Examination Concluded",
+    "result_date": "Allotment on Portal",
+    "eligibility_summary": "Candidates with rank in AP EAPCET (10+2 MPC / BiPC streams) reporting for university/affiliated college admissions.",
+    "official_source": "https://cets.apsche.ap.gov.in",
+    "last_verified_at": "2026-09-21T21:27:53.503322+05:30",
+    "priority": "HIGH",
+    "description": "Final phase web option entry, college reporting, and seat confirmation across engineering, agriculture, and pharmacy colleges in Andhra Pradesh.",
+    "source_status": "VERIFIED_ONLINE",
+    "target_qualifications": [
+      "Intermediate"
+    ],
+    "target_branches": [
+      "MPC",
+      "BiPC"
+    ],
+    "target_states": [
+      "Andhra Pradesh",
+      "Telangana"
+    ]
+  },
+  {
+    "id": "notif-ecet-counselling",
+    "title": "AP ECET Lateral Entry 2nd Year B.Tech Admissions Live",
+    "organization": "Andhra Pradesh State Council of Higher Education (APSCHE)",
+    "category": "Counselling",
+    "status": "LIVE",
+    "start_datetime": "2026-09-08T09:00:00+05:30",
+    "end_datetime": "2026-09-26T18:00:00+05:30",
+    "exam_date": "Examination Concluded",
+    "result_date": "Allotment on Portal",
+    "eligibility_summary": "Holders of 3-year State Board Diploma in Engineering & Technology or B.Sc (Mathematics) degree.",
+    "official_source": "https://cets.apsche.ap.gov.in",
+    "last_verified_at": "2026-09-21T21:27:54.379801+05:30",
+    "priority": "HIGH",
+    "description": "Lateral entry admissions directly into 2nd year B.E. / B.Tech in university and private unaided engineering colleges.",
+    "source_status": "VERIFIED_ONLINE",
+    "target_qualifications": [
+      "Diploma",
+      "Degree"
+    ],
+    "target_branches": [
+      "ALL_DIPLOMA",
+      "Civil",
+      "Mechanical",
+      "Electrical",
+      "Electronics",
+      "CSE",
+      "Automobile"
+    ],
+    "target_states": [
+      "Andhra Pradesh",
+      "Telangana"
+    ]
+  },
+  {
+    "id": "notif-polycet-admissions",
+    "title": "AP POLYCET Polytechnic Diploma Seat Allotment Round",
+    "organization": "State Board of Technical Education & Training (SBTET), Andhra Pradesh",
+    "category": "Counselling",
+    "status": "LIVE",
+    "start_datetime": "2026-09-05T10:00:00+05:30",
+    "end_datetime": "2026-09-27T17:00:00+05:30",
+    "exam_date": "Examination Concluded",
+    "result_date": "Allotment on polycetap.nic.in",
+    "eligibility_summary": "Passed SSC (10th Standard) with minimum 35% marks or equivalent board examination.",
+    "official_source": "https://polycetap.nic.in",
+    "last_verified_at": "2026-09-21T21:27:54.428085+05:30",
+    "priority": "HIGH",
+    "description": "Counselling and institution reporting for 3-Year Diploma in Engineering & Non-Engineering programs in Government & Private Polytechnics.",
+    "source_status": "PRESERVED_VERIFIED",
+    "target_qualifications": [
+      "10th"
+    ],
+    "target_branches": [
+      "General"
+    ],
+    "target_states": [
+      "Andhra Pradesh",
+      "Telangana"
+    ]
   }
 ]

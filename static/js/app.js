@@ -116,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTicker();
   loadAllDatasets();
   renderSavedRoadmaps();
+  initCareerRadar();
   refreshIcons();
 
   // Close menus on outside click
@@ -124,6 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const langMenu = document.getElementById('lang-menu');
     if (langMenu && !langMenu.contains(e.target) && !langBtn.contains(e.target)) {
       langMenu.classList.add('hidden');
+    }
+    const bellBtn = document.getElementById('radar-bell-btn');
+    const bellDrawer = document.getElementById('radar-alerts-drawer');
+    if (bellDrawer && !bellDrawer.contains(e.target) && !bellBtn.contains(e.target)) {
+      bellDrawer.classList.add('hidden');
     }
   });
 });
@@ -1331,6 +1337,7 @@ function openAdminModal() {
   const modal = document.getElementById('admin-modal');
   const tbody = document.getElementById('admin-notifs-tbody');
   const notifs = AppState.datasets.allNotifications || [];
+  loadAdminSourcesStatus();
 
   tbody.innerHTML = notifs.map(n => `
     <tr>
@@ -1388,5 +1395,480 @@ async function adminVerifyNotification(id) {
     }
   } catch (err) {
     alert('Verification request failed.');
+  }
+}
+
+
+// ==========================================
+// 11. "MY CAREER RADAR" CONTROLLER
+// ==========================================
+
+const DEFAULT_RADAR_PROFILE = {
+  profile_id: 'prof_' + Math.random().toString(36).substring(2, 9),
+  qualification: 'B.Tech',
+  stream_or_branch: 'CSE',
+  state: 'Andhra Pradesh',
+  completion_year: '2026',
+  category: 'General',
+  interests: ['Higher Studies / M.Tech', 'PSU / Govt Jobs', 'Scholarships']
+};
+
+function getStoredRadarProfile() {
+  const stored = localStorage.getItem('cc_radar_profile');
+  if (stored) {
+    try {
+      return JSON.parse(stored);
+    } catch (e) {
+      return DEFAULT_RADAR_PROFILE;
+    }
+  }
+  return DEFAULT_RADAR_PROFILE;
+}
+
+function setStoredRadarProfile(profile) {
+  localStorage.setItem('cc_radar_profile', JSON.stringify(profile));
+}
+
+function initCareerRadar() {
+  const profile = getStoredRadarProfile();
+  updateRadarProfileChip(profile);
+  refreshRadarMatches();
+  loadRadarAlerts();
+}
+
+function updateRadarProfileChip(profile) {
+  const chip = document.getElementById('radar-profile-chip');
+  if (chip) {
+    chip.textContent = `${profile.qualification} (${profile.stream_or_branch || 'General'}) • ${profile.state || 'All India'}`;
+  }
+}
+
+function openRadarProfileModal() {
+  const profile = getStoredRadarProfile();
+  const qualSelect = document.getElementById('radar-input-qual');
+  const branchInput = document.getElementById('radar-input-branch');
+  const stateSelect = document.getElementById('radar-input-state');
+  const yearSelect = document.getElementById('radar-input-year');
+
+  if (qualSelect) qualSelect.value = profile.qualification || 'B.Tech';
+  if (branchInput) branchInput.value = profile.stream_or_branch || 'CSE';
+  if (stateSelect) stateSelect.value = profile.state || 'Andhra Pradesh';
+  if (yearSelect) yearSelect.value = profile.completion_year || '2026';
+
+  // Check interest checkboxes
+  const interestBoxes = document.querySelectorAll('input[name="radar-interest"]');
+  const userInterests = profile.interests || [];
+  interestBoxes.forEach(box => {
+    box.checked = userInterests.includes(box.value);
+  });
+
+  const modal = document.getElementById('radar-profile-modal');
+  if (modal) modal.classList.remove('hidden');
+  refreshIcons();
+}
+
+function closeRadarProfileModal(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('close-btn')) return;
+  const modal = document.getElementById('radar-profile-modal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function handleRadarQualChange() {
+  const qual = document.getElementById('radar-input-qual').value;
+  const branchInput = document.getElementById('radar-input-branch');
+  if (!branchInput) return;
+
+  if (qual === '10th') {
+    branchInput.value = 'General';
+  } else if (qual === 'Intermediate') {
+    branchInput.value = 'MPC';
+  } else if (qual === 'Diploma') {
+    branchInput.value = 'CSE';
+  } else if (qual === 'B.Tech') {
+    branchInput.value = 'CSE';
+  } else if (qual === 'Degree') {
+    branchInput.value = 'B.Sc Computer Science';
+  }
+}
+
+async function saveRadarProfile() {
+  const existing = getStoredRadarProfile();
+  const qual = document.getElementById('radar-input-qual').value;
+  const branch = document.getElementById('radar-input-branch').value.trim() || 'General';
+  const state = document.getElementById('radar-input-state').value;
+  const year = document.getElementById('radar-input-year').value;
+
+  const selectedInterests = [];
+  document.querySelectorAll('input[name="radar-interest"]:checked').forEach(box => {
+    selectedInterests.push(box.value);
+  });
+
+  const updatedProfile = {
+    ...existing,
+    qualification: qual,
+    stream_or_branch: branch,
+    state: state,
+    completion_year: year,
+    interests: selectedInterests
+  };
+
+  setStoredRadarProfile(updatedProfile);
+  updateRadarProfileChip(updatedProfile);
+  closeRadarProfileModal();
+
+  // Send to backend and scan
+  try {
+    const res = await fetch('/api/radar/profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedProfile)
+    });
+    const data = await res.json();
+    if (data.status === 'success') {
+      renderRadarMatches(data.matches || []);
+      loadRadarAlerts();
+    }
+  } catch (err) {
+    console.error('Radar profile save error:', err);
+    refreshRadarMatches();
+  }
+}
+
+async function refreshRadarMatches() {
+  const profile = getStoredRadarProfile();
+  const container = document.getElementById('radar-matches-container');
+  const countNum = document.getElementById('radar-count-num');
+  
+  if (container) {
+    container.innerHTML = `
+      <div class="radar-loading-state" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Scanning verified official portals (.gov.in, .nic.in, .ac.in) for your profile...</p>
+      </div>
+    `;
+  }
+
+  try {
+    const res = await fetch('/api/radar/matches', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(profile)
+    });
+    const data = await res.json();
+    if (data.status === 'success') {
+      renderRadarMatches(data.matches || []);
+      if (countNum) countNum.textContent = data.total_matches || 0;
+    }
+  } catch (err) {
+    console.error('Error scanning radar matches:', err);
+    if (container) {
+      container.innerHTML = `<p style="grid-column: 1 / -1; color: var(--text-muted); text-align: center; padding: 1.5rem;">Unable to load radar scan. Verify connection.</p>`;
+    }
+  }
+}
+
+function renderRadarMatches(matches) {
+  const container = document.getElementById('radar-matches-container');
+  const countNum = document.getElementById('radar-count-num');
+  if (countNum) countNum.textContent = matches.length;
+
+  if (!container) return;
+
+  if (!matches || matches.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 1rem; background: var(--bg-surface-muted); border-radius: var(--radius-lg); border: 1px dashed var(--border-color);">
+        <i data-lucide="shield-check" class="icon-lg text-primary" style="margin-bottom: 0.5rem;"></i>
+        <h4 style="font-size: 1rem; color: var(--text-main); margin-bottom: 0.35rem;">No Active Deadlines Currently Pending for Your Profile</h4>
+        <p style="font-size: 0.82rem; color: var(--text-secondary); max-width: 480px; margin: 0 auto;">
+          In accordance with CareerCompass integrity principles, we only display active windows verified from official portals. Check back or adjust your target career goals in profile settings.
+        </p>
+        <button class="btn btn-outline-primary btn-sm" style="margin-top: 1rem;" onclick="openRadarProfileModal()">
+          <i data-lucide="sliders" class="icon-xs"></i> Adjust Goals / Interests
+        </button>
+      </div>
+    `;
+    refreshIcons();
+    return;
+  }
+
+  container.innerHTML = matches.map((m, idx) => {
+    const urgencyClass = (m.urgency || 'NORMAL').toLowerCase();
+    const daysText = m.days_remaining !== null && m.days_remaining !== undefined 
+      ? (m.days_remaining <= 0 ? 'Closes Today' : `${m.days_remaining} Days Left`)
+      : (m.status === 'LIVE' ? 'Admissions LIVE' : 'Active Cycle');
+
+    const formattedStart = m.start_datetime ? new Date(m.start_datetime).toLocaleDateString() : 'Announced';
+    const formattedEnd = m.end_datetime ? new Date(m.end_datetime).toLocaleDateString() : 'See Brochure';
+
+    return `
+      <div class="radar-match-card urgency-${urgencyClass}">
+        <div>
+          <div class="card-top-row">
+            <span class="match-category-tag">${escapeHtml(m.category || 'General')}</span>
+            <span class="urgency-pill ${urgencyClass}">
+              <i data-lucide="${urgencyClass === 'high' ? 'alert-triangle' : 'clock'}" class="icon-xs"></i>
+              ${daysText}
+            </span>
+          </div>
+          
+          <h3 class="radar-card-title">${escapeHtml(m.title)}</h3>
+          <p class="radar-card-org">
+            <i data-lucide="landmark" class="icon-xs text-muted"></i>
+            ${escapeHtml(m.organization)}
+          </p>
+
+          <!-- Why am I seeing this? -->
+          <div class="why-seeing-box">
+            <div class="why-seeing-header" onclick="toggleWhySeeing(${idx})">
+              <i data-lucide="check-circle-2" class="icon-xs text-success"></i>
+              <span>Why am I seeing this?</span>
+              <i id="why-icon-${idx}" data-lucide="chevron-down" class="icon-xs" style="margin-left: auto;"></i>
+            </div>
+            <ul id="why-list-${idx}" class="why-seeing-reasons hidden">
+              ${(m.match_reasons || []).map(r => `
+                <li class="why-reason-item">
+                  <span class="check-icon">✓</span>
+                  <span>${escapeHtml(r)}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+
+          <div class="radar-dates-grid">
+            <div>
+              <span class="date-cell-label">Deadline / End</span>
+              <span class="date-cell-val">${formattedEnd}</span>
+            </div>
+            <div>
+              <span class="date-cell-label">Exam / Event</span>
+              <span class="date-cell-val">${escapeHtml(m.exam_date || 'Scheduled')}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="radar-card-actions">
+          <a href="${escapeHtml(m.official_source)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm w-full" style="display: inline-flex; justify-content: center; align-items: center; gap: 4px;">
+            <i data-lucide="external-link" class="icon-xs"></i> Official Portal
+          </a>
+          <button class="btn btn-secondary btn-sm" onclick="askAIAboutRadarOpp('${escapeHtml(m.opportunity_id)}')" title="Ask AI About This">
+            <i data-lucide="sparkles" class="icon-xs"></i>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  refreshIcons();
+}
+
+function toggleWhySeeing(idx) {
+  const list = document.getElementById(`why-list-${idx}`);
+  const icon = document.getElementById(`why-icon-${idx}`);
+  if (list) {
+    list.classList.toggle('hidden');
+  }
+}
+
+function askAIAboutRadarOpp(oppId) {
+  const notifs = AppState.datasets.allNotifications || [];
+  const opp = notifs.find(n => n.id === oppId);
+  navigateToSection('ai-guide');
+  const input = document.getElementById('ai-chat-input');
+  if (input && opp) {
+    input.value = `Tell me about the eligibility, preparation strategy, and important milestones for ${opp.title} (${opp.organization}).`;
+    input.focus();
+  }
+}
+
+// ==========================================
+// 12. RADAR ALERTS BELL & DRAWER
+// ==========================================
+
+function toggleRadarDrawer() {
+  const drawer = document.getElementById('radar-alerts-drawer');
+  if (!drawer) return;
+  drawer.classList.toggle('hidden');
+  if (!drawer.classList.contains('hidden')) {
+    loadRadarAlerts();
+  }
+}
+
+async function loadRadarAlerts() {
+  const profile = getStoredRadarProfile();
+  if (!profile || !profile.profile_id) return;
+
+  try {
+    const res = await fetch(`/api/radar/alerts?id=${profile.profile_id}`);
+    const data = await res.json();
+    if (data.status === 'success') {
+      renderRadarAlerts(data.alerts || [], data.unread_count || 0);
+    }
+  } catch (err) {
+    console.error('Error fetching radar alerts:', err);
+  }
+}
+
+function renderRadarAlerts(alerts, unreadCount) {
+  const badge = document.getElementById('radar-unread-badge');
+  const drawerCount = document.getElementById('drawer-unread-count');
+  const listContainer = document.getElementById('radar-alerts-list');
+
+  if (badge) {
+    if (unreadCount > 0) {
+      badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+      badge.classList.remove('hidden');
+    } else {
+      badge.classList.add('hidden');
+    }
+  }
+
+  if (drawerCount) {
+    drawerCount.textContent = `${unreadCount} New`;
+  }
+
+  if (!listContainer) return;
+
+  if (!alerts || alerts.length === 0) {
+    listContainer.innerHTML = `
+      <div class="drawer-empty-state">
+        <i data-lucide="bell-off" class="icon-lg text-muted" style="margin-bottom: 0.5rem;"></i>
+        <p>No new alerts. Configure your Career Radar profile to receive immediate deadline notifications.</p>
+      </div>
+    `;
+    refreshIcons();
+    return;
+  }
+
+  listContainer.innerHTML = alerts.map(a => `
+    <div class="drawer-alert-item ${a.is_read ? '' : 'unread'}" onclick="window.open('${escapeHtml(a.official_source)}', '_blank')">
+      <div class="drawer-alert-header">
+        <span>${escapeHtml(a.organization)}</span>
+        <span>${new Date(a.created_at).toLocaleDateString()}</span>
+      </div>
+      <h4 class="drawer-alert-title">${escapeHtml(a.title)}</h4>
+      <p class="drawer-alert-msg">${escapeHtml(a.message)}</p>
+    </div>
+  `).join('');
+
+  refreshIcons();
+}
+
+async function markAllAlertsRead() {
+  const profile = getStoredRadarProfile();
+  if (!profile || !profile.profile_id) return;
+
+  try {
+    await fetch('/api/radar/mark-read', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ profile_id: profile.profile_id })
+    });
+    loadRadarAlerts();
+  } catch (err) {
+    console.error('Error marking alerts read:', err);
+  }
+}
+
+// ==========================================
+// 13. ADMIN CONSOLE AUTO-UPDATER
+// ==========================================
+
+function switchAdminTab(tab) {
+  const tabSources = document.getElementById('admin-tab-sources');
+  const tabNotifs = document.getElementById('admin-tab-notifs');
+  const viewSources = document.getElementById('admin-view-sources');
+  const viewNotifs = document.getElementById('admin-view-notifs');
+
+  if (tab === 'sources') {
+    tabSources.classList.add('active');
+    tabNotifs.classList.remove('active');
+    viewSources.classList.remove('hidden');
+    viewNotifs.classList.add('hidden');
+    loadAdminSourcesStatus();
+  } else {
+    tabNotifs.classList.add('active');
+    tabSources.classList.remove('active');
+    viewNotifs.classList.remove('hidden');
+    viewSources.classList.add('hidden');
+  }
+}
+
+async function loadAdminSourcesStatus() {
+  const tbody = document.getElementById('admin-sources-tbody');
+  const changesList = document.getElementById('admin-changes-list');
+
+  try {
+    const res = await fetch('/api/admin/updater-status');
+    const data = await res.json();
+    if (data.status === 'success') {
+      if (tbody) {
+        tbody.innerHTML = (data.registry || []).map(s => `
+          <tr>
+            <td><strong>${escapeHtml(s.source_name)}</strong><br><small style="color: var(--text-muted);">${escapeHtml(s.organization)}</small></td>
+            <td><a href="${escapeHtml(s.official_url)}" target="_blank" rel="noopener noreferrer" style="color: var(--primary); font-size: 0.75rem;">${escapeHtml(s.official_url)}</a></td>
+            <td><span class="badge badge-primary">${escapeHtml(s.category)}</span></td>
+            <td><span class="badge badge-${s.status === 'VERIFIED_ACTIVE' ? 'success' : (s.status === 'DEGRADED' ? 'warning' : 'info')}">${escapeHtml(s.status)}</span></td>
+            <td><small>${s.last_checked_at ? new Date(s.last_checked_at).toLocaleTimeString() : 'Never'}</small></td>
+          </tr>
+        `).join('');
+      }
+
+      if (changesList) {
+        if (!data.recent_changes || data.recent_changes.length === 0) {
+          changesList.innerHTML = '<span style="color: var(--text-muted);">No state transitions logged yet.</span>';
+        } else {
+          changesList.innerHTML = data.recent_changes.map(c => `
+            <div style="padding: 2px 0; border-bottom: 1px solid var(--border-color);">
+              <span style="color: #3b82f6;">[${escapeHtml(c.type)}]</span> 
+              <span style="color: var(--text-muted); font-size: 0.72rem;">${c.timestamp ? new Date(c.timestamp).toLocaleTimeString() : ''}</span>: 
+              ${(c.details || []).map(d => escapeHtml(d)).join('; ')}
+            </div>
+          `).join('');
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Error fetching updater status:', err);
+  }
+}
+
+async function triggerAdminUpdate() {
+  const btn = document.getElementById('admin-run-updater-btn');
+  const resultDiv = document.getElementById('admin-updater-result');
+
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<div class="loading-spinner" style="width: 14px; height: 14px; display: inline-block;"></div> Running Verification...';
+  }
+
+  try {
+    const res = await fetch('/api/admin/trigger-update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({})
+    });
+    const data = await res.json();
+    if (data.status === 'success' && data.report) {
+      const rep = data.report;
+      if (resultDiv) {
+        resultDiv.classList.remove('hidden');
+        resultDiv.innerHTML = `
+          <strong>Verification Run Complete:</strong> Checked ${rep.sources_checked} official sources (${rep.sources_successful} online, ${rep.sources_failed} offline). 
+          Extracted ${rep.opportunities_extracted} items (${rep.validated_opportunities} validated, ${rep.new_count} new, ${rep.modified_count} updated).
+          Dispatched ${rep.dispatched_radar_alerts || 0} alerts to student radars.
+        `;
+      }
+      // Refresh notifications, ticker, and radar
+      loadAllDatasets();
+      refreshRadarMatches();
+      loadAdminSourcesStatus();
+    }
+  } catch (err) {
+    alert('Verification run failed.');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<i data-lucide="play" class="icon-xs"></i> Run Verification Cycle Now';
+      refreshIcons();
+    }
   }
 }

@@ -1,4 +1,4 @@
-﻿import unittest
+import unittest
 import json
 from app import app
 
@@ -121,6 +121,47 @@ class CareerCompassTestCase(unittest.TestCase):
         d4 = json.loads(res4.data)
         self.assertIn('Engineers', d4['data']['title'])
 
+    def test_radar_and_updater_endpoints(self):
+        # 1. Verify Home page contains MY CAREER RADAR
+        home_res = self.app.get('/')
+        self.assertEqual(home_res.status_code, 200)
+        self.assertIn(b'MY CAREER RADAR', home_res.data)
+        self.assertIn(b'Personalized Alerts', home_res.data)
+
+        # 2. Test Radar Matches Endpoint
+        prof = {
+            "qualification": "B.Tech",
+            "stream_or_branch": "CSE",
+            "state": "Andhra Pradesh",
+            "interests": ["Higher Studies / M.Tech", "PSU / Govt Jobs"]
+        }
+        match_res = self.app.post('/api/radar/matches', json=prof)
+        self.assertEqual(match_res.status_code, 200)
+        matches_data = json.loads(match_res.data)
+        self.assertEqual(matches_data['status'], 'success')
+        self.assertGreater(matches_data['total_matches'], 0)
+
+        # 3. Test Radar Profile Endpoint
+        prof_res = self.app.post('/api/radar/profile', json=prof)
+        self.assertEqual(prof_res.status_code, 200)
+        saved = json.loads(prof_res.data)
+        self.assertEqual(saved['status'], 'success')
+        prof_id = saved['profile']['profile_id']
+
+        # 4. Test Radar Alerts Endpoint
+        alerts_res = self.app.get(f'/api/radar/alerts?id={prof_id}')
+        self.assertEqual(alerts_res.status_code, 200)
+        alerts_data = json.loads(alerts_res.data)
+        self.assertEqual(alerts_data['status'], 'success')
+
+        # 5. Test Admin Updater Status
+        admin_res = self.app.get('/api/admin/updater-status')
+        self.assertEqual(admin_res.status_code, 200)
+        admin_data = json.loads(admin_res.data)
+        self.assertEqual(admin_data['status'], 'success')
+        self.assertGreaterEqual(admin_data['total_sources'], 8)
+
 if __name__ == '__main__':
     unittest.main()
+
 

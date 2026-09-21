@@ -1,6 +1,8 @@
-﻿cloudflared.exe
+cloudflared.exe
 *.zip
 *.log
 __pycache__/
 *.pyc
 .env
+data/backups/*
+!data/backups/.gitkeep

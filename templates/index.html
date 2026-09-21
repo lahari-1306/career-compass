@@ -51,6 +51,40 @@
       </nav>
 
       <div class="header-actions">
+        <!-- Radar Notification Bell -->
+        <div class="radar-bell-wrapper">
+          <button id="radar-bell-btn" class="action-btn bell-btn" aria-label="Personalized Career Alerts" title="My Career Radar Alerts" onclick="toggleRadarDrawer()">
+            <i data-lucide="bell" class="icon-sm"></i>
+            <span id="radar-unread-badge" class="bell-badge hidden">0</span>
+          </button>
+          
+          <!-- Radar Alerts Drawer / Dropdown -->
+          <div id="radar-alerts-drawer" class="radar-drawer hidden">
+            <div class="drawer-header">
+              <div class="drawer-title-group">
+                <i data-lucide="radar" class="icon-sm text-primary"></i>
+                <span class="drawer-title">Personalized Alerts</span>
+                <span id="drawer-unread-count" class="badge-pill pill-sm">0 New</span>
+              </div>
+              <div class="drawer-actions">
+                <button id="mark-all-read-btn" class="text-btn" title="Mark all as read" onclick="markAllAlertsRead()">Mark all read</button>
+                <button class="close-btn" onclick="toggleRadarDrawer()" aria-label="Close alerts">&times;</button>
+              </div>
+            </div>
+            <div id="radar-alerts-list" class="drawer-content">
+              <div class="drawer-empty-state">
+                <i data-lucide="bell-off" class="icon-lg text-muted"></i>
+                <p>No new alerts. Configure your Career Radar to receive targeted deadlines & announcements.</p>
+              </div>
+            </div>
+            <div class="drawer-footer">
+              <button class="btn btn-outline-primary btn-sm w-full" onclick="openRadarProfileModal(); toggleRadarDrawer();">
+                <i data-lucide="sliders" class="icon-xs"></i> Set Profile / Target Goals
+              </button>
+            </div>
+          </div>
+        </div>
+
         <button id="theme-toggle-btn" class="action-btn theme-btn" aria-label="Toggle light/dark theme" title="Toggle Light/Dark Theme">
           <i data-lucide="moon" class="theme-icon-moon"></i>
           <i data-lucide="sun" class="theme-icon-sun"></i>
@@ -224,6 +258,60 @@
               </button>
             </div>
           </div>
+
+          <!-- 🎯 MY CAREER RADAR: PERSONALIZED OPPORTUNITY SCANNER -->
+          <div id="career-radar-widget" class="radar-widget-card">
+            <div class="radar-widget-header">
+              <div class="radar-title-group">
+                <div class="radar-pulse-icon">
+                  <i data-lucide="radar" class="icon-md"></i>
+                  <span class="radar-wave"></span>
+                </div>
+                <div>
+                  <div class="radar-badge-tag">
+                    <span class="pulse-dot"></span>
+                    <span>AUTOMATIC TARGETED RADAR</span>
+                  </div>
+                  <h2 class="radar-main-title">MY CAREER RADAR</h2>
+                  <p class="radar-sub-desc">Verified opportunities, upcoming deadlines, and counselling notices matched strictly to your education profile.</p>
+                </div>
+              </div>
+              <div class="radar-header-actions">
+                <button class="btn btn-primary btn-sm" onclick="openRadarProfileModal()">
+                  <i data-lucide="user-cog" class="icon-xs"></i>
+                  <span id="radar-config-btn-text">Set Career Radar Profile</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Active Profile Bar -->
+            <div id="radar-profile-bar" class="radar-profile-bar">
+              <div class="radar-profile-info">
+                <i data-lucide="graduation-cap" class="icon-sm text-primary"></i>
+                <span class="profile-label">Current Profile:</span>
+                <span id="radar-profile-chip" class="profile-chip">B.Tech (CSE) • Andhra Pradesh • All India</span>
+              </div>
+              <div class="radar-stats-group">
+                <span id="radar-match-count" class="radar-stat-pill"><strong id="radar-count-num">0</strong> Matched Opportunities</span>
+                <button class="btn-text-sm" onclick="refreshRadarMatches()" title="Re-scan Radar"><i data-lucide="refresh-cw" class="icon-xs"></i> Re-scan</button>
+              </div>
+            </div>
+
+            <!-- Matches Grid -->
+            <div id="radar-matches-container" class="radar-matches-grid">
+              <!-- Dynamically populated by app.js -->
+              <div class="radar-loading-state">
+                <div class="loading-spinner"></div>
+                <p>Scanning verified official portals for your profile...</p>
+              </div>
+            </div>
+            
+            <div class="radar-disclaimer-note">
+              <i data-lucide="info" class="icon-xs"></i>
+              <span>All displayed deadlines are fetched directly from authorized official portals (.gov.in, .nic.in, .ac.in). Zero simulated alerts. Always verify final dates from official PDFs.</span>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -762,38 +850,193 @@
     </div>
   </div>
 
+  <!-- Radar Profile Customization Modal -->
+  <div id="radar-profile-modal" class="modal-overlay hidden" onclick="closeRadarProfileModal(event)">
+    <div class="modal-card" style="max-width: 640px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="badge badge-primary"><i data-lucide="radar" class="icon-xs"></i> MY CAREER RADAR</div>
+        <button class="close-btn" onclick="closeRadarProfileModal()">&times;</button>
+      </div>
+      <h3 class="modal-title">Configure Career Radar Profile</h3>
+      <p class="modal-org">Set your current education level, branch, and aspirations to unlock personalized opportunity matching.</p>
+      
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 1.1rem;">
+        <div class="form-group-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="radar-input-qual">Current Qualification *</label>
+            <select id="radar-input-qual" class="form-control" onchange="handleRadarQualChange()">
+              <option value="B.Tech">B.Tech / B.E. (Engineering)</option>
+              <option value="Intermediate">Intermediate / 10+2</option>
+              <option value="Diploma">Diploma (Polytechnic)</option>
+              <option value="Degree">Degree (B.Sc, B.Com, BA, BCA)</option>
+              <option value="10th">10th Standard (SSC)</option>
+              <option value="Postgraduate">Postgraduate (M.Tech, M.Sc, MBA)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="radar-input-branch">Stream / Branch *</label>
+            <input id="radar-input-branch" class="form-control" list="branch-suggestions" placeholder="e.g. CSE, ECE, MPC, Mech..." value="CSE">
+            <datalist id="branch-suggestions">
+              <option value="CSE">
+              <option value="ECE">
+              <option value="EEE">
+              <option value="Mechanical">
+              <option value="Civil">
+              <option value="MPC">
+              <option value="BiPC">
+              <option value="MEC">
+              <option value="CEC">
+              <option value="Data Science">
+              <option value="Information Technology">
+            </datalist>
+          </div>
+        </div>
+
+        <div class="form-group-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="radar-input-state">Home State / Scope</label>
+            <select id="radar-input-state" class="form-control">
+              <option value="Andhra Pradesh">Andhra Pradesh</option>
+              <option value="Telangana">Telangana</option>
+              <option value="All India">All India / Other States</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="radar-input-year">Completion / Passout Year</label>
+            <select id="radar-input-year" class="form-control">
+              <option value="2027">2027 (Appearing)</option>
+              <option value="2026" selected>2026 (Final Year / Current)</option>
+              <option value="2025">2025 (Passed Out)</option>
+              <option value="2024">2024 (Passed Out)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Target Career Direction & Interests (Select All Relevant)</label>
+          <div class="checkbox-pill-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.5rem; margin-top: 0.35rem;">
+            <label class="checkbox-pill">
+              <input type="checkbox" name="radar-interest" value="Higher Studies / M.Tech" checked>
+              <span>🎓 Higher Studies / M.Tech / CAT</span>
+            </label>
+            <label class="checkbox-pill">
+              <input type="checkbox" name="radar-interest" value="PSU / Govt Jobs" checked>
+              <span>🏛️ PSU / Govt Jobs (GATE, RRB, ISRO)</span>
+            </label>
+            <label class="checkbox-pill">
+              <input type="checkbox" name="radar-interest" value="Defence Forces">
+              <span>🛡️ Armed Forces (NDA, CDS, AFCAT)</span>
+            </label>
+            <label class="checkbox-pill">
+              <input type="checkbox" name="radar-interest" value="Scholarships" checked>
+              <span>💰 Scholarships & Financial Aid</span>
+            </label>
+            <label class="checkbox-pill">
+              <input type="checkbox" name="radar-interest" value="Counselling">
+              <span>📋 State Admissions & Counselling</span>
+            </label>
+            <label class="checkbox-pill">
+              <input type="checkbox" name="radar-interest" value="Campus Placement">
+              <span>💻 Software & Core Tech Roles</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="radar-modal-note" style="padding: 0.75rem; border-radius: 8px; background: var(--bg-hover); font-size: 0.8rem; color: var(--text-secondary); display: flex; gap: 0.5rem; align-items: flex-start;">
+          <i data-lucide="shield-check" class="icon-sm text-success" style="flex-shrink: 0; margin-top: 2px;"></i>
+          <span><strong>Privacy & Accuracy Guaranteed:</strong> Your profile data is stored locally and used exclusively to filter verified announcements. Zero third-party marketing or spam.</span>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+        <button class="btn btn-secondary" onclick="closeRadarProfileModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveRadarProfile()">
+          <i data-lucide="check" class="icon-xs"></i>
+          <span>Save & Activate Radar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="/static/js/app.js"></script>
 
-  <!-- Admin Data Verification Modal -->
+  <!-- Admin Data Verification & Auto-Updater Modal -->
   <div id="admin-modal" class="modal-overlay hidden" onclick="closeAdminModal(event)">
-    <div class="modal-card" style="max-width: 780px;" onclick="event.stopPropagation()">
+    <div class="modal-card" style="max-width: 860px;" onclick="event.stopPropagation()">
       <div class="modal-header">
         <div class="badge badge-warning"><i data-lucide="shield-check" class="icon-xs"></i> ADMIN CONSOLE</div>
         <button class="close-btn" onclick="closeAdminModal()">&times;</button>
       </div>
-      <h3 class="modal-title">Official Data Verification Console</h3>
-      <p class="modal-org">Review, verify, and update notification timestamps and status badges</p>
+      <h3 class="modal-title">Official Data Verification & System Status</h3>
+      <p class="modal-org">Audit trail, official source registry, automated updater, and manual verification</p>
+
+      <!-- Admin Tab Switcher -->
+      <div class="admin-tabs" style="display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border-color); margin-top: 1rem; margin-bottom: 1rem;">
+        <button id="admin-tab-sources" class="tab-btn active" onclick="switchAdminTab('sources')">Official Source Registry & Cron Updater</button>
+        <button id="admin-tab-notifs" class="tab-btn" onclick="switchAdminTab('notifs')">Opportunity Timestamp Audit</button>
+      </div>
+
       <div class="modal-body">
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
-          In accordance with CareerCompass integrity principles, this console allows administrators to manually timestamp verified official notices, edit active windows, and immediately update the live ticker feed without scraping or hallucinating.
-        </p>
-        <div class="table-responsive" style="max-height: 380px; overflow-y: auto;">
-          <table class="data-table" style="font-size: 0.8rem;">
-            <thead>
-              <tr>
-                <th>Title / Event</th>
-                <th>Category</th>
-                <th>Status</th>
-                <th>Last Verified</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="admin-notifs-tbody">
+        <!-- Tab 1: Source Registry & Auto Updater -->
+        <div id="admin-view-sources">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <strong style="font-size: 0.9rem;">Automated Official Source Connectors (8 Active Authorities)</strong>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0;">Periodically queries official .gov.in, .nic.in, and .ac.in portals with anti-hallucination validation.</p>
+            </div>
+            <button id="admin-run-updater-btn" class="btn btn-primary btn-sm" onclick="triggerAdminUpdate()">
+              <i data-lucide="play" class="icon-xs"></i> Run Verification Cycle Now
+            </button>
+          </div>
+          
+          <div id="admin-updater-result" class="hidden" style="padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.82rem; background: var(--bg-hover);"></div>
+
+          <div class="table-responsive" style="max-height: 280px; overflow-y: auto;">
+            <table class="data-table" style="font-size: 0.8rem;">
+              <thead>
+                <tr>
+                  <th>Authority / Source</th>
+                  <th>Portal URL</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Last Checked</th>
+                </tr>
+              </thead>
+              <tbody id="admin-sources-tbody">
+                <!-- Dynamically populated from /api/admin/updater-status -->
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin-top: 1rem;">
+            <strong style="font-size: 0.85rem;">Recent Verification State Transitions:</strong>
+            <div id="admin-changes-list" style="margin-top: 0.5rem; max-height: 120px; overflow-y: auto; font-size: 0.78rem; font-family: monospace; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem;">
               <!-- Dynamically populated -->
-            </tbody>
-          </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Manual Timestamp Verification -->
+        <div id="admin-view-notifs" class="hidden">
+          <div class="table-responsive" style="max-height: 380px; overflow-y: auto;">
+            <table class="data-table" style="font-size: 0.8rem;">
+              <thead>
+                <tr>
+                  <th>Title / Event</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Last Verified</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-notifs-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+      
       <div class="modal-footer">
         <button class="btn btn-secondary" onclick="closeAdminModal()">Close Console</button>
       </div>

@@ -4,6 +4,14 @@ from datetime import datetime, timezone
 from flask import Flask, render_template, request, jsonify
 import requests
 
+from radar.models import StudentProfile
+from radar.matcher import RadarMatcher
+from radar.storage import RadarStorage
+from radar.dispatcher import RadarDispatcher
+from data_updater.registry import SourceRegistry
+from data_updater.change_detector import ChangeDetector
+from data_updater.updater import DataUpdater
+
 app = Flask(__name__, template_folder="templates", static_folder="static")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.environ.get("DATA_DIR", os.path.join(BASE_DIR, "data"))
@@ -337,11 +345,112 @@ def ai_chat():
             print("Gemini API error:", e)
 
     fallback_res = generate_rule_based_recommendation(profile, message)
+    if profile:
+        notifs = load_json("notifications.json")
+        matches = RadarMatcher.match(profile, notifs)
+        if matches:
+            fallback_res["radar_matches"] = matches[:3]
     return jsonify({
         "status": "success",
         "mode": "rule_based",
         "provider": "CareerCompass Verified Knowledge Engine (Offline/Rule-Based Mode)",
         "data": fallback_res
+    })
+
+# ====================================================
+# "MY CAREER RADAR" REST APIs
+# ====================================================
+
+@app.route("/api/radar/profile", methods=["GET", "POST"])
+def radar_profile():
+    if request.method == "GET":
+        prof_id = request.args.get("id", "").strip()
+        if not prof_id:
+            return jsonify({"status": "error", "message": "Missing profile id parameter"}), 400
+        prof = RadarStorage.get_profile(prof_id)
+        if not prof:
+            return jsonify({"status": "not_found", "profile": None}), 404
+        return jsonify({"status": "success", "profile": prof})
+
+    # POST: Save profile and return immediate radar matches
+    prof_data = request.get_json() or {}
+    saved_profile = RadarStorage.save_profile(prof_data)
+    
+    # Run immediate matching against verified notifications
+    all_notifs = load_json("notifications.json")
+    matches = RadarMatcher.match(saved_profile, all_notifs)
+    
+    # Dispatch any initial unread alerts for this profile
+    RadarDispatcher.dispatch_for_profile(saved_profile, all_notifs)
+
+    return jsonify({
+        "status": "success",
+        "message": "Profile saved and radar scan complete",
+        "profile": saved_profile,
+        "total_matches": len(matches),
+        "matches": matches
+    })
+
+@app.route("/api/radar/matches", methods=["POST"])
+def radar_matches():
+    profile_data = request.get_json() or {}
+    all_notifs = load_json("notifications.json")
+    matches = RadarMatcher.match(profile_data, all_notifs)
+    return jsonify({
+        "status": "success",
+        "total_matches": len(matches),
+        "matches": matches
+    })
+
+@app.route("/api/radar/alerts", methods=["GET"])
+def radar_alerts():
+    prof_id = request.args.get("id", "").strip()
+    if not prof_id:
+        return jsonify({"status": "error", "message": "Profile ID required"}), 400
+    alerts = RadarStorage.get_alerts_for_profile(prof_id)
+    unread = sum(1 for a in alerts if not a.get("is_read"))
+    return jsonify({
+        "status": "success",
+        "profile_id": prof_id,
+        "total_alerts": len(alerts),
+        "unread_count": unread,
+        "alerts": alerts
+    })
+
+@app.route("/api/radar/mark-read", methods=["POST"])
+def radar_mark_read():
+    data = request.get_json() or {}
+    prof_id = data.get("profile_id", "").strip()
+    alert_ids = data.get("alert_ids")  # None or list of ids
+    if not prof_id:
+        return jsonify({"status": "error", "message": "Profile ID required"}), 400
+    count = RadarStorage.mark_alerts_read(prof_id, alert_ids)
+    return jsonify({"status": "success", "marked_read": count})
+
+# ====================================================
+# ADMIN DATA UPDATER & REGISTRY REST APIs
+# ====================================================
+
+@app.route("/api/admin/updater-status", methods=["GET"])
+def admin_updater_status():
+    registry = SourceRegistry.load()
+    history = ChangeDetector.load_history()
+    return jsonify({
+        "status": "success",
+        "total_sources": len(registry),
+        "registry": registry,
+        "recent_changes": history[:20]
+    })
+
+@app.route("/api/admin/trigger-update", methods=["POST"])
+def admin_trigger_update():
+    data = request.get_json() or {}
+    source_id = data.get("source_id")
+    updater = DataUpdater(dry_run=False)
+    report = updater.run_update(target_source_id=source_id)
+    return jsonify({
+        "status": "success",
+        "report": report
     })
 
 @app.route("/api/admin/verify", methods=["POST"])
