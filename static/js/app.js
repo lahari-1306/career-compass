@@ -9,7 +9,7 @@
 const AppState = {
   currentSection: 'home',
   navHistory: ['home'],
-  currentLang: 'en',
+  currentLang: localStorage.getItem('cc_lang') || 'en',
   theme: localStorage.getItem('cc_theme') || 'light',
   datasets: {
     notifications: [],
@@ -36,76 +36,169 @@ const AppState = {
 };
 
 // ==========================================
-// 2. MULTI-LANGUAGE TRANSLATIONS DICTIONARY
+// 2. MULTI-LANGUAGE TRANSLATIONS & DICTIONARY
 // ==========================================
-const i18n = {
-  en: {
-    ticker_live: "LIVE UPDATES",
-    view_all: "All",
-    nav_home: "Home",
-    nav_career_paths: "Career Paths",
-    nav_exams: "Entrance Exams",
-    nav_govt_jobs: "Govt Jobs",
-    nav_defence: "Defence",
-    nav_ai_guide: "AI Career Guide",
-    menu: "Menu",
-    all_sections: "All CareerCompass Portals",
-    back: "← Back",
-    hero_badge: "INTELLIGENT EDUCATION & CAREER NAVIGATION FOR INDIA",
-    hero_headline: '"Your career journey starts with the right direction."',
-    hero_subtext: "Explore education paths, entrance exams, colleges, government careers, defence opportunities, scholarships and personalized guidance — all in one place.",
-    btn_find_path: "Find My Career Path",
-    btn_ask_ai: "Ask AI Career Guide",
-    qual_selector_title: "What is your current qualification?",
-    qual_selector_subtitle: "Select your stage to discover instant education paths, exams, and job options",
-    pillars_title: "Pillars of CareerCompass",
-    pillars_subtitle: "Grounded in 100% verified Indian educational portals, anti-hallucination standards, and real student outcomes."
+
+const DYNAMIC_DICTIONARY = {
+  te: {
+    // Categories & Streams
+    'Engineering': 'ఇంజనీరింగ్',
+    'Medical': 'వైద్య రంగం',
+    'State Entrance': 'రాష్ట్ర ప్రవేశ పరీక్షలు',
+    'Lateral Entry': 'లేటరల్ ఎంట్రీ',
+    'Management': 'మేనేజ్‌మెంట్',
+    'Law': 'లా (న్యాయశాస్త్రం)',
+    'Defence': 'రక్షణ సేవలు',
+    'All Categories': 'అన్ని విభాగాలు',
+    'All Streams': 'అన్ని రంగాలు',
+    'All Defence Entries': 'అన్ని రక్షణ ప్రవేశాలు',
+    'After 12th (NDA & 10+2 Cadet)': '12వ తరగతి తర్వాత (NDA & 10+2 క్యాడెట్)',
+    'After Graduation (CDS & AFCAT)': 'గ్రాడ్యుయేషన్ తర్వాత (CDS & AFCAT)',
+    'Engineering Direct SSB (TGC, SSC Tech)': 'ఇంజనీరింగ్ డైరెక్ట్ SSB (TGC, SSC Tech)',
+    'Agniveer Soldier Routes': 'అగ్నివీర్ సైనిక మార్గాలు',
+    'Govt Service': 'ప్రభుత్వ సేవ',
+    'Verified Scheme': 'ధృవీకరించబడిన పథకం',
+    // Status
+    'OPEN': 'దరఖాస్తులు ప్రారంభం (OPEN)',
+    'LIVE': 'కౌన్సెలింగ్ లైవ్ (LIVE)',
+    'CLOSING_SOON': 'గడువు ముగుస్తోంది (CLOSING SOON)',
+    'UPCOMING': 'త్వరలో రాబోయేది (UPCOMING)',
+    'RESULT': 'ఫలితాలు విడుదల (RESULT)',
+    'CLOSED': 'ముగిసింది (CLOSED)',
+    'ARCHIVED': 'ఆర్కైవ్ చేయబడింది',
+    'VERIFIED_ACTIVE': 'ధృవీకరించబడింది & సక్రియం',
+    // Common terms
+    'Closes Today': 'ఈరోజే చివరి తేదీ',
+    'Days Left': 'రోజులు మిగిలి ఉన్నాయి',
+    'Active Cycle': 'సక్రియ సైకిల్',
+    'Admissions LIVE': 'ప్రవేశాలు లైవ్',
+    'Scheduled': 'నిర్దేశిత తేదీ',
+    'Announced': 'ప్రకటించబడింది',
+    'See Brochure': 'బ్రోచర్ చూడండి'
   },
   hi: {
-    ticker_live: "ताज़ा अपडेट",
-    view_all: "सभी",
-    nav_home: "होम",
-    nav_career_paths: "करियर मार्ग",
-    nav_exams: "प्रवेश परीक्षाएं",
-    nav_govt_jobs: "सरकारी नौकरियां",
-    nav_defence: "रक्षा सेवाएं",
-    nav_ai_guide: "एआई करियर गाइड",
-    menu: "मेन्यू",
-    all_sections: "सभी करियर कंपास पोर्टल",
-    back: "← वापस",
-    hero_badge: "भारतीय छात्रों के लिए सटीक शिक्षा एवं करियर मार्गदर्शन",
-    hero_headline: '"आपकी करियर यात्रा सही दिशा से शुरू होती है।"',
-    hero_subtext: "शिक्षा मार्ग, प्रवेश परीक्षाएं, कॉलेज, सरकारी नौकरियां, रक्षा सेवाएं, छात्रवृत्तियां और व्यक्तिगत मार्गदर्शन — सब एक ही स्थान पर।",
-    btn_find_path: "मेरा करियर मार्ग खोजें",
-    btn_ask_ai: "एआई गाइड से पूछें",
-    qual_selector_title: "आपकी वर्तमान योग्यता क्या है?",
-    qual_selector_subtitle: "शिक्षा और नौकरी के सटीक अवसरों को जानने के लिए अपना स्तर चुनें",
-    pillars_title: "करियर कंपास के मुख्य स्तंभ",
-    pillars_subtitle: "100% सत्यापित सरकारी पोर्टलों और वास्तविक परीक्षा तिथियों पर आधारित।"
-  },
-  te: {
-    ticker_live: "లైవ్ అప్‌డేట్స్",
-    view_all: "అన్నీ",
-    nav_home: "హోమ్",
-    nav_career_paths: "కెరీర్ మార్గాలు",
-    nav_exams: "ప్రవేశ పరీక్షలు",
-    nav_govt_jobs: "ప్రభుత్వ ఉద్యోగాలు",
-    nav_defence: "డిఫెన్స్ సేవలు",
-    nav_ai_guide: "ఏఐ కెరీర్ గైడ్",
-    menu: "మెనూ",
-    all_sections: "అన్ని కెరీర్ కంపాస్ విభాగాలు",
-    back: "← వెనుకకు",
-    hero_badge: "భారతీయ విద్యార్థుల కోసం ప్రామాణిక విద్య & కెరీర్ మార్గదర్శనం",
-    hero_headline: '"మీ కెరీర్ ప్రయాణం సరైన దిశానిర్దేశంతో ప్రారంభమవుతుంది."',
-    hero_subtext: "విద్యా మార్గాలు, ప్రవేశ పరీక్షలు, కళాశాలలు, ప్రభుత్వ ఉద్యోగాలు, రక్షణ సేవలు, స్కాలర్‌షిప్‌లు — అన్నీ ఒకే చోట.",
-    btn_find_path: "నా కెరీర్ మార్గాన్ని కనుగొనండి",
-    btn_ask_ai: "ఏఐ కెరీర్ గైడ్‌ని అడగండి",
-    qual_selector_title: "మీ ప్రస్తుత విద్యార్హత ఏమిటి?",
-    qual_selector_subtitle: "మీ విద్యా స్థాయిని ఎంచుకుని సరైన విద్యా మరియు ఉద్యోగ మార్గాలను తెలుసుకోండి",
-    pillars_title: "కెరీర్ కంపాస్ ప్రధాన విభాగాలు",
-    pillars_subtitle: "100% ధృవీకరించబడిన అధికారిక పోర్టల్స్ ఆధారంగా రూపొందించబడింది."
+    // Categories & Streams
+    'Engineering': 'इंजीनियरिंग',
+    'Medical': 'चिकित्सा (Medical)',
+    'State Entrance': 'राज्य प्रवेश परीक्षाएं',
+    'Lateral Entry': 'लेटरल एंट्री',
+    'Management': 'प्रबंधन (Management)',
+    'Law': 'विधि (Law)',
+    'Defence': 'रक्षा सेवाएं',
+    'All Categories': 'सभी श्रेणियां',
+    'All Streams': 'सभी वर्ग',
+    'All Defence Entries': 'सभी रक्षा प्रविष्टियां',
+    'After 12th (NDA & 10+2 Cadet)': '12वीं के बाद (NDA & 10+2 कैडेट)',
+    'After Graduation (CDS & AFCAT)': 'स्नातक के बाद (CDS & AFCAT)',
+    'Engineering Direct SSB (TGC, SSC Tech)': 'इंजीनियरिंग डायरेक्ट SSB (TGC, SSC Tech)',
+    'Agniveer Soldier Routes': 'अग्निविर सैनिक मार्ग',
+    'Govt Service': 'सरकारी सेवा',
+    'Verified Scheme': 'सत्यापित योजना',
+    // Status
+    'OPEN': 'आवेदन शुरू (OPEN)',
+    'LIVE': 'काउंसलिंग जारी (LIVE)',
+    'CLOSING_SOON': 'शीघ्र समाप्त (CLOSING SOON)',
+    'UPCOMING': 'आगामी (UPCOMING)',
+    'RESULT': 'परिणाम घोषित (RESULT)',
+    'CLOSED': 'समाप्त (CLOSED)',
+    'ARCHIVED': 'अभिलेखागार (Archived)',
+    'VERIFIED_ACTIVE': 'सत्यापित एवं सक्रिय',
+    // Common terms
+    'Closes Today': 'आज अंतिम तिथि',
+    'Days Left': 'दिन शेष',
+    'Active Cycle': 'सक्रिय चक्र',
+    'Admissions LIVE': 'प्रवेश जारी',
+    'Scheduled': 'निर्धारित तिथि',
+    'Announced': 'घोषित',
+    'See Brochure': 'विवरणिका देखें'
   }
 };
+
+function t(key, fallback = '') {
+  if (!key) return fallback;
+  const lang = AppState.currentLang || 'en';
+  const dict = (window.LOCALES && window.LOCALES[lang]) || (window.LOCALES && window.LOCALES['en']) || {};
+  
+  // 1. Direct property lookup
+  if (dict[key] !== undefined) return dict[key];
+
+  // 2. Dotted property lookup
+  const parts = key.split('.');
+  let curr = dict;
+  let found = true;
+  for (const part of parts) {
+    if (curr && typeof curr === 'object' && part in curr) {
+      curr = curr[part];
+    } else {
+      found = false;
+      break;
+    }
+  }
+  if (found && curr !== undefined && curr !== null) return curr;
+
+  // 3. Fallback to English dictionary if current language was not English
+  if (lang !== 'en' && window.LOCALES && window.LOCALES['en']) {
+    let enCurr = window.LOCALES['en'];
+    let enFound = true;
+    for (const part of parts) {
+      if (enCurr && typeof enCurr === 'object' && part in enCurr) {
+        enCurr = enCurr[part];
+      } else {
+        enFound = false;
+        break;
+      }
+    }
+    if (enFound && enCurr !== undefined && enCurr !== null) return enCurr;
+  }
+
+  // 4. Underscore to dot conversion fallback (e.g. nav_home -> nav.home)
+  if (key.includes('_')) {
+    const dotKey = key.replace('_', '.');
+    return t(dotKey, fallback);
+  }
+
+  return fallback || key;
+}
+
+function translateDynamic(text) {
+  if (!text) return '';
+  const lang = AppState.currentLang || 'en';
+  if (lang === 'en') return text;
+  const map = DYNAMIC_DICTIONARY[lang];
+  if (map && map[text]) return map[text];
+  return text;
+}
+
+// Re-render the active module to reflect newly selected language on all cards
+function renderCurrentSection() {
+  if (AppState.currentSection === 'career-paths') {
+    const activeTab = document.querySelector('.tab-pill.active')?.getAttribute('data-tab') || '10th';
+    renderCareerPaths(activeTab);
+  } else if (AppState.currentSection === 'entrance-exams') {
+    renderEntranceExams();
+  } else if (AppState.currentSection === 'govt-jobs') {
+    renderGovtEngineering();
+  } else if (AppState.currentSection === 'defence') {
+    renderDefenceEntries();
+  } else if (AppState.currentSection === 'colleges') {
+    renderColleges();
+  } else if (AppState.currentSection === 'cutoffs') {
+    renderCutoffs();
+  } else if (AppState.currentSection === 'scholarships') {
+    renderScholarships();
+  } else if (AppState.currentSection === 'digital-library') {
+    renderDigitalLibrary();
+  } else if (AppState.currentSection === 'official-links') {
+    renderOfficialLinks();
+  } else if (AppState.currentSection === 'notifications') {
+    renderNotificationsCenter();
+  } else if (AppState.currentSection === 'saved-roadmaps') {
+    renderSavedRoadmaps();
+  }
+  if (AppState.currentSection === 'home') {
+    refreshRadarMatches();
+  }
+}
 
 // ==========================================
 // 3. INITIALIZATION
@@ -169,23 +262,45 @@ function initLanguage() {
 
 function changeLanguage(langCode) {
   AppState.currentLang = langCode;
-  document.getElementById('current-lang-label').innerText = langCode.toUpperCase();
-  document.querySelectorAll('.dropdown-item').forEach(item => {
-    item.classList.toggle('active', item.innerText.toLowerCase().includes(langCode));
-  });
+  localStorage.setItem('cc_lang', langCode);
   const langMenu = document.getElementById('lang-menu');
   if (langMenu) langMenu.classList.add('hidden');
   applyLanguage(langCode);
 }
 
 function applyLanguage(langCode) {
-  const dict = i18n[langCode] || i18n.en;
+  document.documentElement.setAttribute('lang', langCode);
+  const langLabel = document.getElementById('current-lang-label');
+  if (langLabel) langLabel.innerText = langCode.toUpperCase();
+
+  // Update active dropdown item
+  document.querySelectorAll('#lang-menu .dropdown-item').forEach(item => {
+    const onclickStr = item.getAttribute('onclick') || '';
+    item.classList.toggle('active', onclickStr.includes(`'${langCode}'`));
+  });
+
+  // Apply static translations to all elements with data-i18n
   document.querySelectorAll('[data-i18n]').forEach(elem => {
     const key = elem.getAttribute('data-i18n');
-    if (dict[key]) {
-      elem.innerText = dict[key];
+    const translated = t(key);
+    if (translated) {
+      elem.innerHTML = translated;
     }
   });
+
+  // Apply placeholders to inputs with data-i18n-placeholder
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(elem => {
+    const key = elem.getAttribute('data-i18n-placeholder');
+    const translated = t(key);
+    if (translated) {
+      elem.placeholder = translated;
+    }
+  });
+
+  // Re-render active section cards to translate dynamic card labels and metadata
+  renderCurrentSection();
+  refreshIcons();
+});
 }
 
 // Menu Toggle
@@ -426,13 +541,13 @@ function renderCareerPaths(tabId) {
           <h4 class="card-title">${escapeHtml(item.name || item.category || item.title || 'Pathway')}</h4>
           ${item.duration ? `<span class="badge badge-info">${escapeHtml(item.duration)}</span>` : ''}
         </div>
-        ${item.eligibility ? `<div class="card-org">Eligibility: ${escapeHtml(item.eligibility)}</div>` : ''}
+        ${item.eligibility ? `<div class="card-org">${t("career.eligibility", "Eligibility")}: ${escapeHtml(item.eligibility)}</div>` : ''}
         <div class="card-body">
-          ${item.future_prospects ? `<p><strong>Prospects:</strong> ${escapeHtml(item.future_prospects)}</p>` : ''}
+          ${item.future_prospects ? `<p><strong>${t("career.prospects", "Prospects")}:</strong> ${escapeHtml(item.future_prospects)}</p>` : ''}
           ${item.details ? `<p>${escapeHtml(item.details)}</p>` : ''}
           ${item.sub_branches ? `
             <div style="margin-top: 0.75rem;">
-              <strong>Streams / Specializations:</strong>
+              <strong>${t("career.streams_label", "Streams / Specializations")}:</strong>
               <ul style="padding-left: 1.25rem; margin-top: 0.35rem;">
                 ${item.sub_branches.map(sb => `<li><strong>${escapeHtml(sb.name)}:</strong> ${escapeHtml(sb.future_prospects || '')}</li>`).join('')}
               </ul>
@@ -440,7 +555,7 @@ function renderCareerPaths(tabId) {
           ` : ''}
           ${item.roles ? `
             <div style="margin-top: 0.75rem;">
-              <strong>Key Job Roles:</strong>
+              <strong>${t("career.roles_label", "Key Job Roles")}:</strong>
               <ul style="padding-left: 1.25rem; margin-top: 0.35rem;">
                 ${item.roles.map(r => `<li>${escapeHtml(r)}</li>`).join('')}
               </ul>
@@ -448,7 +563,7 @@ function renderCareerPaths(tabId) {
           ` : ''}
           ${item.entrance_exams ? `
             <div class="card-meta-list" style="margin-top: 0.75rem;">
-              <span class="meta-label">Associated Entrance Exams:</span>
+              <span class="meta-label">${t("career.exams_label", "Associated Entrance Exams")}:</span>
               <strong>${Array.isArray(item.entrance_exams) ? item.entrance_exams.join(', ') : item.entrance_exams}</strong>
             </div>
           ` : ''}
@@ -456,7 +571,7 @@ function renderCareerPaths(tabId) {
         <div class="card-footer">
           ${item.official_url ? `
             <a href="${item.official_url}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;">
-              <i data-lucide="external-link" class="icon-xs"></i> Official Portal
+              <i data-lucide="external-link" class="icon-xs"></i> ${t("common.official_portal", "Official Portal")}
             </a>
           ` : '<span></span>'}
           <button class="btn btn-primary" onclick="startAIWithTopic('${escapeHtml(item.name || item.category)}')">
@@ -509,21 +624,21 @@ function renderEntranceExams() {
         <h4 class="card-title">${escapeHtml(exam.name)}</h4>
         <span class="badge badge-primary">${escapeHtml(exam.category)}</span>
       </div>
-      <div class="card-org">Conducting Body: ${escapeHtml(exam.conducting_body)}</div>
+      <div class="card-org">${t("exams.conducting_body", "Conducting Body")}: ${escapeHtml(exam.conducting_body)}</div>
       <div class="card-body">
-        <p><strong>Purpose:</strong> ${escapeHtml(exam.purpose)}</p>
+        <p><strong>${t("common.purpose", "Purpose")}:</strong> ${escapeHtml(exam.purpose)}</p>
         <div class="card-meta-list">
-          <div class="card-meta-item"><span>Eligibility:</span> <strong>${escapeHtml(exam.eligibility)}</strong></div>
-          <div class="card-meta-item"><span>Timeline:</span> <strong>${escapeHtml(exam.timeline_status)}</strong></div>
-          <div class="card-meta-item"><span>Subjects:</span> <strong>${escapeHtml(Array.isArray(exam.important_subjects) ? exam.important_subjects.join(', ') : exam.important_subjects)}</strong></div>
+          <div class="card-meta-item"><span>${t("exams.eligibility_summary", "Eligibility")}:</span> <strong>${escapeHtml(exam.eligibility)}</strong></div>
+          <div class="card-meta-item"><span>${t("exams.application_window", "Timeline")}:</span> <strong>${escapeHtml(exam.timeline_status)}</strong></div>
+          <div class="card-meta-item"><span>${t("exams.pattern_label", "Subjects")}:</span> <strong>${escapeHtml(Array.isArray(exam.important_subjects) ? exam.important_subjects.join(', ') : exam.important_subjects)}</strong></div>
         </div>
       </div>
       <div class="card-footer">
         <a href="${exam.official_website}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;">
-          <i data-lucide="external-link" class="icon-xs"></i> Official Portal
+          <i data-lucide="external-link" class="icon-xs"></i> ${t("common.official_portal", "Official Portal")}
         </a>
         <button class="btn btn-secondary" onclick="sendQuickPrompt('Explain ' + '${escapeHtml(exam.name)}' + ' eligibility and syllabus simply.')">
-          <i data-lucide="help-circle" class="icon-xs"></i> Ask AI
+          <i data-lucide="help-circle" class="icon-xs"></i> ${t("notifications.ask_ai", "Ask AI")}
         </button>
       </div>
     </div>
@@ -540,22 +655,22 @@ function renderGovtEngineering() {
     <div class="card">
       <div class="card-header-row">
         <h4 class="card-title">${escapeHtml(job.title)}</h4>
-        <span class="badge badge-warning">Govt Service</span>
+        <span class="badge badge-warning">${translateDynamic("Govt Service")}</span>
       </div>
       <div class="card-org">${escapeHtml(job.organization)}</div>
       <div class="card-body">
-        <p><strong>Purpose:</strong> ${escapeHtml(job.purpose)}</p>
+        <p><strong>${t("common.purpose", "Purpose")}:</strong> ${escapeHtml(job.purpose)}</p>
         <div class="card-meta-list">
-          <div class="card-meta-item"><span>Qualification:</span> <strong>${escapeHtml(job.qualification)}</strong></div>
-          <div class="card-meta-item"><span>Eligible Branches:</span> <strong>${escapeHtml(job.branches_eligible || job.disciplines || 'Core Engineering')}</strong></div>
-          <div class="card-meta-item"><span>Age Limit:</span> <strong>${escapeHtml(job.age_limit || 'Per Gazette')}</strong></div>
-          <div class="card-meta-item"><span>Salary / Scale:</span> <strong style="color: var(--status-open);">${escapeHtml(job.salary_pay_scale || '7th CPC Scale')}</strong></div>
+          <div class="card-meta-item"><span>${t("common.eligibility", "Qualification")}:</span> <strong>${escapeHtml(job.qualification)}</strong></div>
+          <div class="card-meta-item"><span>${t("jobs.job_roles", "Eligible Branches")}:</span> <strong>${escapeHtml(job.branches_eligible || job.disciplines || 'Core Engineering')}</strong></div>
+          <div class="card-meta-item"><span>${t("jobs.age_limit", "Age Limit")}:</span> <strong>${escapeHtml(job.age_limit || 'Per Gazette')}</strong></div>
+          <div class="card-meta-item"><span>${t("jobs.pay_scale", "Salary / Scale")}:</span> <strong style="color: var(--status-open);">${escapeHtml(job.salary_pay_scale || '7th CPC Scale')}</strong></div>
         </div>
-        ${job.selection_process ? `<p style="font-size: 0.82rem; margin-top: 0.5rem;"><strong>Selection:</strong> ${escapeHtml(job.selection_process)}</p>` : ''}
+        ${job.selection_process ? `<p style="font-size: 0.82rem; margin-top: 0.5rem;"><strong>${t("jobs.selection_process", "Selection")}:</strong> ${escapeHtml(job.selection_process)}</p>` : ''}
       </div>
       <div class="card-footer">
         <a href="${job.official_website}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;">
-          <i data-lucide="external-link" class="icon-xs"></i> Official Notification Portal
+          <i data-lucide="external-link" class="icon-xs"></i> ${t("jobs.official_notification", "Official Notification Portal")}
         </a>
       </div>
     </div>
@@ -597,15 +712,15 @@ function renderDefenceEntries() {
       <div class="card-org">${escapeHtml(def.organization)}</div>
       <div class="card-body">
         <div class="card-meta-list">
-          <div class="card-meta-item"><span>Eligibility:</span> <strong>${escapeHtml(def.qualification)}</strong></div>
-          <div class="card-meta-item"><span>Age Limit:</span> <strong>${escapeHtml(def.age_limit)}</strong></div>
-          <div class="card-meta-item"><span>Gender / Marital:</span> <strong>${escapeHtml(def.gender_marital || 'Unmarried')}</strong></div>
-          <div class="card-meta-item"><span>Rank / Pay:</span> <strong style="color: var(--status-open);">${escapeHtml(def.rank_on_commission || 'Officer Cadre')} (${escapeHtml(def.pay_scale || 'Level 10')})</strong></div>
+          <div class="card-meta-item"><span>${t("defence.education_req", "Eligibility")}:</span> <strong>${escapeHtml(def.qualification)}</strong></div>
+          <div class="card-meta-item"><span>${t("jobs.age_limit", "Age Limit")}:</span> <strong>${escapeHtml(def.age_limit)}</strong></div>
+          <div class="card-meta-item"><span>${t("common.gender_marital", "Gender / Marital")}:</span> <strong>${escapeHtml(def.gender_marital || 'Unmarried')}</strong></div>
+          <div class="card-meta-item"><span>${t("defence.stipend_pay", "Rank / Pay")}:</span> <strong style="color: var(--status-open);">${escapeHtml(def.rank_on_commission || 'Officer Cadre')} (${escapeHtml(def.pay_scale || 'Level 10')})</strong></div>
         </div>
-        ${def.physical_standards ? `<p style="font-size: 0.82rem; margin-top: 0.5rem;"><strong>Physical Standards:</strong> ${escapeHtml(def.physical_standards)}</p>` : ''}
+        ${def.physical_standards ? `<p style="font-size: 0.82rem; margin-top: 0.5rem;"><strong>${t("defence.ssb_prep_title", "Physical Standards")}:</strong> ${escapeHtml(def.physical_standards)}</p>` : ''}
         ${def.selection_stages ? `
           <div style="margin-top: 0.5rem;">
-            <strong style="font-size: 0.82rem;">Selection Stages:</strong>
+            <strong style="font-size: 0.82rem;">${t("defence.selection_stages", "Selection Stages")}:</strong>
             <ul style="padding-left: 1.25rem; font-size: 0.8rem; margin-top: 0.25rem;">
               ${(Array.isArray(def.selection_stages) ? def.selection_stages : [def.selection_stages]).map(s => `<li>${escapeHtml(s)}</li>`).join('')}
             </ul>
@@ -614,7 +729,7 @@ function renderDefenceEntries() {
       </div>
       <div class="card-footer">
         <a href="${def.official_website}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;">
-          <i data-lucide="external-link" class="icon-xs"></i> Official Defence Portal
+          <i data-lucide="external-link" class="icon-xs"></i> ${t("defence.official_recruitment_portal", "Official Defence Portal")}
         </a>
         <button class="btn btn-secondary" onclick="sendQuickPrompt('Explain ' + '${escapeHtml(def.title)}' + ' selection and physical standards.')">
           <i data-lucide="shield" class="icon-xs"></i> Roadmap
@@ -639,14 +754,14 @@ function renderColleges() {
       <div class="card-org"><i data-lucide="map-pin" class="icon-xs"></i> ${escapeHtml(c.location)} (${escapeHtml(c.type)})</div>
       <div class="card-body">
         <div class="card-meta-list">
-          <div class="card-meta-item"><span>Entrance Exams:</span> <strong>${escapeHtml(c.accepted_exams?.join(', ') || 'National/State')}</strong></div>
+          <div class="card-meta-item"><span>${t("career.exams_label", "Entrance Exams")}:</span> <strong>${escapeHtml(c.accepted_exams?.join(', ') || 'National/State')}</strong></div>
           ${c.fees_per_year ? `<div class="card-meta-item"><span>Fees Structure:</span> <strong>${escapeHtml(c.fees_per_year)}</strong></div>` : ''}
         </div>
-        <p style="font-size: 0.82rem;"><strong>Popular Branches:</strong> ${escapeHtml(c.popular_branches?.join(', ') || 'Engineering & Science')}</p>
+        <p style="font-size: 0.82rem;"><strong>${t("colleges.top_branches", "Popular Branches")}:</strong> ${escapeHtml(c.popular_branches?.join(', ') || 'Engineering & Science')}</p>
       </div>
       <div class="card-footer">
         <a href="${c.official_website}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;">
-          <i data-lucide="external-link" class="icon-xs"></i> Official Website
+          <i data-lucide="external-link" class="icon-xs"></i> ${t("common.official_website", "Official Website")}
         </a>
       </div>
     </div>
@@ -698,21 +813,21 @@ function renderScholarships() {
     <div class="card">
       <div class="card-header-row">
         <h4 class="card-title">${escapeHtml(sch.name)}</h4>
-        <span class="badge badge-danger">Verified Scheme</span>
+        <span class="badge badge-danger">${translateDynamic("Verified Scheme")}</span>
       </div>
-      <div class="card-org">Provider: ${escapeHtml(sch.provider)}</div>
+      <div class="card-org">${t("scholarships.portal_name", "Provider")}: ${escapeHtml(sch.provider)}</div>
       <div class="card-body">
         <div class="card-meta-list">
-          <div class="card-meta-item"><span>Award Amount:</span> <strong style="color: var(--status-open);">${escapeHtml(sch.amount)}</strong></div>
-          <div class="card-meta-item"><span>Target Qualification:</span> <strong>${escapeHtml(sch.target_qualification)}</strong></div>
-          <div class="card-meta-item"><span>Income Ceiling:</span> <strong>${escapeHtml(sch.income_criteria)}</strong></div>
+          <div class="card-meta-item"><span>${t("scholarships.benefit_amount", "Award Amount")}:</span> <strong style="color: var(--status-open);">${escapeHtml(sch.amount)}</strong></div>
+          <div class="card-meta-item"><span>${t("scholarships.target_beneficiaries", "Target Qualification")}:</span> <strong>${escapeHtml(sch.target_qualification)}</strong></div>
+          <div class="card-meta-item"><span>${t("scholarships.family_income", "Income Ceiling")}:</span> <strong>${escapeHtml(sch.income_criteria)}</strong></div>
           ${sch.application_window ? `<div class="card-meta-item"><span>Application Window:</span> <strong>${escapeHtml(sch.application_window)}</strong></div>` : ''}
         </div>
-        <p style="font-size: 0.82rem;"><strong>Eligibility:</strong> ${escapeHtml(sch.eligibility)}</p>
+        <p style="font-size: 0.82rem;"><strong>${t("career.eligibility", "Eligibility")}:</strong> ${escapeHtml(sch.eligibility)}</p>
       </div>
       <div class="card-footer">
         <a href="${sch.official_url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;">
-          <i data-lucide="external-link" class="icon-xs"></i> Apply on Official Portal
+          <i data-lucide="external-link" class="icon-xs"></i> ${t("scholarships.apply_link", "Apply on Official Portal")}
         </a>
       </div>
     </div>
@@ -753,7 +868,7 @@ function renderDigitalLibrary() {
       </div>
       <div class="card-footer">
         <a href="${res.url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;">
-          <i data-lucide="external-link" class="icon-xs"></i> Access Resource
+          <i data-lucide="external-link" class="icon-xs"></i> ${t("library.access_resource", "Access Resource")}
         </a>
       </div>
     </div>
@@ -832,15 +947,15 @@ function renderNotificationsCenter() {
         <div class="card-body">
           <p>${escapeHtml(notif.description)}</p>
           <div class="card-meta-list">
-            <div class="card-meta-item"><span>Eligibility:</span> <strong>${escapeHtml(notif.eligibility_summary)}</strong></div>
-            <div class="card-meta-item"><span>Exam / Event Date:</span> <strong>${escapeHtml(notif.exam_date)}</strong></div>
-            <div class="card-meta-item"><span>Last Verified:</span> <strong>${new Date(notif.last_verified_at).toLocaleDateString()}</strong></div>
+            <div class="card-meta-item"><span>${t("career.eligibility", "Eligibility")}:</span> <strong>${escapeHtml(notif.eligibility_summary)}</strong></div>
+            <div class="card-meta-item"><span>${t("common.exam_date", "Exam / Event Date")}:</span> <strong>${escapeHtml(notif.exam_date)}</strong></div>
+            <div class="card-meta-item"><span>${t("notifications.last_verified", "Last Verified")}:</span> <strong>${new Date(notif.last_verified_at).toLocaleDateString()}</strong></div>
           </div>
         </div>
         <div class="card-footer">
-          <button class="btn btn-secondary" onclick="openNotifModal('${notif.id}')">View Details</button>
+          <button class="btn btn-secondary" onclick="openNotifModal('${notif.id}')">${t("common.view_details", "View Details")}</button>
           <a href="${notif.official_source}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;">
-            <i data-lucide="external-link" class="icon-xs"></i> Official Source
+            <i data-lucide="external-link" class="icon-xs"></i> ${t("notifications.open_portal", "Official Source")}
           </a>
         </div>
       </div>
@@ -1002,7 +1117,7 @@ async function submitChatMessage(e) {
     const res = await fetch('/api/ai/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: message, profile: currentProfile })
+      body: JSON.stringify({ message: message, profile: currentProfile, language: AppState.currentLang })
     });
     const result = await res.json();
     document.getElementById(typingId)?.remove();
@@ -1086,7 +1201,7 @@ async function generateProfileRoadmap(e) {
     const res = await fetch('/api/ai/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: query, profile: profile })
+      body: JSON.stringify({ message: query, profile: profile, language: AppState.currentLang })
     });
     const data = await res.json();
     if (data.data) {
@@ -1577,12 +1692,10 @@ function renderRadarMatches(matches) {
     container.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 1rem; background: var(--bg-surface-muted); border-radius: var(--radius-lg); border: 1px dashed var(--border-color);">
         <i data-lucide="shield-check" class="icon-lg text-primary" style="margin-bottom: 0.5rem;"></i>
-        <h4 style="font-size: 1rem; color: var(--text-main); margin-bottom: 0.35rem;">No Active Deadlines Currently Pending for Your Profile</h4>
-        <p style="font-size: 0.82rem; color: var(--text-secondary); max-width: 480px; margin: 0 auto;">
-          In accordance with CareerCompass integrity principles, we only display active windows verified from official portals. Check back or adjust your target career goals in profile settings.
-        </p>
+        <h4 style="font-size: 1rem; color: var(--text-main); margin-bottom: 0.35rem;">${t("radar.no_matches_title", "No Active Deadlines Currently Pending for Your Profile")}</h4>
+        <p style="font-size: 0.82rem; color: var(--text-secondary); max-width: 480px; margin: 0 auto;">${t("radar.no_matches_desc", "In accordance with CareerCompass integrity principles, we only display active windows verified from official portals. Check back or adjust your target career goals in profile settings.")}</p>
         <button class="btn btn-outline-primary btn-sm" style="margin-top: 1rem;" onclick="openRadarProfileModal()">
-          <i data-lucide="sliders" class="icon-xs"></i> Adjust Goals / Interests
+          <i data-lucide="sliders" class="icon-xs"></i> ${t("radar.adjust_goals", "Adjust Goals / Interests")}
         </button>
       </div>
     `;
@@ -1593,8 +1706,8 @@ function renderRadarMatches(matches) {
   container.innerHTML = matches.map((m, idx) => {
     const urgencyClass = (m.urgency || 'NORMAL').toLowerCase();
     const daysText = m.days_remaining !== null && m.days_remaining !== undefined 
-      ? (m.days_remaining <= 0 ? 'Closes Today' : `${m.days_remaining} Days Left`)
-      : (m.status === 'LIVE' ? 'Admissions LIVE' : 'Active Cycle');
+      ? (m.days_remaining <= 0 ? t('radar.closes_today', 'Closes Today') : `${m.days_remaining} ${t('radar.days_left', 'Days Left')}`)
+      : (m.status === 'LIVE' ? translateDynamic('Admissions LIVE') : t('radar.active_cycle', 'Active Cycle'));
 
     const formattedStart = m.start_datetime ? new Date(m.start_datetime).toLocaleDateString() : 'Announced';
     const formattedEnd = m.end_datetime ? new Date(m.end_datetime).toLocaleDateString() : 'See Brochure';
@@ -1620,7 +1733,7 @@ function renderRadarMatches(matches) {
           <div class="why-seeing-box">
             <div class="why-seeing-header" onclick="toggleWhySeeing(${idx})">
               <i data-lucide="check-circle-2" class="icon-xs text-success"></i>
-              <span>Why am I seeing this?</span>
+              <span>${t("radar.why_seeing", "Why am I seeing this?")}</span>
               <i id="why-icon-${idx}" data-lucide="chevron-down" class="icon-xs" style="margin-left: auto;"></i>
             </div>
             <ul id="why-list-${idx}" class="why-seeing-reasons hidden">
@@ -1635,11 +1748,11 @@ function renderRadarMatches(matches) {
 
           <div class="radar-dates-grid">
             <div>
-              <span class="date-cell-label">Deadline / End</span>
+              <span class="date-cell-label">${t("common.deadline", "Deadline / End")}</span>
               <span class="date-cell-val">${formattedEnd}</span>
             </div>
             <div>
-              <span class="date-cell-label">Exam / Event</span>
+              <span class="date-cell-label">${t("common.exam_date", "Exam / Event")}</span>
               <span class="date-cell-val">${escapeHtml(m.exam_date || 'Scheduled')}</span>
             </div>
           </div>
@@ -1647,7 +1760,7 @@ function renderRadarMatches(matches) {
 
         <div class="radar-card-actions">
           <a href="${escapeHtml(m.official_source)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm w-full" style="display: inline-flex; justify-content: center; align-items: center; gap: 4px;">
-            <i data-lucide="external-link" class="icon-xs"></i> Official Portal
+            <i data-lucide="external-link" class="icon-xs"></i> ${t("common.official_portal", "Official Portal")}
           </a>
           <button class="btn btn-secondary btn-sm" onclick="askAIAboutRadarOpp('${escapeHtml(m.opportunity_id)}')" title="Ask AI About This">
             <i data-lucide="sparkles" class="icon-xs"></i>

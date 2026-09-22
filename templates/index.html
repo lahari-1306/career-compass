@@ -17,16 +17,16 @@
   <div id="ticker-bar" class="ticker-container" role="region" aria-label="Active verified notifications ticker">
     <div class="ticker-label">
       <span class="pulse-indicator"></span>
-      <span class="ticker-title" data-i18n="ticker_live">LIVE UPDATES</span>
+      <span class="ticker-title" data-i18n="ticker.live">LIVE UPDATES</span>
     </div>
     <div class="ticker-viewport">
       <div id="ticker-track" class="ticker-track">
-        <span class="ticker-item loading-item">Loading verified active updates...</span>
+        <span class="ticker-item loading-item" data-i18n="ticker.loading">Loading verified active updates...</span>
       </div>
     </div>
     <div class="ticker-controls">
       <button id="ticker-pause-btn" class="ticker-btn" title="Pause/Play Ticker" aria-label="Pause ticker"><i data-lucide="pause" class="icon-sm"></i></button>
-      <button class="ticker-btn" onclick="navigateToSection('notifications')" title="View All Notifications"><span data-i18n="view_all">All</span> <i data-lucide="chevron-right" class="icon-xs"></i></button>
+      <button class="ticker-btn" onclick="navigateToSection('notifications')" title="View All Notifications"><span data-i18n="ticker.view_all">All</span> <i data-lucide="chevron-right" class="icon-xs"></i></button>
     </div>
   </div>
 
@@ -42,12 +42,12 @@
       </a>
 
       <nav class="desktop-nav" aria-label="Primary navigation">
-        <button class="nav-link active" onclick="navigateToSection('home')" data-section="home" data-i18n="nav_home">Home</button>
-        <button class="nav-link" onclick="navigateToSection('career-paths')" data-section="career-paths" data-i18n="nav_career_paths">Career Paths</button>
-        <button class="nav-link" onclick="navigateToSection('entrance-exams')" data-section="entrance-exams" data-i18n="nav_exams">Entrance Exams</button>
-        <button class="nav-link" onclick="navigateToSection('govt-jobs')" data-section="govt-jobs" data-i18n="nav_govt_jobs">Govt Jobs</button>
-        <button class="nav-link" onclick="navigateToSection('defence')" data-section="defence" data-i18n="nav_defence">Defence</button>
-        <button class="nav-link" onclick="navigateToSection('ai-guide')" data-section="ai-guide" data-i18n="nav_ai_guide"><span class="ai-badge-pulse">AI</span> AI Career Guide</button>
+        <button class="nav-link active" onclick="navigateToSection('home')" data-section="home" data-i18n="nav.home">Home</button>
+        <button class="nav-link" onclick="navigateToSection('career-paths')" data-section="career-paths" data-i18n="nav.career_paths">Career Paths</button>
+        <button class="nav-link" onclick="navigateToSection('entrance-exams')" data-section="entrance-exams" data-i18n="nav.exams">Entrance Exams</button>
+        <button class="nav-link" onclick="navigateToSection('govt-jobs')" data-section="govt-jobs" data-i18n="nav.govt_jobs">Govt Jobs</button>
+        <button class="nav-link" onclick="navigateToSection('defence')" data-section="defence" data-i18n="nav.defence">Defence</button>
+        <button class="nav-link" onclick="navigateToSection('ai-guide')" data-section="ai-guide"><span class="ai-badge-pulse">AI</span> <span data-i18n="nav.ai_guide">AI Career Guide</span></button>
       </nav>
 
       <div class="header-actions">
@@ -63,23 +63,23 @@
             <div class="drawer-header">
               <div class="drawer-title-group">
                 <i data-lucide="radar" class="icon-sm text-primary"></i>
-                <span class="drawer-title">Personalized Alerts</span>
+                <span class="drawer-title" data-i18n="radar.alerts_title">Personalized Alerts</span>
                 <span id="drawer-unread-count" class="badge-pill pill-sm">0 New</span>
               </div>
               <div class="drawer-actions">
-                <button id="mark-all-read-btn" class="text-btn" title="Mark all as read" onclick="markAllAlertsRead()">Mark all read</button>
+                <button id="mark-all-read-btn" class="text-btn" title="Mark all as read" onclick="markAllAlertsRead()" data-i18n="radar.mark_all_read">Mark all read</button>
                 <button class="close-btn" onclick="toggleRadarDrawer()" aria-label="Close alerts">&times;</button>
               </div>
             </div>
             <div id="radar-alerts-list" class="drawer-content">
               <div class="drawer-empty-state">
                 <i data-lucide="bell-off" class="icon-lg text-muted"></i>
-                <p>No new alerts. Configure your Career Radar to receive targeted deadlines & announcements.</p>
+                <p data-i18n="radar.no_alerts">No new alerts. Configure your Career Radar to receive targeted deadlines & announcements.</p>
               </div>
             </div>
             <div class="drawer-footer">
               <button class="btn btn-outline-primary btn-sm w-full" onclick="openRadarProfileModal(); toggleRadarDrawer();">
-                <i data-lucide="sliders" class="icon-xs"></i> Set Profile / Target Goals
+                <i data-lucide="sliders" class="icon-xs"></i> <span data-i18n="radar.set_target_goals">Set Profile / Target Goals</span>
               </button>
             </div>
           </div>
@@ -105,7 +105,7 @@
 
         <button id="menu-toggle-btn" class="action-btn menu-btn" aria-label="Open main menu">
           <i data-lucide="grid" class="icon-sm"></i>
-          <span class="menu-label" data-i18n="menu">Menu</span>
+          <span class="menu-label" data-i18n="nav.menu">Menu</span>
         </button>
       </div>
     </div>
@@ -114,7 +114,7 @@
     <div id="mega-menu" class="mega-menu hidden">
       <div class="mega-menu-inner">
         <div class="mega-menu-header">
-          <span class="mega-menu-title" data-i18n="all_sections">All CareerCompass Portals</span>
+          <span class="mega-menu-title" data-i18n="nav.all_sections">All CareerCompass Portals</span>
           <button class="close-btn" onclick="toggleMenu()" aria-label="Close menu">&times;</button>
         </div>
         <div class="mega-menu-grid">
@@ -176,7 +176,7 @@
     <div class="container breadcrumb-inner">
       <button id="back-btn" class="back-btn" onclick="navigateBack()" aria-label="Go back to previous page">
         <i data-lucide="arrow-left" class="icon-sm"></i>
-        <span data-i18n="back">← Back</span>
+        <span data-i18n="nav.back">← Back</span>
       </button>
       <div id="breadcrumb-title" class="breadcrumb-text">Section</div>
     </div>
@@ -189,25 +189,25 @@
         <div class="container hero-container">
           <div class="hero-badge">
             <span class="hero-badge-dot"></span>
-            <span data-i18n="hero_badge">INTELLIGENT EDUCATION & CAREER NAVIGATION FOR INDIA</span>
+            <span data-i18n="hero.badge">INTELLIGENT EDUCATION & CAREER NAVIGATION FOR INDIA</span>
           </div>
           <h1 class="hero-title">
             <span class="hero-title-main">CAREER COMPASS</span>
             <span class="hero-title-sub">FIND YOUR TRUE NORTH</span>
           </h1>
-          <p class="hero-headline" data-i18n="hero_headline">"Your career journey starts with the right direction."</p>
-          <p class="hero-subtext" data-i18n="hero_subtext">
+          <p class="hero-headline" data-i18n="hero.headline">"Your career journey starts with the right direction."</p>
+          <p class="hero-subtext" data-i18n="hero.subtext">
             Explore education paths, entrance exams, colleges, government careers, defence opportunities, scholarships and personalized guidance — all in one place.
           </p>
           
           <div class="hero-actions">
             <button class="btn btn-primary" onclick="navigateToSection('career-paths')">
               <i data-lucide="compass" class="icon-sm"></i>
-              <span data-i18n="btn_find_path">Find My Career Path</span>
+              <span data-i18n="hero.btn_find_path">Find My Career Path</span>
             </button>
             <button class="btn btn-secondary" onclick="navigateToSection('ai-guide')">
               <i data-lucide="sparkles" class="icon-sm"></i>
-              <span data-i18n="btn_ask_ai">Ask AI Career Guide</span>
+              <span data-i18n="hero.btn_ask_ai">Ask AI Career Guide</span>
             </button>
           </div>
 
@@ -216,45 +216,45 @@
             <div class="qual-card-header">
               <div class="qual-icon-circle"><i data-lucide="user-check"></i></div>
               <div>
-                <h3 class="qual-title" data-i18n="qual_selector_title">What is your current qualification?</h3>
-                <p class="qual-subtitle" data-i18n="qual_selector_subtitle">Select your stage to discover instant education paths, exams, and job options</p>
+                <h3 class="qual-title" data-i18n="qual.selector_title">What is your current qualification?</h3>
+                <p class="qual-subtitle" data-i18n="qual.selector_subtitle">Select your stage to discover instant education paths, exams, and job options</p>
               </div>
             </div>
             <div class="qual-options-grid">
               <button class="qual-btn" onclick="selectQualification('10th')">
-                <span class="qual-tag">Class 10</span>
-                <span class="qual-name">After 10th</span>
-                <span class="qual-desc">Inter, Diploma, ITI, Defence</span>
+                <span class="qual-tag" data-i18n="qual.10th_tag">Class 10</span>
+                <span class="qual-name" data-i18n="qual.10th_name">After 10th</span>
+                <span class="qual-desc" data-i18n="qual.10th_desc">Inter, Diploma, ITI, Defence</span>
               </button>
               <button class="qual-btn" onclick="selectQualification('intermediate')">
-                <span class="qual-tag">10+2</span>
-                <span class="qual-name">Intermediate / 11th–12th</span>
-                <span class="qual-desc">MPC, BiPC, MEC, CEC, NDA</span>
+                <span class="qual-tag" data-i18n="qual.inter_tag">10+2</span>
+                <span class="qual-name" data-i18n="qual.inter_name">Intermediate / 11th–12th</span>
+                <span class="qual-desc" data-i18n="qual.inter_desc">MPC, BiPC, MEC, CEC, NDA</span>
               </button>
               <button class="qual-btn" onclick="selectQualification('diploma')">
-                <span class="qual-tag">Polytechnic</span>
-                <span class="qual-name">Diploma</span>
-                <span class="qual-desc">ECET Lateral, RRB JE, Core Jobs</span>
+                <span class="qual-tag" data-i18n="qual.diploma_tag">Polytechnic</span>
+                <span class="qual-name" data-i18n="qual.diploma_name">Diploma</span>
+                <span class="qual-desc" data-i18n="qual.diploma_desc">ECET Lateral, RRB JE, Core Jobs</span>
               </button>
               <button class="qual-btn" onclick="selectQualification('degree')">
-                <span class="qual-tag">Graduation</span>
-                <span class="qual-name">Degree</span>
-                <span class="qual-desc">B.Sc, B.Com, BA, BCA, Civil Services</span>
+                <span class="qual-tag" data-i18n="qual.degree_tag">Graduation</span>
+                <span class="qual-name" data-i18n="qual.degree_name">Degree</span>
+                <span class="qual-desc" data-i18n="qual.degree_desc">B.Sc, B.Com, BA, BCA, Civil Services</span>
               </button>
               <button class="qual-btn" onclick="selectQualification('btech')">
-                <span class="qual-tag">Engineering</span>
-                <span class="qual-name">B.Tech / B.E.</span>
-                <span class="qual-desc">Tech Roles, GATE, ESE, Defence Tech</span>
+                <span class="qual-tag" data-i18n="qual.btech_tag">Engineering</span>
+                <span class="qual-name" data-i18n="qual.btech_name">B.Tech / B.E.</span>
+                <span class="qual-desc" data-i18n="qual.btech_desc">Tech Roles, GATE, ESE, Defence Tech</span>
               </button>
               <button class="qual-btn" onclick="selectQualification('postgraduate')">
-                <span class="qual-tag">Master's</span>
-                <span class="qual-name">Postgraduate</span>
-                <span class="qual-desc">Ph.D, JRF, Academia, Corporate R&D</span>
+                <span class="qual-tag" data-i18n="qual.pg_tag">Master's</span>
+                <span class="qual-name" data-i18n="qual.pg_name">Postgraduate</span>
+                <span class="qual-desc" data-i18n="qual.pg_desc">Ph.D, JRF, Academia, Corporate R&D</span>
               </button>
               <button class="qual-btn" onclick="selectQualification('other')">
-                <span class="qual-tag">Alternative</span>
-                <span class="qual-name">Other</span>
-                <span class="qual-desc">Open Schooling, Certifications</span>
+                <span class="qual-tag" data-i18n="qual.other_tag">Alternative</span>
+                <span class="qual-name" data-i18n="qual.other_name">Other</span>
+                <span class="qual-desc" data-i18n="qual.other_desc">Open Schooling, Certifications</span>
               </button>
             </div>
           </div>
@@ -270,16 +270,16 @@
                 <div>
                   <div class="radar-badge-tag">
                     <span class="pulse-dot"></span>
-                    <span>AUTOMATIC TARGETED RADAR</span>
+                    <span data-i18n="radar.badge">AUTOMATIC TARGETED RADAR</span>
                   </div>
-                  <h2 class="radar-main-title">MY CAREER RADAR</h2>
-                  <p class="radar-sub-desc">Verified opportunities, upcoming deadlines, and counselling notices matched strictly to your education profile.</p>
+                  <h2 class="radar-main-title" data-i18n="radar.title">MY CAREER RADAR</h2>
+                  <p class="radar-sub-desc" data-i18n="radar.sub_desc">Verified opportunities, upcoming deadlines, and counselling notices matched strictly to your education profile.</p>
                 </div>
               </div>
               <div class="radar-header-actions">
                 <button class="btn btn-primary btn-sm" onclick="openRadarProfileModal()">
                   <i data-lucide="user-cog" class="icon-xs"></i>
-                  <span id="radar-config-btn-text">Set Career Radar Profile</span>
+                  <span id="radar-config-btn-text" data-i18n="radar.set_profile">Set Career Radar Profile</span>
                 </button>
               </div>
             </div>
@@ -288,12 +288,12 @@
             <div id="radar-profile-bar" class="radar-profile-bar">
               <div class="radar-profile-info">
                 <i data-lucide="graduation-cap" class="icon-sm text-primary"></i>
-                <span class="profile-label">Current Profile:</span>
+                <span class="profile-label" data-i18n="radar.current_profile">Current Profile:</span>
                 <span id="radar-profile-chip" class="profile-chip">B.Tech (CSE) • Andhra Pradesh • All India</span>
               </div>
               <div class="radar-stats-group">
                 <span id="radar-match-count" class="radar-stat-pill"><strong id="radar-count-num">0</strong> Matched Opportunities</span>
-                <button class="btn-text-sm" onclick="refreshRadarMatches()" title="Re-scan Radar"><i data-lucide="refresh-cw" class="icon-xs"></i> Re-scan</button>
+                <button class="btn-text-sm" onclick="refreshRadarMatches()" title="Re-scan Radar"><i data-lucide="refresh-cw" class="icon-xs"></i> <span data-i18n="radar.rescan">Re-scan</span></button>
               </div>
             </div>
 
@@ -302,13 +302,13 @@
               <!-- Dynamically populated by app.js -->
               <div class="radar-loading-state">
                 <div class="loading-spinner"></div>
-                <p>Scanning verified official portals for your profile...</p>
+                <p data-i18n="radar.scanning">Scanning verified official portals for your profile...</p>
               </div>
             </div>
             
             <div class="radar-disclaimer-note">
               <i data-lucide="info" class="icon-xs"></i>
-              <span>All displayed deadlines are fetched directly from authorized official portals (.gov.in, .nic.in, .ac.in). Zero simulated alerts. Always verify final dates from official PDFs.</span>
+              <span data-i18n="radar.disclaimer">All displayed deadlines are fetched directly from authorized official portals (.gov.in, .nic.in, .ac.in). Zero simulated alerts. Always verify final dates from official PDFs.</span>
             </div>
           </div>
 
@@ -318,32 +318,32 @@
       <!-- Quick Feature Highlights Grid -->
       <div class="container section-padding">
         <div class="section-header text-center">
-          <h2 class="section-title" data-i18n="pillars_title">Pillars of CareerCompass</h2>
-          <p class="section-desc" data-i18n="pillars_subtitle">Grounded in 100% verified Indian educational portals, anti-hallucination standards, and real student outcomes.</p>
+          <h2 class="section-title" data-i18n="pillars.title">Pillars of CareerCompass</h2>
+          <p class="section-desc" data-i18n="pillars.subtitle">Grounded in 100% verified Indian educational portals, anti-hallucination standards, and real student outcomes.</p>
         </div>
         <div class="pillars-grid">
           <div class="pillar-card" onclick="navigateToSection('govt-jobs')">
             <div class="pillar-icon bg-amber"><i data-lucide="cpu"></i></div>
-            <h3>Government Engineering Jobs</h3>
-            <p>GATE for Maharatna PSUs, ISRO Scientist SC, DRDO CEPTAM, BARC, RRB JE, and UPSC ESE.</p>
-            <span class="pillar-link">Explore Exams & Pay Scales →</span>
+            <h3 data-i18n="pillars.govt_title">Government Engineering Jobs</h3>
+            <p data-i18n="pillars.govt_desc">GATE for Maharatna PSUs, ISRO Scientist SC, DRDO CEPTAM, BARC, RRB JE, and UPSC ESE.</p>
+            <span class="pillar-link" data-i18n="pillars.govt_link">Explore Exams & Pay Scales →</span>
           </div>
           <div class="pillar-card" onclick="navigateToSection('defence')">
             <div class="pillar-icon bg-emerald"><i data-lucide="shield"></i></div>
-            <h3>Defence Roadmaps</h3>
-            <p>Clear physical, medical, and SSB roadmap for NDA, CDS, AFCAT, and Engineering entries.</p>
-            <span class="pillar-link">View Commission Routes →</span>
+            <h3 data-i18n="pillars.defence_title">Defence Roadmaps</h3>
+            <p data-i18n="pillars.defence_desc">Clear physical, medical, and SSB roadmap for NDA, CDS, AFCAT, and Engineering entries.</p>
+            <span class="pillar-link" data-i18n="pillars.defence_link">View Commission Routes →</span>
           </div>
           <div class="pillar-card" onclick="navigateToSection('scholarships')">
             <div class="pillar-icon bg-rose"><i data-lucide="award"></i></div>
-            <h3>Verified Scholarships</h3>
-            <p>NSP Central Sector, AICTE Pragati for girls, Saksham, and state fee reimbursement schemes.</p>
-            <span class="pillar-link">Check Eligibility & Deadlines →</span>
+            <h3 data-i18n="pillars.scholarships_title">Verified Scholarships</h3>
+            <p data-i18n="pillars.scholarships_desc">NSP Central Sector, AICTE Pragati for girls, Saksham, and state fee reimbursement schemes.</p>
+            <span class="pillar-link" data-i18n="pillars.scholarships_link">Check Eligibility & Deadlines →</span>
           </div>
           <div class="pillar-card" onclick="navigateToSection('digital-library')">
             <div class="pillar-icon bg-teal"><i data-lucide="book-open"></i></div>
-            <h3>Legal Digital Library</h3>
-            <p>Official NCERT textbooks, IIT/IISc NPTEL lecture series, and authentic GATE & UPSC PYQs.</p>
+            <h3 data-i18n="library.title">Legal Digital Library</h3>
+            <p data-i18n="library.subtitle">Official NCERT textbooks, IIT/IISc NPTEL lecture series, and authentic GATE & UPSC PYQs.</p>
             <span class="pillar-link">Access Free Study Materials →</span>
           </div>
         </div>
@@ -354,19 +354,19 @@
       <div class="container section-padding">
         <div class="section-header">
           <div class="badge badge-primary">EDUCATIONAL ROADMAPS</div>
-          <h2 class="section-title">Career Paths by Qualification</h2>
-          <p class="section-desc">Comprehensive pathways mapped from your current qualification to higher studies, entrance exams, and high-value careers.</p>
+          <h2 class="section-title" data-i18n="career.title">Career Paths by Qualification</h2>
+          <p class="section-desc" data-i18n="career.subtitle">Comprehensive pathways mapped from your current qualification to higher studies, entrance exams, and high-value careers.</p>
         </div>
 
         <!-- Qualification Tabs -->
         <div class="tab-pill-container" role="tablist">
-          <button class="tab-pill active" onclick="switchCareerTab('10th')" data-tab="10th">After 10th</button>
-          <button class="tab-pill" onclick="switchCareerTab('intermediate')" data-tab="intermediate">Intermediate / 11th–12th</button>
-          <button class="tab-pill" onclick="switchCareerTab('diploma')" data-tab="diploma">Diploma / Polytechnic</button>
-          <button class="tab-pill" onclick="switchCareerTab('degree')" data-tab="degree">Degree / Graduation</button>
-          <button class="tab-pill" onclick="switchCareerTab('btech')" data-tab="btech">B.Tech / B.E.</button>
-          <button class="tab-pill" onclick="switchCareerTab('postgraduate')" data-tab="postgraduate">Postgraduate</button>
-          <button class="tab-pill" onclick="switchCareerTab('other')" data-tab="other">Other Options</button>
+          <button class="tab-pill active" onclick="switchCareerTab('10th')" data-tab="10th" data-i18n="career.tab_10th">After 10th</button>
+          <button class="tab-pill" onclick="switchCareerTab('intermediate')" data-tab="intermediate" data-i18n="career.tab_inter">Intermediate / 11th–12th</button>
+          <button class="tab-pill" onclick="switchCareerTab('diploma')" data-tab="diploma" data-i18n="career.tab_diploma">Diploma / Polytechnic</button>
+          <button class="tab-pill" onclick="switchCareerTab('degree')" data-tab="degree" data-i18n="career.tab_degree">Degree / Graduation</button>
+          <button class="tab-pill" onclick="switchCareerTab('btech')" data-tab="btech" data-i18n="career.tab_btech">B.Tech / B.E.</button>
+          <button class="tab-pill" onclick="switchCareerTab('postgraduate')" data-tab="postgraduate" data-i18n="career.tab_pg">Postgraduate</button>
+          <button class="tab-pill" onclick="switchCareerTab('other')" data-tab="other" data-i18n="career.tab_other">Other Options</button>
         </div>
 
         <div id="career-paths-content" class="career-cards-container">
@@ -380,19 +380,19 @@
       <div class="container section-padding">
         <div class="section-header">
           <div class="badge badge-primary">COMPETITIVE EXAMINATIONS</div>
-          <h2 class="section-title">Entrance Exam Database</h2>
-          <p class="section-desc">Authentic examination details from conducting bodies (NTA, IITs, UPSC, State CETs). Dates verified against official notifications.</p>
+          <h2 class="section-title" data-i18n="exams.title">Entrance Exam Database</h2>
+          <p class="section-desc" data-i18n="exams.subtitle">Authentic examination details from conducting bodies (NTA, IITs, UPSC, State CETs). Dates verified against official notifications.</p>
         </div>
 
         <div class="filter-bar">
           <div class="search-box">
             <i data-lucide="search" class="search-icon"></i>
-            <input type="text" id="exam-search-input" placeholder="Search exam name (e.g. JEE, NEET, EAPCET, GATE, CAT)..." oninput="filterEntranceExams()">
+            <input type="text" id="exam-search-input" placeholder="Search exam name (e.g. JEE, NEET, EAPCET, GATE, CAT)..." data-i18n-placeholder="exams.search_placeholder" oninput="filterEntranceExams()">
           </div>
           <div class="filter-chips">
-            <button class="filter-chip active" onclick="filterExamCategory('All')">All Categories</button>
-            <button class="filter-chip" onclick="filterExamCategory('Engineering')">Engineering</button>
-            <button class="filter-chip" onclick="filterExamCategory('Medical')">Medical</button>
+            <button class="filter-chip active" onclick="filterExamCategory('All')" data-i18n="exams.filter_all">All Categories</button>
+            <button class="filter-chip" onclick="filterExamCategory('Engineering')" data-i18n="exams.filter_eng">Engineering</button>
+            <button class="filter-chip" onclick="filterExamCategory('Medical')" data-i18n="exams.filter_med">Medical</button>
             <button class="filter-chip" onclick="filterExamCategory('State Entrance')">State CETs</button>
             <button class="filter-chip" onclick="filterExamCategory('Lateral Entry')">Lateral Entry</button>
             <button class="filter-chip" onclick="filterExamCategory('Management')">Management</button>
@@ -412,8 +412,8 @@
       <div class="container section-padding">
         <div class="section-header">
           <div class="badge badge-warning">PUBLIC SECTOR & DEFENCE R&D</div>
-          <h2 class="section-title">Government Exams & Jobs for Engineers</h2>
-          <p class="section-desc">Premier technical public service recruitments for B.Tech & Diploma engineers across Maharatnas, ISRO, DRDO, Indian Railways, and Central Ministries.</p>
+          <h2 class="section-title" data-i18n="jobs.title">Government Exams & Jobs for Engineers</h2>
+          <p class="section-desc" data-i18n="jobs.subtitle">Premier technical public service recruitments for B.Tech & Diploma engineers across Maharatnas, ISRO, DRDO, Indian Railways, and Central Ministries.</p>
         </div>
 
         <div id="govt-engineering-container" class="cards-grid">
@@ -427,12 +427,12 @@
       <div class="container section-padding">
         <div class="section-header">
           <div class="badge badge-success">ARMED FORCES COMMISSIONS</div>
-          <h2 class="section-title">Indian Defence Forces Navigation Portal</h2>
-          <p class="section-desc">Direct roadmap answering: <em>"I want to join Defence. What exams and entries are available for my qualification?"</em></p>
+          <h2 class="section-title" data-i18n="defence.title">Indian Defence Forces Navigation Portal</h2>
+          <p class="section-desc" data-i18n="defence.subtitle">Direct roadmap answering: "I want to join Defence. What exams and entries are available for my qualification?"</p>
         </div>
 
         <div class="filter-chips mb-4">
-          <button class="filter-chip active" onclick="filterDefenceLevel('All')">All Defence Entries</button>
+          <button class="filter-chip active" onclick="filterDefenceLevel('All')" data-i18n="defence.branch_filter_all">All Defence Entries</button>
           <button class="filter-chip" onclick="filterDefenceLevel('12th')">After 12th (NDA & 10+2 Cadet)</button>
           <button class="filter-chip" onclick="filterDefenceLevel('Graduate')">After Graduation (CDS & AFCAT)</button>
           <button class="filter-chip" onclick="filterDefenceLevel('Engineering')">Engineering Direct SSB (TGC, SSC Tech)</button>
@@ -450,8 +450,8 @@
       <div class="container section-padding">
         <div class="section-header">
           <div class="badge badge-primary">INSTITUTES OF EMINENCE</div>
-          <h2 class="section-title">Colleges & Courses Explorer</h2>
-          <p class="section-desc">Verified accreditation, NIRF ranking, accepted entrance examinations, and official links for premier Indian universities and institutes.</p>
+          <h2 class="section-title" data-i18n="colleges.title">Colleges & Courses Explorer</h2>
+          <p class="section-desc" data-i18n="colleges.subtitle">Verified accreditation, NIRF ranking, accepted entrance examinations, and official links for premier Indian universities and institutes.</p>
         </div>
 
         <div id="colleges-grid" class="cards-grid">
@@ -465,7 +465,7 @@
       <div class="container section-padding">
         <div class="section-header">
           <div class="badge badge-primary">HISTORICAL ADMISSION REFERENCE</div>
-          <h2 class="section-title">Counselling & Cutoffs Reference Archive</h2>
+          <h2 class="section-title" data-i18n="colleges.title">Counselling & Cutoffs Reference Archive</h2>
           <p class="section-desc">Reference opening and closing ranks for JoSAA, State EAPCET, ECET lateral entry, and NEET UG admissions.</p>
         </div>
 
@@ -474,16 +474,14 @@
           <div class="alert-icon"><i data-lucide="alert-triangle"></i></div>
           <div class="alert-content">
             <strong>Mandatory Official Disclaimer:</strong>
-            <p id="cutoff-disclaimer-text">
-              Previous-year cutoffs are for reference only. Actual cutoffs can change each year based on seats, competition, category, preferences and other factors. Never consider previous cutoffs as a guarantee of admission.
-            </p>
+            <p id="cutoff-disclaimer-text" data-i18n="colleges.disclaimer_text">Previous-year cutoffs are for reference only. Actual cutoffs can change each year based on seats, competition, category, preferences and other factors. Never consider previous cutoffs as a guarantee of admission.</p>
           </div>
         </div>
 
         <div class="table-card">
           <div class="table-header-row">
             <h3 class="table-title">Verified Previous Year Cutoff Records</h3>
-            <input type="text" id="cutoff-search-input" class="table-search" placeholder="Search college or branch..." oninput="filterCutoffs()">
+            <input type="text" id="cutoff-search-input" class="table-search" placeholder="Search college or branch..." data-i18n-placeholder="colleges.search_placeholder" oninput="filterCutoffs()">
           </div>
           <div class="table-responsive">
             <table class="data-table">
@@ -511,8 +509,8 @@
       <div class="container section-padding">
         <div class="section-header">
           <div class="badge badge-danger">FINANCIAL AID & FELLOWSHIPS</div>
-          <h2 class="section-title">Verified Scholarships Portal</h2>
-          <p class="section-desc">National Scholarship Portal (NSP), AICTE Pragati for female engineers, Saksham, PMSSS, and trusted central/state initiatives.</p>
+          <h2 class="section-title" data-i18n="scholarships.title">Verified Scholarships Portal</h2>
+          <p class="section-desc" data-i18n="scholarships.subtitle">National Scholarship Portal (NSP), AICTE Pragati for female engineers, Saksham, PMSSS, and trusted central/state initiatives.</p>
         </div>
 
         <div id="scholarships-grid" class="cards-grid">
@@ -526,14 +524,14 @@
       <div class="container section-padding">
         <div class="section-header">
           <div class="badge badge-success">100% LEGAL & OFFICIAL RESOURCES</div>
-          <h2 class="section-title">Digital Library & Open Courseware</h2>
-          <p class="section-desc">Strictly open-access and legal resources: Official NCERT textbooks, IIT/IISc NPTEL video courses, authentic GATE/UPSC question papers with official keys.</p>
+          <h2 class="section-title" data-i18n="library.title">Digital Library & Open Courseware</h2>
+          <p class="section-desc" data-i18n="library.subtitle">Strictly open-access and legal resources: Official NCERT textbooks, IIT/IISc NPTEL video courses, authentic GATE/UPSC question papers with official keys.</p>
         </div>
 
         <div class="filter-bar">
           <div class="search-box">
             <i data-lucide="search" class="search-icon"></i>
-            <input type="text" id="library-search-input" placeholder="Search textbooks, question papers, courses..." oninput="filterLibrary()">
+            <input type="text" id="library-search-input" placeholder="Search textbooks, question papers, courses..." data-i18n-placeholder="library.search_placeholder" oninput="filterLibrary()">
           </div>
         </div>
 
@@ -548,8 +546,8 @@
       <div class="container section-padding">
         <div class="section-header text-center">
           <div class="badge badge-primary">INTELLIGENT ADVISOR</div>
-          <h2 class="section-title">AI Career Guide</h2>
-          <p class="section-desc">"Tell me where you are now. I'll help you find your direction."</p>
+          <h2 class="section-title" data-i18n="ai.title">AI Career Guide</h2>
+          <p class="section-desc" data-i18n="ai.subtitle">"Tell me where you are now. I'll help you find your direction."</p>
         </div>
 
         <div id="ai-mode-badge" class="ai-status-banner">
@@ -595,10 +593,10 @@
             </div>
 
             <form id="chat-form" class="chat-input-form" onsubmit="submitChatMessage(event)">
-              <input type="text" id="chat-input" placeholder="Type your career question here (e.g. Which course is best for me?)..." autocomplete="off" required>
+              <input type="text" id="chat-input" placeholder="Type your career question here (e.g. Which course is best for me?)..." data-i18n-placeholder="ai.input_placeholder" autocomplete="off" required>
               <button type="submit" id="chat-send-btn" class="btn btn-primary chat-submit-btn">
                 <i data-lucide="send" class="icon-sm"></i>
-                <span>Ask</span>
+                <span data-i18n="ai.send_btn">Ask</span>
               </button>
             </form>
           </div>
@@ -680,17 +678,17 @@
       <div class="container section-padding">
         <div class="section-header">
           <div class="badge badge-danger">REAL-TIME EVENTS</div>
-          <h2 class="section-title">Notification Center</h2>
-          <p class="section-desc">Active, upcoming, and verified examination deadlines. Dynamic badges indicate current state based on verified dates.</p>
+          <h2 class="section-title" data-i18n="notifications.title">Notification Center</h2>
+          <p class="section-desc" data-i18n="notifications.subtitle">Active, upcoming, and verified examination deadlines. Dynamic badges indicate current state based on verified dates.</p>
         </div>
 
         <div class="filter-bar">
           <div class="search-box">
             <i data-lucide="search" class="search-icon"></i>
-            <input type="text" id="notif-search-input" placeholder="Search notification title or organization..." oninput="filterNotifications()">
+            <input type="text" id="notif-search-input" placeholder="Search notification title or organization..." data-i18n-placeholder="notifications.search_placeholder" oninput="filterNotifications()">
           </div>
           <div class="filter-chips">
-            <button class="filter-chip active" onclick="filterNotifCategory('All')">All</button>
+            <button class="filter-chip active" onclick="filterNotifCategory('All')" data-i18n="notifications.all_tab">All</button>
             <button class="filter-chip" onclick="filterNotifCategory('Entrance Exams')">Entrance Exams</button>
             <button class="filter-chip" onclick="filterNotifCategory('Government Jobs')">Govt Jobs</button>
             <button class="filter-chip" onclick="filterNotifCategory('Defence')">Defence</button>
@@ -711,7 +709,7 @@
       <div class="container section-padding">
         <div class="section-header">
           <div class="badge badge-primary">CAREER PROGRESSION</div>
-          <h2 class="section-title">My Saved Roadmaps & Checklist</h2>
+          <h2 class="section-title" data-i18n="nav.saved_roadmaps">My Saved Roadmaps & Checklist</h2>
           <p class="section-desc">Keep track of your milestones, recommended preparation steps, skill badges, and goal progress. Saved locally in your browser.</p>
         </div>
 
@@ -724,7 +722,7 @@
       <div class="container section-padding">
         <div class="section-header">
           <div class="badge badge-primary">AUTHENTIC PORTALS</div>
-          <h2 class="section-title">Verified Official Links Directory</h2>
+          <h2 class="section-title" data-i18n="nav.official_links">Verified Official Links Directory</h2>
           <p class="section-desc">Direct bookmarks to authentic government (.gov.in / .nic.in), testing agency (.nta.ac.in), and higher education portals.</p>
         </div>
 
@@ -740,17 +738,15 @@
         <div class="about-card">
           <div class="about-header">
             <div class="logo-compass large"><i data-lucide="compass"></i></div>
-            <h2>About CareerCompass</h2>
-            <p class="tagline">FIND YOUR TRUE NORTH</p>
+            <h2 data-i18n="about.title">About CareerCompass</h2>
+            <p class="tagline" data-i18n="about.tagline">FIND YOUR TRUE NORTH</p>
           </div>
           <div class="about-body">
-            <p>
-              <strong>CareerCompass</strong> was created with a clear, uncompromising mission: to provide Indian students with reliable, trustworthy, and actionable education and career navigation.
-            </p>
+            <p data-i18n="about.p1">CareerCompass was created with a clear, uncompromising mission: to provide Indian students with reliable, trustworthy, and actionable education and career navigation.</p>
             <p>
               Indian students completing Class 10, Intermediate, Polytechnic Diploma, or Undergraduate degrees often face fragmented, outdated, and conflicting information across social media and unregulated blogs. CareerCompass consolidates authentic options across academics, competitive examinations, public sector opportunities, defence entries, and legal study resources.
             </p>
-            <h3>Our Core Guarantees:</h3>
+            <h3 data-i18n="about.guarantees_title">Our Core Guarantees:</h3>
             <ul class="guarantee-list">
               <li><i data-lucide="check-circle" class="text-success"></i> <strong>Zero Hallucination:</strong> We never invent exam dates, cutoffs, eligibility criteria, or official links.</li>
               <li><i data-lucide="check-circle" class="text-success"></i> <strong>Active Timestamps:</strong> Our notification engine dynamically compares current dates against verified windows, automatically discarding expired notices.</li>
@@ -772,8 +768,8 @@
           <i data-lucide="compass" class="icon-md text-primary"></i>
           <span>CareerCompass</span>
         </div>
-        <p class="footer-motto">FIND YOUR TRUE NORTH</p>
-        <p class="footer-desc">An intelligent educational guidance and career-mapping platform for school and college students across India.</p>
+        <p class="footer-motto" data-i18n="footer.brand_tagline">FIND YOUR TRUE NORTH</p>
+        <p class="footer-desc" data-i18n="footer.mission">An intelligent educational guidance and career-mapping platform for school and college students across India.</p>
       </div>
       <div class="footer-col">
         <h4>Navigation</h4>
@@ -805,8 +801,8 @@
     </div>
     <div class="footer-bottom">
       <div class="container footer-bottom-inner">
-        <p>© 2026 CareerCompass. Built for Indian students. All information verified from official government portals.</p>
-        <p class="disclaimer-mini">Disclaimer: CareerCompass provides informative educational guidance. Final eligibility and selection are governed solely by official gazettes and notifications.</p>
+        <p data-i18n="footer.rights">© 2026 CareerCompass. Built for Indian students. All information verified from official government portals.</p>
+        <p class="disclaimer-mini" data-i18n="footer.disclaimer_text">Disclaimer: CareerCompass provides informative educational guidance. Final eligibility and selection are governed solely by official gazettes and notifications.</p>
       </div>
     </div>
   </footer>
@@ -839,11 +835,11 @@
       <div class="modal-footer" style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: flex-end;">
         <button id="modal-ask-ai-btn" class="btn btn-primary" onclick="askAIAboutCurrentOpportunity()" style="background: linear-gradient(135deg, #1d4ed8, #0284c7);">
           <i data-lucide="sparkles" class="icon-sm"></i>
-          <span>Ask AI About This</span>
+          <span data-i18n="notifications.ask_ai">Ask AI About This</span>
         </button>
         <a id="modal-source-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
           <i data-lucide="external-link" class="icon-sm"></i>
-          <span>Open Official Source</span>
+          <span data-i18n="notifications.open_portal">Open Official Source</span>
         </a>
         <button class="btn btn-secondary" onclick="closeNotifModal()">Close</button>
       </div>
@@ -857,13 +853,13 @@
         <div class="badge badge-primary"><i data-lucide="radar" class="icon-xs"></i> MY CAREER RADAR</div>
         <button class="close-btn" onclick="closeRadarProfileModal()">&times;</button>
       </div>
-      <h3 class="modal-title">Configure Career Radar Profile</h3>
-      <p class="modal-org">Set your current education level, branch, and aspirations to unlock personalized opportunity matching.</p>
+      <h3 class="modal-title" data-i18n="modals.radar_profile_title">Configure Career Radar Profile</h3>
+      <p class="modal-org" data-i18n="modals.radar_profile_subtitle">Set your current education level, branch, and aspirations to unlock personalized opportunity matching.</p>
       
       <div class="modal-body" style="display: flex; flex-direction: column; gap: 1.1rem;">
         <div class="form-group-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
           <div class="form-group">
-            <label class="form-label" for="radar-input-qual">Current Qualification *</label>
+            <label class="form-label" for="radar-input-qual" data-i18n="modals.qual_label">Current Qualification *</label>
             <select id="radar-input-qual" class="form-control" onchange="handleRadarQualChange()">
               <option value="B.Tech">B.Tech / B.E. (Engineering)</option>
               <option value="Intermediate">Intermediate / 10+2</option>
@@ -874,7 +870,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" for="radar-input-branch">Stream / Branch *</label>
+            <label class="form-label" for="radar-input-branch" data-i18n="modals.branch_label">Stream / Branch *</label>
             <input id="radar-input-branch" class="form-control" list="branch-suggestions" placeholder="e.g. CSE, ECE, MPC, Mech..." value="CSE">
             <datalist id="branch-suggestions">
               <option value="CSE">
@@ -894,7 +890,7 @@
 
         <div class="form-group-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
           <div class="form-group">
-            <label class="form-label" for="radar-input-state">Home State / Scope</label>
+            <label class="form-label" for="radar-input-state" data-i18n="modals.state_label">Home State / Scope</label>
             <select id="radar-input-state" class="form-control">
               <option value="Andhra Pradesh">Andhra Pradesh</option>
               <option value="Telangana">Telangana</option>
@@ -902,7 +898,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" for="radar-input-year">Completion / Passout Year</label>
+            <label class="form-label" for="radar-input-year" data-i18n="modals.year_label">Completion / Passout Year</label>
             <select id="radar-input-year" class="form-control">
               <option value="2027">2027 (Appearing)</option>
               <option value="2026" selected>2026 (Final Year / Current)</option>
@@ -913,31 +909,31 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">Target Career Direction & Interests (Select All Relevant)</label>
+          <label class="form-label" data-i18n="modals.interests_label">Target Career Direction & Interests (Select All Relevant)</label>
           <div class="checkbox-pill-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.5rem; margin-top: 0.35rem;">
             <label class="checkbox-pill">
               <input type="checkbox" name="radar-interest" value="Higher Studies / M.Tech" checked>
-              <span>🎓 Higher Studies / M.Tech / CAT</span>
+              <span data-i18n="modals.interest_higher">🎓 Higher Studies / M.Tech / CAT</span>
             </label>
             <label class="checkbox-pill">
               <input type="checkbox" name="radar-interest" value="PSU / Govt Jobs" checked>
-              <span>🏛️ PSU / Govt Jobs (GATE, RRB, ISRO)</span>
+              <span data-i18n="modals.interest_psu">🏛️ PSU / Govt Jobs (GATE, RRB, ISRO)</span>
             </label>
             <label class="checkbox-pill">
               <input type="checkbox" name="radar-interest" value="Defence Forces">
-              <span>🛡️ Armed Forces (NDA, CDS, AFCAT)</span>
+              <span data-i18n="modals.interest_defence">🛡️ Armed Forces (NDA, CDS, AFCAT)</span>
             </label>
             <label class="checkbox-pill">
               <input type="checkbox" name="radar-interest" value="Scholarships" checked>
-              <span>💰 Scholarships & Financial Aid</span>
+              <span data-i18n="modals.interest_scholarships">💰 Scholarships & Financial Aid</span>
             </label>
             <label class="checkbox-pill">
               <input type="checkbox" name="radar-interest" value="Counselling">
-              <span>📋 State Admissions & Counselling</span>
+              <span data-i18n="modals.interest_counselling">📋 State Admissions & Counselling</span>
             </label>
             <label class="checkbox-pill">
               <input type="checkbox" name="radar-interest" value="Campus Placement">
-              <span>💻 Software & Core Tech Roles</span>
+              <span data-i18n="modals.interest_tech">💻 Software & Core Tech Roles</span>
             </label>
           </div>
         </div>
@@ -952,12 +948,13 @@
         <button class="btn btn-secondary" onclick="closeRadarProfileModal()">Cancel</button>
         <button class="btn btn-primary" onclick="saveRadarProfile()">
           <i data-lucide="check" class="icon-xs"></i>
-          <span>Save & Activate Radar</span>
+          <span data-i18n="modals.save_and_activate">Save & Activate Radar</span>
         </button>
       </div>
     </div>
   </div>
 
+  <script src="/static/js/locales.js"></script>
   <script src="/static/js/app.js"></script>
 
   <!-- Admin Data Verification & Auto-Updater Modal -->
