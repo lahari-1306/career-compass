@@ -1296,5 +1296,111 @@
       "created_at": "2026-09-22T19:19:26.101628+05:30",
       "is_read": false
     }
+  ],
+  "prof_20260922202437809287": [
+    {
+      "alert_id": "alert_notif-upsc-cds_20260922202438123045",
+      "profile_id": "prof_20260922202437809287",
+      "opportunity_id": "notif-upsc-cds",
+      "title": "UPSC Combined Defence Services (CDS) Entry",
+      "organization": "Union Public Service Commission",
+      "alert_type": "NEW_OPPORTUNITY",
+      "message": "New verified opportunity matching your profile: UPSC Combined Defence Services (CDS) Entry.",
+      "official_source": "https://upsc.gov.in",
+      "urgency": "NORMAL",
+      "created_at": "2026-09-22T20:24:38.123045+05:30",
+      "is_read": false
+    },
+    {
+      "alert_id": "alert_notif-afcat-res_20260922202438086581",
+      "profile_id": "prof_20260922202437809287",
+      "opportunity_id": "notif-afcat-res",
+      "title": "AFCAT 02/2026 Examination Results Declared",
+      "organization": "Indian Air Force (IAF)",
+      "alert_type": "EXAM_DATE_UPDATE",
+      "message": "Official Results / Scorecards declared for AFCAT 02/2026 Examination Results Declared.",
+      "official_source": "https://afcat.cdac.in",
+      "urgency": "NORMAL",
+      "created_at": "2026-09-22T20:24:38.086581+05:30",
+      "is_read": false
+    },
+    {
+      "alert_id": "alert_notif-nsp-portal_20260922202438028710",
+      "profile_id": "prof_20260922202437809287",
+      "opportunity_id": "notif-nsp-portal",
+      "title": "National Scholarship Portal (NSP) Applications LIVE",
+      "organization": "Ministry of Electronics and Information Technology, Govt. of India",
+      "alert_type": "NEW_OPPORTUNITY",
+      "message": "New verified opportunity matching your profile: National Scholarship Portal (NSP) Applications LIVE.",
+      "official_source": "https://scholarships.gov.in",
+      "urgency": "MEDIUM",
+      "created_at": "2026-09-22T20:24:38.028710+05:30",
+      "is_read": false
+    },
+    {
+      "alert_id": "alert_notif-rrb-je_20260922202437970897",
+      "profile_id": "prof_20260922202437809287",
+      "opportunity_id": "notif-rrb-je",
+      "title": "RRB Junior Engineer (JE) Centralized Employment Schedule",
+      "organization": "Ministry of Railways, Govt. of India",
+      "alert_type": "NEW_OPPORTUNITY",
+      "message": "New verified opportunity matching your profile: RRB Junior Engineer (JE) Centralized Employment Schedule.",
+      "official_source": "https://rrbcdg.gov.in",
+      "urgency": "MEDIUM",
+      "created_at": "2026-09-22T20:24:37.970897+05:30",
+      "is_read": false
+    },
+    {
+      "alert_id": "alert_notif-gate-2027_20260922202437913404",
+      "profile_id": "prof_20260922202437809287",
+      "opportunity_id": "notif-gate-2027",
+      "title": "GATE 2027 Registration Portal Active",
+      "organization": "IIT / IISc National Coordination Board",
+      "alert_type": "NEW_OPPORTUNITY",
+      "message": "New verified opportunity matching your profile: GATE 2027 Registration Portal Active.",
+      "official_source": "https://gate2025.iitr.ac.in",
+      "urgency": "MEDIUM",
+      "created_at": "2026-09-22T20:24:37.913404+05:30",
+      "is_read": false
+    },
+    {
+      "alert_id": "alert_notif-ecet-counselling_20260922202437859512",
+      "profile_id": "prof_20260922202437809287",
+      "opportunity_id": "notif-ecet-counselling",
+      "title": "AP ECET Lateral Entry 2nd Year B.Tech Admissions Live",
+      "organization": "Andhra Pradesh State Council of Higher Education (APSCHE)",
+      "alert_type": "DEADLINE_APPROACHING",
+      "message": "URGENT: Application deadline for AP ECET Lateral Entry 2nd Year B.Tech Admissions Live closes in 3 days!",
+      "official_source": "https://cets.apsche.ap.gov.in",
+      "urgency": "HIGH",
+      "created_at": "2026-09-22T20:24:37.859512+05:30",
+      "is_read": false
+    },
+    {
+      "alert_id": "alert_notif-isro-app_20260922202437832311",
+      "profile_id": "prof_20260922202437809287",
+      "opportunity_id": "notif-isro-app",
+      "title": "ISRO URSC Graduate & Technician Apprentice Applications Open",
+      "organization": "Indian Space Research Organisation (ISRO)",
+      "alert_type": "DEADLINE_APPROACHING",
+      "message": "URGENT: Application deadline for ISRO URSC Graduate & Technician Apprentice Applications Open closes in 5 days!",
+      "official_source": "https://www.isro.gov.in/Careers.html",
+      "urgency": "HIGH",
+      "created_at": "2026-09-22T20:24:37.832311+05:30",
+      "is_read": false
+    },
+    {
+      "alert_id": "alert_notif-cat-2026_20260922202437817497",
+      "profile_id": "prof_20260922202437809287",
+      "opportunity_id": "notif-cat-2026",
+      "title": "CAT 2026 Application Window Closing Soon",
+      "organization": "Indian Institutes of Management (IIMs)",
+      "alert_type": "DEADLINE_APPROACHING",
+      "message": "URGENT: Application deadline for CAT 2026 Application Window Closing Soon closes in 0 days!",
+      "official_source": "https://iimcat.ac.in",
+      "urgency": "HIGH",
+      "created_at": "2026-09-22T20:24:37.817497+05:30",
+      "is_read": false
+    }
   ]
 }

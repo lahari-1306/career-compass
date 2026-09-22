@@ -213,27 +213,35 @@ function renderCurrentSection() {
 // 3. INITIALIZATION
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
-  initTheme();
-  initLanguage();
-  initTicker();
-  loadAllDatasets();
-  renderSavedRoadmaps();
-  initCareerRadar();
-  refreshIcons();
+  try { initTheme(); } catch (e) { console.error('Theme init error:', e); }
+  try { initLanguage(); } catch (e) { console.error('Language init error:', e); }
+  try { initTicker(); } catch (e) { console.error('Ticker init error:', e); }
+  try { loadAllDatasets(); } catch (e) { console.error('Datasets load error:', e); }
+  try { renderSavedRoadmaps(); } catch (e) { console.error('Saved roadmaps error:', e); }
+  try { initCareerRadar(); } catch (e) { console.error('Radar init error:', e); }
+  try { refreshIcons(); } catch (e) { console.error('Icons refresh error:', e); }
 
   // Close menus on outside click
-  document.addEventListener('click', (e) => {
-    const langBtn = document.getElementById('lang-btn');
-    const langMenu = document.getElementById('lang-menu');
-    if (langMenu && !langMenu.contains(e.target) && !langBtn.contains(e.target)) {
-      langMenu.classList.add('hidden');
-    }
-    const bellBtn = document.getElementById('radar-bell-btn');
-    const bellDrawer = document.getElementById('radar-alerts-drawer');
-    if (bellDrawer && !bellDrawer.contains(e.target) && !bellBtn.contains(e.target)) {
-      bellDrawer.classList.add('hidden');
-    }
-  });
+  try {
+    document.addEventListener('click', (e) => {
+      try {
+        const langBtn = document.getElementById('lang-btn');
+        const langMenu = document.getElementById('lang-menu');
+        if (langMenu && !langMenu.contains(e.target) && !langBtn?.contains(e.target)) {
+          langMenu.classList.add('hidden');
+        }
+        const bellBtn = document.getElementById('radar-bell-btn');
+        const bellDrawer = document.getElementById('radar-alerts-drawer');
+        if (bellDrawer && !bellDrawer.contains(e.target) && !bellBtn?.contains(e.target)) {
+          bellDrawer.classList.add('hidden');
+        }
+      } catch (err) {
+        console.warn('Click outside handler error:', err);
+      }
+    });
+  } catch (e) {
+    console.error('Menu click listener error:', e);
+  }
 });
 
 function refreshIcons() {
@@ -309,7 +317,6 @@ function applyLanguage(langCode) {
   // Re-render active section cards to translate dynamic card labels and metadata
   renderCurrentSection();
   refreshIcons();
-});
 }
 
 // Menu Toggle
@@ -467,57 +474,68 @@ function selectQualification(qualId) {
   switchCareerTab(qualId);
 }
 
+// Safe JSON fetcher that never rejects and falls back gracefully
+async function safeFetchJson(url, defaultVal) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      console.warn(`Fetch returned status ${res.status} for ${url}`);
+      return defaultVal;
+    }
+    return await res.json();
+  } catch (err) {
+    console.warn(`Fetch failed for ${url}:`, err);
+    return defaultVal;
+  }
+}
+
 // ==========================================
 // 6. DATA LOADER & RENDERING
 // ==========================================
 async function loadAllDatasets() {
-  try {
-    const [paths, exams, govt, defence, colleges, cutoffs, scholarships, library, links, notifsAll, btechPathwaysRes, btechCompaniesRes] = await Promise.all([
-      fetch('/api/career-paths').then(r => r.json()),
-      fetch('/api/entrance-exams').then(r => r.json()),
-      fetch('/api/govt-engineering-jobs').then(r => r.json()),
-      fetch('/api/defence-entries').then(r => r.json()),
-      fetch('/api/colleges').then(r => r.json()),
-      fetch('/api/cutoffs').then(r => r.json()),
-      fetch('/api/scholarships').then(r => r.json()),
-      fetch('/api/digital-library').then(r => r.json()),
-      fetch('/api/official-links').then(r => r.json()),
-      fetch('/api/notifications/all').then(r => r.json()),
-      fetch('/api/btech/pathways').then(r => r.json()),
-      fetch('/api/btech/companies').then(r => r.json())
-    ]);
+  const [paths, exams, govt, defence, colleges, cutoffs, scholarships, library, links, notifsAll, btechPathwaysRes, btechCompaniesRes] = await Promise.all([
+    safeFetchJson('/api/career-paths', {}),
+    safeFetchJson('/api/entrance-exams', []),
+    safeFetchJson('/api/govt-engineering-jobs', []),
+    safeFetchJson('/api/defence-entries', []),
+    safeFetchJson('/api/colleges', []),
+    safeFetchJson('/api/cutoffs', { cutoffs_reference: [] }),
+    safeFetchJson('/api/scholarships', []),
+    safeFetchJson('/api/digital-library', []),
+    safeFetchJson('/api/official-links', []),
+    safeFetchJson('/api/notifications/all', { notifications: [] }),
+    safeFetchJson('/api/btech/pathways', { pathways: [] }),
+    safeFetchJson('/api/btech/companies', { companies: [] })
+  ]);
 
-    AppState.datasets.careerPaths = paths;
-    AppState.datasets.entranceExams = exams;
-    AppState.datasets.govtJobs = govt;
-    AppState.datasets.defenceEntries = defence;
-    AppState.datasets.colleges = colleges;
-    AppState.datasets.cutoffs = cutoffs.cutoffs_reference || [];
-    AppState.datasets.scholarships = scholarships;
-    AppState.datasets.digitalLibrary = library;
-    AppState.datasets.officialLinks = links;
-    AppState.datasets.allNotifications = notifsAll.notifications || [];
-    AppState.datasets.btechPathways = btechPathwaysRes.pathways || [];
-    AppState.datasets.companies = btechCompaniesRes.companies || [];
+  AppState.datasets.careerPaths = paths || {};
+  AppState.datasets.entranceExams = exams || [];
+  AppState.datasets.govtJobs = govt || [];
+  AppState.datasets.defenceEntries = defence || [];
+  AppState.datasets.colleges = colleges || [];
+  AppState.datasets.cutoffs = (cutoffs && cutoffs.cutoffs_reference) || [];
+  AppState.datasets.scholarships = scholarships || [];
+  AppState.datasets.digitalLibrary = library || [];
+  AppState.datasets.officialLinks = links || [];
+  AppState.datasets.allNotifications = (notifsAll && notifsAll.notifications) || [];
+  AppState.datasets.btechPathways = (btechPathwaysRes && btechPathwaysRes.pathways) || [];
+  AppState.datasets.companies = (btechCompaniesRes && btechCompaniesRes.companies) || [];
 
-    // Render Initial Views
-    renderCareerPaths('10th');
-    renderEntranceExams();
-    renderGovtEngineering();
-    renderDefenceEntries();
-    renderColleges();
-    renderCutoffs();
-    renderScholarships();
-    renderDigitalLibrary();
-    renderOfficialLinks();
-    renderNotificationsCenter();
+  // Render Initial Views with independent fault tolerance
+  try { renderCareerPaths('10th'); } catch (e) { console.error('renderCareerPaths error:', e); }
+  try { renderEntranceExams(); } catch (e) { console.error('renderEntranceExams error:', e); }
+  try { renderGovtEngineering(); } catch (e) { console.error('renderGovtEngineering error:', e); }
+  try { renderDefenceEntries(); } catch (e) { console.error('renderDefenceEntries error:', e); }
+  try { renderColleges(); } catch (e) { console.error('renderColleges error:', e); }
+  try { renderCutoffs(); } catch (e) { console.error('renderCutoffs error:', e); }
+  try { renderScholarships(); } catch (e) { console.error('renderScholarships error:', e); }
+  try { renderDigitalLibrary(); } catch (e) { console.error('renderDigitalLibrary error:', e); }
+  try { renderOfficialLinks(); } catch (e) { console.error('renderOfficialLinks error:', e); }
+  try { renderNotificationsCenter(); } catch (e) { console.error('renderNotificationsCenter error:', e); }
 
-    // Check AI Engine
-    checkAIEngine();
-    refreshIcons();
-  } catch (err) {
-    console.error('Data loading error:', err);
-  }
+  // Check AI Engine & Refresh icons
+  try { checkAIEngine(); } catch (e) { console.warn('checkAIEngine error:', e); }
+  try { refreshIcons(); } catch (e) { console.warn('refreshIcons error:', e); }
 }
 
 // Career Paths Renderer
