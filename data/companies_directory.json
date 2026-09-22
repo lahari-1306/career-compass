@@ -1,0 +1,493 @@
+[
+  {
+    "id": "comp-infosys",
+    "name": "Infosys",
+    "domain": "Information Technology & Digital Services",
+    "type": "IT Services & Consulting",
+    "official_website": "https://www.infosys.com",
+    "official_careers_url": "https://careers.infosys.com",
+    "relevant_categories": [
+      "it_software",
+      "data_ai",
+      "cyber_security",
+      "non_it_business"
+    ],
+    "common_roles": [
+      "Systems Engineer (Graduate Trainee)",
+      "Specialist Programmer (Power Programmer)",
+      "Digital Specialist Engineer (DSE)",
+      "Cyber Security Analyst",
+      "Associate Business Analyst"
+    ],
+    "verified_skills": [
+      "Java",
+      "Python",
+      "SQL",
+      "Spring Boot",
+      "React",
+      "Cloud Foundations",
+      "Analytical Thinking"
+    ],
+    "education_req": "B.Tech / B.E. / M.Tech in any engineering discipline with minimum 60% aggregate.",
+    "locations": [
+      "Bengaluru",
+      "Hyderabad",
+      "Pune",
+      "Chennai",
+      "Mysuru",
+      "Bhubaneswar",
+      "Chandigarh"
+    ],
+    "internship_opportunities": "InStep Internship Program (Flagship global internship ranked #1 internationally) and Summer Project Trainee drives.",
+    "hiring_process": "InfyTQ certification test, HackWithInfy national competitive programming hackathon, or National On-Campus / Off-Campus Assessment.",
+    "last_verified": "2026-03-01"
+  },
+  {
+    "id": "comp-tcs",
+    "name": "Tata Consultancy Services (TCS)",
+    "domain": "IT Services, Digital Solutions & Business Consulting",
+    "type": "IT Services & Consulting",
+    "official_website": "https://www.tcs.com",
+    "official_careers_url": "https://www.tcs.com/careers",
+    "relevant_categories": [
+      "it_software",
+      "data_ai",
+      "cyber_security",
+      "non_it_business"
+    ],
+    "common_roles": [
+      "TCS Ninja (Assistant System Engineer - Trainee)",
+      "TCS Digital (Digital Software Developer)",
+      "TCS Prime (High-Performance Engineering & AI Specialist)",
+      "Cloud Associate",
+      "Network & Security Analyst"
+    ],
+    "verified_skills": [
+      "C/C++",
+      "Java",
+      "Python",
+      "Data Structures & Algorithms",
+      "SQL",
+      "Cloud Basics (AWS/Azure)",
+      "Agile"
+    ],
+    "education_req": "B.Tech / B.E. in any engineering discipline with minimum 60% throughout 10th, 12th, and Degree.",
+    "locations": [
+      "Mumbai",
+      "Bengaluru",
+      "Hyderabad",
+      "Chennai",
+      "Kolkata",
+      "Delhi-NCR",
+      "Pune",
+      "Kochi"
+    ],
+    "internship_opportunities": "TCS Academic Internship Scheme for 3rd and final year undergraduate students.",
+    "hiring_process": "TCS National Qualifier Test (NQT) national aptitude and coding examination.",
+    "last_verified": "2026-03-01"
+  },
+  {
+    "id": "comp-wipro",
+    "name": "Wipro",
+    "domain": "Information Technology, Consulting & Business Process Services",
+    "type": "IT Services & Consulting",
+    "official_website": "https://www.wipro.com",
+    "official_careers_url": "https://careers.wipro.com",
+    "relevant_categories": [
+      "it_software",
+      "cyber_security",
+      "data_ai",
+      "non_it_business"
+    ],
+    "common_roles": [
+      "Project Engineer (Elite National Talent Hunt)",
+      "Turbo Developer (Accelerated Innovation Cadre)",
+      "Cloud Support Associate",
+      "Quality Assurance Trainee"
+    ],
+    "verified_skills": [
+      "Java",
+      "Python",
+      "Full Stack Basics",
+      "Operating Systems",
+      "Computer Networks",
+      "Problem Solving"
+    ],
+    "education_req": "B.Tech / B.E. in recognized engineering disciplines with minimum 60% or 6.0 CGPA.",
+    "locations": [
+      "Bengaluru",
+      "Hyderabad",
+      "Chennai",
+      "Pune",
+      "Greater Noida",
+      "Kolkata"
+    ],
+    "internship_opportunities": "Project Work Internship for eligible final-year engineering students.",
+    "hiring_process": "Elite NTH (National Talent Hunt) Aptitude, Written English, and Coding assessment.",
+    "last_verified": "2026-03-01"
+  },
+  {
+    "id": "comp-google",
+    "name": "Google",
+    "domain": "Search, Cloud, Consumer Tech & Artificial Intelligence",
+    "type": "Global Product MNC",
+    "official_website": "https://about.google",
+    "official_careers_url": "https://careers.google.com",
+    "relevant_categories": [
+      "it_software",
+      "data_ai",
+      "cyber_security"
+    ],
+    "common_roles": [
+      "Software Development Engineer (L3 SDE)",
+      "Application Engineer",
+      "Site Reliability Engineer (SRE)",
+      "Data Engineer",
+      "Machine Learning Engineer"
+    ],
+    "verified_skills": [
+      "Advanced DSA",
+      "System Design",
+      "C++ / Java / Python / Go",
+      "Concurrency",
+      "Distributed Systems",
+      "Operating Systems"
+    ],
+    "education_req": "B.Tech / B.E. / M.Tech in Computer Science, related technical field, or equivalent practical experience.",
+    "locations": [
+      "Bengaluru",
+      "Hyderabad",
+      "Gurugram",
+      "Mumbai"
+    ],
+    "internship_opportunities": "Google Summer Internship (10-12 weeks) and Google STEP Internship for 1st/2nd year undergraduates.",
+    "hiring_process": "Online Technical Screening Assessment -> 4 to 5 Technical Interviews on Algorithms, Data Structures, and System Architecture.",
+    "last_verified": "2026-03-01"
+  },
+  {
+    "id": "comp-microsoft",
+    "name": "Microsoft",
+    "domain": "Operating Systems, Cloud Computing, Productivity Software & AI",
+    "type": "Global Product MNC",
+    "official_website": "https://www.microsoft.com",
+    "official_careers_url": "https://careers.microsoft.com",
+    "relevant_categories": [
+      "it_software",
+      "data_ai",
+      "cyber_security"
+    ],
+    "common_roles": [
+      "Software Engineer (New Graduate)",
+      "Data Scientist",
+      "Cloud Solutions Architect",
+      "Security Software Engineer",
+      "Product Manager (APM)"
+    ],
+    "verified_skills": [
+      "C# / C++ / Java / Python",
+      "Data Structures & Algorithms",
+      "Azure Cloud Architecture",
+      "Database Systems",
+      "Object-Oriented Design"
+    ],
+    "education_req": "B.Tech / B.E. in Computer Science, Engineering, or related technical disciplines.",
+    "locations": [
+      "Hyderabad",
+      "Bengaluru",
+      "Noida"
+    ],
+    "internship_opportunities": "Microsoft University Internship Program (Summer, 8-12 weeks) with direct PPO conversion routes.",
+    "hiring_process": "Online Coding Challenge -> Multiple rounds of Technical Coding & Problem Solving interviews.",
+    "last_verified": "2026-03-01"
+  },
+  {
+    "id": "comp-amazon",
+    "name": "Amazon",
+    "domain": "E-Commerce, Cloud Infrastructure (AWS) & Digital Streaming",
+    "type": "Global Product MNC",
+    "official_website": "https://www.aboutamazon.com",
+    "official_careers_url": "https://www.amazon.jobs",
+    "relevant_categories": [
+      "it_software",
+      "data_ai",
+      "cyber_security",
+      "non_it_business"
+    ],
+    "common_roles": [
+      "Software Development Engineer I (SDE 1)",
+      "Quality Assurance Engineer (QAE 1)",
+      "Cloud Support Engineer (AWS)",
+      "Data Engineer I",
+      "Operations Technical Specialist"
+    ],
+    "verified_skills": [
+      "Java / C++",
+      "Data Structures & Algorithms",
+      "Low-Level Object Oriented Design",
+      "Amazon Leadership Principles",
+      "Linux"
+    ],
+    "education_req": "B.Tech / B.E. in Computer Science, Electrical Engineering, or related technical field.",
+    "locations": [
+      "Bengaluru",
+      "Hyderabad",
+      "Chennai",
+      "Delhi-NCR",
+      "Pune"
+    ],
+    "internship_opportunities": "Amazon SDE 6-Month & Summer Internship programs for pre-final and final year engineers.",
+    "hiring_process": "Online OA (Coding + Work Style Assessment) -> 3-4 rounds of Technical DSA, OOD, and Leadership Principles.",
+    "last_verified": "2026-03-01"
+  },
+  {
+    "id": "comp-lt",
+    "name": "Larsen & Toubro (L&T)",
+    "domain": "Heavy Engineering, Infrastructure, Defense, Construction & Power",
+    "type": "Core Engineering Conglomerate",
+    "official_website": "https://www.larsentoubro.com",
+    "official_careers_url": "https://www.larsentoubro.com/corporate/careers",
+    "relevant_categories": [
+      "core_engineering",
+      "non_it_business"
+    ],
+    "common_roles": [
+      "Graduate Engineer Trainee (GET - Civil / Mech / EEE)",
+      "Structural Design Engineer",
+      "Site Execution & Planning Engineer",
+      "Plant & Machinery Specialist",
+      "Quality Assurance & Control (QA/QC) Engineer"
+    ],
+    "verified_skills": [
+      "AutoCAD",
+      "STAAD.Pro / ETABS",
+      "SolidWorks",
+      "Quantity Surveying",
+      "Project Scheduling (Primavera)",
+      "IS Standards"
+    ],
+    "education_req": "B.Tech in Civil, Mechanical, or Electrical Engineering with minimum 65% aggregate with zero backlogs.",
+    "locations": [
+      "Mumbai",
+      "Chennai",
+      "Delhi-NCR",
+      "Kolkata",
+      "Pan-India Project Sites"
+    ],
+    "internship_opportunities": "Build India Scholarship (BIS) offering sponsored M.Tech at IIT Madras / NIT Trichy followed by permanent employment.",
+    "hiring_process": "National Aptitude & Technical Assessment followed by Technical and Managerial Interviews.",
+    "last_verified": "2026-03-01"
+  },
+  {
+    "id": "comp-tatamotors",
+    "name": "Tata Motors",
+    "domain": "Automotive Engineering, Electric Vehicles (EV) & Commercial Vehicles",
+    "type": "Core Engineering Conglomerate",
+    "official_website": "https://www.tatamotors.com",
+    "official_careers_url": "https://www.tatamotors.com/careers",
+    "relevant_categories": [
+      "core_engineering",
+      "it_software"
+    ],
+    "common_roles": [
+      "Graduate Engineer Trainee (GET)",
+      "EV Powertrain & Battery Systems Engineer",
+      "Vehicle Dynamics & Suspension Engineer",
+      "Embedded Automotive Software Engineer (AUTOSAR)",
+      "Manufacturing & Assembly Line Engineer"
+    ],
+    "verified_skills": [
+      "CATIA / SolidWorks",
+      "ANSYS FEA",
+      "Embedded C & CAN Protocol",
+      "Thermodynamics & Heat Transfer",
+      "Electric Drive Systems"
+    ],
+    "education_req": "B.Tech in Mechanical, Automobile, Electrical, or Electronics Engineering with first-class marks.",
+    "locations": [
+      "Pune",
+      "Jamshedpur",
+      "Lucknow",
+      "Bengaluru",
+      "Ahmedabad"
+    ],
+    "internship_opportunities": "Summer Trainee Program for engineering students.",
+    "hiring_process": "Campus drives and National All-India Trainee Selection assessment.",
+    "last_verified": "2026-03-01"
+  },
+  {
+    "id": "comp-bhel",
+    "name": "Bharat Heavy Electricals Limited (BHEL)",
+    "domain": "Power Equipment, Defense, Transmission & Renewable Energy",
+    "type": "Maharatna Central PSU",
+    "official_website": "https://www.bhel.com",
+    "official_careers_url": "https://careers.bhel.in",
+    "relevant_categories": [
+      "core_engineering",
+      "govt_psu"
+    ],
+    "common_roles": [
+      "Engineer Trainee (Mechanical / Electrical / Civil / Chemical)",
+      "Executive Trainee (Finance / HR)",
+      "Scientific & Plant Operations Specialist"
+    ],
+    "verified_skills": [
+      "GATE Core Discipline Syllabus",
+      "Power Plant Systems",
+      "Turbine & Boiler Thermodynamics",
+      "Switchgear & High Voltage"
+    ],
+    "education_req": "Full-time B.Tech / B.E. in relevant discipline with min 65% aggregate.",
+    "locations": [
+      "New Delhi",
+      "Bhopal",
+      "Haridwar",
+      "Hyderabad",
+      "Tiruchirappalli",
+      "Ranipet"
+    ],
+    "internship_opportunities": "Structured Industrial Internship Scheme for 2nd and 3rd year engineering students.",
+    "hiring_process": "Recruitment directly through valid GATE scorecard ranking followed by personal interview.",
+    "last_verified": "2026-03-01"
+  },
+  {
+    "id": "comp-isro",
+    "name": "Indian Space Research Organisation (ISRO)",
+    "domain": "Space Exploration, Satellite Technology & Launch Vehicle Propulsion",
+    "type": "Government Aerospace & R&D Agency",
+    "official_website": "https://www.isro.gov.in",
+    "official_careers_url": "https://www.isro.gov.in/Careers.html",
+    "relevant_categories": [
+      "core_engineering",
+      "it_software",
+      "data_ai",
+      "govt_psu"
+    ],
+    "common_roles": [
+      "Scientist / Engineer 'SC' (Mechanical, Electronics, Computer Science, Civil)",
+      "Technical Assistant",
+      "Scientific Officer"
+    ],
+    "verified_skills": [
+      "Discipline Fundamentals",
+      "Control Systems",
+      "Aerodynamics / Structures",
+      "Digital Signal Processing",
+      "C/C++ & Real-Time OS"
+    ],
+    "education_req": "B.Tech in First Class with an aggregate minimum of 65% marks or 6.84 CGPA.",
+    "locations": [
+      "Bengaluru (HQ / URSC)",
+      "Thiruvananthapuram (VSSC)",
+      "Sriharikota (SDSC-SHAR)",
+      "Ahmedabad (SAC)"
+    ],
+    "internship_opportunities": "Undergraduate student project internships at VSSC, SAC, and URSC centers.",
+    "hiring_process": "ISRO Centralised Recruitment Board (ICRB) all-India written exam OR GATE score screening followed by in-depth technical interview.",
+    "last_verified": "2026-03-01"
+  },
+  {
+    "id": "comp-drdo",
+    "name": "Defence Research & Development Organisation (DRDO)",
+    "domain": "Military Avionics, Missiles, Radar Systems & Defense AI",
+    "type": "Government Defense R&D Agency",
+    "official_website": "https://www.drdo.gov.in",
+    "official_careers_url": "https://rac.gov.in",
+    "relevant_categories": [
+      "core_engineering",
+      "it_software",
+      "cyber_security",
+      "govt_psu"
+    ],
+    "common_roles": [
+      "Scientist 'B' (Level 10 Gazetted - CSE, ECE, Mechanical, EE, Aeronautical, Chemical)",
+      "Junior Research Fellow (JRF)"
+    ],
+    "verified_skills": [
+      "GATE Syllabus Mastery",
+      "Radar & RF Systems",
+      "Aerodynamics",
+      "Embedded Firmware",
+      "Cryptography"
+    ],
+    "education_req": "At least First Class B.Tech in relevant branch with valid GATE scorecard.",
+    "locations": [
+      "New Delhi",
+      "Hyderabad",
+      "Bengaluru",
+      "Pune",
+      "Chandigarh",
+      "Dehradun"
+    ],
+    "internship_opportunities": "Apprenticeship and final year project student sponsorships through RAC.",
+    "hiring_process": "Recruitment and Assessment Centre (RAC) screening via GATE score followed by comprehensive personal interview.",
+    "last_verified": "2026-03-01"
+  },
+  {
+    "id": "comp-swiggy",
+    "name": "Swiggy",
+    "domain": "Hyperlocal Delivery, Logistics & High-Scale FinTech",
+    "type": "Indian Tech Unicorn",
+    "official_website": "https://www.swiggy.com",
+    "official_careers_url": "https://www.swiggy.com/careers",
+    "relevant_categories": [
+      "it_software",
+      "data_ai",
+      "non_it_business"
+    ],
+    "common_roles": [
+      "Software Development Engineer I (Backend / Full Stack)",
+      "Data Scientist (Optimization & Routing)",
+      "Associate Product Manager",
+      "DevOps / SRE Engineer"
+    ],
+    "verified_skills": [
+      "Java / Go / Python",
+      "High-Concurrency Distributed Systems",
+      "Kafka",
+      "Redis",
+      "MySQL",
+      "AWS Cloud"
+    ],
+    "education_req": "B.Tech / B.E. in Computer Science or related fields with solid project portfolio.",
+    "locations": [
+      "Bengaluru (HQ)",
+      "Remote / Hybrid"
+    ],
+    "internship_opportunities": "Software Engineering 6-Month Internships for final-year students.",
+    "hiring_process": "Online Machine Coding Round + Data Structures Interview + System Design Discussion.",
+    "last_verified": "2026-03-01"
+  },
+  {
+    "id": "comp-razorpay",
+    "name": "Razorpay",
+    "domain": "Payments Gateway, Neo-Banking & Financial Infrastructure",
+    "type": "FinTech Unicorn",
+    "official_website": "https://razorpay.com",
+    "official_careers_url": "https://razorpay.com/jobs",
+    "relevant_categories": [
+      "it_software",
+      "data_ai",
+      "cyber_security"
+    ],
+    "common_roles": [
+      "Software Development Engineer 1 (Platform / Core Payments)",
+      "Security Engineer (AppSec / CloudSec)",
+      "Frontend Developer (React / Next.js)",
+      "Data Engineer"
+    ],
+    "verified_skills": [
+      "PHP / Go / Java / Python",
+      "Relational Databases & Transactions",
+      "API Security",
+      "Kafka",
+      "Docker"
+    ],
+    "education_req": "B.Tech / B.E. with strong engineering discipline and coding skills.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "internship_opportunities": "Razorpay Engineering Internship Program.",
+    "hiring_process": "Online Assessment -> Coding & Problem Solving -> Low Level Design -> Culture Fit.",
+    "last_verified": "2026-03-01"
+  }
+]

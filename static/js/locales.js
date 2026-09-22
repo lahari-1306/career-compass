@@ -320,6 +320,32 @@ window.LOCALES = {
       "g3_text": "Every career card, exam notice, and scholarship links directly to the legal government portal.",
       "g4_title": "Dual AI Intelligence:",
       "g4_text": "Server-side Google Gemini integration when active, paired with an offline rule-based knowledge engine that never crashes."
+    },
+    "btech_careers": {
+      "context_completed": "🎓 I have completed B.Tech / Final Year",
+      "context_aspirant": "📚 Exploring B.Tech as a Degree to Study",
+      "branch_prompt": "What was your B.Tech branch? (Used as filter):",
+      "what_next_title": "WHAT DO YOU WANT TO DO AFTER B.TECH?",
+      "what_next_subtitle": "Select a major pathway below to explore roles, entrance exams, or higher education tailored to your branch.",
+      "explore_pathway": "Explore Pathway →",
+      "back_to_pathways": "← Back to All Post-B.Tech Pathways",
+      "filter_job_categories": "Job Category:",
+      "all_categories": "All Categories",
+      "company_directory_title": "Verified Company Directory",
+      "company_directory_subtitle": "Authentic employer profiles with official careers and recruitment portal links.",
+      "filter_company_type": "Company Type:",
+      "all_company_types": "All Types",
+      "view_role_details": "View Role Blueprint",
+      "apply_careers": "Official Careers Portal",
+      "compare_btn": "⚖️ Compare Pathways Side-by-Side",
+      "responsibilities": "Key Responsibilities",
+      "skills_to_learn": "Skills to Learn",
+      "tools_tech": "Tools & Technologies",
+      "beginner_roadmap": "Beginner Preparation Roadmap",
+      "projects": "Portfolio Projects to Build",
+      "certifications": "Recommended Industry Certifications",
+      "companies_hiring": "Prominent Companies Hiring for This Role",
+      "disclaimer_jobs": "Career guidance based on verified industry job profiles. Check official company career links for active job listings."
     }
   },
   "te": {
@@ -642,6 +668,32 @@ window.LOCALES = {
       "g3_text": "ప్రతి కెరీర్ కార్డ్, పరీక్ష మరియు స్కాలర్‌షిప్ నేరుగా ప్రభుత్వ పోర్టల్‌కు అనుసంధానించబడి ఉంటుంది.",
       "g4_title": "ద్వంద్వ ఏఐ సామర్థ్యం:",
       "g4_text": "సర్వర్ సైడ్ గూగుల్ జెమినీ ఏఐ తో పాటు ఎప్పుడూ నిరంతరాయంగా పనిచేసే ఆఫ్‌లైన్ విజ్ఞాన ఇంజిన్ అందుబాటులో ఉంటుంది."
+    },
+    "btech_careers": {
+      "context_completed": "🎓 నేను B.Tech పూర్తి చేశాను / చివరి సంవత్సరం",
+      "context_aspirant": "📚 B.Tech డిగ్రీలో చేరాలనుకుంటున్నాను (బ్రాంచ్‌ల సమాచారం)",
+      "branch_prompt": "మీ B.Tech బ్రాంచ్ ఏది? (ఫిల్టర్ కోసం ఉపయోగించబడుతుంది):",
+      "what_next_title": "B.TECH తర్వాత మీరు ఏమి చేయాలనుకుంటున్నారు?",
+      "what_next_subtitle": "మీ బ్రాంచ్ మరియు ఆసక్తులకు అనుగుణంగా ఉద్యోగాలు, ప్రవేశ పరీక్షలు మరియు ఉన్నత విద్యను అన్వేషించడానికి క్రింది మార్గాలను ఎంచుకోండి.",
+      "explore_pathway": "మార్గదర్శనం చూడండి →",
+      "back_to_pathways": "← అన్ని B.Tech అనంతర మార్గాలకు తిరిగి వెళ్ళండి",
+      "filter_job_categories": "ఉద్యోగ విభాగం:",
+      "all_categories": "అన్ని విభాగాలు",
+      "company_directory_title": "ధృవీకరించబడిన కంపెనీల డైరెక్టరీ",
+      "company_directory_subtitle": "అధికారిక కెరీర్స్ మరియు రిక్రూట్‌మెంట్ పోర్టల్ లింక్‌లతో ప్రామాణిక కంపెనీ సమాచారం.",
+      "filter_company_type": "కంపెనీ రకం:",
+      "all_company_types": "అన్ని రకాలు",
+      "view_role_details": "రోల్ పూర్తి వివరాలు",
+      "apply_careers": "అధికారిక కెరీర్స్ పోర్టల్",
+      "compare_btn": "⚖️ కెరీర్ మార్గాలను సరిపోల్చండి",
+      "responsibilities": "ప్రధాన బాధ్యతలు",
+      "skills_to_learn": "నేర్చుకోవలసిన నైపుణ్యాలు",
+      "tools_tech": "టూల్స్ & టెక్నాలజీలు",
+      "beginner_roadmap": "ప్రారంభ ప్రణాళిక (రోడ్‌మ్యాప్)",
+      "projects": "తయారు చేయవలసిన పోర్ట్‌ఫోలియో ప్రాజెక్టులు",
+      "certifications": "సిఫార్సు చేయబడిన సర్టిఫికేషన్లు",
+      "companies_hiring": "ఈ ఉద్యోగాన్ని అందించే ప్రముఖ కంపెనీలు",
+      "disclaimer_jobs": "ధృవీకరించబడిన పరిశ్రమ సమాచారం ఆధారంగా కెరీర్ మార్గదర్శనం. ప్రస్తుత ఉద్యోగాల కోసం అధికారిక కంపెనీ లింక్‌లను తనిఖీ చేయండి."
     }
   },
   "hi": {
@@ -964,6 +1016,32 @@ window.LOCALES = {
       "g3_text": "प्रत्येक करियर कार्ड, परीक्षा नोटिस और छात्रवृत्ति सीधे आधिकारिक सरकारी पोर्टल से लिंक है।",
       "g4_title": "दोहरी एआई बुद्धिमत्ता:",
       "g4_text": "सर्वर-साइड गूगल जेमिनी एआई एकीकरण के साथ-साथ एक ऑफलाइन नियम-आधारित ज्ञान इंजन जो हमेशा उपलब्ध रहता है।"
+    },
+    "btech_careers": {
+      "context_completed": "🎓 मैंने B.Tech पूरा कर लिया है / अंतिम वर्ष",
+      "context_aspirant": "📚 B.Tech में प्रवेश लेना चाहते हैं (शाखाओं का विवरण)",
+      "branch_prompt": "आपकी B.Tech शाखा कौन सी थी? (फिल्टर हेतु):",
+      "what_next_title": "B.TECH के बाद आप क्या करना चाहते हैं?",
+      "what_next_subtitle": "अपनी शाखा और लक्ष्यों के अनुसार नौकरियां, प्रवेश परीक्षाएं और उच्च शिक्षा के प्रमुख 9 मार्ग खोजें।",
+      "explore_pathway": "मार्ग देखें →",
+      "back_to_pathways": "← B.Tech के सभी प्रमुख मार्गों पर वापस जाएं",
+      "filter_job_categories": "नौकरी श्रेणी:",
+      "all_categories": "सभी श्रेणियां",
+      "company_directory_title": "सत्यापित कंपनी डायरेक्टरी",
+      "company_directory_subtitle": "आधिकारिक करियर एवं भर्ती पोर्टल लिंक के साथ प्रामाणिक कंपनियों की जानकारी।",
+      "filter_company_type": "कंपनी का प्रकार:",
+      "all_company_types": "सभी प्रकार",
+      "view_role_details": "पद का पूरा विवरण",
+      "apply_careers": "आधिकारिक करियर पोर्टल",
+      "compare_btn": "⚖️ करियर विकल्पों की तुलना करें",
+      "responsibilities": "प्रमुख जिम्मेदारियां",
+      "skills_to_learn": "सीखने योग्य कौशल",
+      "tools_tech": "टूल्स और तकनीकें",
+      "beginner_roadmap": "शुरुआती रोडमैप",
+      "projects": "बनाने योग्य प्रोजेक्ट्स",
+      "certifications": "अनुशंसित प्रमाणन",
+      "companies_hiring": "इस पद पर भर्ती करने वाली प्रमुख कंपनियां",
+      "disclaimer_jobs": "सत्यापित औद्योगिक डेटा पर आधारित करियर मार्गदर्शन। सक्रिय रिक्तियों के लिए कंपनी के आधिकारिक लिंक देखें।"
     }
   }
 };

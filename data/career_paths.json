@@ -567,8 +567,19 @@
     ]
   },
   "btech": {
-    "title": "Options After B.Tech / B.E. (Engineering)",
-    "description": "High-growth technology careers, core engineering, GATE for Maharatna PSUs & M.Tech at IITs, UPSC Engineering Services (ESE), Defence technical commissions, and MS abroad.",
+    "title": "Educational & Career Pathways for B.Tech / B.E. (Engineering)",
+    "description": "Comprehensive navigation for prospective engineering aspirants choosing disciplines, and dedicated career pathways for B.Tech graduates across jobs, higher studies, competitive exams, PSUs, and defence commissions.",
+    "post_grad_pathways_summary": [
+      { "id": "job", "name": "1. 💼 Private & Corporate Jobs", "desc": "IT / Software, Data & AI, Cyber Security, Core Engineering, Non-IT & Business with verified company directory." },
+      { "id": "higher_studies", "name": "2. 🎓 Higher Studies", "desc": "M.Tech / M.E., MS Abroad, MBA / PGDM, and Direct Ph.D at IITs/IISc." },
+      { "id": "competitive_exams", "name": "3. 📝 Competitive Exams", "desc": "In-depth GATE guide, UPSC Engineering Services (ESE), CAT, and Banking IT." },
+      { "id": "govt_psu", "name": "4. 🏛️ Government & PSU Careers", "desc": "Maharatna PSUs, ISRO Scientist SC, DRDO RAC, BARC, RRB SSE/JE, and State Engineering Services." },
+      { "id": "defence", "name": "5. 🛡️ Defence Technical Entries", "desc": "Army TGC, SSC-Tech, Navy Technical Officer, and AFCAT commissions." },
+      { "id": "entrepreneurship", "name": "6. 🚀 Entrepreneurship & Startups", "desc": "Startup India seed grants, academic incubators (T-Hub, NSRCEL), and prototype funding." },
+      { "id": "study_abroad", "name": "7. 🌍 Study & Work Abroad", "desc": "MS in USA (3-yr STEM OPT), Germany (Tuition-free public universities), and Europe." },
+      { "id": "upskilling", "name": "8. 📚 Professional Upskilling", "desc": "AWS/Azure Cloud Architect, Kubernetes (CKA), OSCP, Full-Stack, and NPTEL." },
+      { "id": "career_change", "name": "9. 🔄 Career Transition", "desc": "Product Management, Management Consulting, UI/UX, and Civil Services." }
+    ],
     "branches": [
       {
         "name": "CSE / IT / AI-ML / Data Science / Cyber Security",

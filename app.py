@@ -160,6 +160,137 @@ def get_digital_library():
 def get_official_links():
     return jsonify(load_json("official_links.json"))
 
+# ==========================================
+# B.TECH COMPLETED CAREER PATHWAYS & JOBS API
+# ==========================================
+
+@app.route("/api/btech/pathways")
+def get_btech_pathways():
+    data = load_json("btech_post_grad_pathways.json") or {}
+    branch = request.args.get("branch", "").strip().upper()
+    pathway_id = request.args.get("pathway", "").strip().lower()
+
+    pathways = data.get("pathways", [])
+    if pathway_id:
+        target = next((p for p in pathways if p["id"] == pathway_id), None)
+        if not target:
+            return jsonify({"status": "error", "message": "Pathway not found"}), 404
+        return jsonify({"status": "success", "pathway": target, "branch": branch or "ALL"})
+
+    return jsonify({
+        "status": "success",
+        "total_pathways": len(pathways),
+        "pathways": pathways,
+        "branch": branch or "ALL"
+    })
+
+@app.route("/api/btech/jobs")
+def get_btech_jobs():
+    data = load_json("btech_post_grad_pathways.json") or {}
+    categories = data.get("job_categories", [])
+    
+    branch = request.args.get("branch", "").strip().upper()
+    cat_filter = request.args.get("category", "").strip().lower()
+    search = request.args.get("search", "").strip().lower()
+
+    filtered_categories = []
+    total_roles = 0
+
+    for cat in categories:
+        if cat_filter and cat_filter != "all" and cat["id"] != cat_filter:
+            continue
+        
+        roles = cat.get("roles", [])
+        filtered_roles = []
+        for role in roles:
+            # Branch filter: role matches if branch in role['branches'] or 'Other' in role['branches'] or not branch or branch == 'ALL'
+            if branch and branch != "ALL":
+                role_branches = [b.upper() for b in role.get("branches", [])]
+                if branch not in role_branches and "OTHER" not in role_branches:
+                    continue
+            
+            # Search filter
+            if search:
+                blob = (role.get("name", "") + " " + " ".join(role.get("skills", [])) + " " + role.get("what_they_do", "") + " " + " ".join(role.get("tools", []))).lower()
+                if search not in blob:
+                    continue
+
+            filtered_roles.append(role)
+        
+        total_roles += len(filtered_roles)
+        cat_copy = dict(cat)
+        cat_copy["roles"] = filtered_roles
+        filtered_categories.append(cat_copy)
+
+    return jsonify({
+        "status": "success",
+        "branch": branch or "ALL",
+        "total_roles": total_roles,
+        "categories": filtered_categories
+    })
+
+@app.route("/api/btech/companies")
+def get_btech_companies():
+    companies = load_json("companies_directory.json") or []
+    comp_type = request.args.get("type", "").strip().lower()
+    category = request.args.get("category", "").strip().lower()
+    search = request.args.get("search", "").strip().lower()
+
+    filtered = []
+    for c in companies:
+        if comp_type and comp_type != "all" and comp_type not in c.get("type", "").lower():
+            continue
+        if category and category != "all" and category not in [cat.lower() for cat in c.get("relevant_categories", [])]:
+            continue
+        if search:
+            blob = (c.get("name", "") + " " + c.get("domain", "") + " " + " ".join(c.get("common_roles", [])) + " " + " ".join(c.get("verified_skills", []))).lower()
+            if search not in blob:
+                continue
+        filtered.append(c)
+
+    return jsonify({
+        "status": "success",
+        "total": len(filtered),
+        "companies": filtered
+    })
+
+@app.route("/api/btech/compare")
+def get_btech_comparisons():
+    data = load_json("btech_post_grad_pathways.json") or {}
+    comps = data.get("pathway_comparisons", [])
+    comp_id = request.args.get("id", "").strip()
+    if comp_id:
+        target = next((c for c in comps if c["id"] == comp_id), None)
+        if not target:
+            return jsonify({"status": "error", "message": "Comparison not found"}), 404
+        return jsonify({"status": "success", "comparison": target})
+    return jsonify({"status": "success", "total": len(comps), "comparisons": comps})
+
+@app.route("/api/btech/higher-studies")
+def get_btech_higher_studies():
+    data = load_json("btech_post_grad_pathways.json") or {}
+    return jsonify({
+        "status": "success",
+        "higher_studies": data.get("higher_studies_directory", [])
+    })
+
+@app.route("/api/btech/gate")
+def get_btech_gate_guide():
+    data = load_json("btech_post_grad_pathways.json") or {}
+    return jsonify({
+        "status": "success",
+        "gate_guide": data.get("gate_guide", {})
+    })
+
+@app.route("/api/btech/defence")
+def get_btech_defence_pathways():
+    data = load_json("btech_post_grad_pathways.json") or {}
+    return jsonify({
+        "status": "success",
+        "defence_pathways": data.get("defence_pathways", [])
+    })
+
+
 def generate_rule_based_recommendation(user_profile, query_text, language="en"):
     qual = user_profile.get("qualification", "").lower()
     branch = user_profile.get("branch", "").lower()

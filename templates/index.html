@@ -846,6 +846,87 @@
     </div>
   </div>
 
+  <!-- Job Role Blueprint Modal -->
+  <div id="job-role-modal" class="modal-overlay hidden" onclick="closeJobRoleModal(event)">
+    <div class="modal-card" style="max-width: 720px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div id="role-modal-badge" class="badge badge-primary">IT / SOFTWARE</div>
+        <button class="close-btn" onclick="closeJobRoleModal()">&times;</button>
+      </div>
+      <h3 id="role-modal-title" class="modal-title">Job Role Blueprint</h3>
+      <p id="role-modal-desc" class="modal-org">What this role entails and how to prepare</p>
+      
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 1rem; max-height: 65vh; overflow-y: auto;">
+        <div>
+          <strong style="color: var(--primary); font-size: 0.88rem;" data-i18n="btech_careers.responsibilities">Key Responsibilities</strong>
+          <ul id="role-modal-responsibilities" style="padding-left: 1.25rem; font-size: 0.84rem; margin-top: 0.35rem; color: var(--text-secondary);"></ul>
+        </div>
+        <div>
+          <strong style="color: var(--primary); font-size: 0.88rem;" data-i18n="btech_careers.skills_to_learn">Skills to Learn</strong>
+          <div id="role-modal-skills" style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.35rem;"></div>
+        </div>
+        <div>
+          <strong style="color: var(--primary); font-size: 0.88rem;" data-i18n="btech_careers.tools_tech">Tools & Technologies</strong>
+          <div id="role-modal-tools" style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.35rem;"></div>
+        </div>
+        <div>
+          <strong style="color: var(--primary); font-size: 0.88rem;" data-i18n="btech_careers.beginner_roadmap">Beginner Preparation Roadmap</strong>
+          <p id="role-modal-roadmap" style="font-size: 0.84rem; background: var(--bg-hover); padding: 0.65rem; border-radius: 6px; margin-top: 0.35rem;"></p>
+        </div>
+        <div>
+          <strong style="color: var(--primary); font-size: 0.88rem;" data-i18n="btech_careers.projects">Portfolio Projects to Build</strong>
+          <ul id="role-modal-projects" style="padding-left: 1.25rem; font-size: 0.84rem; margin-top: 0.35rem;"></ul>
+        </div>
+        <div>
+          <strong style="color: var(--primary); font-size: 0.88rem;" data-i18n="btech_careers.certifications">Recommended Industry Certifications</strong>
+          <div id="role-modal-certs" style="font-size: 0.84rem; margin-top: 0.35rem; color: var(--text-secondary);"></div>
+        </div>
+        <div>
+          <strong style="color: var(--primary); font-size: 0.88rem;" data-i18n="btech_careers.companies_hiring">Prominent Companies Hiring for This Role</strong>
+          <div id="role-modal-companies" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.35rem;"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <button id="role-ask-ai-btn" class="btn btn-secondary btn-sm" onclick="askAIAboutJobRole()">
+          <i data-lucide="sparkles" class="icon-xs"></i> Ask AI About This Role
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="closeJobRoleModal()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pathway Comparison Modal -->
+  <div id="pathway-compare-modal" class="modal-overlay hidden" onclick="closePathwayCompareModal(event)">
+    <div class="modal-card" style="max-width: 820px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="badge badge-primary">⚖️ PATHWAY COMPARISON</div>
+        <button class="close-btn" onclick="closePathwayCompareModal()">&times;</button>
+      </div>
+      <h3 class="modal-title" data-i18n="btech_careers.compare_btn">Objective Pathway Comparison</h3>
+      <p class="modal-org">Analyze trade-offs, timelines, and career outcomes without biased rankings</p>
+      
+      <div style="margin-top: 0.75rem; margin-bottom: 1rem;">
+        <label style="font-size: 0.82rem; font-weight: 700; color: var(--text-secondary);">Select Comparison Scenario:</label>
+        <select id="compare-select" class="form-control" style="margin-top: 0.35rem;" onchange="handleComparisonChange()">
+          <option value="comp-job-vs-mtech">Private Industry Job vs M.Tech (Higher Studies)</option>
+          <option value="comp-mtech-vs-ms">M.Tech in India vs MS Abroad (USA / Germany)</option>
+          <option value="comp-govt-vs-private">Government / PSU Career vs Private Tech Industry</option>
+        </select>
+      </div>
+
+      <div id="compare-matrix-container" class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+        <!-- Dynamically rendered -->
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closePathwayCompareModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Radar Profile Customization Modal -->
   <div id="radar-profile-modal" class="modal-overlay hidden" onclick="closeRadarProfileModal(event)">
     <div class="modal-card" style="max-width: 640px;" onclick="event.stopPropagation()">

@@ -1,0 +1,1317 @@
+{
+  "pathways": [
+    {
+      "id": "job",
+      "title": "Private & Corporate Job Opportunities",
+      "tagline": "Campus placement, off-campus drives, tech roles, and core engineering positions",
+      "icon": "briefcase",
+      "badge": "Corporate & Industry",
+      "description": "Direct industry employment across IT, Software, Data, Cyber Security, Core Engineering, and Techno-Management sectors.",
+      "prerequisites": "B.Tech in relevant discipline, solid foundational skills, portfolio projects, and interview readiness.",
+      "estimated_starting_ctc": "Rs 3.5 LPA to Rs 24+ LPA (depending on product/services tier, branch, and technical skill)",
+      "categories_count": 5
+    },
+    {
+      "id": "higher_studies",
+      "title": "Higher Studies (M.Tech, MS, MBA, Ph.D)",
+      "tagline": "Advanced specialization, university research, and executive master's degrees",
+      "icon": "graduation-cap",
+      "badge": "Postgraduate & Research",
+      "description": "Deepen technical mastery through M.Tech/MS or pivot to leadership through MBA/PGDM at premier Indian and international institutions.",
+      "prerequisites": "Qualifying entrance examination (GATE, CAT, GRE, GMAT) and undergraduate CGPA (typically min 60% or 6.5+ CGPA).",
+      "estimated_starting_ctc": "Rs 12 LPA to Rs 35+ LPA post-graduation from top-tier institutions (IITs, IIMs, IISc, Top US/European Universities)",
+      "categories_count": 5
+    },
+    {
+      "id": "competitive_exams",
+      "title": "Competitive & Entrance Examinations",
+      "tagline": "GATE, UPSC ESE, CAT, Banking IT Officer, and national scholarship tests",
+      "icon": "file-check",
+      "badge": "National Entrance",
+      "description": "Standardized competitive gateways unlocking premier PSU recruitments, government gazetted ranks, and Tier-1 institution admissions.",
+      "prerequisites": "Comprehensive discipline-specific syllabus mastery, rigorous PYQ practice, and time management.",
+      "estimated_starting_ctc": "Access to Level 10 Gazetted Pay (Rs 56,100 basic) and Maharatna PSU packages (Rs 15-22 LPA)",
+      "categories_count": 6
+    },
+    {
+      "id": "govt_psu",
+      "title": "Government & PSU Engineering Careers",
+      "tagline": "Maharatna PSUs, ISRO, DRDO, BARC, Indian Railways, and Central Ministries",
+      "icon": "landmark",
+      "badge": "Public Sector & R&D",
+      "description": "Prestigious public service engineering appointments offering job security, social impact, R&D exposure, and 7th CPC central pay scales.",
+      "prerequisites": "Valid GATE scorecard or clearance of dedicated selection exams (ISRO ICRB, DRDO RAC, RRB, State PSC).",
+      "estimated_starting_ctc": "Rs 12 LPA to Rs 22 LPA (PSU CTC) or 7th CPC Level 7 to Level 10 + DA + HRA + Medical",
+      "categories_count": 5
+    },
+    {
+      "id": "defence",
+      "title": "Indian Armed Forces Technical Commissions",
+      "tagline": "Direct SSB engineering entries into Indian Army, Navy, and Air Force",
+      "icon": "shield",
+      "badge": "Armed Forces Commissions",
+      "description": "Direct commission as Officer (Lieutenant / Sub Lieutenant / Flying Officer) in the military based on B.Tech merit and SSB evaluation.",
+      "prerequisites": "B.Tech in recognized branch, Indian nationality, unmarried status (for most entries), physical/medical fitness, age 20-27 yrs.",
+      "estimated_starting_ctc": "Level 10 (Rs 56,100 basic + Rs 15,500 Military Service Pay + Allowances = ~Rs 1.1 Lakhs/month gross)",
+      "categories_count": 5
+    },
+    {
+      "id": "entrepreneurship",
+      "title": "Entrepreneurship & Startup Incubation",
+      "tagline": "Build tech ventures, SaaS products, hardware innovations, and engineering firms",
+      "icon": "rocket",
+      "badge": "Venture Building",
+      "description": "Found your own technology startup with support from national incubation cells, government prototyping grants, and angel networks.",
+      "prerequisites": "Validated problem statement, working MVP/prototype, market research, and understanding of unit economics.",
+      "estimated_starting_ctc": "Founder equity, seed funding grants (up to Rs 10-50 Lakhs under Startup India / PRAYAS)",
+      "categories_count": 4
+    },
+    {
+      "id": "study_abroad",
+      "title": "Study & Work Abroad (Global MS / Ph.D)",
+      "tagline": "International Master's degrees in USA, Germany, UK, Canada, and Europe",
+      "icon": "globe",
+      "badge": "International Mobility",
+      "description": "Global graduate studies offering international research exposure, STEM OPT work authorizations, and global career pathways.",
+      "prerequisites": "Standardized test scores (GRE, TOEFL/IELTS), academic transcripts, Statement of Purpose (SOP), and Letters of Recommendation (LOR).",
+      "estimated_starting_ctc": "$80,000 to $130,000+ USD / annum in US tech hubs, or €50,000 to €75,000 EUR in Germany/EU",
+      "categories_count": 4
+    },
+    {
+      "id": "upskilling",
+      "title": "Professional Certifications & Upskilling",
+      "tagline": "Cloud, DevOps, Full-Stack, AI/ML, and Cyber Security industry credentials",
+      "icon": "award",
+      "badge": "Skill Accreditations",
+      "description": "Targeted industry certifications and real-world project portfolios to bridge skill gaps and unlock high-paying niche engineering roles.",
+      "prerequisites": "Dedicated 3 to 6 months of structured hands-on lab work and official exam preparation.",
+      "estimated_starting_ctc": "30% to 70% salary premium compared to non-certified generalist graduates",
+      "categories_count": 5
+    },
+    {
+      "id": "career_change",
+      "title": "Career Transition to Non-Engineering Domains",
+      "tagline": "Product management, finance, UI/UX, consulting, civil services, and law",
+      "icon": "repeat",
+      "badge": "Interdisciplinary Pivot",
+      "description": "Leverage your engineering analytical foundation to transition into high-impact management, design, public policy, or corporate law roles.",
+      "prerequisites": "Domain-specific portfolio, foundation courses, or qualifying postgraduate degrees (CAT for MBA, 3-Yr LLB, etc.).",
+      "estimated_starting_ctc": "Rs 8 LPA to Rs 28 LPA (Product Management / Top-Tier Management Consulting / Investment Banking)",
+      "categories_count": 5
+    }
+  ],
+  "job_categories": [
+    {
+      "id": "it_software",
+      "name": "IT & Software Development",
+      "description": "Core software engineering, web services, mobile apps, cloud infrastructure, quality engineering, and system design.",
+      "relevant_branches": [
+        "CSE",
+        "IT",
+        "AI/ML",
+        "Data Science",
+        "Cyber Security",
+        "ECE",
+        "EEE",
+        "Other"
+      ],
+      "roles": [
+        {
+          "id": "role-frontend",
+          "name": "Frontend Web Developer",
+          "category": "it_software",
+          "branches": [
+            "CSE",
+            "IT",
+            "AI/ML",
+            "Data Science",
+            "ECE",
+            "EEE",
+            "Other"
+          ],
+          "what_they_do": "Architects, develops, and optimizes interactive, responsive user interfaces and client-side web applications.",
+          "responsibilities": [
+            "Translate UI/UX wireframes into performant, clean HTML/CSS/JavaScript and React/Vue/Angular code.",
+            "Integrate RESTful APIs and WebSocket endpoints with seamless asynchronous state management.",
+            "Ensure cross-browser compatibility, responsive mobile layouts, and Web Content Accessibility (WCAG).",
+            "Optimize frontend bundle size, caching headers, and Core Web Vitals (LCP, FID, CLS)."
+          ],
+          "skills": [
+            "JavaScript (ES6+)",
+            "TypeScript",
+            "React.js / Next.js",
+            "HTML5 & Modern CSS",
+            "Tailwind CSS",
+            "Redux / Zustand",
+            "Git & GitHub"
+          ],
+          "tools": [
+            "VS Code",
+            "Chrome DevTools",
+            "npm/yarn",
+            "Webpack/Vite",
+            "Figma",
+            "Postman"
+          ],
+          "qualification_req": "B.Tech / B.E. in any branch with strong JavaScript/React portfolio or competitive coding exposure.",
+          "beginner_roadmap": "1. Master HTML/CSS/ES6 -> 2. Build 3 vanilla JS interactive projects -> 3. Learn React and state management -> 4. Integrate real APIs -> 5. Deploy portfolio on Vercel/Render.",
+          "projects_to_build": [
+            "Interactive E-Commerce Store with cart state and payment mock.",
+            "Real-Time Collaborative Kanban Board with drag-and-drop.",
+            "Personalized Job Application Tracker connecting to open public APIs."
+          ],
+          "certifications": [
+            "Meta Front-End Developer Professional Certificate (Coursera)",
+            "freeCodeCamp Responsive Web Design"
+          ],
+          "companies": [
+            "Infosys",
+            "TCS",
+            "Wipro",
+            "Razorpay",
+            "Swiggy",
+            "Google",
+            "Microsoft"
+          ],
+          "official_careers_url": "https://careers.infosys.com"
+        },
+        {
+          "id": "role-backend",
+          "name": "Backend Software Engineer",
+          "category": "it_software",
+          "branches": [
+            "CSE",
+            "IT",
+            "AI/ML",
+            "Data Science",
+            "Cyber Security",
+            "ECE",
+            "EEE",
+            "Other"
+          ],
+          "what_they_do": "Designs, implements, and maintains server-side architecture, database schemas, business logic, microservices, and secure APIs.",
+          "responsibilities": [
+            "Develop high-throughput, low-latency RESTful and gRPC APIs in Java, Python, Go, or Node.js.",
+            "Design normalized relational (PostgreSQL, MySQL) and NoSQL (MongoDB, Redis) data models.",
+            "Implement authentication, authorization (JWT, OAuth2), rate-limiting, and encryption.",
+            "Write comprehensive automated unit, integration, and stress tests (JUnit, PyTest, Jest)."
+          ],
+          "skills": [
+            "Core Java / Python / Go / Node.js",
+            "SQL & Relational Databases",
+            "Data Structures & Algorithms (DSA)",
+            "REST & gRPC APIs",
+            "Docker",
+            "Redis Caching"
+          ],
+          "tools": [
+            "Postman",
+            "Docker",
+            "PostgreSQL / pgAdmin",
+            "Git",
+            "Maven/Gradle",
+            "IntelliJ IDEA"
+          ],
+          "qualification_req": "B.Tech / B.E. (CSE, IT, ECE preferred, all branches eligible with demonstrable backend skills).",
+          "beginner_roadmap": "1. Master one backend language (Java/Python/Node) -> 2. Master relational database design and SQL queries -> 3. Build RESTful APIs -> 4. Implement caching and Auth -> 5. Containerize with Docker.",
+          "projects_to_build": [
+            "Scalable URL Shortener with analytics and Redis caching.",
+            "Banking Transaction Ledger with ACID compliance and concurrency handling.",
+            "Role-Based Access Control (RBAC) Microservice with JWT authentication."
+          ],
+          "certifications": [
+            "Oracle Certified Professional: Java SE",
+            "AWS Certified Developer - Associate"
+          ],
+          "companies": [
+            "Amazon",
+            "Oracle",
+            "Microsoft",
+            "TCS",
+            "Infosys",
+            "Cisco",
+            "Zerodha"
+          ],
+          "official_careers_url": "https://www.amazon.jobs"
+        },
+        {
+          "id": "role-fullstack",
+          "name": "Full Stack Software Developer",
+          "category": "it_software",
+          "branches": [
+            "CSE",
+            "IT",
+            "AI/ML",
+            "Data Science",
+            "Cyber Security",
+            "ECE",
+            "EEE",
+            "Other"
+          ],
+          "what_they_do": "Handles end-to-end software development, bridging responsive frontend user experiences with scalable backend infrastructure and databases.",
+          "responsibilities": [
+            "Build complete full-stack web applications from database architecture to client UI.",
+            "Coordinate API contracts between frontend components and backend services.",
+            "Configure continuous integration and deployment (CI/CD) pipelines to cloud hosts.",
+            "Troubleshoot production defects across client-side scripts, network hops, and server logs."
+          ],
+          "skills": [
+            "React/Next.js",
+            "Node.js / Python / Java",
+            "PostgreSQL / MongoDB",
+            "TypeScript",
+            "RESTful APIs",
+            "Docker & Cloud Basics",
+            "Git"
+          ],
+          "tools": [
+            "VS Code",
+            "Docker",
+            "GitHub Actions",
+            "Postman",
+            "AWS / Render / Vercel"
+          ],
+          "qualification_req": "B.Tech / B.E. in any branch with end-to-end full stack project credentials.",
+          "beginner_roadmap": "1. Learn React frontend -> 2. Learn Node.js/Express or Python/FastAPI backend -> 3. Connect PostgreSQL database -> 4. Deploy full stack app to cloud -> 5. Add CI/CD pipeline.",
+          "projects_to_build": [
+            "Full-Stack Learning Management System with video streaming and quizzes.",
+            "SaaS Subscription Platform with user auth, billing, and dashboards.",
+            "Peer-to-Peer Marketplace with chat and real-time alerts."
+          ],
+          "certifications": [
+            "Full Stack Open (University of Helsinki)",
+            "AWS Certified Solutions Architect - Associate"
+          ],
+          "companies": [
+            "Swiggy",
+            "Razorpay",
+            "Infosys",
+            "Wipro",
+            "Cognizant",
+            "Google"
+          ],
+          "official_careers_url": "https://www.swiggy.com/careers"
+        },
+        {
+          "id": "role-devops",
+          "name": "DevOps & Cloud Engineer",
+          "category": "it_software",
+          "branches": [
+            "CSE",
+            "IT",
+            "ECE",
+            "EEE",
+            "Other"
+          ],
+          "what_they_do": "Automates deployment lifecycles, manages cloud infrastructure (AWS/Azure/GCP), provisions containers, and ensures high availability.",
+          "responsibilities": [
+            "Provision and maintain Infrastructure as Code (IaC) using Terraform or CloudFormation.",
+            "Build automated CI/CD deployment pipelines using GitHub Actions, GitLab CI, or Jenkins.",
+            "Orchestrate containerized services on Kubernetes (K8s) clusters with zero-downtime rolling updates.",
+            "Monitor server telemetry, logs, and alerts using Prometheus, Grafana, and ELK stack."
+          ],
+          "skills": [
+            "Linux & Bash Scripting",
+            "Docker & Kubernetes",
+            "AWS / Azure / GCP",
+            "Terraform",
+            "CI/CD Pipelines",
+            "Networking (DNS, VPC, CIDR, Load Balancing)"
+          ],
+          "tools": [
+            "Kubernetes (k8s)",
+            "Terraform",
+            "Docker",
+            "GitHub Actions",
+            "Prometheus & Grafana",
+            "Linux CLI"
+          ],
+          "qualification_req": "B.Tech / B.E. in engineering with strong Linux and cloud networking fundamentals.",
+          "beginner_roadmap": "1. Master Linux administration and Shell scripting -> 2. Learn Docker containerization -> 3. Build CI/CD pipelines -> 4. Learn AWS core services -> 5. Learn Kubernetes and Terraform.",
+          "projects_to_build": [
+            "Automated Multi-Stage CI/CD Pipeline deploying containerized microservices to AWS.",
+            "Terraform Script provisioning complete VPC, Subnets, and Auto-Scaling Cluster.",
+            "Centralized Logging and Observability Dashboard with Prometheus and Grafana."
+          ],
+          "certifications": [
+            "AWS Certified Solutions Architect",
+            "Certified Kubernetes Administrator (CKA)",
+            "HashiCorp Certified: Terraform Associate"
+          ],
+          "companies": [
+            "Cisco",
+            "Amazon",
+            "Microsoft",
+            "TCS",
+            "Cognizant",
+            "HCLTech"
+          ],
+          "official_careers_url": "https://jobs.cisco.com"
+        },
+        {
+          "id": "role-qa",
+          "name": "QA Automation & Test Engineer",
+          "category": "it_software",
+          "branches": [
+            "CSE",
+            "IT",
+            "ECE",
+            "EEE",
+            "Mechanical",
+            "Civil",
+            "Other"
+          ],
+          "what_they_do": "Designs automated testing frameworks, executes test suites, and verifies software correctness, security, and performance.",
+          "responsibilities": [
+            "Design, script, and maintain automated UI and API test frameworks (Selenium, Cypress, Playwright).",
+            "Write comprehensive test plans, edge-case test matrices, and regression suites.",
+            "Execute API performance and load tests using JMeter or k6.",
+            "Integrate test suites into continuous build pipelines to prevent regression bugs."
+          ],
+          "skills": [
+            "Core Java / Python",
+            "Selenium WebDriver / Cypress / Playwright",
+            "API Testing (Postman, RestAssured)",
+            "TestNG / PyTest",
+            "SQL",
+            "Git"
+          ],
+          "tools": [
+            "Selenium",
+            "Playwright",
+            "Postman",
+            "JMeter",
+            "Jira",
+            "Git"
+          ],
+          "qualification_req": "B.Tech / B.E. in any engineering discipline.",
+          "beginner_roadmap": "1. Understand Software Testing Life Cycle (STLC) -> 2. Learn Java or Python basics -> 3. Automate web testing with Selenium/Playwright -> 4. Learn API testing -> 5. Integrate with CI/CD.",
+          "projects_to_build": [
+            "Complete End-to-End Test Automation Framework for an E-Commerce portal.",
+            "Automated REST API Test Suite verifying status codes, schemas, and token authentication."
+          ],
+          "certifications": [
+            "ISTQB Certified Tester Foundation Level (CTFL)"
+          ],
+          "companies": [
+            "Wipro",
+            "TCS",
+            "Infosys",
+            "Cognizant",
+            "HCLTech"
+          ],
+          "official_careers_url": "https://careers.wipro.com"
+        }
+      ]
+    },
+    {
+      "id": "data_ai",
+      "name": "Data Science, Analytics & Artificial Intelligence",
+      "description": "Data engineering pipelines, statistical analysis, predictive machine learning models, and Generative AI systems.",
+      "relevant_branches": [
+        "CSE",
+        "IT",
+        "AI/ML",
+        "Data Science",
+        "ECE",
+        "EEE",
+        "Mechanical",
+        "Civil",
+        "Chemical",
+        "Other"
+      ],
+      "roles": [
+        {
+          "id": "role-data-analyst",
+          "name": "Data Analyst / Business Intelligence Specialist",
+          "category": "data_ai",
+          "branches": [
+            "CSE",
+            "IT",
+            "AI/ML",
+            "Data Science",
+            "ECE",
+            "EEE",
+            "Mechanical",
+            "Civil",
+            "Other"
+          ],
+          "what_they_do": "Transforms raw transactional and business datasets into clear visualizations, metrics, and actionable commercial insights.",
+          "responsibilities": [
+            "Write advanced SQL queries, window functions, and CTEs to extract data from data warehouses.",
+            "Build interactive dashboards in Power BI or Tableau to track core operational KPIs.",
+            "Conduct exploratory data analysis (EDA) in Python using Pandas, NumPy, and Seaborn.",
+            "Present statistical findings and growth recommendations to business stakeholders."
+          ],
+          "skills": [
+            "Advanced SQL",
+            "Power BI / Tableau",
+            "Python (Pandas, NumPy, Matplotlib)",
+            "Excel & Google Sheets (VLOOKUP, Pivot, DAX)",
+            "Basic Statistics"
+          ],
+          "tools": [
+            "Power BI",
+            "Tableau",
+            "PostgreSQL / BigQuery",
+            "Jupyter Notebooks",
+            "Excel"
+          ],
+          "qualification_req": "B.Tech / B.E. in any discipline with analytical aptitude.",
+          "beginner_roadmap": "1. Master advanced SQL queries -> 2. Learn Power BI/Tableau dashboarding -> 3. Learn Python for data manipulation -> 4. Analyze public datasets on Kaggle -> 5. Publish interactive portfolio on GitHub.",
+          "projects_to_build": [
+            "Executive Sales & Profitability Dashboard analyzing multi-year retail datasets in Power BI.",
+            "Customer Churn & Retention Analysis with exploratory statistical modeling in Python."
+          ],
+          "certifications": [
+            "Google Data Analytics Professional Certificate",
+            "Microsoft Power BI Data Analyst Associate (PL-300)"
+          ],
+          "companies": [
+            "Cognizant",
+            "TCS",
+            "Infosys",
+            "Swiggy",
+            "Amazon",
+            "Zerodha"
+          ],
+          "official_careers_url": "https://careers.cognizant.com"
+        },
+        {
+          "id": "role-data-engineer",
+          "name": "Data Engineer",
+          "category": "data_ai",
+          "branches": [
+            "CSE",
+            "IT",
+            "AI/ML",
+            "Data Science",
+            "ECE",
+            "EEE",
+            "Other"
+          ],
+          "what_they_do": "Architects, constructs, and optimizes large-scale data ingestion pipelines, ETL workflows, and cloud data warehouses.",
+          "responsibilities": [
+            "Build automated batch and streaming ETL pipelines using Apache Spark, PySpark, and Airflow.",
+            "Design scalable star and snowflake schemas in cloud data warehouses (Snowflake, BigQuery, Redshift).",
+            "Ensure data governance, schema validation, and pipeline data quality checks.",
+            "Optimize distributed data queries and partitioned storage formats (Parquet, Delta Lake)."
+          ],
+          "skills": [
+            "Python & PySpark",
+            "Advanced SQL",
+            "Apache Spark",
+            "Airflow Orchestration",
+            "Cloud Data Warehouses (Snowflake, BigQuery)",
+            "Kafka"
+          ],
+          "tools": [
+            "Apache Spark",
+            "Airflow",
+            "Docker",
+            "Snowflake",
+            "AWS S3 / GCP",
+            "Git"
+          ],
+          "qualification_req": "B.Tech / B.E. (CSE, IT, ECE preferred, engineering graduates with strong database fundamentals).",
+          "beginner_roadmap": "1. Master advanced SQL & Python -> 2. Understand Data Modeling (Star/Snowflake) -> 3. Learn Apache Spark for Big Data -> 4. Orchestrate workflows with Airflow -> 5. Implement cloud data warehouse project.",
+          "projects_to_build": [
+            "Automated Real-Time E-Commerce Data Lakehouse Pipeline using Spark and Delta Lake.",
+            "Cryptocurrency Real-Time Ticker Ingestion with Kafka and BigQuery streaming."
+          ],
+          "certifications": [
+            "Databricks Certified Data Engineer Associate",
+            "Google Cloud Professional Data Engineer"
+          ],
+          "companies": [
+            "Microsoft",
+            "Amazon",
+            "Infosys",
+            "Wipro",
+            "TCS",
+            "Cisco"
+          ],
+          "official_careers_url": "https://careers.microsoft.com"
+        },
+        {
+          "id": "role-ml-engineer",
+          "name": "Machine Learning & AI Engineer",
+          "category": "data_ai",
+          "branches": [
+            "CSE",
+            "IT",
+            "AI/ML",
+            "Data Science",
+            "ECE",
+            "EEE",
+            "Other"
+          ],
+          "what_they_do": "Designs, trains, evaluates, and deploys predictive machine learning models and deep neural networks to production environments.",
+          "responsibilities": [
+            "Engineer training features, clean noisy datasets, and address class imbalance.",
+            "Train and fine-tune machine learning models (XGBoost, Scikit-Learn) and deep networks (PyTorch, TensorFlow).",
+            "Deploy trained models as low-latency microservices with FastAPI and Docker.",
+            "Implement MLOps monitoring for model drift, latency, and automated retraining."
+          ],
+          "skills": [
+            "Python (PyTorch, Scikit-Learn)",
+            "Linear Algebra & Probability",
+            "Machine Learning Algorithms",
+            "FastAPI & Docker",
+            "MLOps Basics (MLflow)",
+            "Transformers & LLMs"
+          ],
+          "tools": [
+            "PyTorch",
+            "Jupyter",
+            "Docker",
+            "Hugging Face",
+            "MLflow",
+            "Google Colab"
+          ],
+          "qualification_req": "B.Tech / B.E. in CSE, AI/ML, Data Science, or engineering graduates with solid math and programming foundations.",
+          "beginner_roadmap": "1. Solidify Python, Linear Algebra, and Calculus -> 2. Master classical ML (regression, trees, clustering) -> 3. Learn PyTorch deep learning -> 4. Build and serve models with FastAPI -> 5. Learn LLM prompt engineering and fine-tuning.",
+          "projects_to_build": [
+            "End-to-End Predictive Maintenance Model deployed as containerized API.",
+            "RAG (Retrieval-Augmented Generation) Knowledge Assistant with Vector Embeddings and LangChain."
+          ],
+          "certifications": [
+            "DeepLearning.AI Deep Learning Specialization (Coursera)",
+            "AWS Certified Machine Learning - Specialty"
+          ],
+          "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon",
+            "Razorpay",
+            "Swiggy",
+            "TCS"
+          ],
+          "official_careers_url": "https://careers.google.com"
+        }
+      ]
+    },
+    {
+      "id": "cyber_security",
+      "name": "Cyber Security & Information Assurance",
+      "description": "Security operations (SOC), threat hunting, ethical hacking, vulnerability management, cloud security, and compliance.",
+      "relevant_branches": [
+        "CSE",
+        "IT",
+        "Cyber Security",
+        "ECE",
+        "EEE",
+        "Other"
+      ],
+      "roles": [
+        {
+          "id": "role-soc-analyst",
+          "name": "SOC Analyst (Security Operations Center L1/L2)",
+          "category": "cyber_security",
+          "branches": [
+            "CSE",
+            "IT",
+            "Cyber Security",
+            "ECE",
+            "EEE",
+            "Other"
+          ],
+          "what_they_do": "Monitors network traffic, analyzes security alerts from SIEM platforms, detects suspicious intrusion attempts, and responds to incidents.",
+          "responsibilities": [
+            "Monitor real-time security events using SIEM tools (Splunk, Microsoft Sentinel, QRadar).",
+            "Triage security incidents, eliminate false positives, and escalate active breach indicators.",
+            "Analyze phishing emails, malicious payloads, and unauthorized access attempts.",
+            "Document incident response reports and recommend firewall/EDR policy adjustments."
+          ],
+          "skills": [
+            "Computer Networks (TCP/IP, DNS, OSI)",
+            "Linux Administration",
+            "SIEM Tools (Splunk / Sentinel)",
+            "Wireshark Packet Analysis",
+            "Threat Intelligence Basics"
+          ],
+          "tools": [
+            "Splunk",
+            "Wireshark",
+            "Microsoft Sentinel",
+            "VirusTotal",
+            "Burp Suite",
+            "Linux CLI"
+          ],
+          "qualification_req": "B.Tech / B.E. in CSE, IT, Cyber Security, or engineering branches with network security knowledge.",
+          "beginner_roadmap": "1. Master computer networking and Linux -> 2. Learn core security principles (CIA triad, MITRE ATT&CK) -> 3. Practice on TryHackMe / HackTheBox SOC paths -> 4. Learn Splunk SIEM -> 5. Earn CompTIA Security+.",
+          "projects_to_build": [
+            "Home Lab SOC Setup using Splunk and Kali Linux detecting brute-force SSH attacks.",
+            "Automated Phishing Analysis and Header Extraction Script in Python."
+          ],
+          "certifications": [
+            "CompTIA Security+",
+            "Certified SOC Analyst (CSA)",
+            "Splunk Certified Core Certified User"
+          ],
+          "companies": [
+            "Wipro",
+            "TCS",
+            "Infosys",
+            "Cisco",
+            "HCLTech",
+            "Cognizant"
+          ],
+          "official_careers_url": "https://www.hcltech.com/careers"
+        },
+        {
+          "id": "role-pentester",
+          "name": "Penetration Tester / Ethical Hacker",
+          "category": "cyber_security",
+          "branches": [
+            "CSE",
+            "IT",
+            "Cyber Security",
+            "ECE",
+            "Other"
+          ],
+          "what_they_do": "Simulates cyberattacks against web applications, internal networks, and cloud infrastructure to identify and remediate vulnerabilities.",
+          "responsibilities": [
+            "Conduct vulnerability assessments and penetration tests on web applications and APIs.",
+            "Identify OWASP Top 10 vulnerabilities (SQLi, XSS, SSRF, IDOR, Broken Authentication).",
+            "Perform network port scanning, service enumeration, and privilege escalation.",
+            "Author detailed executive and technical remediation reports for engineering teams."
+          ],
+          "skills": [
+            "Web Application Security (OWASP Top 10)",
+            "Linux & Windows Privilege Escalation",
+            "Python / Bash Scripting",
+            "Burp Suite Professional",
+            "Metasploit"
+          ],
+          "tools": [
+            "Burp Suite",
+            "Nmap",
+            "Metasploit",
+            "Kali Linux",
+            "Wireshark",
+            "Postman"
+          ],
+          "qualification_req": "B.Tech / B.E. with demonstrable offensive security skills and CTF achievements.",
+          "beginner_roadmap": "1. Learn web fundamentals and networking -> 2. Master OWASP Top 10 vulnerabilities -> 3. Solve 50+ machines on Hack The Box and TryHackMe -> 4. Participate in Bug Bounty programs -> 5. Target eJPT or OSCP certification.",
+          "projects_to_build": [
+            "Comprehensive Penetration Test Audit Report on a simulated vulnerable corporate network.",
+            "Custom Vulnerability Scanner tool in Python scanning open ports and security headers."
+          ],
+          "certifications": [
+            "eLearnSecurity Junior Penetration Tester (eJPT)",
+            "Offensive Security Certified Professional (OSCP)",
+            "CompTIA PenTest+"
+          ],
+          "companies": [
+            "Cisco",
+            "Infosys",
+            "Wipro",
+            "TCS",
+            "Cognizant"
+          ],
+          "official_careers_url": "https://jobs.cisco.com"
+        }
+      ]
+    },
+    {
+      "id": "core_engineering",
+      "name": "Core Engineering Disciplines",
+      "description": "VLSI design, embedded systems, civil structural engineering, mechanical CAD/CAE, EV systems, and plant operations.",
+      "relevant_branches": [
+        "ECE",
+        "EEE",
+        "Mechanical",
+        "Civil",
+        "Chemical",
+        "Biotechnology"
+      ],
+      "roles": [
+        {
+          "id": "role-vlsi",
+          "name": "VLSI Design & Verification Engineer",
+          "category": "core_engineering",
+          "branches": [
+            "ECE",
+            "EEE"
+          ],
+          "what_they_do": "Designs, models, and verifies integrated circuits (ASIC/FPGA), microchips, and semiconductor system-on-chip (SoC) architectures.",
+          "responsibilities": [
+            "Design digital logic blocks using Verilog and SystemVerilog HDL.",
+            "Develop comprehensive verification testbenches using Universal Verification Methodology (UVM).",
+            "Perform static timing analysis (STA), clock domain crossing (CDC) checks, and synthesis.",
+            "Interface with physical design teams to optimize chip area, power dissipation, and performance."
+          ],
+          "skills": [
+            "Verilog / SystemVerilog",
+            "Digital Electronics & Logic Design",
+            "UVM Methodology",
+            "Static Timing Analysis (STA)",
+            "C/C++",
+            "Linux & TCL Scripting"
+          ],
+          "tools": [
+            "ModelSim / QuestaSim",
+            "Synopsys Design Compiler",
+            "Cadence EDA Tools",
+            "Vivado",
+            "Linux"
+          ],
+          "qualification_req": "B.Tech in ECE or EEE with strong fundamentals in digital design and semiconductor physics.",
+          "beginner_roadmap": "1. Master Digital Electronics & Boolean logic -> 2. Learn Verilog HDL synthesis and simulation -> 3. Build FPGA projects using Xilinx Vivado -> 4. Learn SystemVerilog & UVM -> 5. Explore internships or M.Tech VLSI.",
+          "projects_to_build": [
+            "32-Bit RISC-V Pipelined Processor Core implementation in Verilog HDL.",
+            "Universal Verification Testbench (UVM) for an AXI-Bus Interface."
+          ],
+          "certifications": [
+            "NIELIT Certified VLSI Design Engineer",
+            "IIT NPTEL Digital VLSI Design Course"
+          ],
+          "companies": [
+            "Intel",
+            "Qualcomm",
+            "Texas Instruments",
+            "Synopsys",
+            "Cadence",
+            "BEL",
+            "ISRO"
+          ],
+          "official_careers_url": "https://jobs.intel.com"
+        },
+        {
+          "id": "role-embedded",
+          "name": "Embedded Systems & Firmware Engineer",
+          "category": "core_engineering",
+          "branches": [
+            "ECE",
+            "EEE",
+            "CSE",
+            "Mechanical"
+          ],
+          "what_they_do": "Develops low-level firmware, board support packages (BSP), and device drivers for microcontrollers, IoT devices, and automotive systems.",
+          "responsibilities": [
+            "Write highly optimized embedded C and modern C++ firmware for ARM Cortex-M/R microcontrollers.",
+            "Implement hardware communication protocols (UART, SPI, I2C, CAN, Ethernet, BLE).",
+            "Configure Real-Time Operating Systems (FreeRTOS, Zephyr) for deterministic task scheduling.",
+            "Debug embedded hardware using digital oscilloscopes, logic analyzers, and JTAG debuggers."
+          ],
+          "skills": [
+            "Embedded C / C++",
+            "Microcontrollers (ARM Cortex, STM32, ESP32)",
+            "Communication Protocols (CAN, I2C, SPI, UART)",
+            "RTOS (FreeRTOS)",
+            "Circuit Schematics & Debugging"
+          ],
+          "tools": [
+            "Keil uVision",
+            "STM32CubeIDE",
+            "Saleae Logic Analyzer",
+            "Oscilloscope",
+            "Git"
+          ],
+          "qualification_req": "B.Tech in ECE, EEE, or CSE with strong microcontrollers and C programming background.",
+          "beginner_roadmap": "1. Master Embedded C and memory management -> 2. Program STM32 / ESP32 microcontrollers -> 3. Implement peripheral drivers from hardware datasheets -> 4. Integrate FreeRTOS -> 5. Build an IoT connected device.",
+          "projects_to_build": [
+            "Automotive CAN-Bus Telemetry Dashboard using STM32 and FreeRTOS.",
+            "IoT Industrial Sensor Node with Low-Power Sleep and MQTT cloud telemetry."
+          ],
+          "certifications": [
+            "Arm Certified Engineer",
+            "IIT NPTEL Embedded System Design"
+          ],
+          "companies": [
+            "Siemens",
+            "Schneider Electric",
+            "Tata Motors",
+            "Larsen & Toubro",
+            "Bosch",
+            "ISRO"
+          ],
+          "official_careers_url": "https://jobs.siemens.com"
+        },
+        {
+          "id": "role-mech-cad",
+          "name": "Mechanical CAD / CAE Design Engineer",
+          "category": "core_engineering",
+          "branches": [
+            "Mechanical"
+          ],
+          "what_they_do": "Creates detailed 3D computer-aided engineering models, conducts structural/thermal finite element analyses, and designs tooling for manufacturing.",
+          "responsibilities": [
+            "Develop parametric 3D parts, sheet metal components, and assemblies in SolidWorks/CATIA.",
+            "Execute finite element analysis (FEA) and computational fluid dynamics (CFD) simulations in ANSYS.",
+            "Prepare manufacturing engineering drawings conforming to Geometric Dimensioning & Tolerancing (GD&T).",
+            "Optimize component designs for manufacturability (DFM) and assembly (DFA)."
+          ],
+          "skills": [
+            "SolidWorks / CATIA / Creo",
+            "ANSYS Workbench (FEA/CFD)",
+            "GD&T (ASME Y14.5)",
+            "Strength of Materials",
+            "Manufacturing Processes & DFM"
+          ],
+          "tools": [
+            "SolidWorks",
+            "ANSYS",
+            "CATIA",
+            "AutoCAD",
+            "MATLAB"
+          ],
+          "qualification_req": "B.Tech in Mechanical Engineering or Automobile Engineering.",
+          "beginner_roadmap": "1. Master 3D Modeling (SolidWorks/CATIA) -> 2. Learn GD&T standards -> 3. Learn FEA stress analysis in ANSYS -> 4. Build portfolio of complex mechanical assemblies -> 5. Apply to automotive & EPC firms.",
+          "projects_to_build": [
+            "Complete Automotive Gearbox Assembly with FEA structural stress and fatigue analysis.",
+            "Electric Vehicle Battery Enclosure Thermal and Crashworthiness Simulation."
+          ],
+          "certifications": [
+            "Certified SolidWorks Professional (CSWP)",
+            "ANSYS Certified FEA Professional"
+          ],
+          "companies": [
+            "Tata Motors",
+            "Larsen & Toubro",
+            "BHEL",
+            "Maruti Suzuki",
+            "Siemens"
+          ],
+          "official_careers_url": "https://www.tatamotors.com/careers"
+        },
+        {
+          "id": "role-structural-civil",
+          "name": "Civil Structural Design Engineer",
+          "category": "core_engineering",
+          "branches": [
+            "Civil"
+          ],
+          "what_they_do": "Analyzes, models, and designs reinforced concrete and steel structures, high-rises, bridges, and industrial foundations conforming to IS codes.",
+          "responsibilities": [
+            "Perform structural static, wind, and seismic analysis using STAAD.Pro and ETABS.",
+            "Design reinforced cement concrete (RCC) and structural steel elements as per Indian Standards (IS 456, IS 800, IS 1893).",
+            "Prepare detailed reinforcement bar bending schedules (BBS) and structural fabrication drawings.",
+            "Coordinate with geotechnical and architectural teams for foundation load calculations."
+          ],
+          "skills": [
+            "STAAD.Pro / ETABS",
+            "AutoCAD Civil",
+            "IS Codes (IS 456, IS 800, IS 1893)",
+            "Structural Analysis & RCC Design",
+            "BBS & Quantity Estimation"
+          ],
+          "tools": [
+            "STAAD.Pro",
+            "ETABS",
+            "AutoCAD",
+            "Revit Structure",
+            "MS Excel"
+          ],
+          "qualification_req": "B.Tech in Civil Engineering.",
+          "beginner_roadmap": "1. Master Structural Analysis and Strength of Materials -> 2. Learn STAAD.Pro and ETABS software -> 3. Study IS 456 & IS 1893 seismic guidelines -> 4. Model a G+10 multi-story RCC building -> 5. Apply to top EPC & structural consultancies.",
+          "projects_to_build": [
+            "Structural Analysis & Seismic Design of G+12 Residential Tower using ETABS and IS 1893.",
+            "Design and Detailing of Industrial Pre-Engineered Steel Building (PEB) in STAAD.Pro."
+          ],
+          "certifications": [
+            "Autodesk Certified Professional: Revit Structure",
+            "Bentley Certified STAAD.Pro Associate"
+          ],
+          "companies": [
+            "Larsen & Toubro (L&T)",
+            "Tata Consulting Engineers (TCE)",
+            "Afcons Infrastructure",
+            "BHEL"
+          ],
+          "official_careers_url": "https://www.larsentoubro.com/corporate/careers"
+        },
+        {
+          "id": "role-electrical-power",
+          "name": "Electrical Power Systems & Substation Engineer",
+          "category": "core_engineering",
+          "branches": [
+            "EEE"
+          ],
+          "what_they_do": "Designs, tests, and oversees high-voltage electrical distribution networks, substations, switchgear, and renewable solar/wind grid integrations.",
+          "responsibilities": [
+            "Perform power system load flow, short circuit, and protection coordination studies in ETAP.",
+            "Design single-line diagrams (SLD), switchgear layouts, and substation earthing grids.",
+            "Oversee installation and testing of power transformers, circuit breakers, and protective relays.",
+            "Integrate solar inverter arrays and Battery Energy Storage Systems (BESS) into utility grids."
+          ],
+          "skills": [
+            "ETAP / MATLAB Simulink",
+            "Power System Protection & Switchgear",
+            "Substation Design & SLD",
+            "IS / IEEE Electrical Standards",
+            "AutoCAD Electrical"
+          ],
+          "tools": [
+            "ETAP",
+            "MATLAB",
+            "AutoCAD Electrical",
+            "Relay Test Kits"
+          ],
+          "qualification_req": "B.Tech in Electrical & Electronics Engineering (EEE).",
+          "beginner_roadmap": "1. Master Power Systems, Machines, and Protection -> 2. Learn ETAP software for load flow and short-circuit studies -> 3. Understand substation equipment and protection relays -> 4. Study Solar rooftop & EV charging infrastructure -> 5. Apply to power utilities & EPCs.",
+          "projects_to_build": [
+            "132/33 kV Grid Substation Design with ETAP Load Flow and Protection Relay Coordination.",
+            "1 MW Grid-Tied Solar Photovoltaic Plant Electrical SLD and Inverter Sizing Study."
+          ],
+          "certifications": [
+            "ETAP Power System Analysis Certification",
+            "Bureau of Energy Efficiency (BEE) Certified Energy Manager"
+          ],
+          "companies": [
+            "Schneider Electric",
+            "Siemens",
+            "BHEL",
+            "Larsen & Toubro",
+            "Tata Power"
+          ],
+          "official_careers_url": "https://www.se.com/in/en/about-us/careers"
+        }
+      ]
+    },
+    {
+      "id": "non_it_business",
+      "name": "Business, Product & Technical Consulting",
+      "description": "Business analysis, technical product management, techno-commercial sales, consulting, and project operations.",
+      "relevant_branches": [
+        "CSE",
+        "IT",
+        "ECE",
+        "EEE",
+        "Mechanical",
+        "Civil",
+        "AI/ML",
+        "Data Science",
+        "Other"
+      ],
+      "roles": [
+        {
+          "id": "role-business-analyst",
+          "name": "Business Analyst / Technical Consultant",
+          "category": "non_it_business",
+          "branches": [
+            "CSE",
+            "IT",
+            "ECE",
+            "EEE",
+            "Mechanical",
+            "Civil",
+            "Other"
+          ],
+          "what_they_do": "Bridges corporate business requirements with software engineering teams, drafting functional specifications and analyzing process workflows.",
+          "responsibilities": [
+            "Gather client requirements, conduct stakeholder interviews, and write Business Requirement Documents (BRD).",
+            "Create process flow diagrams, wireframes, and user stories with acceptance criteria in Jira.",
+            "Analyze business data using SQL and Excel to measure feature adoption and ROI.",
+            "Facilitate sprint planning, backlog refinement, and user acceptance testing (UAT)."
+          ],
+          "skills": [
+            "Requirement Gathering & BRD/FRD",
+            "SQL & Data Interpretation",
+            "Agile / Scrum Methodology",
+            "Jira & Confluence",
+            "Process Modeling (BPMN)"
+          ],
+          "tools": [
+            "Jira",
+            "Confluence",
+            "Figma",
+            "Lucidchart",
+            "Excel",
+            "SQL"
+          ],
+          "qualification_req": "B.Tech / B.E. in any discipline with strong written communication and structured thinking.",
+          "beginner_roadmap": "1. Learn Agile/Scrum and software lifecycle -> 2. Practice writing user stories and BRDs -> 3. Learn SQL and data analysis in Excel -> 4. Build a sample digital product PRD -> 5. Target associate BA roles at IT consulting firms.",
+          "projects_to_build": [
+            "Complete Business Requirement Document (BRD) and User Flow for a FinTech Lending App.",
+            "Process Optimization Blueprint reducing user checkout friction with metric tracking."
+          ],
+          "certifications": [
+            "ECBA (Entry Certificate in Business Analysis - IIBA)",
+            "Certified ScrumMaster (CSM)"
+          ],
+          "companies": [
+            "Cognizant",
+            "Infosys",
+            "TCS",
+            "Wipro",
+            "HCLTech",
+            "Swiggy"
+          ],
+          "official_careers_url": "https://careers.cognizant.com"
+        }
+      ]
+    }
+  ],
+  "higher_studies_directory": [
+    {
+      "id": "hs-mtech",
+      "degree": "M.Tech / M.E. (Master of Technology / Engineering)",
+      "duration": "2 Years (4 Semesters)",
+      "eligibility": "B.Tech / B.E. with valid GATE scorecard (or institute-specific written test/interview for sponsored seats)",
+      "entrance_exams": [
+        "GATE (CS, EC, EE, ME, CE, DA)",
+        "State PGECET"
+      ],
+      "top_institutes": [
+        "IIT Bombay",
+        "IISc Bangalore",
+        "IIT Madras",
+        "IIT Delhi",
+        "IIT Kharagpur",
+        "Top NITs",
+        "BITS Pilani"
+      ],
+      "financial_support": "Monthly MHRD / AICTE stipend of Rs 12,400 / month for all GATE-qualified students.",
+      "specializations": [
+        "Artificial Intelligence & Machine Learning",
+        "Data Science & Analytics",
+        "VLSI Design & Embedded Systems",
+        "Power Electronics & Smart Grids",
+        "Thermal & Fluid Engineering",
+        "Structural & Geotechnical Engineering",
+        "Robotics & Autonomous Systems"
+      ],
+      "career_outcomes": "Senior R&D Engineer, Chip Design Specialist, Core Industry Lead, Direct PhD eligibility at global labs, starting CTC Rs 14-35 LPA.",
+      "official_portal": "https://gate2025.iitr.ac.in"
+    },
+    {
+      "id": "hs-ms-abroad",
+      "degree": "MS Abroad (Master of Science in USA, Germany, UK, Europe)",
+      "duration": "1.5 to 2 Years",
+      "eligibility": "4-year B.Tech degree with minimum 65-70% / 7.0+ CGPA, English proficiency score, Statement of Purpose, 3 LORs",
+      "entrance_exams": [
+        "GRE (Graduate Record Exam)",
+        "TOEFL / IELTS"
+      ],
+      "top_institutes": [
+        "TU Munich (Germany)",
+        "RWTH Aachen (Germany)",
+        "Carnegie Mellon (USA)",
+        "Purdue University (USA)",
+        "University of Michigan (USA)",
+        "National University of Singapore (NUS)"
+      ],
+      "financial_support": "Graduate Teaching Assistantships (GTA), Research Assistantships (GRA), or Tuition-Free public education in Germany.",
+      "specializations": [
+        "Computer Science & High Performance Computing",
+        "Data Science & Big Data Systems",
+        "Automotive Engineering & Powertrains",
+        "Cyber-Physical Systems & IoT",
+        "Robotics & Mechatronics"
+      ],
+      "career_outcomes": "Global software/hardware engineering careers with 3-year post-study OPT in US or 18-month job seeker visa in Germany; starting salaries $85k-$130k USD / €55k-€75k EUR.",
+      "official_portal": "https://www.ets.org/gre"
+    },
+    {
+      "id": "hs-mba",
+      "degree": "MBA / PGDM (Master of Business Administration)",
+      "duration": "2 Years Full-Time",
+      "eligibility": "B.Tech in any branch with min 50% marks (45% for reserved categories). Engineers have high acceptance in premier IIMs.",
+      "entrance_exams": [
+        "CAT (Common Admission Test)",
+        "XAT",
+        "GMAT",
+        "SNAP",
+        "NMAT"
+      ],
+      "top_institutes": [
+        "IIM Ahmedabad",
+        "IIM Bangalore",
+        "IIM Calcutta",
+        "FMS Delhi",
+        "XLRI Jamshedpur",
+        "SPJIMR Mumbai",
+        "ISB Hyderabad"
+      ],
+      "financial_support": "Need-based financial aid, national merit scholarships, and 100% collateral-free education loans at premier institutes.",
+      "specializations": [
+        "Product Management & Technology Strategy",
+        "Management Consulting",
+        "Investment Banking & Corporate Finance",
+        "Supply Chain, Operations & Logistics",
+        "Marketing & Brand Management"
+      ],
+      "career_outcomes": "Product Manager, Strategy Consultant (McKinsey, BCG, Bain), Investment Banking Associate, Operations Director; Average starting CTC Rs 24-35 LPA at top IIMs.",
+      "official_portal": "https://iimcat.ac.in"
+    },
+    {
+      "id": "hs-phd",
+      "degree": "Direct Ph.D after B.Tech (Doctor of Philosophy)",
+      "duration": "4 to 5 Years",
+      "eligibility": "B.Tech with high CGPA (min 8.0/10 or 75%+) and qualifying GATE score or Prime Minister's Research Fellowship (PMRF) eligibility.",
+      "entrance_exams": [
+        "GATE",
+        "PMRF (Prime Minister's Research Fellowship)"
+      ],
+      "top_institutes": [
+        "IISc Bangalore",
+        "IIT Madras",
+        "IIT Bombay",
+        "IIT Delhi",
+        "TIFR Mumbai"
+      ],
+      "financial_support": "PMRF Fellowship: Rs 70,000 to Rs 80,000 / month + Rs 2 Lakhs/yr research grant! Regular Institute Fellowships: Rs 37,000 to Rs 42,000 / month.",
+      "specializations": [
+        "Quantum Computing & Photonics",
+        "Deep Learning & Foundation Models",
+        "Semiconductor Fabrication & Nanotechnology",
+        "Renewable Energy & Battery Storage",
+        "Aerospace Propulsion & Aerodynamics"
+      ],
+      "career_outcomes": "Research Scientist at corporate labs (Google Brain, Microsoft Research, Bell Labs), Assistant Professor at IITs/NITs, Chief Scientist at Government R&D labs.",
+      "official_portal": "https://www.pmrf.in"
+    }
+  ],
+  "gate_guide": {
+    "title": "Graduate Aptitude Test in Engineering (GATE)",
+    "conducting_authority": "Jointly administered by IISc and IITs (Organizing Institute rotates annually, e.g. IIT Roorkee / IIT Guwahati / IIT Madras)",
+    "official_portal": "https://gate2025.iitr.ac.in",
+    "who_can_apply": "Undergraduates in 3rd year or completed B.Tech / B.E. / B.Arch / M.Sc. There is NO upper age limit.",
+    "papers_map": {
+      "CSE / IT": "CS (Computer Science & Information Technology) or DA (Data Science & Artificial Intelligence)",
+      "ECE": "EC (Electronics & Communication Engineering) or IN (Instrumentation)",
+      "EEE": "EE (Electrical Engineering) or IN (Instrumentation)",
+      "Mechanical": "ME (Mechanical Engineering) or PI (Production & Industrial)",
+      "Civil": "CE (Civil Engineering) or ES (Environmental Science)"
+    },
+    "score_validity": "3 Years from the date of announcement of results.",
+    "dual_opportunities": {
+      "mtech_admissions": "Direct admission into M.Tech / MS / Direct Ph.D at IISc Bangalore and 23 IITs via COAP portal; and 31 NITs & IIEST via CCMT portal with Rs 12,400/month stipend.",
+      "psu_recruitments": "Direct executive recruitment as Management Trainee / Graduate Engineer Trainee (GET) in Maharatna & Navratna PSUs with CTC ranging from Rs 15 Lakhs to Rs 22 Lakhs per annum."
+    },
+    "psus_hiring_through_gate": [
+      "Indian Oil Corporation Limited (IOCL)",
+      "Oil and Natural Gas Corporation (ONGC)",
+      "National Thermal Power Corporation (NTPC)",
+      "Power Grid Corporation of India (PGCIL)",
+      "Bharat Heavy Electricals Limited (BHEL)",
+      "Gas Authority of India Limited (GAIL)",
+      "Steel Authority of India Limited (SAIL)",
+      "Nuclear Power Corporation of India (NPCIL)",
+      "Bhabha Atomic Research Centre (BARC OCES/DGFS)",
+      "Defence Research and Development Organisation (DRDO)"
+    ],
+    "preparation_roadmap_months": [
+      {
+        "phase": "Months 1-3: Core Theory & Concept Mastery",
+        "focus": "Cover fundamental engineering subjects using standard textbooks and NPTEL lectures. Build detailed handwritten formula books."
+      },
+      {
+        "phase": "Months 4-5: Subject-Wise Question Practice & PYQs",
+        "focus": "Solve the last 20 years of official GATE question papers. Identify high-weightage topics (e.g. Engineering Maths, Aptitude, Core Subjects)."
+      },
+      {
+        "phase": "Months 6-7: Full-Length CBT Mock Tests",
+        "focus": "Take 15 to 25 full-length computer-based mock tests in the exact 3-hour exam window. Analyze negative marking and virtual calculator speed."
+      },
+      {
+        "phase": "Final Month: Revision & Speed Calibration",
+        "focus": "Review short notes, formulas, and error logs daily. Rest and maintain peak mental composure."
+      }
+    ]
+  },
+  "defence_pathways": [
+    {
+      "id": "def-tgc",
+      "entry_name": "Indian Army — Technical Graduate Course (TGC)",
+      "commission_type": "Permanent Commission (Men)",
+      "eligibility": "B.Tech passed or final year students in notified branches (Civil, Mechanical, Electrical, Computer Science, Electronics, Telecommunication). Age: 20 to 27 years.",
+      "selection_process": "Shortlisting based on B.Tech cumulative percentage cutoff -> 5-Day SSB Interview -> Medical Examination -> Merit List.",
+      "training_academy": "Indian Military Academy (IMA), Dehradun (1 Year Training).",
+      "rank_and_pay": "Commissioned as Lieutenant (Level 10: Rs 56,100 - 1,77,500 + Military Service Pay Rs 15,500 + Allowances).",
+      "official_website": "https://joinindianarmy.nic.in"
+    },
+    {
+      "id": "def-ssc-tech",
+      "entry_name": "Indian Army — Short Service Commission (SSC-Tech Men & Women)",
+      "commission_type": "Short Service Commission (10 + 4 Years)",
+      "eligibility": "B.Tech in engineering streams for both Men and Women. Age: 20 to 27 years.",
+      "selection_process": "Branch-wise B.Tech cutoff percentage -> 5-Day SSB Interview -> Medical Examination.",
+      "training_academy": "Officers Training Academy (OTA), Chennai (49 Weeks Training).",
+      "rank_and_pay": "Commissioned as Lieutenant (Level 10: Rs 56,100 basic + MSP + Allowances).",
+      "official_website": "https://joinindianarmy.nic.in"
+    },
+    {
+      "id": "def-navy-tech",
+      "entry_name": "Indian Navy — Executive & Technical Branch Officers",
+      "commission_type": "Short Service Commission / Permanent Commission",
+      "eligibility": "B.Tech in Mechanical, Electrical, Electronics, Computer Science, Naval Architecture with min 60% marks. Age: 19.5 to 25 years.",
+      "selection_process": "Shortlisting based on B.Tech marks -> 5-Day SSB Interview -> Medical Board.",
+      "training_academy": "Indian Naval Academy (INA), Ezhimala, Kerala.",
+      "rank_and_pay": "Commissioned as Sub Lieutenant (Level 10: Rs 56,100 basic + MSP + Naval Allowances).",
+      "official_website": "https://www.joinindiannavy.gov.in"
+    },
+    {
+      "id": "def-afcat",
+      "entry_name": "Indian Air Force — AFCAT (Aeronautical Engineering Branch)",
+      "commission_type": "Permanent / Short Service Commission",
+      "eligibility": "B.Tech with min 60% marks in Mechanical, Aeronautical, Electrical, Electronics, or CSE, plus 50% marks in Physics and Maths at 10+2 level.",
+      "selection_process": "AFCAT Online Written Exam + EKT (Engineering Knowledge Test) -> 5-Day AFSB Interview -> Medical Board.",
+      "training_academy": "Air Force Academy (AFA), Dundigal, Hyderabad.",
+      "rank_and_pay": "Commissioned as Flying Officer (Level 10: Rs 56,100 basic + Flying/Tech Allowance + MSP).",
+      "official_website": "https://afcat.cdac.in"
+    }
+  ],
+  "pathway_comparisons": [
+    {
+      "id": "comp-job-vs-mtech",
+      "title": "Private Industry Job vs M.Tech (Higher Studies)",
+      "left": {
+        "title": "Immediate Private Industry Job",
+        "time_horizon": "Immediate employment upon graduation (0 years delay)",
+        "financial_aspect": "Immediate financial independence; earning from Day 1 (Rs 4-10 LPA)",
+        "skill_acquisition": "Practical enterprise software frameworks, agile delivery, production deployment",
+        "career_trajectory": "Fast promotions into Senior Developer/Tech Lead within 3-5 years",
+        "best_suited_for": "Students aiming for quick financial independence, software development passion, or startup aspirations."
+      },
+      "right": {
+        "title": "M.Tech at Top Institutes (IITs/NITs)",
+        "time_horizon": "2 additional years of academic specialization",
+        "financial_aspect": "Funded by AICTE stipend of Rs 12,400/month; deferred salary for 2 years",
+        "skill_acquisition": "Deep mathematical modeling, systems architecture, algorithmic research, VLSI design",
+        "career_trajectory": "Direct entry into Core R&D, Tier-1 Product MNCs, Chip Design at Rs 15-35 LPA starting packages",
+        "best_suited_for": "Students aiming for deep tech specializations (AI, VLSI, Robotics), top product MNCs, or research careers."
+      }
+    },
+    {
+      "id": "comp-mtech-vs-ms",
+      "title": "M.Tech in India vs MS Abroad (USA / Germany)",
+      "left": {
+        "title": "M.Tech in India (IITs / IISc)",
+        "time_horizon": "2 Years",
+        "financial_aspect": "Virtually zero cost: tuition offset by Rs 12,400/mo stipend + affordable hostels",
+        "entrance_path": "GATE examination only",
+        "career_trajectory": "Top Tier-1 Indian R&D labs, Maharatna PSUs, Indian tech hubs (Bengaluru, Hyderabad, Pune)",
+        "best_suited_for": "Students seeking high ROI without taking educational debt, or desiring PSU careers."
+      },
+      "right": {
+        "title": "MS Abroad (USA / Germany)",
+        "time_horizon": "1.5 to 2 Years",
+        "financial_aspect": "USA: Rs 35-65 Lakhs investment (often via education loan); Germany: Tuition-free at public universities",
+        "entrance_path": "GRE + TOEFL/IELTS + Academic Portfolio",
+        "career_trajectory": "Global tech hubs (Silicon Valley, Seattle, Munich, Zurich); starting salaries $90k-$130k USD / €60k EUR",
+        "best_suited_for": "Students seeking international work experience, global mobility, and advanced frontier labs."
+      }
+    },
+    {
+      "id": "comp-govt-vs-private",
+      "title": "Government / PSU Career vs Private Tech Industry",
+      "left": {
+        "title": "Government / PSU Engineering Career",
+        "time_horizon": "Long-term lifelong tenure and stability",
+        "financial_aspect": "Starting CTC Rs 12-20 LPA (PSUs) or 7th CPC Level 10; structured predictable increments",
+        "perks": "Subsidized executive housing, comprehensive family medical cover, low work stress, pension benefits",
+        "best_suited_for": "Students prioritizing stability, work-life balance, national service, and structured progression."
+      },
+      "right": {
+        "title": "Private Technology / Product Sector",
+        "time_horizon": "Performance-driven dynamic tenure",
+        "financial_aspect": "Starting Rs 6-25+ LPA; potential exponential growth (ESOPs, stock grants, fast bonuses)",
+        "perks": "Rapid tech adoption, international relocation options, hybrid work culture, learning velocity",
+        "best_suited_for": "Students thriving in fast-paced environments, prioritizing rapid income escalation and modern tech stacks."
+      }
+    }
+  ]
+}

@@ -318,5 +318,31 @@
     "g3_text": "Every career card, exam notice, and scholarship links directly to the legal government portal.",
     "g4_title": "Dual AI Intelligence:",
     "g4_text": "Server-side Google Gemini integration when active, paired with an offline rule-based knowledge engine that never crashes."
+  },
+  "btech_careers": {
+    "context_completed": "🎓 I have completed B.Tech / Final Year",
+    "context_aspirant": "📚 Exploring B.Tech as a Degree to Study",
+    "branch_prompt": "What was your B.Tech branch? (Used as filter):",
+    "what_next_title": "WHAT DO YOU WANT TO DO AFTER B.TECH?",
+    "what_next_subtitle": "Select a major pathway below to explore roles, entrance exams, or higher education tailored to your branch.",
+    "explore_pathway": "Explore Pathway →",
+    "back_to_pathways": "← Back to All Post-B.Tech Pathways",
+    "filter_job_categories": "Job Category:",
+    "all_categories": "All Categories",
+    "company_directory_title": "Verified Company Directory",
+    "company_directory_subtitle": "Authentic employer profiles with official careers and recruitment portal links.",
+    "filter_company_type": "Company Type:",
+    "all_company_types": "All Types",
+    "view_role_details": "View Role Blueprint",
+    "apply_careers": "Official Careers Portal",
+    "compare_btn": "⚖️ Compare Pathways Side-by-Side",
+    "responsibilities": "Key Responsibilities",
+    "skills_to_learn": "Skills to Learn",
+    "tools_tech": "Tools & Technologies",
+    "beginner_roadmap": "Beginner Preparation Roadmap",
+    "projects": "Portfolio Projects to Build",
+    "certifications": "Recommended Industry Certifications",
+    "companies_hiring": "Prominent Companies Hiring for This Role",
+    "disclaimer_jobs": "Career guidance based on verified industry job profiles. Check official company career links for active job listings."
   }
 }
