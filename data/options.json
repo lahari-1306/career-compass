@@ -128,5 +128,152 @@
     "Internships",
     "Scholarships / Financial Aid",
     "State Admissions & Counselling"
-  ]
+  ],
+  "streams_by_qual": {
+    "10th": ["General / All Subjects", "CBSE 10th", "ICSE 10th", "State Board SSC"],
+    "Intermediate": ["MPC", "BiPC", "MEC", "CEC", "HEC", "Vocational", "Other"],
+    "Diploma": ["CSE", "Mechanical", "Civil", "ECE", "EEE", "Automobile", "Chemical", "Mining", "Other"],
+    "Degree": ["B.Sc Computer Science", "B.Sc Data Science / Math", "B.Sc Physics / Chem", "B.Com", "BBA", "BCA", "BA", "Other"],
+    "B.Tech": [
+      "CSE", "Information Technology (IT)", "ECE", "EEE", "Mechanical Engineering", "Civil Engineering",
+      "Chemical Engineering", "Biotechnology", "Biomedical Engineering", "Aerospace / Aeronautical Engineering",
+      "Automobile Engineering", "Instrumentation & Control", "Mechatronics", "Robotics", "Artificial Intelligence / AI",
+      "AI & ML", "Data Science", "Cyber Security", "IoT", "CSE (AI)", "CSE (Data Science)", "CSE (Cyber Security)",
+      "Electronics & Instrumentation", "Production Engineering", "Industrial Engineering", "Metallurgical Engineering",
+      "Mining Engineering", "Petroleum Engineering", "Textile Engineering", "Agricultural Engineering",
+      "Food Technology", "Environmental Engineering", "Other"
+    ],
+    "Postgraduate": ["M.Tech (CSE)", "M.Tech (ECE)", "M.Tech (Mechanical)", "M.Tech (Civil)", "MBA", "MCA", "M.Sc", "Other"]
+  },
+  "preferred_career_directions_by_qual": {
+    "10th": [
+      "Science / Technology",
+      "Engineering",
+      "Medicine / Health",
+      "Commerce / Business",
+      "Arts / Humanities",
+      "Diploma / Polytechnic",
+      "ITI / Skill Development",
+      "Defence",
+      "Government Services",
+      "Design / Creative Fields",
+      "Agriculture",
+      "Sports",
+      "Other"
+    ],
+    "Intermediate": [
+      "Engineering (B.Tech / B.E.)",
+      "Medicine & Health (MBBS / BDS / AYUSH)",
+      "Pharmacy (B.Pharm / Pharm.D)",
+      "Architecture (B.Arch)",
+      "Computer Science & IT Degrees",
+      "Pure Sciences & Research (B.Sc / BS-MS)",
+      "Commerce & Finance (B.Com / CA / CMA)",
+      "Management & Business (BBA / BMS)",
+      "Law (5-Year Integrated LLB / CLAT)",
+      "Defence Forces (NDA / TES Cadet)",
+      "Agriculture & Allied Sciences",
+      "Government Competitive Exams",
+      "Design, Media & Creative Fields",
+      "Other"
+    ],
+    "Intermediate_MPC": [
+      "Engineering (B.Tech / B.E.)",
+      "Architecture (B.Arch)",
+      "Computer Science & IT Degrees",
+      "Pure Sciences & Research (B.Sc / BS-MS)",
+      "Defence Forces (NDA / TES Cadet)",
+      "Government Competitive Exams",
+      "Commercial Pilot / Aviation",
+      "Data Science & AI Degrees",
+      "Design & Planning",
+      "Other"
+    ],
+    "Intermediate_BiPC": [
+      "Medicine & Surgery (MBBS)",
+      "Dental Surgery (BDS)",
+      "Pharmacy (B.Pharm / Pharm.D)",
+      "B.Sc Agriculture & Horticulture",
+      "Veterinary Science & Animal Husbandry",
+      "Biotechnology & Bioinformatics",
+      "Nursing & Allied Health Sciences",
+      "Physiotherapy (BPT)",
+      "Pure Sciences & Research (B.Sc)",
+      "Other"
+    ],
+    "Intermediate_CEC_MEC": [
+      "Chartered Accountancy (CA / CMA / CS)",
+      "Commerce & Finance (B.Com / B.Com Hons)",
+      "Business Administration & Management (BBA / BMS)",
+      "Economics & Statistics",
+      "Law (5-Year Integrated BA LLB / BBA LLB)",
+      "Banking & Insurance",
+      "Government Competitive Exams",
+      "Hotel Management & Tourism",
+      "Other"
+    ],
+    "Intermediate_HEC": [
+      "Civil Services & Public Administration",
+      "Law (5-Year Integrated LLB)",
+      "Journalism & Mass Communication",
+      "Psychology & Social Work",
+      "Literature & Humanities (BA / BA Hons)",
+      "Teaching & Academia",
+      "Design, Fine Arts & Fashion",
+      "Other"
+    ],
+    "Diploma": [
+      "Technical Jobs",
+      "Lateral Entry B.Tech",
+      "Government Technical Jobs",
+      "Apprenticeships",
+      "Core Industry",
+      "IT / Software",
+      "Higher Studies",
+      "Entrepreneurship",
+      "Other"
+    ],
+    "Degree": [
+      "Higher Studies",
+      "Jobs",
+      "Competitive Exams",
+      "Government Jobs",
+      "MBA / Management",
+      "Skill Specialization",
+      "Career Change",
+      "Professional Certifications",
+      "Entrepreneurship",
+      "Other"
+    ],
+    "B.Tech": [
+      "Software / IT",
+      "Cyber Security",
+      "AI / Machine Learning",
+      "Data Science / Analytics",
+      "Cloud / DevOps",
+      "Core Engineering",
+      "Product Companies",
+      "IT Services",
+      "Government / PSU",
+      "GATE",
+      "Higher Studies",
+      "MBA / Management",
+      "Defence",
+      "Research",
+      "Entrepreneurship",
+      "Other"
+    ],
+    "Postgraduate": [
+      "Jobs",
+      "Research",
+      "PhD",
+      "Teaching / Academia",
+      "Government",
+      "Industry",
+      "Management",
+      "Entrepreneurship",
+      "Career Change",
+      "Other"
+    ]
+  }
 }

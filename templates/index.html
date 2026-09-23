@@ -610,54 +610,71 @@
             <p class="profile-card-desc">Answer key questions to generate a tailor-made <strong>Personalized Career Roadmap</strong>.</p>
             
             <form id="profile-builder-form" onsubmit="generateProfileRoadmap(event)">
-              <div class="form-group">
-                <label for="prof-qual">1. Current Qualification</label>
-                <select id="prof-qual" required>
-                  <option value="10th">Class 10th</option>
-                  <option value="Intermediate">Intermediate (11th-12th)</option>
-                  <option value="Diploma">Diploma / Polytechnic</option>
-                  <option value="Degree">Degree / Graduation (B.Sc, B.Com, BA, BCA)</option>
-                  <option value="B.Tech" selected>B.Tech / B.E.</option>
-                  <option value="Postgraduate">Postgraduate (M.Tech, M.Sc, MBA, MCA)</option>
-                  <option value="Other">Other</option>
-                </select>
+              <div class="form-row">
+                <div class="form-group col-half">
+                  <label for="prof-qual">1. Current Qualification</label>
+                  <select id="prof-qual" required onchange="handleProfileQualChange()">
+                    <option value="10th">Class 10th</option>
+                    <option value="Intermediate">Intermediate (11th-12th)</option>
+                    <option value="Diploma">Diploma / Polytechnic</option>
+                    <option value="Degree">Degree / Graduation (B.Sc, B.Com, BA, BCA)</option>
+                    <option value="B.Tech" selected>B.Tech / B.E.</option>
+                    <option value="Postgraduate">Postgraduate (M.Tech, M.Sc, MBA, MCA)</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group col-half">
+                  <label for="prof-status">2. Current Status</label>
+                  <select id="prof-status">
+                    <option value="Final Year" selected>Final Year</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Currently Studying">Currently Studying</option>
+                  </select>
+                </div>
               </div>
 
               <div class="form-row">
                 <div class="form-group col-half">
-                  <label for="prof-stream">2. Stream / Branch</label>
-                  <input type="text" id="prof-stream" placeholder="e.g. CSE, ECE, MPC, BiPC" value="Computer Science">
+                  <label for="prof-stream">3. Stream / Branch</label>
+                  <select id="prof-stream">
+                    <!-- Populated dynamically based on qualification -->
+                    <option value="CSE" selected>Computer Science (CSE)</option>
+                  </select>
                 </div>
                 <div class="form-group col-half">
-                  <label for="prof-score">3. Marks / CGPA / %</label>
+                  <label for="prof-score">4. Marks / CGPA / %</label>
                   <input type="text" id="prof-score" placeholder="e.g. 8.0 CGPA" value="8.0 CGPA">
                 </div>
               </div>
 
               <div class="form-row">
                 <div class="form-group col-half">
-                  <label for="prof-age">4. Age</label>
-                  <input type="number" id="prof-age" placeholder="e.g. 20" value="20" min="14" max="35">
+                  <label for="prof-age">5. Age</label>
+                  <input type="number" id="prof-age" placeholder="e.g. 21" value="21" min="14" max="35">
                 </div>
                 <div class="form-group col-half">
-                  <label for="prof-state">5. Home State</label>
+                  <label for="prof-state">6. Home State</label>
                   <input type="text" id="prof-state" placeholder="e.g. Andhra Pradesh, Telangana" value="Andhra Pradesh">
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="prof-pref">6. Preferred Career Direction</label>
+                <label for="prof-pref">7. Preferred Career Direction</label>
                 <select id="prof-pref">
-                  <option value="Tech / Corporate Industry">High-Growth Tech / Corporate Industry</option>
-                  <option value="Government Service & PSUs">Government Exams & PSU Jobs</option>
-                  <option value="Defence Officer Commission">Armed Forces / Defence Officer Commission</option>
-                  <option value="Higher Studies (GATE / Master's / Ph.D)">Higher Studies (GATE / M.Tech / MBA)</option>
-                  <option value="Higher Studies Abroad">Study Abroad (MS in US/Europe)</option>
+                  <!-- Populated dynamically based on qualification -->
+                  <option value="Software / IT">Software / IT</option>
+                  <option value="Cyber Security">Cyber Security</option>
+                  <option value="Core Engineering">Core Engineering</option>
+                  <option value="Government / PSU">Government / PSU</option>
+                  <option value="GATE">GATE (M.Tech / PSU)</option>
+                  <option value="Higher Studies">Higher Studies</option>
+                  <option value="MBA / Management">MBA / Management</option>
+                  <option value="Defence">Defence Technical Entry</option>
                 </select>
               </div>
 
               <div class="form-group">
-                <label for="prof-goal">7. Specific Goal / Dream Role</label>
+                <label for="prof-goal">8. Specific Goal / Dream Role</label>
                 <input type="text" id="prof-goal" placeholder="e.g. Cyber Security Specialist, ISRO Scientist" value="Cyber Security Engineer">
               </div>
 

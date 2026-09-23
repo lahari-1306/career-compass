@@ -97,8 +97,107 @@ const APP_OPTIONS = {
     "Intermediate": ["MPC", "BiPC", "MEC", "CEC", "HEC", "Vocational", "Other"],
     "Diploma": ["CSE", "ECE", "EEE", "Mechanical", "Civil", "Automobile", "Chemical", "Mining", "Other"],
     "Degree": ["B.Sc Computer Science", "B.Sc Data Science", "B.Sc Mathematics", "B.Sc Physics/Chemistry", "B.Com", "BBA", "BCA", "BA", "Other"],
-    "10th": ["General", "State Board SSC", "CBSE 10th", "ICSE 10th"],
-    "Postgraduate": ["M.Tech (CSE)", "M.Tech (ECE)", "M.Tech (Mechanical)", "M.Tech (Civil)", "MBA", "MCA", "M.Sc", "Other"]
+    "10th": ["General", "Science", "Mathematics", "IT"],
+    "Postgraduate": ["M.Tech (CSE)", "M.Tech (VLSI)", "M.Tech (Mechanical)", "M.Tech (Civil)", "MBA", "MCA", "M.Sc", "Other"]
+  },
+  streams_by_qual: {
+    "10th": ["General", "Science", "Mathematics", "IT"],
+    "Intermediate": ["MPC", "BiPC", "CEC", "MEC", "HEC", "Vocational"],
+    "Diploma": ["CSE", "Information Technology", "ECE", "EEE", "Mechanical Engineering", "Civil Engineering", "Chemical Engineering", "Automobile Engineering", "Commercial Practice", "Other"],
+    "Degree": ["B.Sc Computer Science", "B.Sc Data Science", "B.Sc Mathematics", "B.Sc Physics/Chemistry", "B.Sc Life Sciences", "B.Com", "BBA", "BCA", "BA", "Other"],
+    "B.Tech": [
+      "CSE", "Information Technology (IT)", "ECE", "EEE", "Mechanical Engineering", "Civil Engineering",
+      "Chemical Engineering", "Biotechnology", "Biomedical Engineering", "Aerospace / Aeronautical Engineering",
+      "Automobile Engineering", "Instrumentation & Control", "Mechatronics", "Robotics", "Artificial Intelligence / AI",
+      "AI & ML", "Data Science", "Cyber Security", "IoT", "CSE (AI)", "CSE (Data Science)", "CSE (Cyber Security)",
+      "Electronics & Instrumentation", "Production Engineering", "Industrial Engineering", "Metallurgical Engineering",
+      "Mining Engineering", "Petroleum Engineering", "Textile Engineering", "Agricultural Engineering",
+      "Food Technology", "Environmental Engineering", "Other"
+    ],
+    "Postgraduate": ["M.Tech (CSE)", "M.Tech (VLSI)", "M.Tech (Mechanical)", "M.Tech (Civil)", "MBA", "MCA", "M.Sc", "Other"]
+  },
+  preferred_career_directions_by_qual: {
+    "10th": [
+      "Intermediate (MPC / BiPC / CEC / MEC)",
+      "Polytechnic Diploma (Engineering)",
+      "ITI Trades",
+      "Direct Government / Defence Exams (Agniveer, SSC GD)"
+    ],
+    "Intermediate": [
+      "Engineering (B.Tech / B.E.)",
+      "Medical & Allied Health Sciences (MBBS, BDS, B.Pharm, Nursing, Agri)",
+      "Degree (B.Sc, B.Com, BBA, BA)",
+      "Defence (NDA, TES)",
+      "Law (CLAT / Integrated Law)",
+      "CA / CMA / CS Foundation"
+    ],
+    "Intermediate_MPC": [
+      "Engineering (B.Tech / B.E.)",
+      "Architecture (B.Arch)",
+      "Computer Science & IT Degrees",
+      "Pure Sciences & Research (B.Sc / BS-MS)",
+      "Defence Forces (NDA / TES Cadet)",
+      "Government Competitive Exams",
+      "Commercial Pilot / Aviation"
+    ],
+    "Intermediate_BiPC": [
+      "Medicine & Surgery (MBBS)",
+      "Dental Surgery (BDS)",
+      "Pharmacy (B.Pharm / Pharm.D)",
+      "B.Sc Agriculture & Horticulture",
+      "Veterinary Science & Animal Husbandry",
+      "Biotechnology & Bioinformatics",
+      "Nursing & Allied Health Sciences",
+      "Physiotherapy (BPT)"
+    ],
+    "Intermediate_CEC_MEC": [
+      "Chartered Accountancy (CA / CMA / CS)",
+      "Commerce & Finance (B.Com / B.Com Hons)",
+      "Business Administration & Management (BBA / BMS)",
+      "Economics & Statistics",
+      "Law (5-Year Integrated BA LLB / BBA LLB)",
+      "Banking & Insurance"
+    ],
+    "Intermediate_HEC": [
+      "Civil Services & Public Administration",
+      "Law (5-Year Integrated LLB)",
+      "Journalism & Mass Communication",
+      "Psychology & Social Work",
+      "Literature & Humanities (BA)",
+      "Teaching & Academia"
+    ],
+    "Diploma": [
+      "Lateral Entry to B.Tech (ECET)",
+      "Junior Engineer (JE) Government Exams",
+      "Core Technical Industry Jobs",
+      "NATS Apprenticeship",
+      "Defence Technical Roles"
+    ],
+    "Degree": [
+      "Post Graduation (M.Sc, M.Com, MA, MCA)",
+      "MBA / Management",
+      "Government Exams (UPSC CSE, SSC CGL, Banking)",
+      "Corporate Private Sector Jobs",
+      "Defence (CDS, AFCAT)"
+    ],
+    "B.Tech": [
+      "Software / IT Industry",
+      "Cyber Security",
+      "Core Engineering Jobs",
+      "Government Engineering Jobs (IES / ESE, State AE/AEE)",
+      "PSUs via GATE",
+      "Higher Studies (M.Tech via GATE)",
+      "Higher Studies Abroad (MS via GRE/TOEFL)",
+      "Management (MBA via CAT)",
+      "Defence Technical Entry (TGC, SSC Tech, Navy)",
+      "Startups & Entrepreneurship"
+    ],
+    "Postgraduate": [
+      "Ph.D. / Research / Doctoral Fellowships",
+      "University Teaching / Assistant Professor (UGC NET)",
+      "Senior Corporate R&D / Lead Roles",
+      "Government Scientist Roles (DRDO, ISRO, BARC)"
+    ]
   },
   states: [
     "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana",
@@ -614,6 +713,7 @@ async function loadAllDatasets() {
 
   // Check AI Engine & Refresh icons
   try { checkAIEngine(); } catch (e) { console.warn('checkAIEngine error:', e); }
+  try { handleProfileQualChange(); } catch (e) { console.warn('handleProfileQualChange error:', e); }
   try { refreshIcons(); } catch (e) { console.warn('refreshIcons error:', e); }
 }
 
@@ -1153,6 +1253,78 @@ function askAIAboutOpportunity(id) {
 // ==========================================
 // 8. AI CAREER GUIDE & ROADMAP ENGINE
 // ==========================================
+function handleProfileQualChange() {
+  const qualElem = document.getElementById('prof-qual');
+  const streamElem = document.getElementById('prof-stream');
+  const prefElem = document.getElementById('prof-pref');
+  const goalElem = document.getElementById('prof-goal');
+  if (!qualElem) return;
+
+  const qual = qualElem.value || 'B.Tech';
+  const optData = window.APP_OPTIONS || APP_OPTIONS;
+
+  // 1. Update Stream dropdown
+  if (streamElem) {
+    const streamsMap = optData.streams_by_qual || optData.branches_by_qual || {};
+    let streams = streamsMap[qual] || streamsMap['B.Tech'] || [];
+    if (!streams || streams.length === 0) {
+      if (qual === '10th') streams = ["General", "Science", "Mathematics", "IT"];
+      else if (qual === 'Intermediate') streams = ["MPC", "BiPC", "CEC", "MEC", "HEC", "Vocational"];
+      else if (qual === 'Diploma') streams = ["CSE", "Information Technology", "ECE", "EEE", "Mechanical Engineering", "Civil Engineering"];
+      else if (qual === 'Degree') streams = ["B.Sc Computer Science", "B.Sc Mathematics", "B.Com", "BBA", "BCA", "BA"];
+      else if (qual === 'Postgraduate') streams = ["M.Tech (CSE)", "M.Tech (VLSI)", "MBA", "MCA", "M.Sc"];
+      else streams = ["CSE", "ECE", "EEE", "Mechanical Engineering", "Civil Engineering", "Cyber Security", "Data Science", "AI & ML"];
+    }
+    streamElem.innerHTML = streams.map((s, idx) => `<option value="${escapeHtml(s)}" ${idx === 0 ? 'selected' : ''}>${escapeHtml(s)}</option>`).join('');
+  }
+
+  // 2. Update Preferred Career Direction dropdown
+  if (prefElem) {
+    const dirsMap = optData.preferred_career_directions_by_qual || {};
+    let dirs = dirsMap[qual];
+    if (!dirs) {
+      if (qual === '10th') dirs = dirsMap['10th'];
+      else if (qual === 'Intermediate') dirs = dirsMap['Intermediate'];
+      else if (qual === 'Diploma') dirs = dirsMap['Diploma'];
+      else if (qual === 'Degree') dirs = dirsMap['Degree'];
+      else if (qual === 'Postgraduate') dirs = dirsMap['Postgraduate'];
+      else dirs = dirsMap['B.Tech'];
+    }
+    if (!dirs || dirs.length === 0) {
+      if (qual === '10th') dirs = ["Intermediate (MPC / BiPC / CEC / MEC)", "Polytechnic Diploma (Engineering)", "ITI Trades", "Direct Government / Defence Exams (Agniveer, SSC GD)"];
+      else if (qual === 'Intermediate') dirs = ["Engineering (B.Tech / B.E.)", "Medical & Allied Health Sciences (MBBS, BDS, B.Pharm, Nursing, Agri)", "Degree (B.Sc, B.Com, BBA, BA)", "Defence (NDA, TES)", "Law (CLAT / Integrated Law)", "CA / CMA / CS Foundation"];
+      else if (qual === 'Diploma') dirs = ["Lateral Entry to B.Tech (ECET)", "Junior Engineer (JE) Government Exams", "Core Technical Industry Jobs", "NATS Apprenticeship", "Defence Technical Roles"];
+      else if (qual === 'Degree') dirs = ["Post Graduation (M.Sc, M.Com, MA, MCA)", "MBA / Management", "Government Exams (UPSC CSE, SSC CGL, Banking)", "Corporate Private Sector Jobs", "Defence (CDS, AFCAT)"];
+      else if (qual === 'Postgraduate') dirs = ["Ph.D. / Research / Doctoral Fellowships", "University Teaching / Assistant Professor (UGC NET)", "Senior Corporate R&D / Lead Roles", "Government Scientist Roles (DRDO, ISRO, BARC)"];
+      else dirs = ["Software / IT Industry", "Cyber Security", "Core Engineering Jobs", "Government Engineering Jobs (IES / ESE, State AE/AEE)", "PSUs via GATE", "Higher Studies (M.Tech via GATE)", "Higher Studies Abroad (MS via GRE/TOEFL)", "Management (MBA via CAT)", "Defence Technical Entry (TGC, SSC Tech, Navy)"];
+    }
+    prefElem.innerHTML = dirs.map((d, idx) => `<option value="${escapeHtml(d)}" ${idx === 0 ? 'selected' : ''}>${escapeHtml(d)}</option>`).join('');
+  }
+
+  // 3. Update Suggested Goal placeholder and value
+  if (goalElem) {
+    if (qual === '10th') {
+      goalElem.placeholder = 'e.g. 10+2 MPC for Engineering, or NEET BiPC for MBBS';
+      goalElem.value = '10+2 Intermediate (MPC for Engineering)';
+    } else if (qual === 'Intermediate') {
+      goalElem.placeholder = 'e.g. Crack JEE Main for IIT B.Tech, or NEET UG for MBBS';
+      goalElem.value = 'B.Tech in Computer Science / IIT JEE';
+    } else if (qual === 'Diploma') {
+      goalElem.placeholder = 'e.g. ECET State Top Rank for Lateral Entry B.Tech or RRB JE';
+      goalElem.value = 'B.Tech Lateral Entry via State ECET';
+    } else if (qual === 'Degree') {
+      goalElem.placeholder = 'e.g. MBA at Top IIM via CAT, or Bank PO (IBPS), or MCA';
+      goalElem.value = 'MBA in Finance / Management';
+    } else if (qual === 'Postgraduate') {
+      goalElem.placeholder = 'e.g. PMRF Doctoral Fellowship at IIT or UGC NET Assistant Professor';
+      goalElem.value = 'Ph.D. Doctoral Fellowship (PMRF / IIT)';
+    } else {
+      goalElem.placeholder = 'e.g. Cyber Security Specialist, ISRO Scientist, SDE at Google';
+      goalElem.value = 'Software Development Engineer';
+    }
+  }
+}
+
 async function checkAIEngine() {
   const statusElem = document.getElementById('ai-engine-status');
   try {
@@ -1220,12 +1392,18 @@ async function submitChatMessage(e) {
 
   // Read current profile builder values for contextual intelligence
   const currentProfile = {
+    education_level: document.getElementById('prof-qual')?.value || '',
     qualification: document.getElementById('prof-qual')?.value || '',
+    stream_or_branch: document.getElementById('prof-stream')?.value || '',
     branch: document.getElementById('prof-stream')?.value || '',
+    completion_status: document.getElementById('prof-status')?.value || 'Final Year',
+    status: document.getElementById('prof-status')?.value || 'Final Year',
     score: document.getElementById('prof-score')?.value || '',
     age: document.getElementById('prof-age')?.value || '',
     state: document.getElementById('prof-state')?.value || '',
+    preferred_career_direction: document.getElementById('prof-pref')?.value || '',
     preference: document.getElementById('prof-pref')?.value || '',
+    career_goal: document.getElementById('prof-goal')?.value || '',
     goal: document.getElementById('prof-goal')?.value || ''
   };
 
@@ -1238,43 +1416,45 @@ async function submitChatMessage(e) {
     const result = await res.json();
     document.getElementById(typingId)?.remove();
 
-    if (result.mode === 'gemini_ai' && result.reply) {
+    if (result.reply) {
       messagesContainer.innerHTML += `
         <div class="chat-bubble bot-bubble">
           <div class="bubble-header">
-            <span class="bubble-sender">AI Career Guide (${result.provider})</span>
+            <span class="bubble-sender">${escapeHtml(result.provider || 'AI Career Guide')}</span>
             <span class="bubble-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
           </div>
           <div class="bubble-body">${formatMarkdown(result.reply)}</div>
         </div>
       `;
-    } else if (result.data) {
-      // Structured rule-based roadmap
+    }
+
+    if (result.data) {
       const d = result.data;
       const r = d.roadmap || {};
-      messagesContainer.innerHTML += `
-        <div class="chat-bubble bot-bubble">
-          <div class="bubble-header">
-            <span class="bubble-sender">${result.provider}</span>
-            <span class="bubble-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-          </div>
-          <div class="bubble-body">
-            <h4 style="font-size: 1rem; font-weight: 800; color: var(--primary); margin-bottom: 0.4rem;">${escapeHtml(d.title)}</h4>
-            <p style="margin-bottom: 0.75rem;">${escapeHtml(d.summary)}</p>
-            <div style="background: var(--bg-surface); padding: 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); font-size: 0.85rem;">
-              <p><strong>Suitable Pathways:</strong></p>
-              <ul style="padding-left: 1.25rem; margin-top: 0.25rem;">
-                ${(r.suitable_options || []).map(opt => `<li>${escapeHtml(opt)}</li>`).join('')}
-              </ul>
-              <p style="margin-top: 0.5rem;"><strong>Recommended Exams:</strong> ${(r.entrance_exams || []).join(', ')}</p>
-              <p style="margin-top: 0.5rem;"><strong>Expected Career Outcome:</strong> ${escapeHtml(r.career_outcome || r.career || '')}</p>
+      if (!result.reply) {
+        messagesContainer.innerHTML += `
+          <div class="chat-bubble bot-bubble">
+            <div class="bubble-header">
+              <span class="bubble-sender">${escapeHtml(result.provider || 'AI Career Guide')}</span>
+              <span class="bubble-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
             </div>
-            <p class="disclaimer-mini" style="margin-top: 0.5rem;">${escapeHtml(d.disclaimer || '')}</p>
+            <div class="bubble-body">
+              <h4 style="font-size: 1rem; font-weight: 800; color: var(--primary); margin-bottom: 0.4rem;">${escapeHtml(d.title)}</h4>
+              <p style="margin-bottom: 0.75rem;">${escapeHtml(d.summary)}</p>
+              <div style="background: var(--bg-surface); padding: 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); font-size: 0.85rem;">
+                <p><strong>Available Options:</strong></p>
+                <ul style="padding-left: 1.25rem; margin-top: 0.25rem;">
+                  ${(r.suitable_options || []).map(opt => `<li>${escapeHtml(opt)}</li>`).join('')}
+                </ul>
+                <p style="margin-top: 0.5rem;"><strong>Recommended Exams:</strong> ${(Array.isArray(r.entrance_exams) ? r.entrance_exams.join(', ') : r.entrance_exams || 'None')}</p>
+                <p style="margin-top: 0.5rem;"><strong>Career Opportunities:</strong> ${escapeHtml(r.career_opportunities || r.career || '')}</p>
+              </div>
+              <p class="disclaimer-mini" style="margin-top: 0.5rem;">${escapeHtml(d.disclaimer || '')}</p>
+            </div>
           </div>
-        </div>
-      `;
-      // Also update full roadmap visualizer
-      renderStructuredRoadmap(d);
+        `;
+      }
+      renderStructuredRoadmap(d, currentProfile);
     }
   } catch (err) {
     document.getElementById(typingId)?.remove();
@@ -1293,23 +1473,29 @@ async function submitChatMessage(e) {
 async function generateProfileRoadmap(e) {
   e.preventDefault();
   const profile = {
-    qualification: document.getElementById('prof-qual').value,
-    branch: document.getElementById('prof-stream').value,
-    score: document.getElementById('prof-score').value,
-    age: document.getElementById('prof-age').value,
-    state: document.getElementById('prof-state').value,
-    preference: document.getElementById('prof-pref').value,
-    goal: document.getElementById('prof-goal').value
+    education_level: document.getElementById('prof-qual')?.value || '',
+    qualification: document.getElementById('prof-qual')?.value || '',
+    stream_or_branch: document.getElementById('prof-stream')?.value || '',
+    branch: document.getElementById('prof-stream')?.value || '',
+    completion_status: document.getElementById('prof-status')?.value || 'Final Year',
+    status: document.getElementById('prof-status')?.value || 'Final Year',
+    score: document.getElementById('prof-score')?.value || '',
+    age: document.getElementById('prof-age')?.value || '',
+    state: document.getElementById('prof-state')?.value || '',
+    preferred_career_direction: document.getElementById('prof-pref')?.value || '',
+    preference: document.getElementById('prof-pref')?.value || '',
+    career_goal: document.getElementById('prof-goal')?.value || '',
+    goal: document.getElementById('prof-goal')?.value || ''
   };
 
-  const query = `Create a complete step-by-step career roadmap for a student with qualification ${profile.qualification}, branch ${profile.branch}, score ${profile.score}, age ${profile.age}, state ${profile.state}, preference for ${profile.preference}, and dream goal: ${profile.goal}.`;
+  const query = `Create a complete step-by-step career roadmap for a student with qualification: ${profile.qualification}, stream/branch: ${profile.branch}, completion status: ${profile.status}, score: ${profile.score}, age: ${profile.age}, state: ${profile.state}, preferred career direction: ${profile.preference}, and dream career goal: ${profile.goal}.`;
 
   const container = document.getElementById('ai-roadmap-result');
   container.classList.remove('hidden');
   container.innerHTML = `
     <div class="loading-state">
       <div class="spinner"></div>
-      <p>Generating personalized CareerCompass roadmap for <strong>${escapeHtml(profile.goal)}</strong>...</p>
+      <p>Generating personalized CareerCompass roadmap for <strong>${escapeHtml(profile.goal || profile.preference)}</strong>...</p>
     </div>
   `;
 
@@ -1323,14 +1509,13 @@ async function generateProfileRoadmap(e) {
     if (data.data) {
       renderStructuredRoadmap(data.data, profile);
     } else {
-      // Formatted text response
       container.innerHTML = `
         <div class="roadmap-header">
           <div>
-            <h3 class="roadmap-title">Personalized Roadmap: ${escapeHtml(profile.goal)}</h3>
+            <h3 class="roadmap-title">Personalized Roadmap: ${escapeHtml(profile.goal || profile.preference)}</h3>
             <p style="color: var(--text-muted); font-size: 0.85rem;">Generated by ${data.provider}</p>
           </div>
-          <button class="btn btn-secondary" onclick="saveCustomGoal('${escapeHtml(profile.goal)}', 'Active')">Save Roadmap</button>
+          <button class="btn btn-secondary" onclick="saveCustomGoal('${escapeHtml(profile.goal || profile.preference)}', 'Active')">Save Roadmap</button>
         </div>
         <div style="font-size: 0.95rem; line-height: 1.6;">${formatMarkdown(data.reply || '')}</div>
       `;
@@ -1362,15 +1547,15 @@ function renderStructuredRoadmap(roadmapData, userProfile = {}) {
       </div>
     </div>
 
-    <!-- 8-Stage Milestone Progression Flow -->
+    <!-- 9-Stage Milestone Progression Flow (Section 10 Standard) -->
     <div class="roadmap-flow">
       <div class="roadmap-step">
-        <div class="step-label">Step 1: Current Position</div>
+        <div class="step-label">1. CURRENT STAGE</div>
         <div class="step-content"><strong>${escapeHtml(r.current_position || 'Current Stage')}</strong></div>
       </div>
 
       <div class="roadmap-step">
-        <div class="step-label">Step 2: Suitable Education Options</div>
+        <div class="step-label">2. YOUR AVAILABLE NEXT OPTIONS</div>
         <div class="step-content">
           <ul>
             ${(r.suitable_options || []).map(opt => `<li>${escapeHtml(opt)}</li>`).join('')}
@@ -1379,50 +1564,63 @@ function renderStructuredRoadmap(roadmapData, userProfile = {}) {
       </div>
 
       <div class="roadmap-step">
-        <div class="step-label">Step 3: Recommended Entrance Exams</div>
+        <div class="step-label">3. OPTION SELECTED</div>
         <div class="step-content">
-          <strong>${(r.entrance_exams || []).join(' | ')}</strong>
+          <strong style="color: var(--primary);">${escapeHtml(r.option_selected || r.suitable_options?.[0] || 'Target Selected Pathway')}</strong>
         </div>
       </div>
 
       <div class="roadmap-step">
-        <div class="step-label">Step 4: Target Courses & Degrees</div>
+        <div class="step-label">4. ELIGIBILITY</div>
         <div class="step-content">
-          ${(Array.isArray(r.courses) ? r.courses.join(', ') : r.courses) || 'Domain degree programs'}
+          <p>${escapeHtml(r.eligibility || 'Standard educational qualification from recognized board/university.')}</p>
         </div>
       </div>
 
       <div class="roadmap-step">
-        <div class="step-label">Step 5: Target Colleges & Academies</div>
+        <div class="step-label">5. WHAT TO STUDY / SKILLS TO BUILD</div>
         <div class="step-content">
-          ${(Array.isArray(r.colleges) ? r.colleges.join(', ') : r.colleges) || 'National & State Institutes'}
+          <p>${escapeHtml(r.what_to_study_skills || (Array.isArray(r.skills) ? r.skills.join(', ') : r.skills) || 'Domain syllabus & practical tool mastery.')}</p>
         </div>
       </div>
 
       <div class="roadmap-step">
-        <div class="step-label">Step 6: High-Demand Skills to Master</div>
+        <div class="step-label">6. ENTRANCE EXAMS (IF APPLICABLE)</div>
         <div class="step-content">
-          <ul>
-            ${(r.skills_required || r.skills || []).map(sk => `<li>${escapeHtml(sk)}</li>`).join('')}
-          </ul>
+          <strong>${(Array.isArray(r.entrance_exams) ? r.entrance_exams.join(' | ') : r.entrance_exams) || 'None / Direct merit admission'}</strong>
         </div>
       </div>
 
       <div class="roadmap-step">
-        <div class="step-label">Step 7: Career Milestone Outcome</div>
+        <div class="step-label">7. APPLICATION / ADMISSION PROCESS</div>
         <div class="step-content">
-          <strong style="color: var(--primary); font-size: 1.05rem;">${escapeHtml(r.career_outcome || r.career || '')}</strong>
+          <p>${escapeHtml(r.admission_process || 'Online portal registration -> Entrance/Merit -> Web Counselling.')}</p>
         </div>
       </div>
 
       <div class="roadmap-step">
-        <div class="step-label">Step 8: Actionable Immediate Next Steps</div>
+        <div class="step-label">8. NEXT EDUCATION OR CAREER STEP</div>
+        <div class="step-content">
+          <p>${escapeHtml(r.next_education_or_career_step || 'Degree completion / Higher specialized master / Commissioning.')}</p>
+        </div>
+      </div>
+
+      <div class="roadmap-step">
+        <div class="step-label">9. CAREER OPPORTUNITIES</div>
+        <div class="step-content">
+          <strong style="color: var(--primary); font-size: 1.05rem;">${escapeHtml(r.career_opportunities || r.career || r.career_outcome || 'Graduate Professional')}</strong>
+        </div>
+      </div>
+
+      ${r.next_steps && r.next_steps.length ? `
+      <div class="roadmap-step">
+        <div class="step-label">IMMEDIATE ACTION STEPS</div>
         <div class="step-content">
           <ol style="padding-left: 1.25rem;">
-            ${(r.next_steps || []).map(ns => `<li>${escapeHtml(ns)}</li>`).join('')}
+            ${r.next_steps.map(ns => `<li>${escapeHtml(ns)}</li>`).join('')}
           </ol>
         </div>
-      </div>
+      </div>` : ''}
     </div>
 
     <div class="alert-box alert-warning" style="margin-top: 1.5rem; margin-bottom: 0;">
