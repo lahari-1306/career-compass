@@ -18,7 +18,69 @@ QUAL_HIERARCHY = {
     "Postgraduate": ["Postgraduate", "M.Tech", "M.E", "M.Sc", "MBA", "MCA", "Masters"]
 }
 
+# Comprehensive branch family mappings for B.Tech & Allied engineering disciplines
+BRANCH_FAMILY_MAP = {
+    # CSE / IT family
+    "CSE": ["CSE", "COMPUTER SCIENCE", "IT", "AI/ML", "DATA SCIENCE", "CYBER SECURITY"],
+    "INFORMATION TECHNOLOGY (IT)": ["IT", "INFORMATION TECHNOLOGY", "CSE", "COMPUTER SCIENCE", "AI/ML", "DATA SCIENCE", "CYBER SECURITY"],
+    "ARTIFICIAL INTELLIGENCE / AI": ["AI/ML", "AI", "ARTIFICIAL INTELLIGENCE", "CSE", "IT", "DATA SCIENCE"],
+    "AI & ML": ["AI/ML", "AI", "ML", "MACHINE LEARNING", "CSE", "IT", "DATA SCIENCE"],
+    "DATA SCIENCE": ["DATA SCIENCE", "AI/ML", "CSE", "IT"],
+    "CYBER SECURITY": ["CYBER SECURITY", "CYBER", "CSE", "IT"],
+    "IOT": ["IOT", "INTERNET OF THINGS", "CSE", "IT", "ECE"],
+    "CSE (AI)": ["CSE", "AI/ML", "AI", "IT"],
+    "CSE (DATA SCIENCE)": ["CSE", "DATA SCIENCE", "IT"],
+    "CSE (CYBER SECURITY)": ["CSE", "CYBER SECURITY", "CYBER", "IT"],
+    
+    # ECE / EEE / Circuits family
+    "ECE": ["ECE", "ELECTRONICS", "COMMUNICATION", "EEE"],
+    "EEE": ["EEE", "ELECTRICAL", "ELECTRONICS", "ECE"],
+    "INSTRUMENTATION & CONTROL": ["INSTRUMENTATION", "CONTROL", "EEE", "ECE", "OTHER"],
+    "ELECTRONICS & INSTRUMENTATION": ["ELECTRONICS", "INSTRUMENTATION", "ECE", "EEE", "OTHER"],
+    
+    # Mechanical / Allied family
+    "MECHANICAL ENGINEERING": ["MECHANICAL", "MECH"],
+    "MECHATRONICS": ["MECHATRONICS", "MECHANICAL", "ECE", "EEE", "ROBOTICS"],
+    "ROBOTICS": ["ROBOTICS", "MECHANICAL", "CSE", "AI/ML", "ECE"],
+    "AEROSPACE / AERONAUTICAL ENGINEERING": ["AEROSPACE", "AERONAUTICAL", "AERONAUTICS", "MECHANICAL", "OTHER"],
+    "AUTOMOBILE ENGINEERING": ["AUTOMOBILE", "AUTO", "AUTOMOTIVE", "MECHANICAL", "OTHER"],
+    "PRODUCTION ENGINEERING": ["PRODUCTION", "MANUFACTURING", "MECHANICAL", "OTHER"],
+    "INDUSTRIAL ENGINEERING": ["INDUSTRIAL", "MECHANICAL", "OTHER"],
+    
+    # Civil family
+    "CIVIL ENGINEERING": ["CIVIL"],
+    "ENVIRONMENTAL ENGINEERING": ["ENVIRONMENTAL", "CIVIL", "OTHER"],
+    
+    # Specialized engineering
+    "CHEMICAL ENGINEERING": ["CHEMICAL", "OTHER"],
+    "BIOTECHNOLOGY": ["BIOTECHNOLOGY", "BIOTECH", "OTHER"],
+    "BIOMEDICAL ENGINEERING": ["BIOMEDICAL", "BIOMED", "ECE", "OTHER"],
+    "METALLURGICAL ENGINEERING": ["METALLURGY", "METALLURGICAL", "OTHER"],
+    "MINING ENGINEERING": ["MINING", "OTHER"],
+    "PETROLEUM ENGINEERING": ["PETROLEUM", "OTHER"],
+    "TEXTILE ENGINEERING": ["TEXTILE", "OTHER"],
+    "AGRICULTURAL ENGINEERING": ["AGRICULTURAL", "AGRICULTURE", "OTHER"],
+    "FOOD TECHNOLOGY": ["FOOD", "FOOD TECHNOLOGY", "OTHER"],
+    "OTHER": ["OTHER"]
+}
+
 class RadarMatcher:
+    @staticmethod
+    def _branch_matches(user_branch: str, target_branches: List[str]) -> bool:
+        if not target_branches or any(b in target_branches for b in ["ALL", "ALL_ENGINEERING", "ALL_DIPLOMA"]):
+            return True
+        ub = user_branch.strip().upper()
+        tb_upper = [t.upper() for t in target_branches]
+        if ub in tb_upper or "OTHER" in tb_upper:
+            return True
+        families = BRANCH_FAMILY_MAP.get(ub, [ub])
+        # Direct equality or keyword containment
+        for f in families:
+            for tb in tb_upper:
+                if f == tb or f in tb or tb in f:
+                    return True
+        return False
+
     @staticmethod
     def match(profile: Dict[str, Any], opportunities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """
@@ -28,6 +90,7 @@ class RadarMatcher:
         user_qual = profile.get("qualification", "").strip()
         user_branch = profile.get("stream_or_branch", "").strip().upper()
         user_state = profile.get("state", "").strip()
+        user_status = profile.get("completion_status", "").strip()
         user_interests = [i.strip().lower() for i in profile.get("interests", [])]
 
         matches = []
@@ -49,7 +112,6 @@ class RadarMatcher:
             # A. Qualification mismatch
             if target_quals and user_qual:
                 if user_qual not in target_quals and not any(q in target_quals for q in RadarMatcher._expand_qual(user_qual)):
-                    # Special check: Degree holders can sometimes write certain jobs, but 10th cannot write GATE/CAT
                     if user_qual == "10th" and any(q in ["B.Tech", "Degree", "Intermediate", "Postgraduate"] for q in target_quals):
                         continue
                     if user_qual == "Intermediate" and any(q in ["B.Tech", "Degree", "Postgraduate"] for q in target_quals):
@@ -62,7 +124,7 @@ class RadarMatcher:
                         continue
 
             # B. Stream / Branch mismatch
-            if target_branches and user_branch and "ALL" not in target_branches and "ALL_ENGINEERING" not in target_branches and "ALL_DIPLOMA" not in target_branches:
+            if target_branches and user_branch and not RadarMatcher._branch_matches(user_branch, target_branches):
                 # If target explicitly mentions MPC and user is BiPC or Arts
                 if "MPC" in target_branches and user_branch not in ["MPC", "MATHS"]:
                     continue
@@ -70,8 +132,9 @@ class RadarMatcher:
                     continue
 
             # C. State mismatch: If opportunity is state-specific and user specified a different state
-            if target_states and user_state and user_state not in ["All India", "National"]:
-                if user_state not in target_states and "All India" not in target_states:
+            is_national_user = user_state in ["All India", "National", "All India / National", ""]
+            if target_states and not is_national_user:
+                if user_state not in target_states and not any(s in target_states for s in ["All India", "National", "All India / National"]):
                     continue
 
             # ----------------------------------------------------
@@ -85,14 +148,13 @@ class RadarMatcher:
                 score += 25
                 reasons.append(f"Directly matches your qualification: {user_qual}")
             elif not target_quals:
-                # Open or universal (like National Scholarships)
                 if "scholarship" in title.lower() or "scholarship" in cat.lower():
                     score += 20
                     reasons.append("Universal scholarship scheme open to students across streams")
 
             # Stream / Branch alignment
             if target_branches:
-                if user_branch in target_branches:
+                if RadarMatcher._branch_matches(user_branch, target_branches):
                     score += 20
                     reasons.append(f"Specifically matches your branch / stream: {user_branch}")
                 elif "ALL_ENGINEERING" in target_branches and user_qual in ["B.Tech", "Degree"]:
@@ -102,34 +164,51 @@ class RadarMatcher:
                     score += 15
                     reasons.append(f"Open to 3-Year Diploma holders including {user_branch}")
 
+            # Completion status alignment
+            if user_status == "Completed" and any(k in title.lower() for k in ["recruit", "employment", "job", "tgc", "ssc", "engineer"]):
+                score += 10
+                reasons.append("Eligible as a completed graduate for direct professional recruitment")
+            elif user_status in ["Final Year", "Currently Studying"] and any(k in title.lower() for k in ["gate", "cat", "apprentice", "internship", "admissions", "counselling"]):
+                score += 10
+                reasons.append(f"Recommended for {user_status} students preparing ahead of graduation")
+
             # Interest alignment
             matched_interest = False
             for interest in user_interests:
-                if ("higher" in interest or "m.tech" in interest or "cat" in interest or "gate" in interest) and cat == "Entrance Exams":
+                i = interest.lower()
+                if any(k in i for k in ["higher", "m.tech", "ms ", "ph.d", "cat", "gate", "study abroad", "mba", "research"]) and (cat in ["Entrance Exams", "Higher Studies"] or "gate" in title.lower() or "cat" in title.lower()):
                     score += 15
-                    reasons.append("Aligns with your career goal in Higher Studies & Entrance Exams")
+                    reasons.append(f"Aligns with your career goal in {interest.title()}")
                     matched_interest = True
                     break
-                elif ("psu" in interest or "govt" in interest or "job" in interest) and (cat in ["Government Jobs", "Entrance Exams"]):
+                elif any(k in i for k in ["psu", "govt", "government", "rrb", "isro", "drdo", "barc"]) and (cat in ["Government Jobs", "Entrance Exams", "Results"]):
                     score += 15
-                    reasons.append("Aligns with your goal for PSU recruitment and Government roles")
+                    reasons.append(f"Aligns with your goal for {interest.title()}")
                     matched_interest = True
                     break
-                elif "defence" in interest and cat in ["Defence", "Results"]:
-                    score += 20
-                    reasons.append("Aligns with your target in the Indian Armed Forces")
-                    matched_interest = True
-                    break
-                elif "scholarship" in interest and cat == "Scholarships":
-                    score += 20
-                    reasons.append("Aligns with your interest in Financial Aid & Scholarships")
-                    matched_interest = True
-                    break
-                elif ("counselling" in interest or "admission" in interest) and cat == "Counselling":
+                elif any(k in i for k in ["software", "it ", "web", "full stack", "cloud", "devops", "ai", "machine learning", "data science", "cyber", "product-based", "consulting"]) and (cat in ["Government Jobs", "Entrance Exams", "Results", "Admissions"] or "tech" in title.lower() or "software" in title.lower() or "engineer" in title.lower() or "apprentice" in title.lower()):
                     score += 15
-                    reasons.append("Matches your admission and counselling cycle preferences")
+                    reasons.append(f"Aligns with your interest in {interest.title()}")
                     matched_interest = True
                     break
+                elif "defence" in i or "armed" in i:
+                    if cat in ["Defence", "Results"] or any(k in title.lower() for k in ["nda", "cds", "afcat", "defence", "navy", "army", "air force"]):
+                        score += 20
+                        reasons.append("Aligns with your target in the Indian Armed Forces")
+                        matched_interest = True
+                        break
+                elif "scholarship" in i or "financial aid" in i:
+                    if cat == "Scholarships" or "scholarship" in title.lower():
+                        score += 20
+                        reasons.append("Aligns with your interest in Financial Aid & Scholarships")
+                        matched_interest = True
+                        break
+                elif "counselling" in i or "admission" in i:
+                    if cat in ["Counselling", "Admissions"] or "counselling" in title.lower() or "admission" in title.lower():
+                        score += 15
+                        reasons.append("Matches your admission and counselling cycle preferences")
+                        matched_interest = True
+                        break
 
             if not matched_interest and cat:
                 reasons.append(f"Verified official alert in {cat}")

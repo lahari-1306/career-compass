@@ -7,8 +7,8 @@
     "qualification": "B.Tech",
     "state": "Andhra Pradesh",
     "stream_or_branch": "CSE",
-    "updated_at": "2026-09-22T20:24:38.202129+05:30",
-    "created_at": "2026-09-22T20:24:38.202129+05:30"
+    "updated_at": "2026-09-23T16:18:44.901786+05:30",
+    "created_at": "2026-09-23T16:18:44.901786+05:30"
   },
   "prof_20260921213456832472": {
     "interests": [
@@ -153,5 +153,58 @@
     "profile_id": "prof_20260922202437809287",
     "updated_at": "2026-09-22T20:24:37.809287+05:30",
     "created_at": "2026-09-22T20:24:37.809287+05:30"
+  },
+  "prof_20260923155905127134": {
+    "interests": [
+      "Higher Studies / M.Tech",
+      "PSU / Govt Jobs"
+    ],
+    "qualification": "B.Tech",
+    "state": "Andhra Pradesh",
+    "stream_or_branch": "CSE",
+    "profile_id": "prof_20260923155905127134",
+    "updated_at": "2026-09-23T15:59:05.127134+05:30",
+    "created_at": "2026-09-23T15:59:05.127134+05:30"
+  },
+  "prof_20260923160325871911": {
+    "interests": [
+      "Higher Studies / M.Tech",
+      "PSU / Govt Jobs"
+    ],
+    "qualification": "B.Tech",
+    "state": "Andhra Pradesh",
+    "stream_or_branch": "CSE",
+    "profile_id": "prof_20260923160325871911",
+    "updated_at": "2026-09-23T16:03:25.871911+05:30",
+    "created_at": "2026-09-23T16:03:25.871911+05:30"
+  },
+  "prof_6l81f7z": {
+    "profile_id": "prof_6l81f7z",
+    "qualification": "B.Tech",
+    "stream_or_branch": "Information Technology (IT)",
+    "completion_status": "Completed",
+    "state": "Maharashtra",
+    "completion_year": "2024",
+    "category": "General",
+    "interests": [
+      "Software / IT Roles",
+      "Cyber Security",
+      "Data Science / Analytics",
+      "GATE"
+    ],
+    "updated_at": "2026-09-23T16:18:03.611679+05:30",
+    "created_at": "2026-09-23T16:18:03.611679+05:30"
+  },
+  "prof_20260923161844973781": {
+    "interests": [
+      "Higher Studies / M.Tech",
+      "PSU / Govt Jobs"
+    ],
+    "qualification": "B.Tech",
+    "state": "Andhra Pradesh",
+    "stream_or_branch": "CSE",
+    "profile_id": "prof_20260923161844973781",
+    "updated_at": "2026-09-23T16:18:44.973781+05:30",
+    "created_at": "2026-09-23T16:18:44.973781+05:30"
   }
 }

@@ -9,11 +9,12 @@ IST = timezone(timedelta(hours=5, minutes=30))
 
 @dataclass
 class StudentProfile:
-    profile_id: str
+    profile_id: str = ""
     full_name: str = ""
     qualification: str = "B.Tech"  # '10th', 'Intermediate', 'Diploma', 'Degree', 'B.Tech', 'Postgraduate'
     stream_or_branch: str = "CSE"  # 'CSE', 'ECE', 'Mechanical', 'Civil', 'EEE', 'MPC', 'BiPC', etc.
     completion_year: str = "2026"
+    completion_status: str = "Final Year"  # 'Currently Studying', 'Final Year', 'Completed'
     state: str = "Andhra Pradesh"
     category: str = "General"      # 'General', 'OBC', 'SC', 'ST', 'EWS'
     interests: List[str] = field(default_factory=lambda: ["Higher Studies / M.Tech", "PSU / Govt Jobs", "Scholarships"])

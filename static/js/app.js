@@ -40,9 +40,82 @@ const AppState = {
     cutoffSearch: '',
     notifCategory: 'All',
     notifSearch: '',
-    librarySearch: ''
+    librarySearch: '',
+    options: {}
   }
 };
+
+// ==========================================
+// CENTRALIZED OPTIONS CONSTANT (Branches, States, Status, Interests)
+// ==========================================
+const APP_OPTIONS = {
+  btech_branches: [
+    "CSE",
+    "Information Technology (IT)",
+    "ECE",
+    "EEE",
+    "Mechanical Engineering",
+    "Civil Engineering",
+    "Chemical Engineering",
+    "Biotechnology",
+    "Biomedical Engineering",
+    "Aerospace / Aeronautical Engineering",
+    "Automobile Engineering",
+    "Instrumentation & Control",
+    "Mechatronics",
+    "Robotics",
+    "Artificial Intelligence / AI",
+    "AI & ML",
+    "Data Science",
+    "Cyber Security",
+    "IoT",
+    "CSE (AI)",
+    "CSE (Data Science)",
+    "CSE (Cyber Security)",
+    "Electronics & Instrumentation",
+    "Production Engineering",
+    "Industrial Engineering",
+    "Metallurgical Engineering",
+    "Mining Engineering",
+    "Petroleum Engineering",
+    "Textile Engineering",
+    "Agricultural Engineering",
+    "Food Technology",
+    "Environmental Engineering",
+    "Other"
+  ],
+  branches_by_qual: {
+    "B.Tech": [
+      "CSE", "Information Technology (IT)", "ECE", "EEE", "Mechanical Engineering", "Civil Engineering",
+      "Chemical Engineering", "Biotechnology", "Biomedical Engineering", "Aerospace / Aeronautical Engineering",
+      "Automobile Engineering", "Instrumentation & Control", "Mechatronics", "Robotics", "Artificial Intelligence / AI",
+      "AI & ML", "Data Science", "Cyber Security", "IoT", "CSE (AI)", "CSE (Data Science)", "CSE (Cyber Security)",
+      "Electronics & Instrumentation", "Production Engineering", "Industrial Engineering", "Metallurgical Engineering",
+      "Mining Engineering", "Petroleum Engineering", "Textile Engineering", "Agricultural Engineering",
+      "Food Technology", "Environmental Engineering", "Other"
+    ],
+    "Intermediate": ["MPC", "BiPC", "MEC", "CEC", "HEC", "Vocational", "Other"],
+    "Diploma": ["CSE", "ECE", "EEE", "Mechanical", "Civil", "Automobile", "Chemical", "Mining", "Other"],
+    "Degree": ["B.Sc Computer Science", "B.Sc Data Science", "B.Sc Mathematics", "B.Sc Physics/Chemistry", "B.Com", "BBA", "BCA", "BA", "Other"],
+    "10th": ["General", "State Board SSC", "CBSE 10th", "ICSE 10th"],
+    "Postgraduate": ["M.Tech (CSE)", "M.Tech (ECE)", "M.Tech (Mechanical)", "M.Tech (Civil)", "MBA", "MCA", "M.Sc", "Other"]
+  },
+  states: [
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana",
+    "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
+    "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana",
+    "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
+  ],
+  union_territories: [
+    "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu",
+    "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
+  ],
+  scopes: ["All India / National"],
+  completion_years: ["2030", "2029", "2028", "2027", "2026", "2025", "2024", "2023", "2022", "2021", "2020", "2019", "2018"],
+  completion_statuses: ["Currently Studying", "Final Year", "Completed"]
+};
+window.APP_OPTIONS = APP_OPTIONS;
+AppState.options = APP_OPTIONS;
 
 // ==========================================
 // 2. MULTI-LANGUAGE TRANSLATIONS & DICTIONARY
@@ -493,7 +566,7 @@ async function safeFetchJson(url, defaultVal) {
 // 6. DATA LOADER & RENDERING
 // ==========================================
 async function loadAllDatasets() {
-  const [paths, exams, govt, defence, colleges, cutoffs, scholarships, library, links, notifsAll, btechPathwaysRes, btechCompaniesRes] = await Promise.all([
+  const [paths, exams, govt, defence, colleges, cutoffs, scholarships, library, links, notifsAll, btechPathwaysRes, btechCompaniesRes, optionsRes] = await Promise.all([
     safeFetchJson('/api/career-paths', {}),
     safeFetchJson('/api/entrance-exams', []),
     safeFetchJson('/api/govt-engineering-jobs', []),
@@ -505,8 +578,14 @@ async function loadAllDatasets() {
     safeFetchJson('/api/official-links', []),
     safeFetchJson('/api/notifications/all', { notifications: [] }),
     safeFetchJson('/api/btech/pathways', { pathways: [] }),
-    safeFetchJson('/api/btech/companies', { companies: [] })
+    safeFetchJson('/api/btech/companies', { companies: [] }),
+    safeFetchJson('/api/options', APP_OPTIONS)
   ]);
+
+  if (optionsRes && optionsRes.btech_branches) {
+    window.APP_OPTIONS = optionsRes;
+    AppState.options = optionsRes;
+  }
 
   AppState.datasets.careerPaths = paths || {};
   AppState.datasets.entranceExams = exams || [];
@@ -1559,10 +1638,11 @@ const DEFAULT_RADAR_PROFILE = {
   profile_id: 'prof_' + Math.random().toString(36).substring(2, 9),
   qualification: 'B.Tech',
   stream_or_branch: 'CSE',
-  state: 'Andhra Pradesh',
+  completion_status: 'Final Year',
+  state: 'All India / National',
   completion_year: '2026',
   category: 'General',
-  interests: ['Higher Studies / M.Tech', 'PSU / Govt Jobs', 'Scholarships']
+  interests: ['Software / IT Roles', 'Higher Studies', 'Government Jobs', 'PSU Careers', 'GATE', 'Scholarships / Financial Aid']
 };
 
 function getStoredRadarProfile() {
@@ -1591,25 +1671,44 @@ function initCareerRadar() {
 function updateRadarProfileChip(profile) {
   const chip = document.getElementById('radar-profile-chip');
   if (chip) {
-    chip.textContent = `${profile.qualification} (${profile.stream_or_branch || 'General'}) • ${profile.state || 'All India'}`;
+    const statusPart = profile.completion_status ? ` • ${profile.completion_status}` : '';
+    chip.textContent = `${profile.qualification} (${profile.stream_or_branch || 'General'}${statusPart}) • ${profile.state || 'All India / National'}`;
+  }
+}
+
+function populateRadarBranchOptions(qual, selectedValue) {
+  const branchSelect = document.getElementById('radar-input-branch');
+  if (!branchSelect) return;
+  const optData = window.APP_OPTIONS || APP_OPTIONS;
+  const branches = (optData.branches_by_qual && optData.branches_by_qual[qual]) || optData.btech_branches || ['CSE'];
+
+  branchSelect.innerHTML = branches.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
+
+  if (selectedValue && branches.includes(selectedValue)) {
+    branchSelect.value = selectedValue;
+  } else if (branches.length > 0) {
+    branchSelect.value = branches[0];
   }
 }
 
 function openRadarProfileModal() {
   const profile = getStoredRadarProfile();
   const qualSelect = document.getElementById('radar-input-qual');
-  const branchInput = document.getElementById('radar-input-branch');
+  const statusSelect = document.getElementById('radar-input-status');
   const stateSelect = document.getElementById('radar-input-state');
   const yearSelect = document.getElementById('radar-input-year');
 
-  if (qualSelect) qualSelect.value = profile.qualification || 'B.Tech';
-  if (branchInput) branchInput.value = profile.stream_or_branch || 'CSE';
-  if (stateSelect) stateSelect.value = profile.state || 'Andhra Pradesh';
+  const curQual = profile.qualification || 'B.Tech';
+  if (qualSelect) qualSelect.value = curQual;
+  populateRadarBranchOptions(curQual, profile.stream_or_branch || 'CSE');
+
+  if (statusSelect) statusSelect.value = profile.completion_status || 'Final Year';
+  if (stateSelect) stateSelect.value = profile.state || 'All India / National';
   if (yearSelect) yearSelect.value = profile.completion_year || '2026';
 
   // Check interest checkboxes
   const interestBoxes = document.querySelectorAll('input[name="radar-interest"]');
-  const userInterests = profile.interests || [];
+  const userInterests = Array.isArray(profile.interests) ? profile.interests : [];
   interestBoxes.forEach(box => {
     box.checked = userInterests.includes(box.value);
   });
@@ -1626,29 +1725,17 @@ function closeRadarProfileModal(e) {
 }
 
 function handleRadarQualChange() {
-  const qual = document.getElementById('radar-input-qual').value;
-  const branchInput = document.getElementById('radar-input-branch');
-  if (!branchInput) return;
-
-  if (qual === '10th') {
-    branchInput.value = 'General';
-  } else if (qual === 'Intermediate') {
-    branchInput.value = 'MPC';
-  } else if (qual === 'Diploma') {
-    branchInput.value = 'CSE';
-  } else if (qual === 'B.Tech') {
-    branchInput.value = 'CSE';
-  } else if (qual === 'Degree') {
-    branchInput.value = 'B.Sc Computer Science';
-  }
+  const qual = document.getElementById('radar-input-qual')?.value || 'B.Tech';
+  populateRadarBranchOptions(qual);
 }
 
 async function saveRadarProfile() {
   const existing = getStoredRadarProfile();
-  const qual = document.getElementById('radar-input-qual').value;
-  const branch = document.getElementById('radar-input-branch').value.trim() || 'General';
-  const state = document.getElementById('radar-input-state').value;
-  const year = document.getElementById('radar-input-year').value;
+  const qual = document.getElementById('radar-input-qual')?.value || 'B.Tech';
+  const branch = document.getElementById('radar-input-branch')?.value?.trim() || 'CSE';
+  const status = document.getElementById('radar-input-status')?.value || 'Final Year';
+  const state = document.getElementById('radar-input-state')?.value || 'All India / National';
+  const year = document.getElementById('radar-input-year')?.value || '2026';
 
   const selectedInterests = [];
   document.querySelectorAll('input[name="radar-interest"]:checked').forEach(box => {
@@ -1659,6 +1746,7 @@ async function saveRadarProfile() {
     ...existing,
     qualification: qual,
     stream_or_branch: branch,
+    completion_status: status,
     state: state,
     completion_year: year,
     interests: selectedInterests
@@ -2040,7 +2128,42 @@ function switchBTechBranch(branch) {
 
 function switchBTechPathway(pathwayId) {
   AppState.btechState.activePathway = pathwayId;
+
+  // 1. Update DOM cards directly so active state reflects immediately
+  const cards = document.querySelectorAll('.btech-pathway-card');
+  cards.forEach(card => {
+    const cardPathwayId = card.getAttribute('data-pathway-id');
+    const isSelected = (cardPathwayId === pathwayId);
+
+    if (isSelected) {
+      card.classList.add('highlighted-card');
+      card.style.border = '2px solid var(--primary)';
+      card.style.boxShadow = '0 4px 12px rgba(37, 99, 235, 0.15)';
+    } else {
+      card.classList.remove('highlighted-card');
+      card.style.border = '1px solid var(--border-color)';
+      card.style.boxShadow = 'none';
+    }
+
+    const badge = card.querySelector('.pathway-badge');
+    if (badge) {
+      badge.className = `badge pathway-badge ${isSelected ? 'badge-primary' : 'badge-info'}`;
+    }
+
+    const btn = card.querySelector('.pathway-action-btn');
+    if (btn) {
+      btn.className = `btn ${isSelected ? 'btn-primary' : 'btn-secondary'} btn-sm w-full pathway-action-btn`;
+      const btnSpan = btn.querySelector('span');
+      if (btnSpan) {
+        btnSpan.textContent = isSelected ? 'Currently Viewing Details ↓' : (typeof t === 'function' ? t('btech_careers.explore_pathway', 'Explore Pathway →') : 'Explore Pathway →');
+      }
+    }
+  });
+
+  // 2. Render details for selected pathway
   renderBTechPathwayDetail();
+
+  // 3. Smoothly scroll down to details
   const el = document.getElementById('btech-pathway-detail-container');
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -2067,7 +2190,8 @@ async function renderBTechSection() {
 
   const mode = AppState.btechState.mode || 'completed';
   const branch = AppState.btechState.branch || 'CSE';
-  const branchesList = ['CSE', 'IT', 'ECE', 'EEE', 'Mechanical', 'Civil', 'AI/ML', 'Data Science', 'Cyber Security', 'Chemical', 'Biotechnology', 'Other'];
+  const allBranches = (window.APP_OPTIONS && window.APP_OPTIONS.btech_branches) || APP_OPTIONS.btech_branches || [];
+  const quickBranches = ['CSE', 'Information Technology (IT)', 'ECE', 'EEE', 'Mechanical Engineering', 'Civil Engineering', 'AI & ML', 'Data Science', 'Cyber Security', 'Chemical Engineering', 'Biotechnology', 'Aerospace / Aeronautical Engineering', 'Other'];
 
   let html = `
     <!-- B.Tech Context Switcher -->
@@ -2131,13 +2255,21 @@ async function renderBTechSection() {
   html += `
       <!-- Step 1: Branch Input Selector -->
       <div style="padding-top: 0.75rem; border-top: 1px solid var(--border-color);">
-        <label style="font-size: 0.86rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.65rem;">
-          <i data-lucide="filter" class="icon-xs"></i>
-          <span>${t('btech_careers.branch_prompt', 'What was your B.Tech branch? (Used as filter):')}</span>
-          <strong style="color: var(--text-main); font-weight: 800; margin-left: 0.35rem;">[${branch}]</strong>
-        </label>
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; margin-bottom: 0.65rem;">
+          <label style="font-size: 0.88rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 0.4rem; margin: 0;">
+            <i data-lucide="filter" class="icon-xs"></i>
+            <span>${t('btech_careers.branch_prompt', 'What was your B.Tech branch? (Used as filter):')}</span>
+            <strong style="color: var(--text-main); font-weight: 800; margin-left: 0.35rem;">[${escapeHtml(branch)}]</strong>
+          </label>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <label for="btech-branch-select" style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">All Branches:</label>
+            <select id="btech-branch-select" class="form-select" style="font-size: 0.84rem; padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-main); min-width: 220px;" onchange="switchBTechBranch(this.value)">
+              ${allBranches.map(b => `<option value="${escapeHtml(b)}" ${branch === b ? 'selected' : ''}>${escapeHtml(b)}</option>`).join('')}
+            </select>
+          </div>
+        </div>
         <div class="filter-chips" style="margin-bottom: 0;">
-          ${branchesList.map(b => `
+          ${quickBranches.map(b => `
             <button class="filter-chip ${branch === b ? 'active' : ''}" onclick="switchBTechBranch('${b}')">${escapeHtml(b)}</button>
           `).join('')}
         </div>
@@ -2167,7 +2299,7 @@ async function renderBTechSection() {
   pathways.forEach(p => {
     const isSelected = (AppState.btechState.activePathway === p.id);
     html += `
-      <div class="card ${isSelected ? 'highlighted-card' : ''}" style="cursor: pointer; transition: transform 0.2s, border-color 0.2s; border: ${isSelected ? '2px solid var(--primary)' : '1px solid var(--border-color)'};" onclick="switchBTechPathway('${p.id}')">
+      <div id="pathway-card-${p.id}" data-pathway-id="${p.id}" class="card btech-pathway-card ${isSelected ? 'highlighted-card' : ''}" style="cursor: pointer; transition: all 0.2s ease; border: ${isSelected ? '2px solid var(--primary)' : '1px solid var(--border-color)'}; ${isSelected ? 'box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);' : ''}" onclick="switchBTechPathway('${p.id}')">
         <div class="card-header-row">
           <div style="display: flex; align-items: center; gap: 0.65rem;">
             <div style="width: 36px; height: 36px; border-radius: 8px; background: var(--bg-hover); display: flex; align-items: center; justify-content: center; color: var(--primary);">
@@ -2175,14 +2307,14 @@ async function renderBTechSection() {
             </div>
             <h4 class="card-title" style="margin: 0; font-size: 1.05rem;">${escapeHtml(p.title)}</h4>
           </div>
-          <span class="badge ${isSelected ? 'badge-primary' : 'badge-info'}">${escapeHtml(p.badge)}</span>
+          <span class="badge pathway-badge ${isSelected ? 'badge-primary' : 'badge-info'}">${escapeHtml(p.badge)}</span>
         </div>
         <div class="card-body">
           <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.65rem;">${escapeHtml(p.description)}</p>
           ${p.estimated_starting_ctc ? `<div style="font-size: 0.8rem; background: var(--bg-hover); padding: 0.45rem 0.65rem; border-radius: 6px; margin-bottom: 0.65rem;"><strong>Starting Scale:</strong> ${escapeHtml(p.estimated_starting_ctc)}</div>` : ''}
         </div>
         <div class="card-footer" style="padding-top: 0.65rem;">
-          <button class="btn ${isSelected ? 'btn-primary' : 'btn-secondary'} btn-sm w-full" onclick="event.stopPropagation(); switchBTechPathway('${p.id}')">
+          <button class="btn ${isSelected ? 'btn-primary' : 'btn-secondary'} btn-sm w-full pathway-action-btn" onclick="event.stopPropagation(); switchBTechPathway('${p.id}')">
             <span>${isSelected ? 'Currently Viewing Details ↓' : t('btech_careers.explore_pathway', 'Explore Pathway →')}</span>
           </button>
         </div>

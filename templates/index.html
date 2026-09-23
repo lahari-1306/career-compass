@@ -942,7 +942,7 @@
           <div class="form-group">
             <label class="form-label" for="radar-input-qual" data-i18n="modals.qual_label">Current Qualification *</label>
             <select id="radar-input-qual" class="form-control" onchange="handleRadarQualChange()">
-              <option value="B.Tech">B.Tech / B.E. (Engineering)</option>
+              <option value="B.Tech" selected>B.Tech / B.E. (Engineering)</option>
               <option value="Intermediate">Intermediate / 10+2</option>
               <option value="Diploma">Diploma (Polytechnic)</option>
               <option value="Degree">Degree (B.Sc, B.Com, BA, BCA)</option>
@@ -952,70 +952,156 @@
           </div>
           <div class="form-group">
             <label class="form-label" for="radar-input-branch" data-i18n="modals.branch_label">Stream / Branch *</label>
-            <input id="radar-input-branch" class="form-control" list="branch-suggestions" placeholder="e.g. CSE, ECE, MPC, Mech..." value="CSE">
-            <datalist id="branch-suggestions">
-              <option value="CSE">
-              <option value="ECE">
-              <option value="EEE">
-              <option value="Mechanical">
-              <option value="Civil">
-              <option value="MPC">
-              <option value="BiPC">
-              <option value="MEC">
-              <option value="CEC">
-              <option value="Data Science">
-              <option value="Information Technology">
-            </datalist>
+            <select id="radar-input-branch" class="form-control">
+              <!-- B.Tech Branches -->
+              <option value="CSE" selected>CSE</option>
+              <option value="Information Technology (IT)">Information Technology (IT)</option>
+              <option value="ECE">ECE</option>
+              <option value="EEE">EEE</option>
+              <option value="Mechanical Engineering">Mechanical Engineering</option>
+              <option value="Civil Engineering">Civil Engineering</option>
+              <option value="Chemical Engineering">Chemical Engineering</option>
+              <option value="Biotechnology">Biotechnology</option>
+              <option value="Biomedical Engineering">Biomedical Engineering</option>
+              <option value="Aerospace / Aeronautical Engineering">Aerospace / Aeronautical Engineering</option>
+              <option value="Automobile Engineering">Automobile Engineering</option>
+              <option value="Instrumentation & Control">Instrumentation & Control</option>
+              <option value="Mechatronics">Mechatronics</option>
+              <option value="Robotics">Robotics</option>
+              <option value="Artificial Intelligence / AI">Artificial Intelligence / AI</option>
+              <option value="AI & ML">AI & ML</option>
+              <option value="Data Science">Data Science</option>
+              <option value="Cyber Security">Cyber Security</option>
+              <option value="IoT">IoT</option>
+              <option value="CSE (AI)">CSE (AI)</option>
+              <option value="CSE (Data Science)">CSE (Data Science)</option>
+              <option value="CSE (Cyber Security)">CSE (Cyber Security)</option>
+              <option value="Electronics & Instrumentation">Electronics & Instrumentation</option>
+              <option value="Production Engineering">Production Engineering</option>
+              <option value="Industrial Engineering">Industrial Engineering</option>
+              <option value="Metallurgical Engineering">Metallurgical Engineering</option>
+              <option value="Mining Engineering">Mining Engineering</option>
+              <option value="Petroleum Engineering">Petroleum Engineering</option>
+              <option value="Textile Engineering">Textile Engineering</option>
+              <option value="Agricultural Engineering">Agricultural Engineering</option>
+              <option value="Food Technology">Food Technology</option>
+              <option value="Environmental Engineering">Environmental Engineering</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
         </div>
 
-        <div class="form-group-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
           <div class="form-group">
-            <label class="form-label" for="radar-input-state" data-i18n="modals.state_label">Home State / Scope</label>
-            <select id="radar-input-state" class="form-control">
-              <option value="Andhra Pradesh">Andhra Pradesh</option>
-              <option value="Telangana">Telangana</option>
-              <option value="All India">All India / Other States</option>
+            <label class="form-label" for="radar-input-status">Current Status *</label>
+            <select id="radar-input-status" class="form-control">
+              <option value="Final Year" selected>Final Year (Appearing)</option>
+              <option value="Currently Studying">Currently Studying (1st - 3rd Year)</option>
+              <option value="Completed">Completed (Passed Out Graduate)</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" for="radar-input-year" data-i18n="modals.year_label">Completion / Passout Year</label>
+            <label class="form-label" for="radar-input-year" data-i18n="modals.year_label">Passout / Completion Batch</label>
             <select id="radar-input-year" class="form-control">
-              <option value="2027">2027 (Appearing)</option>
-              <option value="2026" selected>2026 (Final Year / Current)</option>
-              <option value="2025">2025 (Passed Out)</option>
-              <option value="2024">2024 (Passed Out)</option>
+              <option value="2030">2030 Batch</option>
+              <option value="2029">2029 Batch</option>
+              <option value="2028">2028 Batch</option>
+              <option value="2027">2027 Batch</option>
+              <option value="2026" selected>2026 Batch (Current)</option>
+              <option value="2025">2025 Batch</option>
+              <option value="2024">2024 Batch</option>
+              <option value="2023">2023 Batch</option>
+              <option value="2022">2022 Batch</option>
+              <option value="2021">2021 Batch</option>
+              <option value="2020">2020 Batch</option>
+              <option value="2019">2019 Batch</option>
+              <option value="2018">2018 Batch</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="radar-input-state" data-i18n="modals.state_label">Home State / Scope *</label>
+            <select id="radar-input-state" class="form-control">
+              <option value="All India / National" selected>All India / National</option>
+              <optgroup label="States">
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                <option value="Assam">Assam</option>
+                <option value="Bihar">Bihar</option>
+                <option value="Chhattisgarh">Chhattisgarh</option>
+                <option value="Goa">Goa</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="Haryana">Haryana</option>
+                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                <option value="Jharkhand">Jharkhand</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Kerala">Kerala</option>
+                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Manipur">Manipur</option>
+                <option value="Meghalaya">Meghalaya</option>
+                <option value="Mizoram">Mizoram</option>
+                <option value="Nagaland">Nagaland</option>
+                <option value="Odisha">Odisha</option>
+                <option value="Punjab">Punjab</option>
+                <option value="Rajasthan">Rajasthan</option>
+                <option value="Sikkim">Sikkim</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="Telangana">Telangana</option>
+                <option value="Tripura">Tripura</option>
+                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                <option value="Uttarakhand">Uttarakhand</option>
+                <option value="West Bengal">West Bengal</option>
+              </optgroup>
+              <optgroup label="Union Territories">
+                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                <option value="Chandigarh">Chandigarh</option>
+                <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                <option value="Ladakh">Ladakh</option>
+                <option value="Lakshadweep">Lakshadweep</option>
+                <option value="Puducherry">Puducherry</option>
+              </optgroup>
             </select>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label" data-i18n="modals.interests_label">Target Career Direction & Interests (Select All Relevant)</label>
-          <div class="checkbox-pill-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.5rem; margin-top: 0.35rem;">
-            <label class="checkbox-pill">
-              <input type="checkbox" name="radar-interest" value="Higher Studies / M.Tech" checked>
-              <span data-i18n="modals.interest_higher">🎓 Higher Studies / M.Tech / CAT</span>
-            </label>
-            <label class="checkbox-pill">
-              <input type="checkbox" name="radar-interest" value="PSU / Govt Jobs" checked>
-              <span data-i18n="modals.interest_psu">🏛️ PSU / Govt Jobs (GATE, RRB, ISRO)</span>
-            </label>
-            <label class="checkbox-pill">
-              <input type="checkbox" name="radar-interest" value="Defence Forces">
-              <span data-i18n="modals.interest_defence">🛡️ Armed Forces (NDA, CDS, AFCAT)</span>
-            </label>
-            <label class="checkbox-pill">
-              <input type="checkbox" name="radar-interest" value="Scholarships" checked>
-              <span data-i18n="modals.interest_scholarships">💰 Scholarships & Financial Aid</span>
-            </label>
-            <label class="checkbox-pill">
-              <input type="checkbox" name="radar-interest" value="Counselling">
-              <span data-i18n="modals.interest_counselling">📋 State Admissions & Counselling</span>
-            </label>
-            <label class="checkbox-pill">
-              <input type="checkbox" name="radar-interest" value="Campus Placement">
-              <span data-i18n="modals.interest_tech">💻 Software & Core Tech Roles</span>
-            </label>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <label class="form-label" style="margin: 0;" data-i18n="modals.interests_label">Target Career Direction & Interests (Select Multiple)</label>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Multi-select enabled</span>
+          </div>
+          <div class="checkbox-pill-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.45rem; max-height: 220px; overflow-y: auto; padding: 0.65rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-hover);">
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Software / IT Roles" checked><span>💻 Software / IT Roles</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Cyber Security" checked><span>🛡️ Cyber Security</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Data Science / Analytics" checked><span>📊 Data Science / Analytics</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="AI / Machine Learning" checked><span>🤖 AI / Machine Learning</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Cloud / DevOps"><span>☁️ Cloud / DevOps</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Web / Full Stack Development"><span>🌐 Web / Full Stack Development</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Mobile App Development"><span>📱 Mobile App Development</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Product-Based Companies"><span>🏢 Product-Based Companies</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="IT Services / MNCs"><span>💼 IT Services / MNCs</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Core Engineering"><span>⚙️ Core Engineering</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Government Jobs" checked><span>🏛️ Government Jobs</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="PSU Careers" checked><span>🏭 PSU Careers</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="GATE" checked><span>📝 GATE</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Other Competitive Exams"><span>🎯 Other Competitive Exams</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Defence / Armed Forces"><span>⚔️ Defence / Armed Forces</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Higher Studies" checked><span>🎓 Higher Studies</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="M.Tech / M.E."><span>📚 M.Tech / M.E.</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="MS / Study Abroad"><span>✈️ MS / Study Abroad</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="MBA / Management"><span>📈 MBA / Management</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Research / Ph.D."><span>🔬 Research / Ph.D.</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Entrepreneurship / Startups"><span>🚀 Entrepreneurship / Startups</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Teaching / Academia"><span>📖 Teaching / Academia</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Banking / Finance"><span>🏦 Banking / Finance</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Business / Management"><span>💼 Business / Management</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Technical Consulting"><span>💡 Technical Consulting</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Technical Support"><span>🛠️ Technical Support</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Freelancing"><span>💻 Freelancing</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Internships"><span>🎯 Internships</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="Scholarships / Financial Aid" checked><span>💰 Scholarships / Financial Aid</span></label>
+            <label class="checkbox-pill"><input type="checkbox" name="radar-interest" value="State Admissions & Counselling"><span>📋 State Admissions & Counselling</span></label>
           </div>
         </div>
 

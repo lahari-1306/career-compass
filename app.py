@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, jsonify
 import requests
 
 from radar.models import StudentProfile
-from radar.matcher import RadarMatcher
+from radar.matcher import RadarMatcher, BRANCH_FAMILY_MAP
 from radar.storage import RadarStorage
 from radar.dispatcher import RadarDispatcher
 from data_updater.registry import SourceRegistry
@@ -184,6 +184,10 @@ def get_btech_pathways():
         "branch": branch or "ALL"
     })
 
+@app.route("/api/options")
+def get_app_options():
+    return jsonify(load_json("options.json"))
+
 @app.route("/api/btech/jobs")
 def get_btech_jobs():
     data = load_json("btech_post_grad_pathways.json") or {}
@@ -203,10 +207,12 @@ def get_btech_jobs():
         roles = cat.get("roles", [])
         filtered_roles = []
         for role in roles:
-            # Branch filter: role matches if branch in role['branches'] or 'Other' in role['branches'] or not branch or branch == 'ALL'
+            # Branch filter: role matches if branch in role['branches'] or in branch families or 'Other' in role['branches'] or not branch or branch == 'ALL'
             if branch and branch != "ALL":
                 role_branches = [b.upper() for b in role.get("branches", [])]
-                if branch not in role_branches and "OTHER" not in role_branches:
+                families = BRANCH_FAMILY_MAP.get(branch, [branch])
+                matches_family = any(f in role_branches for f in families) or branch in role_branches or "OTHER" in role_branches
+                if not matches_family:
                     continue
             
             # Search filter
