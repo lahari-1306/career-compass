@@ -4,6 +4,7 @@ Handles all relational queries, user isolation, Argon2id password hashing,
 session tokens, and notification tracking with complete parameterization.
 """
 
+import sqlite3
 import secrets
 import json
 from datetime import datetime, timezone, timedelta
@@ -656,3 +657,295 @@ class ExamProgressRepository:
         """, (user_id, exam_id, duration, json.dumps(schedule), now_str, now_str))
         conn.commit()
         conn.close()
+
+
+class LearningResourceRepository:
+    """Repository for managing verified learning, practice, and training resources in Preparation Hub."""
+
+    @staticmethod
+    def _deserialize_row(row: sqlite3.Row) -> Dict[str, Any]:
+        d = dict(row)
+        for field in ("education_levels", "streams", "branches", "skills", "exams"):
+            val = d.get(field)
+            if isinstance(val, str):
+                try:
+                    d[field] = json.loads(val)
+                except Exception:
+                    d[field] = []
+            elif val is None:
+                d[field] = []
+        return d
+
+    @classmethod
+    def get_all(cls, verification_status: Optional[str] = "VERIFIED") -> List[Dict[str, Any]]:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        if verification_status:
+            cursor.execute("SELECT * FROM learning_resources WHERE verification_status = ? ORDER BY name ASC", (verification_status,))
+        else:
+            cursor.execute("SELECT * FROM learning_resources ORDER BY name ASC")
+        rows = cursor.fetchall()
+        conn.close()
+        return [cls._deserialize_row(r) for r in rows]
+
+    @classmethod
+    def get_by_id(cls, resource_id: str) -> Optional[Dict[str, Any]]:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM learning_resources WHERE id = ?", (resource_id,))
+        row = cursor.fetchone()
+        conn.close()
+        return cls._deserialize_row(row) if row else None
+
+    @classmethod
+    def get_personalized(cls,
+                         qualification: Optional[str] = None,
+                         stream: Optional[str] = None,
+                         branch: Optional[str] = None,
+                         career_interests: Optional[List[str]] = None,
+                         selected_exam: Optional[str] = None,
+                         category: Optional[str] = None,
+                         access_type: Optional[str] = None,
+                         search_query: Optional[str] = None) -> List[Dict[str, Any]]:
+        all_res = cls.get_all(verification_status=None)
+        resources = [r for r in all_res if r.get("verification_status") != "INACTIVE"]
+        career_interests = [ci.lower() for ci in (career_interests or [])]
+        norm_qual = (qualification or "B.Tech").strip()
+        norm_branch = (branch or "").strip().lower()
+        norm_stream = (stream or "").strip().lower()
+        search_terms = [t for t in (search_query or "").lower().strip().split() if t]
+
+        filtered_and_scored: List[Tuple[int, Dict[str, Any]]] = []
+
+        for r in resources:
+            r_quals = [q.lower() for q in r.get("education_levels", [])]
+            r_branches = [b.lower() for b in r.get("branches", [])]
+            r_streams = [s.lower() for s in r.get("streams", [])]
+            r_skills = [sk.lower() for sk in r.get("skills", [])]
+            r_exams = [e.lower() for e in r.get("exams", [])]
+
+            # 1. Education Level Filtering
+            # Strict boundary: 10th students must NOT see B.Tech/GATE/Cloud resources
+            if "10th" in norm_qual or "class 10" in norm_qual.lower():
+                is_school_compatible = any(q in ["10th", "secondary", "school", "all"] for q in r_quals)
+                if not is_school_compatible:
+                    continue
+            elif "intermediate" in norm_qual.lower() or "10+2" in norm_qual:
+                is_inter_compatible = any(q in ["intermediate", "10+2", "11th-12th", "all"] for q in r_quals)
+                if not is_inter_compatible:
+                    continue
+            elif "diploma" in norm_qual.lower() or "polytechnic" in norm_qual.lower():
+                is_diploma_compatible = any(q in ["diploma", "polytechnic", "all"] for q in r_quals)
+                if not is_diploma_compatible and not any(q in ["b.tech", "degree"] for q in r_quals):
+                    continue
+
+            # 2. Category filter
+            if category and category.lower() != "all":
+                cat_lower = category.lower()
+                r_cat = r.get("category", "").lower()
+                r_type = r.get("resource_type", "").lower()
+                matched_cat = (cat_lower in r_cat or cat_lower in r_type or
+                               any(cat_lower in sk for sk in r_skills))
+                if not matched_cat:
+                    continue
+
+            # 3. Access Type filter
+            if access_type and access_type.lower() != "all":
+                at_lower = access_type.lower()
+                r_at = r.get("access_type", "").lower()
+                if at_lower not in r_at:
+                    continue
+
+            # 4. Search Query matching
+            if search_terms:
+                searchable_text = f"{r.get('name', '')} {r.get('description', '')} {r.get('category', '')} {' '.join(r_skills)} {' '.join(r_exams)}".lower()
+                if not all(term in searchable_text for term in search_terms):
+                    continue
+
+            # 5. Relevance Scoring
+            score = 10
+            for q in r_quals:
+                if q in norm_qual.lower():
+                    score += 15
+
+            # Stream / Branch match
+            if norm_branch:
+                if any(norm_branch in b or b in norm_branch for b in r_branches) or "all" in r_branches or "all branches" in r_branches:
+                    score += 15
+            if norm_stream:
+                if any(norm_stream in s or s in norm_stream for s in r_streams) or "all streams" in r_streams:
+                    score += 12
+
+            # Branch-specific bonuses
+            if "cse" in norm_branch or "computer" in norm_branch or "it" in norm_branch:
+                if any(sk in ["dsa", "programming", "python", "java", "c++", "sql", "web development"] for sk in r_skills):
+                    score += 10
+            elif "ece" in norm_branch or "electronics" in norm_branch:
+                if any(sk in ["digital electronics", "analog electronics", "vlsi", "embedded systems", "circuit theory"] for sk in r_skills):
+                    score += 15
+            elif "eee" in norm_branch or "electrical" in norm_branch:
+                if any(sk in ["power systems", "electrical machines", "circuit theory", "control systems"] for sk in r_skills):
+                    score += 15
+            elif "mechanical" in norm_branch or "mech" in norm_branch:
+                if any(sk in ["thermodynamics", "fluid mechanics", "cad", "manufacturing", "strength of materials"] for sk in r_skills):
+                    score += 15
+            elif "civil" in norm_branch:
+                if any(sk in ["structural engineering", "surveying", "geotechnical", "transportation"] for sk in r_skills):
+                    score += 15
+
+            # Stream-specific bonuses for Intermediate
+            if "mpc" in norm_stream:
+                if any(sk in ["mathematics", "physics", "chemistry", "engineering entrances"] for sk in r_skills):
+                    score += 15
+            elif "bipc" in norm_stream:
+                if any(sk in ["biology", "physics", "chemistry", "medical entrances"] for sk in r_skills):
+                    score += 15
+
+            # Career interests match
+            for interest in career_interests:
+                if any(interest in sk or sk in interest for sk in r_skills):
+                    score += 8
+                if any(interest in e or e in interest for e in r_exams):
+                    score += 8
+
+            # Selected exam match
+            if selected_exam:
+                norm_exam = selected_exam.lower()
+                if any(norm_exam in e or e in norm_exam for e in r_exams):
+                    score += 20
+
+            filtered_and_scored.append((score, r))
+
+        filtered_and_scored.sort(key=lambda x: x[0], reverse=True)
+        return [item[1] for item in filtered_and_scored]
+
+    @classmethod
+    def get_categories_for_qualification(cls, qualification: Optional[str] = None) -> List[str]:
+        qual = (qualification or "B.Tech").lower()
+        if "10th" in qual or "school" in qual:
+            return [
+                "All",
+                "School & Foundation Learning",
+                "School Subjects",
+                "Mathematics",
+                "Science",
+                "Computer Basics",
+                "Entrance Exams",
+                "Career Exploration"
+            ]
+        elif "intermediate" in qual or "10+2" in qual:
+            return [
+                "All",
+                "Entrance Exams",
+                "Mathematics",
+                "Physics & Chemistry",
+                "Biology & Medical",
+                "Commerce & Economics",
+                "Aptitude",
+                "Programming"
+            ]
+        elif "diploma" in qual or "polytechnic" in qual:
+            return [
+                "All",
+                "Core Engineering",
+                "Lateral Entry (ECET)",
+                "Technical MCQs",
+                "Aptitude",
+                "Government Exams",
+                "Skill Development"
+            ]
+        else:
+            return [
+                "All",
+                "Coding & CS Fundamentals",
+                "Placement Preparation",
+                "Aptitude",
+                "Reasoning",
+                "Verbal Ability",
+                "Interview Preparation",
+                "SQL",
+                "Web Development",
+                "AI, ML & Data Science",
+                "Core Engineering",
+                "GATE",
+                "Resume & Interview"
+            ]
+
+    @classmethod
+    def create_resource(cls, data: Dict[str, Any]) -> str:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        now_str = now_ist_iso()
+        res_id = data.get("id") or f"res_{int(datetime.now().timestamp() * 1000)}"
+        cursor.execute("""
+        INSERT INTO learning_resources (
+            id, name, description, official_url, logo_url, category, resource_type,
+            education_levels, streams, branches, skills, exams, access_type,
+            free_features, paid_features, language, official_source,
+            verification_status, last_verified, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            res_id,
+            data.get("name", "Untitled Resource"),
+            data.get("description", ""),
+            data.get("official_url", ""),
+            data.get("logo_url", ""),
+            data.get("category", "General"),
+            data.get("resource_type", "Learning Platform"),
+            json.dumps(data.get("education_levels", [])),
+            json.dumps(data.get("streams", [])),
+            json.dumps(data.get("branches", [])),
+            json.dumps(data.get("skills", [])),
+            json.dumps(data.get("exams", [])),
+            data.get("access_type", "FREE"),
+            data.get("free_features", ""),
+            data.get("paid_features", ""),
+            data.get("language", "English"),
+            data.get("official_source") or data.get("official_url", ""),
+            data.get("verification_status", "VERIFIED"),
+            data.get("last_verified", now_str[:10]),
+            now_str,
+            now_str
+        ))
+        conn.commit()
+        conn.close()
+        return res_id
+
+    @classmethod
+    def update_resource(cls, resource_id: str, data: Dict[str, Any]) -> bool:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        now_str = now_ist_iso()
+        fields = []
+        values = []
+        for k, v in data.items():
+            if k in ("name", "description", "official_url", "logo_url", "category",
+                     "resource_type", "access_type", "free_features", "paid_features",
+                     "language", "official_source", "verification_status", "last_verified"):
+                fields.append(f"{k} = ?")
+                values.append(v)
+            elif k in ("education_levels", "streams", "branches", "skills", "exams"):
+                fields.append(f"{k} = ?")
+                values.append(json.dumps(v) if not isinstance(v, str) else v)
+        if not fields:
+            conn.close()
+            return False
+        fields.append("updated_at = ?")
+        values.append(now_str)
+        values.append(resource_id)
+        query = f"UPDATE learning_resources SET {', '.join(fields)} WHERE id = ?"
+        cursor.execute(query, tuple(values))
+        updated = cursor.rowcount > 0
+        conn.commit()
+        conn.close()
+        return updated
+
+    @classmethod
+    def delete_resource(cls, resource_id: str) -> bool:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM learning_resources WHERE id = ?", (resource_id,))
+        deleted = cursor.rowcount > 0
+        conn.commit()
+        conn.close()
+        return deleted

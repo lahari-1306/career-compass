@@ -9,6 +9,7 @@ Features:
 - User data isolation.
 """
 
+import os
 import time
 from functools import wraps
 from typing import Dict, Any, Optional
@@ -76,6 +77,30 @@ def login_required(f):
                 "message": "Authentication required. Please log in to access your personal CareerCompass account."
             }), 401
         g.user = user
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+def admin_required(f):
+    """Decorator to require admin role or development admin bypass."""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        user = get_current_user()
+        is_dev = os.environ.get("FLASK_ENV") == "development" or os.environ.get("DEV_ADMIN") == "1"
+        if not user and not is_dev:
+            return jsonify({
+                "status": "error",
+                "code": "UNAUTHORIZED",
+                "message": "Admin authentication required."
+            }), 401
+        if user and user.get("role") != "admin" and not is_dev:
+            return jsonify({
+                "status": "error",
+                "code": "FORBIDDEN",
+                "message": "Administrator privileges required."
+            }), 403
+        if user:
+            g.user = user
         return f(*args, **kwargs)
     return decorated_function
 

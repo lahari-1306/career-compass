@@ -165,3 +165,78 @@ class PipelineService:
 
         logger.info(f"Pipeline dispatch complete: {stats}")
         return stats
+
+    @staticmethod
+    def check_learning_resource_links(timeout: int = 5) -> Dict[str, Any]:
+        """
+        Periodically verifies learning resource URLs:
+        - URL reachability
+        - Redirects
+        - HTTPS protocol
+        - Marks broken/failing URLs as 'NEEDS_REVIEW' for admin inspection
+        """
+        import requests
+        from db_repository import LearningResourceRepository
+        from database import now_ist_iso
+
+        resources = LearningResourceRepository.get_all(verification_status=None)
+        results = {
+            "total_checked": len(resources),
+            "verified_count": 0,
+            "needs_review_count": 0,
+            "details": []
+        }
+
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) CareerCompass-LinkValidator/2.0"
+        }
+
+        for r in resources:
+            r_id = r["id"]
+            url = r.get("official_url", "")
+            name = r.get("name", "")
+            is_https = url.lower().startswith("https://")
+            status = "VERIFIED"
+            notes = "Reachable"
+
+            if not url or not is_https:
+                status = "NEEDS_REVIEW"
+                notes = "Non-HTTPS or empty URL"
+            else:
+                try:
+                    resp = requests.head(url, headers=headers, timeout=timeout, allow_redirects=True)
+                    if resp.status_code == 405:
+                        resp = requests.get(url, headers=headers, timeout=timeout, stream=True)
+                    
+                    if resp.status_code in (200, 301, 302, 307, 308, 403):
+                        status = "VERIFIED"
+                        notes = f"HTTP {resp.status_code} - Verified online"
+                    else:
+                        status = "NEEDS_REVIEW"
+                        notes = f"HTTP {resp.status_code} - Requires review"
+                except Exception as e:
+                    status = "NEEDS_REVIEW"
+                    notes = f"Connection error: {str(e)[:60]}"
+
+            today_str = now_ist_iso()[:10]
+            LearningResourceRepository.update_resource(r_id, {
+                "verification_status": status,
+                "last_verified": today_str
+            })
+
+            if status == "VERIFIED":
+                results["verified_count"] += 1
+            else:
+                results["needs_review_count"] += 1
+
+            results["details"].append({
+                "id": r_id,
+                "name": name,
+                "url": url,
+                "status": status,
+                "notes": notes
+            })
+
+        logger.info(f"Learning resource link health check complete: {results['verified_count']} verified, {results['needs_review_count']} need review.")
+        return results
+

@@ -589,6 +589,24 @@ function getBadgeClass(status) {
 // 5. NAVIGATION CONTROLLER
 // ==========================================
 function navigateToSection(sectionId) {
+  if (sectionId === 'radar') {
+    // Navigate to home and smoothly scroll to Career Radar feed
+    AppState.navHistory.push('radar');
+    AppState.currentSection = 'home';
+    document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+    document.getElementById('section-home')?.classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.toggle('active', link.getAttribute('data-section') === 'radar');
+    });
+    document.getElementById('breadcrumb-bar')?.classList.add('hidden');
+    setTimeout(() => {
+      const radarFeed = document.getElementById('radar-feed-container') || document.querySelector('.radar-feed-box');
+      if (radarFeed) radarFeed.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 150);
+    refreshIcons();
+    return;
+  }
+
   if (AppState.currentSection === sectionId) return;
 
   // Add to navigation history stack
@@ -615,17 +633,18 @@ function navigateToSection(sectionId) {
   } else {
     breadcrumbBar.classList.remove('hidden');
     const readableTitles = {
-      'career-paths': 'Career Paths & Qualification Roadmaps',
+      'career-paths': 'Find My Career Path',
       'entrance-exams': 'Entrance Exams Database',
-      'exam-prep': 'Exam Preparation Hub (24-Point Blueprints)',
+      'exam-prep': 'Preparation Hub',
+      'radar': 'Career Radar',
       'govt-jobs': 'Government Exams for Engineers',
       'defence': 'Defence Forces Roadmaps',
       'colleges': 'Colleges & Courses Explorer',
       'cutoffs': 'Counselling & Historical Cutoffs',
       'scholarships': 'Verified Scholarships',
       'digital-library': 'Legal Digital Library & Resources',
-      'ai-guide': 'AI Career Guide',
-      'notifications': 'Notification Center',
+      'ai-guide': 'AI Assistant',
+      'notifications': 'Notifications',
       'saved-roadmaps': 'My Saved Roadmaps',
       'official-links': 'Verified Official Portals Directory',
       'about': 'About CareerCompass'
@@ -634,7 +653,7 @@ function navigateToSection(sectionId) {
   }
 
   if (sectionId === 'exam-prep') {
-    loadExamPrepHub();
+    initPreparationHub();
   }
 
   // Scroll to top
@@ -2060,7 +2079,23 @@ function renderRadarMatches(matches) {
     return;
   }
 
-  container.innerHTML = matches.map((m, idx) => {
+  const hasUrgentOrExam = matches.some(m => (m.urgency && m.urgency.toLowerCase() === 'high') || (m.days_remaining !== null && m.days_remaining <= 30) || m.category === 'Entrance Exam');
+  const alertBannerHtml = hasUrgentOrExam ? `
+    <div class="radar-prep-alert-banner" style="grid-column: 1 / -1; margin-bottom: 0.75rem; padding: 1rem 1.25rem; background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(99, 102, 241, 0.08)); border: 1px solid var(--border-color); border-left: 4px solid var(--primary); border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <i data-lucide="compass" class="icon-md text-primary"></i>
+        <div>
+          <strong style="color: var(--text-main); font-size: 0.95rem;">Upcoming Exam & Target Deadlines Detected!</strong>
+          <p style="margin: 0; font-size: 0.8rem; color: var(--text-secondary);">Prepare effectively with verified 24-point blueprints, official past papers, and curated practice resources.</p>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="navigateToSection('exam-prep')" style="display: inline-flex; align-items: center; gap: 0.35rem;">
+        <i data-lucide="arrow-right" class="icon-xs"></i> Open Preparation Hub
+      </button>
+    </div>
+  ` : '';
+
+  container.innerHTML = alertBannerHtml + matches.map((m, idx) => {
     const urgencyClass = (m.urgency || 'NORMAL').toLowerCase();
     const daysText = m.days_remaining !== null && m.days_remaining !== undefined 
       ? (m.days_remaining <= 0 ? t('radar.closes_today', 'Closes Today') : `${m.days_remaining} ${t('radar.days_left', 'Days Left')}`)
@@ -2116,9 +2151,12 @@ function renderRadarMatches(matches) {
         </div>
 
         <div class="radar-card-actions">
-          <a href="${escapeHtml(m.official_source)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm w-full" style="display: inline-flex; justify-content: center; align-items: center; gap: 4px;">
+          <a href="${escapeHtml(m.official_source)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm flex-1" style="display: inline-flex; justify-content: center; align-items: center; gap: 4px;">
             <i data-lucide="external-link" class="icon-xs"></i> ${t("common.official_portal", "Official Portal")}
           </a>
+          <button class="btn btn-outline-primary btn-sm" onclick="openPrepHubForOpportunity('${escapeHtml(m.title)}', '${escapeHtml(m.category || '')}')" title="Study & Practice in Preparation Hub">
+            <i data-lucide="book-open" class="icon-xs"></i> Prepare
+          </button>
           <button class="btn btn-secondary btn-sm" onclick="askAIAboutRadarOpp('${escapeHtml(m.opportunity_id)}')" title="Ask AI About This">
             <i data-lucide="sparkles" class="icon-xs"></i>
           </button>
@@ -4148,11 +4186,657 @@ async function saveOpportunity(oppId, title, org, cat, deadline, link) {
 }
 
 // ==========================================
-// 18. EXAM PREPARATION HUB (24-POINT BLUEPRINTS)
+// 18. PREPARATION HUB & FREE PRACTICE & TRAINING RESOURCES
 // ==========================================
 let currentExamDetailData = null;
 let currentExamProgress = { completed_topics: [] };
 let currentExamDetailTab = 'overview';
+let currentSelectedResourceCategory = 'All';
+
+async function initPreparationHub() {
+  updatePrepHubUserSummary();
+  const activeTab = AppState.currentPrepHubTab || 'practice';
+  switchPrepHubTab(activeTab);
+}
+
+function updatePrepHubUserSummary() {
+  const profile = (currentUser && currentUser.profile) ? currentUser.profile : getStoredRadarProfile();
+  const qual = (currentUser && currentUser.qualification) || (profile && (profile.qualification || profile.education_level)) || 'B.Tech';
+  const stream = (currentUser && currentUser.stream) || (profile && (profile.stream || profile.branch || profile.stream_or_branch)) || 'Computer Science & Engineering';
+  const exam = (profile && profile.target_exam) || (qual.toLowerCase().includes('10th') ? 'School Boards & NTSE' : (qual.toLowerCase().includes('inter') ? (stream.toLowerCase().includes('bipc') ? 'NEET UG' : 'JEE Main') : (qual.toLowerCase().includes('diploma') ? 'ECET / Lateral Entry' : 'GATE / Campus Placements')));
+
+  const qualEl = document.getElementById('prep-summary-qual');
+  const streamEl = document.getElementById('prep-summary-stream');
+  const examEl = document.getElementById('prep-summary-exam');
+  const pctEl = document.getElementById('prep-summary-pct');
+  const barFillEl = document.getElementById('prep-summary-bar-fill');
+
+  if (qualEl) qualEl.textContent = qual;
+  if (streamEl) streamEl.textContent = stream;
+  if (examEl) examEl.textContent = exam;
+
+  const completedCount = (currentExamProgress?.completed_topics || []).length;
+  const pct = completedCount > 0 ? Math.min(100, Math.round((completedCount / 12) * 100)) : 20;
+  if (pctEl) pctEl.textContent = `${pct}%`;
+  if (barFillEl) barFillEl.style.width = `${pct}%`;
+}
+
+function switchPrepHubTab(tabName) {
+  AppState.currentPrepHubTab = tabName;
+
+  document.querySelectorAll('.prep-tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
+  });
+
+  document.querySelectorAll('.prep-subview').forEach(view => {
+    if (view.id === `prep-subview-${tabName}`) {
+      view.classList.remove('hidden');
+      view.classList.add('active');
+    } else {
+      view.classList.remove('active');
+      view.classList.add('hidden');
+    }
+  });
+
+  if (tabName === 'practice') {
+    loadLearningResources();
+  } else if (tabName === 'exams') {
+    loadExamPrepHub();
+  } else if (tabName === 'study-materials') {
+    loadStudyMaterialsTab();
+  } else if (tabName === 'books') {
+    loadBooksTab();
+  } else if (tabName === 'pyqs') {
+    loadPyqsTab();
+  } else if (tabName === 'mocks') {
+    loadMocksTab();
+  } else if (tabName === 'plans') {
+    loadPlansTab();
+  } else if (tabName === 'ai') {
+    const input = document.getElementById('ai-study-input');
+    if (input) setTimeout(() => input.focus(), 150);
+  }
+
+  refreshIcons();
+}
+
+async function loadLearningResources() {
+  const container = document.getElementById('prep-resource-grid');
+  if (!container) return;
+  container.innerHTML = '<div class="loading-state"><div class="spinner"></div></div>';
+
+  const profile = (currentUser && currentUser.profile) ? currentUser.profile : getStoredRadarProfile();
+  const qual = (currentUser && currentUser.qualification) || (profile && (profile.qualification || profile.education_level)) || 'B.Tech';
+  const stream = (currentUser && currentUser.stream) || (profile && (profile.stream || profile.branch)) || '';
+
+  loadResourceCategories(qual, stream);
+
+  try {
+    const url = `/api/resources?qualification=${encodeURIComponent(qual)}&stream=${encodeURIComponent(stream)}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    window.LEARNING_RESOURCES_DATA = data.resources || [];
+    renderLearningResourceCards(window.LEARNING_RESOURCES_DATA);
+  } catch (err) {
+    console.error('Error loading learning resources:', err);
+    container.innerHTML = '<div class="empty-state text-danger"><p>Unable to load learning resources. Please try again.</p></div>';
+  }
+}
+
+async function loadResourceCategories(qual, stream) {
+  const container = document.getElementById('prep-resource-category-chips');
+  if (!container) return;
+
+  try {
+    const url = `/api/resources/categories?qualification=${encodeURIComponent(qual || '')}&stream=${encodeURIComponent(stream || '')}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const categories = data.categories || [];
+
+    container.innerHTML = `
+      <button class="filter-chip ${currentSelectedResourceCategory === 'All' ? 'active' : ''}" onclick="filterLearningResourcesByCategory('All')">All Categories</button>
+      ${categories.map(cat => `
+        <button class="filter-chip ${currentSelectedResourceCategory === cat ? 'active' : ''}" onclick="filterLearningResourcesByCategory('${escapeHtml(cat)}')">${escapeHtml(cat)}</button>
+      `).join('')}
+    `;
+  } catch (err) {
+    console.warn('Error loading resource categories:', err);
+  }
+}
+
+function renderLearningResourceCards(resources) {
+  const container = document.getElementById('prep-resource-grid');
+  if (!container) return;
+
+  if (!resources || resources.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: var(--bg-surface-muted); border-radius: var(--radius-lg); border: 1px dashed var(--border-color);">
+        <i data-lucide="compass" class="icon-lg text-muted" style="margin-bottom: 0.75rem;"></i>
+        <h4>No learning resources found for the selected filter</h4>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; max-width: 450px; margin: 0.5rem auto 1rem;">Try clearing your search query or selecting "All Access Types" / "All Categories".</p>
+        <button class="btn btn-outline-primary btn-sm" onclick="resetResourceFilters()"><i data-lucide="rotate-ccw" class="icon-xs"></i> Reset Filters</button>
+      </div>
+    `;
+    refreshIcons();
+    return;
+  }
+
+  container.innerHTML = resources.map(r => {
+    let accessBadgeClass = 'badge-free';
+    let accessIcon = 'check-circle';
+    let accessLabel = r.access_type || 'FREE';
+    if (r.access_type === 'OFFICIAL FREE RESOURCE') {
+      accessBadgeClass = 'badge-official';
+      accessIcon = 'shield-check';
+      accessLabel = 'Official Free Resource';
+    } else if (r.access_type === 'FREE + PAID') {
+      accessBadgeClass = 'badge-freemium';
+      accessIcon = 'layers';
+      accessLabel = 'Free + Paid';
+    } else if (r.access_type === 'FREE') {
+      accessBadgeClass = 'badge-free';
+      accessIcon = 'check-circle';
+      accessLabel = 'Free';
+    } else if (r.access_type === 'PAID') {
+      accessBadgeClass = 'badge-paid';
+      accessIcon = 'lock';
+      accessLabel = 'Paid';
+    }
+
+    const freeFeatures = Array.isArray(r.free_features) ? r.free_features.slice(0, 3) : [];
+    const skills = Array.isArray(r.skills) ? r.skills.slice(0, 3) : [];
+
+    return `
+      <div class="resource-card">
+        <div>
+          <div class="resource-card-header">
+            <span class="resource-badge-access ${accessBadgeClass}">
+              <i data-lucide="${accessIcon}" class="icon-xs"></i> ${escapeHtml(accessLabel)}
+            </span>
+            <span class="resource-category-tag">${escapeHtml(r.category || 'General')}</span>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.6rem;">
+            <h3 class="resource-card-title">${escapeHtml(r.name)}</h3>
+            ${r.verification_status === 'VERIFIED' ? `
+              <span class="verified-icon-chip" title="Verified Resource Platform">
+                <i data-lucide="badge-check" class="icon-xs" style="color: #059669;"></i>
+              </span>
+            ` : ''}
+          </div>
+
+          <p class="resource-card-desc">${escapeHtml(r.description || '')}</p>
+
+          ${freeFeatures.length > 0 ? `
+            <div class="resource-features-list">
+              <span class="features-label">Free Features:</span>
+              ${freeFeatures.map(f => `
+                <span class="resource-pill"><i data-lucide="check" class="icon-xxs"></i> ${escapeHtml(f)}</span>
+              `).join('')}
+            </div>
+          ` : ''}
+
+          ${skills.length > 0 ? `
+            <div class="resource-skills-row">
+              ${skills.map(s => `<span class="resource-tag-skill">${escapeHtml(s)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </div>
+
+        <div class="resource-card-footer">
+          <a href="${escapeHtml(r.official_url)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm flex-1" style="display: inline-flex; justify-content: center; align-items: center; gap: 0.4rem;">
+            <i data-lucide="external-link" class="icon-xs"></i> <span>Visit Official Platform</span>
+          </a>
+          <button class="btn btn-outline-secondary btn-sm" title="Bookmark resource" onclick="saveOpportunity('${escapeHtml(r.id)}', '${escapeHtml(r.name)}', '${escapeHtml(r.category)}', 'Learning Resource', 'Practice Resource', '${escapeHtml(r.official_url)}')">
+            <i data-lucide="bookmark" class="icon-xs"></i>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  refreshIcons();
+}
+
+function filterLearningResources() {
+  const query = (document.getElementById('prep-resource-search')?.value || '').toLowerCase().trim();
+  const accessFilter = document.getElementById('prep-resource-access-filter')?.value || 'All';
+  const allResources = window.LEARNING_RESOURCES_DATA || [];
+
+  const filtered = allResources.filter(r => {
+    if (accessFilter !== 'All' && r.access_type !== accessFilter) {
+      return false;
+    }
+    if (currentSelectedResourceCategory !== 'All' && r.category !== currentSelectedResourceCategory) {
+      return false;
+    }
+    if (query) {
+      const matchName = r.name && r.name.toLowerCase().includes(query);
+      const matchDesc = r.description && r.description.toLowerCase().includes(query);
+      const matchCat = r.category && r.category.toLowerCase().includes(query);
+      const matchSkills = Array.isArray(r.skills) && r.skills.some(s => s.toLowerCase().includes(query));
+      const matchExams = Array.isArray(r.exams) && r.exams.some(e => e.toLowerCase().includes(query));
+      if (!matchName && !matchDesc && !matchCat && !matchSkills && !matchExams) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  renderLearningResourceCards(filtered);
+}
+
+function filterLearningResourcesByCategory(cat) {
+  currentSelectedResourceCategory = cat;
+  document.querySelectorAll('#prep-resource-category-chips .filter-chip').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim() === cat || (cat === 'All' && btn.textContent.includes('All')));
+  });
+  filterLearningResources();
+}
+
+function resetResourceFilters() {
+  const searchInput = document.getElementById('prep-resource-search');
+  const accessSelect = document.getElementById('prep-resource-access-filter');
+  if (searchInput) searchInput.value = '';
+  if (accessSelect) accessSelect.value = 'All';
+  currentSelectedResourceCategory = 'All';
+  document.querySelectorAll('#prep-resource-category-chips .filter-chip').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.includes('All'));
+  });
+  renderLearningResourceCards(window.LEARNING_RESOURCES_DATA || []);
+}
+
+async function ensureExamPrepDataLoaded() {
+  if (window.EXAM_PREP_DATA && window.EXAM_PREP_DATA.length > 0) return window.EXAM_PREP_DATA;
+  try {
+    const res = await fetch('/api/exam-prep/list');
+    const data = await res.json();
+    window.EXAM_PREP_DATA = data.exams || [];
+    return window.EXAM_PREP_DATA;
+  } catch (e) {
+    return [];
+  }
+}
+
+async function loadStudyMaterialsTab() {
+  const container = document.getElementById('prep-materials-grid');
+  if (!container) return;
+  container.innerHTML = '<div class="loading-state"><div class="spinner"></div></div>';
+  const exams = await ensureExamPrepDataLoaded();
+
+  const materials = [];
+  exams.forEach(exam => {
+    if (exam.study_materials && Array.isArray(exam.study_materials)) {
+      exam.study_materials.forEach(m => {
+        materials.push({ ...m, exam_name: exam.name, exam_id: exam.id });
+      });
+    }
+    if (exam.official_syllabus_url) {
+      materials.push({
+        title: `Official ${exam.name} Syllabus PDF`,
+        type: 'Official Syllabus Document',
+        url: exam.official_syllabus_url,
+        source: exam.conducting_body,
+        exam_name: exam.name,
+        exam_id: exam.id
+      });
+    }
+  });
+
+  if (materials.length === 0) {
+    container.innerHTML = '<div class="empty-state"><p>No study materials available.</p></div>';
+    return;
+  }
+
+  container.innerHTML = materials.map(m => `
+    <div class="card" style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-surface);">
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span class="badge badge-primary" style="font-size: 0.72rem;">${escapeHtml(m.exam_name)}</span>
+          <span style="font-size: 0.75rem; color: var(--text-secondary);">${escapeHtml(m.type || 'Study Notes')}</span>
+        </div>
+        <h4 style="font-size: 0.95rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.35rem;">${escapeHtml(m.title)}</h4>
+        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;"><i data-lucide="landmark" class="icon-xxs"></i> ${escapeHtml(m.source || 'Authorized Educational Portal')}</p>
+      </div>
+      <div style="display: flex; gap: 0.5rem;">
+        <a href="${escapeHtml(m.url || '#')}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm flex-1" style="display: inline-flex; justify-content: center; align-items: center; gap: 0.35rem;">
+          <i data-lucide="download" class="icon-xs"></i> Download / View Notes
+        </a>
+        <button class="btn btn-outline-secondary btn-sm" onclick="openExamDetailModal('${escapeHtml(m.exam_id)}')">Blueprint</button>
+      </div>
+    </div>
+  `).join('');
+
+  refreshIcons();
+}
+
+async function loadBooksTab() {
+  const container = document.getElementById('prep-books-grid');
+  if (!container) return;
+  container.innerHTML = '<div class="loading-state"><div class="spinner"></div></div>';
+  const exams = await ensureExamPrepDataLoaded();
+
+  const books = [];
+  const seenTitles = new Set();
+
+  exams.forEach(exam => {
+    if (exam.recommended_books && Array.isArray(exam.recommended_books)) {
+      exam.recommended_books.forEach(b => {
+        const title = b.book_name || b.title;
+        if (title && !seenTitles.has(title)) {
+          seenTitles.add(title);
+          books.push({ ...b, title, exam_name: exam.name, exam_id: exam.id });
+        }
+      });
+    }
+  });
+
+  if (books.length === 0) {
+    container.innerHTML = '<div class="empty-state"><p>No standard reference books listed.</p></div>';
+    return;
+  }
+
+  container.innerHTML = books.map(b => `
+    <div class="card" style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-surface);">
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span class="badge badge-success" style="font-size: 0.72rem;"><i data-lucide="book" class="icon-xxs"></i> ${escapeHtml(b.subject || 'Standard Text')}</span>
+          <span style="font-size: 0.75rem; color: var(--text-secondary);">${escapeHtml(b.exam_name)}</span>
+        </div>
+        <h4 style="font-size: 0.95rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.35rem;">${escapeHtml(b.title)}</h4>
+        <p style="font-size: 0.8rem; font-weight: 500; color: var(--primary); margin-bottom: 0.4rem;">Author: ${escapeHtml(b.author || 'Renowned Subject Authority')}</p>
+        <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 1rem;">${escapeHtml(b.purpose || b.description || 'Recommended for foundational concepts and in-depth problem solving.')}</p>
+      </div>
+      <div style="display: flex; gap: 0.5rem;">
+        <a href="${escapeHtml(b.verified_link || b.url || b.buy_link || '#')}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm flex-1" style="display: inline-flex; justify-content: center; align-items: center; gap: 0.35rem;">
+          <i data-lucide="external-link" class="icon-xs"></i> View Book Details
+        </a>
+        <button class="btn btn-outline-secondary btn-sm" onclick="navigateToSection('digital-library')" title="Search Digital Library">
+          <i data-lucide="library" class="icon-xs"></i>
+        </button>
+      </div>
+    </div>
+  `).join('');
+
+  refreshIcons();
+}
+
+async function loadPyqsTab() {
+  const container = document.getElementById('prep-pyqs-grid');
+  if (!container) return;
+  container.innerHTML = '<div class="loading-state"><div class="spinner"></div></div>';
+  const exams = await ensureExamPrepDataLoaded();
+
+  const pyqs = [];
+  exams.forEach(exam => {
+    if (exam.previous_year_papers && Array.isArray(exam.previous_year_papers)) {
+      exam.previous_year_papers.forEach(p => {
+        pyqs.push({ ...p, exam_name: exam.name, exam_id: exam.id });
+      });
+    }
+  });
+
+  if (pyqs.length === 0) {
+    container.innerHTML = '<div class="empty-state"><p>No previous year question papers available.</p></div>';
+    return;
+  }
+
+  container.innerHTML = pyqs.map(p => `
+    <div class="card" style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-surface);">
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span class="badge badge-primary" style="font-size: 0.72rem;">${escapeHtml(p.exam_name)}</span>
+          <span style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">${escapeHtml(p.year || 'Official')}</span>
+        </div>
+        <h4 style="font-size: 0.95rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.35rem;">${escapeHtml(p.title || `${p.year} Official Question Paper`)}</h4>
+        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">Includes official questions and verified answer keys from authorized portal.</p>
+      </div>
+      <div style="display: flex; gap: 0.5rem;">
+        <a href="${escapeHtml(p.url || p.official_pdf_url || '#')}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm flex-1" style="display: inline-flex; justify-content: center; align-items: center; gap: 0.35rem;">
+          <i data-lucide="file-text" class="icon-xs"></i> Official Paper PDF
+        </a>
+        ${p.answer_key_url ? `
+          <a href="${escapeHtml(p.answer_key_url)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm" style="display: inline-flex; align-items: center; gap: 0.25rem;">
+            <i data-lucide="check" class="icon-xs"></i> Key
+          </a>
+        ` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  refreshIcons();
+}
+
+async function loadMocksTab() {
+  const container = document.getElementById('prep-mocks-grid');
+  if (!container) return;
+  container.innerHTML = '<div class="loading-state"><div class="spinner"></div></div>';
+  const exams = await ensureExamPrepDataLoaded();
+
+  const mocks = [];
+  exams.forEach(exam => {
+    if (exam.mock_tests && Array.isArray(exam.mock_tests)) {
+      exam.mock_tests.forEach(m => {
+        mocks.push({ ...m, exam_name: exam.name, exam_id: exam.id });
+      });
+    }
+  });
+
+  const resources = window.LEARNING_RESOURCES_DATA || [];
+  resources.filter(r => r.category === 'Mock Tests & Exam Simulation' || (r.skills && r.skills.includes('Mock Tests'))).forEach(r => {
+    mocks.push({
+      title: `${r.name} Official Practice Platform`,
+      portal_name: r.name,
+      url: r.official_url,
+      provider: r.official_source || 'Verified Platform',
+      exam_name: 'Practice Simulator'
+    });
+  });
+
+  if (mocks.length === 0) {
+    container.innerHTML = '<div class="empty-state"><p>No official mock tests currently listed.</p></div>';
+    return;
+  }
+
+  container.innerHTML = mocks.map(m => `
+    <div class="card" style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-surface);">
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span class="badge badge-primary" style="font-size: 0.72rem;">${escapeHtml(m.exam_name || 'CBT Mock')}</span>
+          <span class="badge badge-success" style="font-size: 0.7rem;"><i data-lucide="play" class="icon-xxs"></i> Live Simulator</span>
+        </div>
+        <h4 style="font-size: 0.95rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.35rem;">${escapeHtml(m.title || m.name || 'Official Exam Mock')}</h4>
+        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;"><i data-lucide="monitor" class="icon-xxs"></i> Provider: ${escapeHtml(m.provider || m.portal_name || 'National Testing Authority')}</p>
+      </div>
+      <a href="${escapeHtml(m.url || '#')}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm w-full" style="display: inline-flex; justify-content: center; align-items: center; gap: 0.4rem;">
+        <i data-lucide="play-circle" class="icon-xs"></i> <span>Launch Test Simulator</span>
+      </a>
+    </div>
+  `).join('');
+
+  refreshIcons();
+}
+
+async function loadPlansTab() {
+  const container = document.getElementById('prep-plans-grid');
+  if (!container) return;
+  container.innerHTML = '<div class="loading-state"><div class="spinner"></div></div>';
+  const exams = await ensureExamPrepDataLoaded();
+
+  if (exams.length === 0) {
+    container.innerHTML = '<div class="empty-state"><p>No preparation plans found.</p></div>';
+    return;
+  }
+
+  container.innerHTML = exams.map(exam => {
+    const plans = exam.study_plans || {};
+    const plan6 = plans['6_months'] || plans['6_month'] || 'Structured foundational phase covering 100% standard syllabus.';
+    const plan3 = plans['3_months'] || plans['3_month'] || 'Intensive revision with topic-wise PYQs and high-weightage chapters.';
+    const plan1 = plans['30_days'] || plans['30_day'] || 'Full-length CBT mock tests, error analysis, and formula revision.';
+
+    function formatText(p) {
+      if (typeof p === 'string') return escapeHtml(p);
+      if (Array.isArray(p)) return p.map(item => `<div>• <strong>${escapeHtml(item.period || item.week || 'Phase')}:</strong> ${escapeHtml(item.focus || '')}</div>`).join('');
+      return 'Plan details under curation.';
+    }
+
+    return `
+      <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-surface); grid-column: 1 / -1;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+          <div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.25rem;">${escapeHtml(exam.name)} Preparation Strategy</h3>
+            <span style="font-size: 0.8rem; color: var(--primary); font-weight: 500;">${escapeHtml(exam.conducting_body)}</span>
+          </div>
+          <button class="btn btn-outline-primary btn-sm" onclick="openExamDetailModal('${escapeHtml(exam.id)}')">
+            <i data-lucide="list-checks" class="icon-xs"></i> Full 24-Point Blueprint
+          </button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+          <div class="study-plan-card" style="border-left: 4px solid var(--primary); padding: 0.85rem; background: var(--bg-surface-muted); border-radius: 4px;">
+            <h5 style="margin: 0 0 0.4rem; color: var(--primary); font-size: 0.9rem;">🗓️ 6-Month Comprehensive Plan</h5>
+            <div style="font-size: 0.82rem; line-height: 1.5; color: var(--text-secondary);">${formatText(plan6)}</div>
+          </div>
+          <div class="study-plan-card" style="border-left: 4px solid #f59e0b; padding: 0.85rem; background: var(--bg-surface-muted); border-radius: 4px;">
+            <h5 style="margin: 0 0 0.4rem; color: #d97706; font-size: 0.9rem;">⚡ 3-Month Fast-Track Sprint</h5>
+            <div style="font-size: 0.82rem; line-height: 1.5; color: var(--text-secondary);">${formatText(plan3)}</div>
+          </div>
+          <div class="study-plan-card" style="border-left: 4px solid #ef4444; padding: 0.85rem; background: var(--bg-surface-muted); border-radius: 4px;">
+            <h5 style="margin: 0 0 0.4rem; color: #dc2626; font-size: 0.9rem;">🔥 30-Day Final Blitz</h5>
+            <div style="font-size: 0.82rem; line-height: 1.5; color: var(--text-secondary);">${formatText(plan1)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  refreshIcons();
+}
+
+function askAIStudySuggestion(query) {
+  const input = document.getElementById('ai-study-input');
+  if (input) {
+    input.value = query;
+  }
+  submitAIStudyQuestion();
+}
+
+async function submitAIStudyQuestion() {
+  const input = document.getElementById('ai-study-input');
+  const submitBtn = document.getElementById('ai-study-submit-btn');
+  const responseArea = document.getElementById('ai-study-response-area');
+  if (!input || !responseArea) return;
+
+  const question = input.value.trim();
+  if (!question) {
+    input.focus();
+    return;
+  }
+
+  const profile = (currentUser && currentUser.profile) ? currentUser.profile : getStoredRadarProfile();
+  const qual = (currentUser && currentUser.qualification) || (profile && profile.qualification) || 'B.Tech';
+  const stream = (currentUser && currentUser.stream) || (profile && (profile.stream || profile.branch)) || '';
+  const exam = (profile && profile.target_exam) || '';
+
+  responseArea.classList.remove('hidden');
+  responseArea.innerHTML = `
+    <div class="ai-study-loading" style="padding: 1.5rem; text-align: center;">
+      <div class="spinner"></div>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.75rem;">Antigravity AI is formulating verified study guidance tailored to ${escapeHtml(qual)}...</p>
+    </div>
+  `;
+  if (submitBtn) submitBtn.disabled = true;
+
+  try {
+    const res = await fetch('/api/ai/study-guidance', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question, qualification: qual, stream, target_exam: exam })
+    });
+    const data = await res.json();
+    if (!res.ok || data.error) {
+      responseArea.innerHTML = `<p class="text-danger" style="padding: 1rem;">${escapeHtml(data.error || 'Failed to fetch AI guidance.')}</p>`;
+      return;
+    }
+
+    const guidance = data.guidance || '';
+    const recs = data.recommended_resources || [];
+
+    let formattedText = escapeHtml(guidance)
+      .replace(/^### (.*$)/gim, '<h4 style="color: var(--primary); margin: 0.85rem 0 0.35rem;">$1</h4>')
+      .replace(/^## (.*$)/gim, '<h3 style="color: var(--text-main); margin: 1rem 0 0.5rem; font-size: 1.05rem;">$1</h3>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/^\* (.*$)/gim, '<li style="margin-bottom: 0.35rem;">$1</li>')
+      .replace(/^- (.*$)/gim, '<li style="margin-bottom: 0.35rem;">$1</li>');
+
+    formattedText = formattedText.replace(/\n\n/g, '<br><br>');
+
+    responseArea.innerHTML = `
+      <div class="ai-response-box" style="padding: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+        <div class="ai-response-header" style="display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+          <i data-lucide="bot" class="icon-sm text-primary"></i>
+          <span style="font-weight: 600; font-size: 0.92rem;">Verified Study Plan & Recommendations</span>
+          <span class="badge badge-success" style="margin-left: auto; font-size: 0.7rem;"><i data-lucide="shield-check" class="icon-xxs"></i> Grounded in Official Portals</span>
+        </div>
+        <div class="ai-response-body" style="font-size: 0.88rem; line-height: 1.7; color: var(--text-main); margin-top: 0.85rem;">
+          ${formattedText}
+        </div>
+        ${recs.length > 0 ? `
+          <div class="ai-recs-section" style="margin-top: 1.25rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+            <h5 style="margin: 0 0 0.5rem; font-size: 0.82rem; color: var(--text-secondary); text-transform: uppercase;">Direct Resource Links:</h5>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+              ${recs.map(r => `
+                <a href="${escapeHtml(r.official_url)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm" style="display: inline-flex; align-items: center; gap: 0.35rem;">
+                  <i data-lucide="external-link" class="icon-xxs"></i> <span>${escapeHtml(r.name)}</span>
+                </a>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+    refreshIcons();
+  } catch (err) {
+    console.error('AI study guidance error:', err);
+    responseArea.innerHTML = '<p class="text-danger" style="padding: 1rem;">Error connecting to AI guidance service.</p>';
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+  }
+}
+
+function continueUserPreparation() {
+  const profile = (currentUser && currentUser.profile) ? currentUser.profile : getStoredRadarProfile();
+  const exam = (profile && profile.target_exam) || '';
+  if (exam) {
+    switchPrepHubTab('exams');
+    const searchInput = document.getElementById('exam-prep-search-input');
+    if (searchInput) {
+      searchInput.value = exam;
+      filterExamPrepCards();
+    }
+  } else {
+    switchPrepHubTab('practice');
+  }
+}
+
+function openPrepHubForOpportunity(title, category) {
+  navigateToSection('exam-prep');
+  if (category === 'Entrance Exam') {
+    switchPrepHubTab('exams');
+    const searchInput = document.getElementById('exam-prep-search-input');
+    if (searchInput) {
+      searchInput.value = title;
+      filterExamPrepCards();
+    }
+  } else {
+    switchPrepHubTab('practice');
+    const searchInput = document.getElementById('prep-resource-search');
+    if (searchInput) {
+      searchInput.value = title;
+      filterLearningResources();
+    }
+  }
+}
 
 async function loadExamPrepHub() {
   const container = document.getElementById('exam-prep-grid');

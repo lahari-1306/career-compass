@@ -1117,3 +1117,194 @@ class AIEngine:
             f"{lang_instruction}"
         )
         return prompt
+
+    @staticmethod
+    def get_study_practice_guidance(profile: Dict[str, Any], question: str, language: str = "en") -> Dict[str, Any]:
+        """
+        Provides qualification-aware personalized study & practice guidance,
+        grounded strictly in the verified learning resource database.
+        Never hallucinates fake courses or arbitrary random URLs.
+        """
+        raw_qual = profile.get("qualification") or profile.get("education_level") or "B.Tech"
+        qual = AIEngine.normalize_qualification(raw_qual)
+        stream = AIEngine.normalize_stream(profile.get("branch") or profile.get("stream_or_branch") or "", qual)
+        interests = profile.get("interests") or profile.get("career_interests") or []
+        selected_exam = profile.get("selected_exam") or ""
+
+        # Load verified resources from learning_resources.json
+        all_res = load_data_file("learning_resources.json")
+        if not isinstance(all_res, list):
+            all_res = []
+
+        q_lower = (question or "").lower()
+
+        # Qualification-specific study guidance
+        if qual == "10th":
+            # Filter strictly for school resources
+            relevant_resources = [r for r in all_res if any(q in ["10th", "secondary", "school", "all"] for q in [x.lower() for x in r.get("education_levels", [])])]
+            topics = [
+                "Mathematics: Real Numbers, Polynomials, Linear Equations, Quadratic Equations, Trigonometry",
+                "Science (Physics & Chemistry): Light Reflection/Refraction, Chemical Reactions, Electricity",
+                "Biology: Life Processes, Control & Coordination, Heredity",
+                "Social Science: History, Geography, Democratic Politics, Economics",
+                "Computer Basics: Elementary Programming, Digital Literacy, Productivity Tools"
+            ]
+            advice = (
+                f"### 🎯 Foundational Study Strategy for Class 10 Students\n\n"
+                f"As a 10th standard student, your #1 focus is building unshakable subject fundamentals in **Mathematics and Science**. "
+                f"Advanced engineering frameworks, cloud computing, and collegiate placement DSA are **not** applicable at this stage.\n\n"
+                f"**What you should focus on right now:**\n"
+                f"1. **Master the NCERT Textbook:** Read line-by-line and solve every single end-of-chapter exercise.\n"
+                f"2. **Practice Visual Understanding:** Use **Khan Academy India** for step-by-step conceptual mastery in algebra and physics.\n"
+                f"3. **Solve State/CBSE Exemplar Problems:** Access official digital worksheets on the **DIKSHA Portal**.\n"
+                f"4. **Explore Future Directions:** Understand the key differences between 10+2 Intermediate (MPC vs BiPC vs Commerce) and Polytechnic Diploma (POLYCET) before your board exams conclude."
+            )
+
+        elif qual == "Intermediate":
+            norm_s = stream.lower()
+            if "bipc" in norm_s or "medical" in norm_s:
+                relevant_resources = [r for r in all_res if any(q in ["intermediate", "10+2", "all"] for q in [x.lower() for x in r.get("education_levels", [])]) and any(s in ["bipc", "sciences", "all streams"] for s in [x.lower() for x in r.get("streams", [])])]
+                topics = [
+                    "Biology (Botany & Zoology): Human Physiology, Genetics & Evolution, Cell Structure, Plant Physiology",
+                    "Chemistry: Organic Chemistry Mechanisms, Chemical Bonding, Coordination Compounds, Solutions",
+                    "Physics: Mechanics, Thermodynamics, Optics, Modern Physics",
+                    "Mock Tests: Full-length NTA Abhyas NEET Mock Test series"
+                ]
+                advice = (
+                    f"### 🩺 Pre-Medical & Science Study Strategy for Intermediate (BiPC)\n\n"
+                    f"For Intermediate BiPC students aiming for **NEET UG**, Pharmacy, or Allied Health Sciences:\n\n"
+                    f"1. **Biology NCERT Mastery:** Over 85% of NEET biology questions originate directly from NCERT textbook diagrams and lines.\n"
+                    f"2. **Timed Mock Practice:** Practice full 3-hour 20-minute speed tests on the official **National Test Abhyas (NTA)** app.\n"
+                    f"3. **Physical Chemistry & Physics Numerical Drills:** Dedicate at least 90 minutes daily exclusively to formula derivation and problem solving."
+                )
+            elif "commerce" in norm_s or "cec" in norm_s or "mec" in norm_s:
+                relevant_resources = [r for r in all_res if any(q in ["intermediate", "10+2", "degree", "all"] for q in [x.lower() for x in r.get("education_levels", [])])]
+                topics = [
+                    "Accountancy: Double Entry Bookkeeping, Ledger Accounts, Financial Statements",
+                    "Economics: Microeconomics, Macroeconomics, Indian Economic Development",
+                    "Business Studies / Commerce: Trade, Banking, Principles of Management",
+                    "Aptitude & Logical Foundations: Quantitative Aptitude, Data Interpretation for CUET / CA Foundation"
+                ]
+                advice = (
+                    f"### 💼 Commerce & Economics Study Strategy for Intermediate (MEC/CEC)\n\n"
+                    f"For Intermediate Commerce students preparing for **CA Foundation**, **CUET UG**, or undergraduate business degrees:\n\n"
+                    f"1. **Accounting Clarity:** Master ledger balancing, depreciation accounting, and partnership fundamentals on **SWAYAM**.\n"
+                    f"2. **Economics Analysis:** Practice graphs and macroeconomic indicators using official NCERT ePathshala modules.\n"
+                    f"3. **Quantitative Skills:** Solidify basic commercial mathematics and reasoning for upcoming university entrance tests."
+                )
+            else: # MPC
+                relevant_resources = [r for r in all_res if any(q in ["intermediate", "10+2", "all"] for q in [x.lower() for x in r.get("education_levels", [])]) and any(s in ["mpc", "engineering", "all streams"] for s in [x.lower() for x in r.get("streams", [])])]
+                topics = [
+                    "Mathematics: Calculus (Integration & Derivatives), Vectors, 3D Geometry, Matrices, Probability",
+                    "Physics: Mechanics, Electromagnetism, Modern Physics, Wave Optics",
+                    "Chemistry: Organic Chemistry Reaction Pathways, Periodic Trends, Chemical Kinetics",
+                    "Entrance Test Strategy: JEE Main & State EAPCET chapter-wise speed solving"
+                ]
+                advice = (
+                    f"### 📐 Engineering Entrance Study Strategy for Intermediate (MPC)\n\n"
+                    f"For Intermediate MPC students targeting **JEE Main, JEE Advanced, and State EAPCET**:\n\n"
+                    f"1. **Concept-to-Problem Transition:** Use **Khan Academy India** to review difficult concepts in calculus and electromagnetism.\n"
+                    f"2. **Official Mock Tests:** Take computer-based simulated tests on the **National Test Abhyas (NTA)** platform to master negative marking discipline.\n"
+                    f"3. **PYQ Solving:** Analyze at least 5 years of JEE Main / EAPCET papers to identify recurring multi-concept questions."
+                )
+
+        elif qual == "Diploma":
+            relevant_resources = [r for r in all_res if any(q in ["diploma", "polytechnic", "all"] for q in [x.lower() for x in r.get("education_levels", [])])]
+            topics = [
+                f"{stream} Core Fundamentals: Key technical theorems, schematics, and design standards",
+                "Lateral Entry (ECET) Syllabus: Mathematics (Differential Equations, Matrices), Analytical Chemistry & Physics",
+                "Hands-on Lab Simulation: Virtual engineering experiments on Virtual Labs (IITs / MoE)",
+                "Technical Aptitude: Objective MCQs on IndiaBIX for RRB JE, SSC JE, and state power utilities",
+                "Practical Software: Computer-Aided Design (AutoCAD/FreeCAD) & Programming on Spoken Tutorial"
+            ]
+            advice = (
+                f"### ⚙️ Technical Mastery & Lateral Entry Strategy for Diploma ({stream})\n\n"
+                f"For Polytechnic Diploma students balancing final semester exams, **State ECET lateral entry to B.Tech**, and Junior Engineer recruitments:\n\n"
+                f"1. **Focus on Mathematics for ECET:** 50 marks in ECET come from engineering mathematics (matrices, calculus, differential equations). Prioritize this daily.\n"
+                f"2. **Practice Technical MCQs:** Use **IndiaBIX** to solve branch-specific objective questions ({stream}) for both ECET and RRB JE.\n"
+                f"3. **Interactive Lab Practice:** Run remote experimental simulations on **Virtual Labs (vlab.co.in)** to solidify real-world apparatus knowledge.\n"
+                f"4. **Open-Source Software Certifications:** Complete free workshops on **Spoken Tutorial (IIT Bombay)** in CAD, Linux, or Python."
+            )
+
+        elif qual in ["B.Tech", "Degree"]:
+            is_cs_it = any(k in stream.lower() for k in ["cse", "computer", "it", "ai", "data science", "software"])
+            if is_cs_it:
+                relevant_resources = [r for r in all_res if any(q in ["b.tech", "degree", "all"] for q in [x.lower() for x in r.get("education_levels", [])]) and any(b in ["cse", "it", "all engineering", "all branches"] for b in [x.lower() for x in r.get("branches", [])])]
+                topics = [
+                    "Data Structures & Algorithms: Arrays, Linked Lists, Trees, Graphs, Dynamic Programming, Binary Search",
+                    "Core Computer Science: Operating Systems (Process Scheduling, Deadlocks, Memory Management), DBMS (SQL Queries, Normalization, ACID), Computer Networks",
+                    "Quantitative Aptitude & Reasoning: Speed Math, Permutation & Combination, Syllogisms, Reading Comprehension",
+                    "Practical Projects: Full-Stack Web Development, REST APIs, Git Version Control, Cloud Deployment",
+                    "Company Preparation: Technical Interview Rounds, System Design basics, HR Behavioral Scenarios"
+                ]
+                advice = (
+                    f"### 💻 Campus Placement & Software Engineering Practice Blueprint (B.Tech {stream})\n\n"
+                    f"For B.Tech {stream} students targeting product engineering roles, IT MNC drives, or GATE CSE:\n\n"
+                    f"1. **Structured DSA Practice:** Solve 2-3 algorithmic problems daily on **LeetCode** and **CodeChef**, beginning with arrays, strings, and hash maps before moving to trees and dynamic programming.\n"
+                    f"2. **CS Core Fundamentals:** Review operating systems, database queries, and networking protocols on **GeeksforGeeks** — these form 60%+ of technical interview questions.\n"
+                    f"3. **Aptitude Drills:** Clear placement aptitude cutoffs by practicing on **PrepInsta** and **PlacementPreparation.io**.\n"
+                    f"4. **Code Quality & Verification:** Obtain accredited skill badges on **HackerRank** to demonstrate verifiable problem-solving proficiency on your resume."
+                )
+            else:
+                relevant_resources = [r for r in all_res if any(q in ["b.tech", "degree", "all"] for q in [x.lower() for x in r.get("education_levels", [])])]
+                topics = [
+                    f"{stream} Core Theory: In-depth understanding of standard university syllabus on NPTEL",
+                    "Quantitative & Logical Aptitude: Campus recruitment written tests and PSU qualifying rounds on IndiaBIX",
+                    "Engineering Tools & Simulations: Virtual Labs and software packages relevant to {stream}",
+                    "GATE Preparation: Previous 15-year questions and comprehensive solutions on GATE Overflow",
+                    "Programming Fundamentals: Python and SQL foundations for automation and engineering data analysis"
+                ]
+                advice = (
+                    f"### 🛠️ Core Engineering & PSU Practice Blueprint (B.Tech {stream})\n\n"
+                    f"For B.Tech {stream} students aiming for core industry roles, Maharatna PSUs (ISRO, DRDO, IOCL, NTPC), or GATE:\n\n"
+                    f"1. **Authoritative University Lectures:** Watch semester modules delivered by IIT faculties on **NPTEL (IITs & IISc)**.\n"
+                    f"2. **Simulate Industrial Laboratories:** Use **Virtual Labs (vlab.co.in)** to practice experimental methods and equipment configurations.\n"
+                    f"3. **Aptitude & Technical MCQs:** Practice daily on **IndiaBIX** for company placement exams and state engineering tests.\n"
+                    f"4. **GATE Question Analysis:** Solve topic-wise previous year questions on **GATE Overflow** to understand theoretical depth and numerical question types."
+                )
+
+        else: # Postgraduate
+            relevant_resources = [r for r in all_res if any(q in ["postgraduate", "degree", "all"] for q in [x.lower() for x in r.get("education_levels", [])])]
+            topics = [
+                "Advanced Research Methodology: Literature Review, Experimental Design, Statistical Analysis",
+                "Academic Literature Search: Citation analysis and state-of-the-art papers on Google Scholar and arXiv",
+                "National Electronic Theses: Review completed doctoral dissertations on Shodhganga (UGC)",
+                "Teaching & Research Eligibility: Paper 1 & Paper 2 preparation on the official UGC NET Portal"
+            ]
+            advice = (
+                f"### 🎓 Academic Research & Advanced Practice Blueprint (Postgraduate)\n\n"
+                f"For Postgraduate and doctoral scholars focusing on research excellence, industry R&D, or academic career pathways:\n\n"
+                f"1. **Comprehensive Literature Review:** Access 500,000+ accredited Indian Ph.D. dissertations on **Shodhganga (INFLIBNET)**.\n"
+                f"2. **Preprint & Open Access Research:** Stay ahead of breakthrough findings on **arXiv.org** and **Google Scholar**.\n"
+                f"3. **Curate Digital Primary Sources:** Leverage the **National Digital Library of India (NDLI)** for rare monographs and academic references.\n"
+                f"4. **National Eligibility Testing:** Practice official previous year question papers on the **UGC NET Online Portal**."
+            )
+
+        # Fallback to top 4 resources
+        if not relevant_resources:
+            relevant_resources = all_res[:4]
+
+        # Formatting response
+        cards = []
+        for r in relevant_resources[:5]:
+            cards.append({
+                "id": r.get("id"),
+                "name": r.get("name"),
+                "description": r.get("description"),
+                "official_url": r.get("official_url"),
+                "category": r.get("category"),
+                "access_type": r.get("access_type"),
+                "free_features": r.get("free_features"),
+                "skills": r.get("skills", [])[:4]
+            })
+
+        return {
+            "status": "success",
+            "qualification": qual,
+            "stream": stream,
+            "guidance_html": advice,
+            "recommended_topics": topics,
+            "verified_resources": cards,
+            "total_resources": len(cards)
+        }
+

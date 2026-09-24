@@ -312,6 +312,36 @@ def init_db() -> None:
     );
     """)
 
+    # 15. Learning Resources (Preparation Hub)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS learning_resources (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        description TEXT NOT NULL,
+        official_url TEXT NOT NULL,
+        logo_url TEXT,
+        category TEXT NOT NULL,
+        resource_type TEXT NOT NULL,
+        education_levels TEXT DEFAULT '[]',
+        streams TEXT DEFAULT '[]',
+        branches TEXT DEFAULT '[]',
+        skills TEXT DEFAULT '[]',
+        exams TEXT DEFAULT '[]',
+        access_type TEXT NOT NULL DEFAULT 'FREE',
+        free_features TEXT,
+        paid_features TEXT,
+        language TEXT DEFAULT 'English',
+        official_source TEXT,
+        verification_status TEXT NOT NULL DEFAULT 'VERIFIED',
+        last_verified TEXT,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+    );
+    """)
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_resources_category ON learning_resources(category);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_resources_verification ON learning_resources(verification_status);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_resources_access ON learning_resources(access_type);")
+
     conn.commit()
 
     # Seed notifications from data/notifications.json if database table is empty
@@ -358,6 +388,52 @@ def init_db() -> None:
                 logger.info(f"Seeded {len(items)} verified notifications into SQLite database.")
             except Exception as e:
                 logger.warning(f"Error seeding notifications: {e}")
+
+    # Seed learning_resources from data/learning_resources.json if empty or to ensure sync
+    cursor.execute("SELECT COUNT(*) AS cnt FROM learning_resources;")
+    res_row = cursor.fetchone()
+    if res_row and res_row["cnt"] == 0:
+        res_path = os.path.join(DATA_DIR, "learning_resources.json")
+        if os.path.exists(res_path):
+            try:
+                with open(res_path, "r", encoding="utf-8") as f:
+                    resources = json.load(f)
+                now_str = now_ist_iso()
+                for r in resources:
+                    cursor.execute("""
+                    INSERT OR REPLACE INTO learning_resources (
+                        id, name, description, official_url, logo_url, category, resource_type,
+                        education_levels, streams, branches, skills, exams, access_type,
+                        free_features, paid_features, language, official_source,
+                        verification_status, last_verified, created_at, updated_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (
+                        r.get("id"),
+                        r.get("name"),
+                        r.get("description"),
+                        r.get("official_url"),
+                        r.get("logo_url", ""),
+                        r.get("category", "General"),
+                        r.get("resource_type", "Practice & Learning Platform"),
+                        json.dumps(r.get("education_levels", [])),
+                        json.dumps(r.get("streams", [])),
+                        json.dumps(r.get("branches", [])),
+                        json.dumps(r.get("skills", [])),
+                        json.dumps(r.get("exams", [])),
+                        r.get("access_type", "FREE"),
+                        r.get("free_features", ""),
+                        r.get("paid_features", ""),
+                        r.get("language", "English"),
+                        r.get("official_source", r.get("official_url")),
+                        r.get("verification_status", "VERIFIED"),
+                        r.get("last_verified", now_str[:10]),
+                        r.get("created_at", now_str),
+                        r.get("updated_at", now_str)
+                    ))
+                conn.commit()
+                logger.info(f"Seeded {len(resources)} verified learning resources into SQLite database.")
+            except Exception as e:
+                logger.warning(f"Error seeding learning resources: {e}")
 
     conn.close()
 

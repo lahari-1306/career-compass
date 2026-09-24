@@ -346,12 +346,11 @@
 
       <nav class="desktop-nav" aria-label="Primary navigation">
         <button class="nav-link active" onclick="navigateToSection('home')" data-section="home" data-i18n="nav.home">Home</button>
-        <button class="nav-link" onclick="navigateToSection('career-paths')" data-section="career-paths" data-i18n="nav.career_paths">Career Paths</button>
-        <button class="nav-link" onclick="navigateToSection('entrance-exams')" data-section="entrance-exams" data-i18n="nav.exams">Entrance Exams</button>
-        <button class="nav-link" onclick="navigateToSection('exam-prep')" data-section="exam-prep"><i data-lucide="book-open" class="icon-xs"></i> <span data-i18n="nav.exam_prep">Exam Prep Hub</span></button>
-        <button class="nav-link" onclick="navigateToSection('govt-jobs')" data-section="govt-jobs" data-i18n="nav.govt_jobs">Govt Jobs</button>
-        <button class="nav-link" onclick="navigateToSection('defence')" data-section="defence" data-i18n="nav.defence">Defence</button>
-        <button class="nav-link" onclick="navigateToSection('ai-guide')" data-section="ai-guide"><span class="ai-badge-pulse">AI</span> <span data-i18n="nav.ai_guide">AI Career Guide</span></button>
+        <button class="nav-link" onclick="navigateToSection('career-paths')" data-section="career-paths" data-i18n="nav.career_paths">Find My Career Path</button>
+        <button class="nav-link" onclick="navigateToSection('exam-prep')" data-section="exam-prep"><i data-lucide="graduation-cap" class="icon-xs"></i> <span data-i18n="nav.prep_hub">Preparation Hub</span></button>
+        <button class="nav-link" onclick="navigateToSection('radar')" data-section="radar"><i data-lucide="radar" class="icon-xs"></i> <span data-i18n="nav.radar">Career Radar</span></button>
+        <button class="nav-link" onclick="navigateToSection('ai-guide')" data-section="ai-guide"><span class="ai-badge-pulse">AI</span> <span data-i18n="nav.ai_guide">AI Assistant</span></button>
+        <button class="nav-link" onclick="navigateToSection('notifications')" data-section="notifications"><i data-lucide="bell" class="icon-xs"></i> <span data-i18n="nav.notifications">Notifications</span></button>
       </nav>
 
       <div class="header-actions">
@@ -650,6 +649,12 @@
           <p class="section-desc" data-i18n="pillars.subtitle">Grounded in 100% verified Indian educational portals, anti-hallucination standards, and real student outcomes.</p>
         </div>
         <div class="pillars-grid">
+          <div class="pillar-card pillar-card-featured" onclick="navigateToSection('exam-prep')" style="border-top: 3px solid var(--primary);">
+            <div class="pillar-icon bg-blue"><i data-lucide="graduation-cap"></i></div>
+            <h3 data-i18n="prep_hub.title">Preparation Hub</h3>
+            <p>Study, practice, prepare and build skills with trusted blueprints and official online resources.</p>
+            <span class="pillar-link">Explore Preparation Hub →</span>
+          </div>
           <div class="pillar-card" onclick="navigateToSection('govt-jobs')">
             <div class="pillar-icon bg-amber"><i data-lucide="cpu"></i></div>
             <h3 data-i18n="pillars.govt_title">Government Engineering Jobs</h3>
@@ -735,15 +740,18 @@
       </div>
     </section>
 
-    <!-- ==================== SECTION: EXAM PREPARATION HUB (24-POINT BLUEPRINTS) ==================== -->
+    <!-- ==================== SECTION: PREPARATION HUB ==================== -->
     <section id="section-exam-prep" class="page-section">
       <div class="container section-padding">
+        
+        <!-- Section Header -->
         <div class="section-header">
-          <div class="badge badge-primary">24-POINT PREPARATION BLUEPRINTS</div>
-          <h2 class="section-title">Exam Preparation Hub</h2>
-          <p class="section-desc">Comprehensive preparation blueprints, official conducting body syllabi, verified standard textbooks with accredited publisher links, previous year questions (PYQs), mock tests, and personal checklist progress tracking.</p>
+          <div class="badge badge-primary">ALL-IN-ONE STUDY & PRACTICE PORTAL</div>
+          <h2 class="section-title" data-i18n="prep_hub.title">Preparation Hub</h2>
+          <p class="section-desc" data-i18n="prep_hub.subtitle">Study, practice, prepare and build skills with trusted blueprints and official online resources.</p>
         </div>
 
+        <!-- Push Permission Banner -->
         <div id="push-permission-banner" class="push-banner hidden">
           <div style="display: flex; align-items: center; gap: 0.75rem;">
             <i data-lucide="bell-ring" class="icon-md"></i>
@@ -758,24 +766,201 @@
           </div>
         </div>
 
-        <div class="filter-bar">
-          <div class="search-box">
-            <i data-lucide="search" class="search-icon"></i>
-            <input type="text" id="exam-prep-search-input" placeholder="Search exam blueprints (e.g. GATE CSE, JEE Main, NEET UG, NDA, ECET)..." oninput="filterExamPrepCards()">
+        <!-- Personalized Preparation Hub Dashboard Banner (Requirement 18) -->
+        <div id="prep-hub-user-summary" class="prep-user-summary-card">
+          <div class="prep-summary-info">
+            <div class="prep-summary-badge"><i data-lucide="compass" class="icon-xs"></i> <span data-i18n="prep_hub.your_hub">Your Preparation Hub</span></div>
+            <h3 id="prep-summary-title">Personalized for Your Profile</h3>
+            <div class="prep-meta-row">
+              <span class="prep-meta-chip"><strong data-i18n="prep_hub.qualification_label">Qualification:</strong> <span id="prep-summary-qual">B.Tech</span></span>
+              <span class="prep-meta-chip"><strong data-i18n="prep_hub.career_direction_label">Career Direction:</strong> <span id="prep-summary-stream">Computer Science & Engineering</span></span>
+              <span class="prep-meta-chip"><strong data-i18n="prep_hub.target_exam_label">Selected Exam:</strong> <span id="prep-summary-exam">GATE CSE</span></span>
+            </div>
           </div>
-          <div class="filter-chips" id="exam-prep-filter-chips">
-            <button class="filter-chip active" onclick="filterExamPrepCategory('All')">All Examinations</button>
-            <button class="filter-chip" onclick="filterExamPrepCategory('Engineering')">Engineering (GATE / JEE / ECET)</button>
-            <button class="filter-chip" onclick="filterExamPrepCategory('Medical')">Medical (NEET)</button>
-            <button class="filter-chip" onclick="filterExamPrepCategory('Diploma')">Polytechnic / Lateral (POLYCET / ECET)</button>
-            <button class="filter-chip" onclick="filterExamPrepCategory('Government')">Government & Defence (UPSC / SSC)</button>
-            <button class="filter-chip" onclick="filterExamPrepCategory('Higher Studies')">Teaching & Higher Studies (UGC NET)</button>
+          <div class="prep-summary-action">
+            <div id="prep-summary-progress-box" class="prep-progress-mini">
+              <div class="prep-progress-label"><span>Preparation Progress</span> <strong id="prep-summary-pct">0%</strong></div>
+              <div class="prep-progress-bar"><div id="prep-summary-bar-fill" class="bar-fill" style="width: 0%;"></div></div>
+            </div>
+            <button id="prep-continue-btn" class="btn btn-primary btn-sm" onclick="continueUserPreparation()"><i data-lucide="play-circle" class="icon-xs"></i> <span data-i18n="prep_hub.continue_prep">Continue Preparation</span></button>
           </div>
         </div>
 
-        <div id="exam-prep-grid" class="cards-grid">
-          <div class="loading-state"><div class="spinner"></div></div>
+        <!-- Preparation Hub 8-Tab Navigation (Requirement 2) -->
+        <div class="prep-hub-tabs" role="tablist">
+          <button class="prep-tab-btn active" onclick="switchPrepHubTab('practice')" data-tab="practice">
+            <span class="tab-icon">💻</span> <span data-i18n="prep_hub.tab_practice">Practice & Training</span>
+          </button>
+          <button class="prep-tab-btn" onclick="switchPrepHubTab('exams')" data-tab="exams">
+            <span class="tab-icon">🎯</span> <span data-i18n="prep_hub.tab_exams">Exams & Preparation</span>
+          </button>
+          <button class="prep-tab-btn" onclick="switchPrepHubTab('study-materials')" data-tab="study-materials">
+            <span class="tab-icon">📚</span> <span data-i18n="prep_hub.tab_study_materials">Study Materials</span>
+          </button>
+          <button class="prep-tab-btn" onclick="switchPrepHubTab('books')" data-tab="books">
+            <span class="tab-icon">📖</span> <span data-i18n="prep_hub.tab_books">Books & References</span>
+          </button>
+          <button class="prep-tab-btn" onclick="switchPrepHubTab('pyqs')" data-tab="pyqs">
+            <span class="tab-icon">📝</span> <span data-i18n="prep_hub.tab_pyqs">Previous Papers</span>
+          </button>
+          <button class="prep-tab-btn" onclick="switchPrepHubTab('mocks')" data-tab="mocks">
+            <span class="tab-icon">🧪</span> <span data-i18n="prep_hub.tab_mocks">Mock Tests</span>
+          </button>
+          <button class="prep-tab-btn" onclick="switchPrepHubTab('plans')" data-tab="plans">
+            <span class="tab-icon">📅</span> <span data-i18n="prep_hub.tab_plans">Preparation Plans</span>
+          </button>
+          <button class="prep-tab-btn" onclick="switchPrepHubTab('ai')" data-tab="ai">
+            <span class="tab-icon">🤖</span> <span data-i18n="prep_hub.tab_ai">AI Study Assistant</span>
+          </button>
         </div>
+
+        <!-- ==================== SUB-VIEW 1: PRACTICE & TRAINING ==================== -->
+        <div id="prep-subview-practice" class="prep-subview active">
+          <div class="subview-header">
+            <div>
+              <h3 id="practice-section-heading" class="subview-title" data-i18n="prep_hub.tab_practice">Practice & Training</h3>
+              <p class="subview-desc" data-i18n="prep_hub.practice_subtitle">Learn, practice and build skills with trusted online resources.</p>
+            </div>
+            <div class="filter-controls-row">
+              <div class="search-box prep-search-box">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" id="prep-resource-search" placeholder="Search resources (e.g. DSA, Python, Aptitude, NEET, JEE, GATE)..." oninput="filterLearningResources()">
+              </div>
+              <div class="select-filter-group">
+                <select id="prep-resource-access-filter" class="form-control form-control-sm" onchange="filterLearningResources()">
+                  <option value="All">All Access Types</option>
+                  <option value="FREE">Free</option>
+                  <option value="OFFICIAL FREE RESOURCE">Official Free Resource</option>
+                  <option value="FREE + PAID">Free + Paid</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Category Filter Chips -->
+          <div class="filter-chips-scroll" id="prep-resource-category-chips">
+            <!-- Rendered dynamically by app.js based on qualification -->
+          </div>
+
+          <!-- Resource Cards Grid -->
+          <div id="prep-resource-grid" class="cards-grid">
+            <div class="loading-state"><div class="spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- ==================== SUB-VIEW 2: EXAMS & BLUEPRINTS ==================== -->
+        <div id="prep-subview-exams" class="prep-subview hidden">
+          <div class="filter-bar">
+            <div class="search-box">
+              <i data-lucide="search" class="search-icon"></i>
+              <input type="text" id="exam-prep-search-input" placeholder="Search exam blueprints (e.g. GATE CSE, JEE Main, NEET UG, NDA, ECET)..." oninput="filterExamPrepCards()">
+            </div>
+            <div class="filter-chips" id="exam-prep-filter-chips">
+              <button class="filter-chip active" onclick="filterExamPrepCategory('All')">All Examinations</button>
+              <button class="filter-chip" onclick="filterExamPrepCategory('Engineering')">Engineering (GATE / JEE / ECET)</button>
+              <button class="filter-chip" onclick="filterExamPrepCategory('Medical')">Medical (NEET)</button>
+              <button class="filter-chip" onclick="filterExamPrepCategory('Diploma')">Polytechnic / Lateral (POLYCET / ECET)</button>
+              <button class="filter-chip" onclick="filterExamPrepCategory('Government')">Government & Defence (UPSC / SSC)</button>
+              <button class="filter-chip" onclick="filterExamPrepCategory('Higher Studies')">Teaching & Higher Studies (UGC NET)</button>
+            </div>
+          </div>
+          <div id="exam-prep-grid" class="cards-grid">
+            <div class="loading-state"><div class="spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- ==================== SUB-VIEW 3: STUDY MATERIALS ==================== -->
+        <div id="prep-subview-study-materials" class="prep-subview hidden">
+          <div class="subview-header">
+            <div>
+              <h3 class="subview-title" data-i18n="prep_hub.tab_study_materials">Study Materials & Notes</h3>
+              <p class="subview-desc">Curated topic-wise syllabi, official university lectures, and revision handouts.</p>
+            </div>
+          </div>
+          <div id="prep-materials-grid" class="cards-grid">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+
+        <!-- ==================== SUB-VIEW 4: BOOKS & REFERENCES ==================== -->
+        <div id="prep-subview-books" class="prep-subview hidden">
+          <div class="subview-header">
+            <div>
+              <h3 class="subview-title" data-i18n="prep_hub.tab_books">Standard Books & References</h3>
+              <p class="subview-desc">Accredited standard textbooks recommended by national examining boards and IIT faculties.</p>
+            </div>
+          </div>
+          <div id="prep-books-grid" class="cards-grid">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+
+        <!-- ==================== SUB-VIEW 5: PREVIOUS PAPERS ==================== -->
+        <div id="prep-subview-pyqs" class="prep-subview hidden">
+          <div class="subview-header">
+            <div>
+              <h3 class="subview-title" data-i18n="prep_hub.tab_pyqs">Previous Year Question Papers (PYQs)</h3>
+              <p class="subview-desc">Official question paper archives and verified answer keys directly from authorized examination portals.</p>
+            </div>
+          </div>
+          <div id="prep-pyqs-grid" class="cards-grid">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+
+        <!-- ==================== SUB-VIEW 6: MOCK TESTS ==================== -->
+        <div id="prep-subview-mocks" class="prep-subview hidden">
+          <div class="subview-header">
+            <div>
+              <h3 class="subview-title" data-i18n="prep_hub.tab_mocks">Official Mock Tests</h3>
+              <p class="subview-desc">Official computer-based test (CBT) simulators and practice test links.</p>
+            </div>
+          </div>
+          <div id="prep-mocks-grid" class="cards-grid">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+
+        <!-- ==================== SUB-VIEW 7: PREPARATION PLANS ==================== -->
+        <div id="prep-subview-plans" class="prep-subview hidden">
+          <div class="subview-header">
+            <div>
+              <h3 class="subview-title" data-i18n="prep_hub.tab_plans">Preparation Plans & Timetables</h3>
+              <p class="subview-desc">Structured 30-day, 3-month, and 6-month study milestones mapped to examination dates.</p>
+            </div>
+          </div>
+          <div id="prep-plans-grid" class="cards-grid">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+
+        <!-- ==================== SUB-VIEW 8: AI STUDY ASSISTANT ==================== -->
+        <div id="prep-subview-ai" class="prep-subview hidden">
+          <div class="subview-header">
+            <div>
+              <h3 class="subview-title" data-i18n="prep_hub.ask_ai_title">Ask AI What to Practice</h3>
+              <p class="subview-desc" data-i18n="prep_hub.ask_ai_subtitle">Get personalized, stage-appropriate study directions grounded strictly in verified platforms.</p>
+            </div>
+          </div>
+          <div class="ai-study-container">
+            <div class="ai-study-input-card">
+              <div class="ai-study-suggestion-chips">
+                <button class="ai-chip-btn" onclick="askAIStudySuggestion('What should I learn this month?')">📅 What should I learn this month?</button>
+                <button class="ai-chip-btn" onclick="askAIStudySuggestion('What should I practice for campus placements?')">💼 What should I practice for placements?</button>
+                <button class="ai-chip-btn" onclick="askAIStudySuggestion('What are foundational topics for my upcoming exams?')">🎯 What are foundational topics?</button>
+                <button class="ai-chip-btn" onclick="askAIStudySuggestion('How can I prepare for technical interviews and GATE?')">📝 How to prepare for technical interviews?</button>
+              </div>
+              <div class="ai-study-input-row">
+                <input type="text" id="ai-study-input" placeholder="Ask AI what to practice (e.g. How to prepare for DSA, NEET biology revision, ECET maths)..." onkeydown="if(event.key==='Enter') submitAIStudyQuestion()">
+                <button class="btn btn-primary" id="ai-study-submit-btn" onclick="submitAIStudyQuestion()"><i data-lucide="sparkles" class="icon-xs"></i> <span data-i18n="prep_hub.ask_ai_btn">Get Study Advice</span></button>
+              </div>
+            </div>
+            <div id="ai-study-response-area" class="ai-study-response hidden">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 

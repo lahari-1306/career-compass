@@ -363,7 +363,8 @@ def main():
             "deviceScaleFactor": 2,
             "mobile": True
         })
-        time.sleep(0.5)
+        eval_js("window.dispatchEvent(new Event('resize'))")
+        time.sleep(1)
 
         card_width = eval_js("document.querySelector('.auth-split-card').getBoundingClientRect().width")
         scroll_width = eval_js("document.documentElement.scrollWidth")

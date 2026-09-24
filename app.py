@@ -18,7 +18,8 @@ from services.push_service import PushService
 from services.pipeline_service import PipelineService
 from db_repository import (
     ProfileRepository, NotificationRepository, PushRepository,
-    SavedOpportunitiesRepository, ExamProgressRepository
+    SavedOpportunitiesRepository, ExamProgressRepository,
+    LearningResourceRepository
 )
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
@@ -594,6 +595,143 @@ def exam_study_plan():
         "status": "success",
         "message": "Study plan saved successfully.",
         "study_plan": saved
+    })
+
+# ====================================================
+# PREPARATION HUB: LEARNING & PRACTICE RESOURCES APIs
+# ====================================================
+
+@app.route("/api/resources", methods=["GET"])
+def get_learning_resources_route():
+    user = get_current_user()
+    user_prof = ProfileRepository.get_profile(user["id"]) if user else {}
+
+    qual = request.args.get("qualification") or user_prof.get("qualification") or "B.Tech"
+    stream = request.args.get("stream") or user_prof.get("stream")
+    branch = request.args.get("branch") or user_prof.get("branch")
+
+    interests_arg = request.args.get("career_interests") or request.args.get("interests")
+    if interests_arg:
+        interests = [i.strip() for i in interests_arg.split(",") if i.strip()]
+    else:
+        interests = user_prof.get("career_interests") or []
+
+    selected_exam = request.args.get("selected_exam") or request.args.get("exam")
+    if not selected_exam and user_prof.get("selected_exams"):
+        exams_list = user_prof.get("selected_exams")
+        if exams_list:
+            selected_exam = exams_list[0]
+
+    category = request.args.get("category")
+    access_type = request.args.get("access_type")
+    search_query = request.args.get("search") or request.args.get("q")
+
+    resources = LearningResourceRepository.get_personalized(
+        qualification=qual,
+        stream=stream,
+        branch=branch,
+        career_interests=interests,
+        selected_exam=selected_exam,
+        category=category,
+        access_type=access_type,
+        search_query=search_query
+    )
+
+    return jsonify({
+        "status": "success",
+        "total": len(resources),
+        "qualification": qual,
+        "branch": branch or stream,
+        "resources": resources
+    })
+
+@app.route("/api/resources/categories", methods=["GET"])
+def get_resource_categories_route():
+    user = get_current_user()
+    user_prof = ProfileRepository.get_profile(user["id"]) if user else {}
+    qual = request.args.get("qualification") or user_prof.get("qualification") or "B.Tech"
+    cats = LearningResourceRepository.get_categories_for_qualification(qual)
+    return jsonify({
+        "status": "success",
+        "qualification": qual,
+        "categories": cats
+    })
+
+@app.route("/api/resources/<resource_id>", methods=["GET"])
+def get_resource_detail_route(resource_id):
+    res = LearningResourceRepository.get_by_id(resource_id)
+    if not res:
+        return jsonify({"status": "error", "message": f"Resource '{resource_id}' not found"}), 404
+    return jsonify({
+        "status": "success",
+        "resource": res
+    })
+
+@app.route("/api/ai/study-guidance", methods=["POST"])
+def ai_study_guidance_route():
+    data = request.get_json() or {}
+    question = data.get("question") or data.get("prompt") or "What should I practice?"
+    lang = data.get("language") or "en"
+
+    user = get_current_user()
+    profile = ProfileRepository.get_profile(user["id"]) if user else {}
+
+    if data.get("qualification"):
+        profile["qualification"] = data["qualification"]
+    if data.get("branch"):
+        profile["branch"] = data["branch"]
+    if data.get("stream"):
+        profile["stream"] = data["stream"]
+
+    guidance = AIEngine.get_study_practice_guidance(profile, question, language=lang)
+    if isinstance(guidance, dict):
+        guidance["success"] = guidance.get("status") == "success"
+        guidance["guidance"] = guidance.get("guidance_html", "")
+        guidance["recommended_resources"] = guidance.get("verified_resources", [])
+    return jsonify(guidance)
+
+# ====================================================
+# ADMIN LEARNING RESOURCES REST APIs
+# ====================================================
+
+@app.route("/api/admin/resources", methods=["GET"])
+def admin_get_all_resources():
+    resources = LearningResourceRepository.get_all(verification_status=None)
+    return jsonify({
+        "status": "success",
+        "total": len(resources),
+        "resources": resources
+    })
+
+@app.route("/api/admin/resources", methods=["POST"])
+def admin_create_resource():
+    data = request.get_json() or {}
+    if not data.get("name") or not data.get("official_url"):
+        return jsonify({"status": "error", "message": "name and official_url are required"}), 400
+    res_id = LearningResourceRepository.create_resource(data)
+    return jsonify({"status": "success", "message": "Resource created", "id": res_id})
+
+@app.route("/api/admin/resources/<resource_id>", methods=["PUT"])
+def admin_update_resource(resource_id):
+    data = request.get_json() or {}
+    success = LearningResourceRepository.update_resource(resource_id, data)
+    if not success:
+        return jsonify({"status": "error", "message": "Resource not found or no changes made"}), 404
+    return jsonify({"status": "success", "message": "Resource updated successfully"})
+
+@app.route("/api/admin/resources/<resource_id>", methods=["DELETE"])
+def admin_delete_resource(resource_id):
+    success = LearningResourceRepository.delete_resource(resource_id)
+    if not success:
+        return jsonify({"status": "error", "message": "Resource not found"}), 404
+    return jsonify({"status": "success", "message": "Resource deleted successfully"})
+
+@app.route("/api/admin/resources/health-check", methods=["POST"])
+def admin_health_check_resources():
+    report = PipelineService.check_learning_resource_links()
+    return jsonify({
+        "status": "success",
+        "report": report
     })
 
 # ====================================================
