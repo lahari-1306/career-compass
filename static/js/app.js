@@ -3618,7 +3618,7 @@ async function handleAuthLoginSubmit(e) {
       body: JSON.stringify({ email, password })
     });
     const data = await res.json();
-    if (res.ok && data.status === 'success') {
+    if (res.ok && (data.status === 'success' || data.success === true)) {
       currentUser = data.user;
       const isProfileComplete = data.profile && (data.profile.is_onboarded === 1 || data.profile.is_onboarded === '1' || data.profile.is_onboarded === true);
 
@@ -3721,13 +3721,20 @@ async function handleAuthSignupSubmit(e) {
       })
     });
     const data = await res.json();
-    if (res.ok && data.status === 'success') {
+    if (res.ok && (data.status === 'success' || data.success === true)) {
       currentUser = data.user;
       // Post-registration: Show Profile Setup wizard
       showAuthView('profile_setup');
     } else {
       if (errBox) {
-        errBox.textContent = data.message || 'Unable to create account. Please try a different email.';
+        let msg = data.message || 'Unable to create account. Please try a different email.';
+        if (res.status === 409) {
+          msg = (data.message || 'An account with this email already exists. Please sign in.') +
+                ' <a href="#" onclick="showAuthView(\'login\'); return false;" style="text-decoration: underline; font-weight: bold; margin-left: 6px;">Sign In Here &rarr;</a>';
+          errBox.innerHTML = msg;
+        } else {
+          errBox.textContent = msg;
+        }
         errBox.classList.remove('hidden');
       }
     }

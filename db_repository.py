@@ -85,7 +85,7 @@ class UserRepository:
     def get_by_email(email: str) -> Optional[Dict[str, Any]]:
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE email = ? COLLATE NOCASE", (email.strip().lower(),))
+        cursor.execute("SELECT * FROM users WHERE LOWER(email) = LOWER(?)", (email.strip().lower(),))
         row = cursor.fetchone()
         conn.close()
         return dict(row) if row else None

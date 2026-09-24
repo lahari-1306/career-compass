@@ -124,6 +124,7 @@ def set_session_cookie(response, token: str) -> None:
 # ====================================================
 
 @auth_bp.route("/signup", methods=["POST"])
+@auth_bp.route("/register", methods=["POST"])
 def signup():
     data = request.get_json() or {}
     email = (data.get("email") or "").strip().lower()
@@ -131,21 +132,41 @@ def signup():
     name = (data.get("full_name") or data.get("name") or "").strip()
 
     if not email or "@" not in email or "." not in email:
-        return jsonify({"status": "error", "message": "A valid email address is required."}), 400
+        return jsonify({
+            "success": False,
+            "status": "error",
+            "message": "A valid email address is required."
+        }), 400
 
     if len(password) < 8:
-        return jsonify({"status": "error", "message": "Password must be at least 8 characters long."}), 400
+        return jsonify({
+            "success": False,
+            "status": "error",
+            "message": "Password must be at least 8 characters long."
+        }), 400
 
     if not name:
-        return jsonify({"status": "error", "message": "Full name is required."}), 400
+        return jsonify({
+            "success": False,
+            "status": "error",
+            "message": "Full name is required."
+        }), 400
 
     existing = UserRepository.get_by_email(email)
     if existing:
-        return jsonify({"status": "error", "message": "An account with this email address already exists. Please sign in."}), 409
+        return jsonify({
+            "success": False,
+            "status": "error",
+            "message": "An account with this email already exists. Please sign in."
+        }), 409
 
     user = UserRepository.create_user(email, password, name)
     if not user:
-        return jsonify({"status": "error", "message": "Could not create account. Please try again."}), 500
+        return jsonify({
+            "success": False,
+            "status": "error",
+            "message": "Could not create account. Please try again."
+        }), 500
 
     # Create session
     ip = request.remote_addr or ""
@@ -161,10 +182,22 @@ def signup():
     profile = ProfileRepository.get_profile(user["id"])
     settings = SettingsRepository.get_settings(user["id"])
 
+    user_info = {
+        "id": user["id"],
+        "email": user["email"],
+        "name": user["name"],
+        "role": user["role"],
+        "is_verified": user["is_verified"],
+        "created_at": user.get("created_at"),
+        "last_login_at": user.get("last_login_at"),
+        "unread_notifications": 0
+    }
+
     resp = make_response(jsonify({
+        "success": True,
         "status": "success",
         "message": "Account created successfully.",
-        "user": user,
+        "user": user_info,
         "profile": profile,
         "settings": settings
     }), 201)
@@ -179,11 +212,16 @@ def login():
     password = data.get("password") or ""
 
     if not email or not password:
-        return jsonify({"status": "error", "message": "Email and password are required."}), 400
+        return jsonify({
+            "success": False,
+            "status": "error",
+            "message": "Email and password are required."
+        }), 400
 
     rate_key = f"{request.remote_addr}_{email}"
     if is_rate_limited(rate_key):
         return jsonify({
+            "success": False,
             "status": "error",
             "code": "RATE_LIMITED",
             "message": "Too many failed login attempts. For your security, this account is temporarily locked for 15 minutes."
@@ -192,7 +230,11 @@ def login():
     user = UserRepository.get_by_email(email)
     if not user or not UserRepository.verify_password(user["password_hash"], password):
         record_failed_attempt(rate_key)
-        return jsonify({"status": "error", "message": "Invalid email or password."}), 401
+        return jsonify({
+            "success": False,
+            "status": "error",
+            "message": "Invalid email or password."
+        }), 401
 
     clear_failed_attempts(rate_key)
     UserRepository.update_last_login(user["id"])
@@ -215,12 +257,13 @@ def login():
     }
 
     resp = make_response(jsonify({
+        "success": True,
         "status": "success",
         "message": "Login successful.",
         "user": user_info,
         "profile": profile,
         "settings": settings
-    }))
+    }), 200)
     set_session_cookie(resp, session_token)
     return resp
 
@@ -228,9 +271,17 @@ def login():
 @auth_bp.route("/logout", methods=["POST"])
 def logout():
     token = request.cookies.get("session_token")
+    if not token:
+        auth_header = request.headers.get("Authorization", "")
+        if auth_header.startswith("Bearer "):
+            token = auth_header[7:].strip()
     if token:
         SessionRepository.invalidate_session(token)
-    resp = make_response(jsonify({"status": "success", "message": "Logged out successfully."}))
+    resp = make_response(jsonify({
+        "success": True,
+        "status": "success",
+        "message": "Logged out successfully."
+    }), 200)
     resp.set_cookie("session_token", "", max_age=0, path="/")
     return resp
 
@@ -239,13 +290,19 @@ def logout():
 def get_me():
     user = get_current_user()
     if not user:
-        return jsonify({"status": "guest", "authenticated": False, "user": None})
+        return jsonify({
+            "success": False,
+            "status": "guest",
+            "authenticated": False,
+            "user": None
+        }), 200
 
     profile = ProfileRepository.get_profile(user["id"])
     settings = SettingsRepository.get_settings(user["id"])
     unread = NotificationRepository.get_unread_count(user["id"])
 
     return jsonify({
+        "success": True,
         "status": "success",
         "authenticated": True,
         "user": {
@@ -258,7 +315,7 @@ def get_me():
         },
         "profile": profile,
         "settings": settings
-    })
+    }), 200
 
 
 @auth_bp.route("/forgot-password", methods=["POST"])
