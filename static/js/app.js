@@ -399,6 +399,11 @@ document.addEventListener('DOMContentLoaded', () => {
   try {
     document.addEventListener('click', (e) => {
       try {
+        const authLangBtn = document.getElementById('auth-lang-btn');
+        const authLangMenu = document.getElementById('auth-lang-menu');
+        if (authLangMenu && !authLangMenu.contains(e.target) && !authLangBtn?.contains(e.target)) {
+          authLangMenu.classList.add('hidden');
+        }
         const langBtn = document.getElementById('lang-btn');
         const langMenu = document.getElementById('lang-menu');
         if (langMenu && !langMenu.contains(e.target) && !langBtn?.contains(e.target)) {
@@ -430,16 +435,22 @@ function refreshIcons() {
 }
 
 // Theme Handling
+function toggleTheme() {
+  AppState.theme = AppState.theme === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', AppState.theme);
+  localStorage.setItem('cc_theme', AppState.theme);
+  refreshIcons();
+}
+
 function initTheme() {
   document.documentElement.setAttribute('data-theme', AppState.theme);
   const toggleBtn = document.getElementById('theme-toggle-btn');
   if (toggleBtn) {
-    toggleBtn.addEventListener('click', () => {
-      AppState.theme = AppState.theme === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', AppState.theme);
-      localStorage.setItem('cc_theme', AppState.theme);
-      refreshIcons();
-    });
+    toggleBtn.addEventListener('click', toggleTheme);
+  }
+  const authToggleBtn = document.getElementById('auth-theme-toggle-btn');
+  if (authToggleBtn) {
+    authToggleBtn.addEventListener('click', toggleTheme);
   }
 }
 
@@ -461,6 +472,8 @@ function changeLanguage(langCode) {
   localStorage.setItem('cc_lang', langCode);
   const langMenu = document.getElementById('lang-menu');
   if (langMenu) langMenu.classList.add('hidden');
+  const authLangMenu = document.getElementById('auth-lang-menu');
+  if (authLangMenu) authLangMenu.classList.add('hidden');
   applyLanguage(langCode);
 }
 
@@ -468,9 +481,11 @@ function applyLanguage(langCode) {
   document.documentElement.setAttribute('lang', langCode);
   const langLabel = document.getElementById('current-lang-label');
   if (langLabel) langLabel.innerText = langCode.toUpperCase();
+  const authLangLabel = document.getElementById('auth-current-lang-label');
+  if (authLangLabel) authLangLabel.innerText = langCode.toUpperCase();
 
-  // Update active dropdown item
-  document.querySelectorAll('#lang-menu .dropdown-item').forEach(item => {
+  // Update active dropdown items in both menus
+  document.querySelectorAll('#lang-menu .dropdown-item, #auth-lang-menu .dropdown-item').forEach(item => {
     const onclickStr = item.getAttribute('onclick') || '';
     item.classList.toggle('active', onclickStr.includes(`'${langCode}'`));
   });
@@ -1856,10 +1871,12 @@ const DEFAULT_RADAR_PROFILE = {
 };
 
 function getStoredRadarProfile() {
+  if (AppState.radarProfile) return AppState.radarProfile;
   const stored = localStorage.getItem('cc_radar_profile');
   if (stored) {
     try {
-      return JSON.parse(stored);
+      AppState.radarProfile = JSON.parse(stored);
+      return AppState.radarProfile;
     } catch (e) {
       return DEFAULT_RADAR_PROFILE;
     }
@@ -1868,7 +1885,10 @@ function getStoredRadarProfile() {
 }
 
 function setStoredRadarProfile(profile) {
-  localStorage.setItem('cc_radar_profile', JSON.stringify(profile));
+  AppState.radarProfile = profile;
+  try {
+    localStorage.setItem('cc_radar_profile', JSON.stringify(profile));
+  } catch (e) {}
 }
 
 function initCareerRadar() {
@@ -1880,9 +1900,11 @@ function initCareerRadar() {
 
 function updateRadarProfileChip(profile) {
   const chip = document.getElementById('radar-profile-chip');
-  if (chip) {
-    const statusPart = profile.completion_status ? ` • ${profile.completion_status}` : '';
-    chip.textContent = `${profile.qualification} (${profile.stream_or_branch || 'General'}${statusPart}) • ${profile.state || 'All India / National'}`;
+  if (chip && profile) {
+    const branchPart = profile.stream || profile.branch || profile.stream_or_branch || 'General';
+    const statusPart = profile.current_status || profile.completion_status ? ` • ${profile.current_status || profile.completion_status}` : '';
+    const statePart = profile.home_state || profile.state || 'All India / National';
+    chip.textContent = `${profile.qualification} (${branchPart}${statusPart}) • ${statePart}`;
   }
 }
 
@@ -3371,52 +3393,443 @@ async function loadAndRenderComparison(scenarioId) {
 // ==========================================
 let currentUser = null;
 
+function toggleAuthLangMenu(event) {
+  if (event) event.stopPropagation();
+  const menu = document.getElementById('auth-lang-menu');
+  if (menu) menu.classList.toggle('hidden');
+}
+
+function showAuthView(viewName) {
+  const views = {
+    'login': document.getElementById('auth-view-login'),
+    'signup': document.getElementById('auth-view-signup'),
+    'forgot': document.getElementById('auth-view-forgot'),
+    'profile_setup': document.getElementById('auth-view-profile-setup')
+  };
+
+  Object.values(views).forEach(v => {
+    if (v) v.classList.add('hidden');
+  });
+
+  const alerts = [
+    document.getElementById('auth-login-error'),
+    document.getElementById('auth-signup-error'),
+    document.getElementById('auth-forgot-status'),
+    document.getElementById('setup-error-msg')
+  ];
+  alerts.forEach(a => {
+    if (a) {
+      a.classList.add('hidden');
+      a.textContent = '';
+    }
+  });
+
+  const targetView = views[viewName] || views['login'];
+  if (targetView) {
+    targetView.classList.remove('hidden');
+  }
+
+  if (viewName === 'profile_setup') {
+    handleSetupStageChange();
+  }
+
+  refreshIcons();
+}
+
+function togglePasswordVisibility(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  const isPass = input.type === 'password';
+  input.type = isPass ? 'text' : 'password';
+  const icon = btn.querySelector('i');
+  if (icon) {
+    icon.setAttribute('data-lucide', isPass ? 'eye-off' : 'eye');
+  }
+  refreshIcons();
+}
+
 async function checkAuthStatus() {
+  const authScreen = document.getElementById('auth-screen');
+  const appShell = document.getElementById('app-shell');
+
   try {
     const res = await fetch('/api/auth/me');
     const data = await res.json();
     if (data.authenticated && data.user) {
       currentUser = data.user;
-      renderUserAuthUI(data.user);
-      if (data.profile) {
+      
+      const isProfileComplete = data.profile && (data.profile.is_onboarded === 1 || data.profile.is_onboarded === '1' || data.profile.is_onboarded === true);
+
+      if (isProfileComplete) {
+        // Authenticated and profile is completed: show personalized dashboard directly
+        if (authScreen) authScreen.classList.add('hidden');
+        if (appShell) appShell.classList.remove('hidden');
+        renderUserAuthUI(data.user);
         setStoredRadarProfile(data.profile);
         updateRadarProfileChip(data.profile);
+        loadRadarAlerts();
+      } else {
+        // Authenticated but profile setup is pending: show Profile Setup screen
+        if (appShell) appShell.classList.add('hidden');
+        if (authScreen) authScreen.classList.remove('hidden');
+        showAuthView('profile_setup');
       }
-      if (typeof data.unread_notifications === 'number') {
+
+      if (typeof data.user?.unread_notifications === 'number') {
         const badge = document.getElementById('radar-unread-badge');
         const drawerCount = document.getElementById('drawer-unread-count');
         if (badge) {
-          if (data.unread_notifications > 0) {
-            badge.textContent = data.unread_notifications > 9 ? '9+' : data.unread_notifications;
+          if (data.user.unread_notifications > 0) {
+            badge.textContent = data.user.unread_notifications > 9 ? '9+' : data.user.unread_notifications;
             badge.classList.remove('hidden');
           } else {
             badge.classList.add('hidden');
           }
         }
         if (drawerCount) {
-          drawerCount.textContent = `${data.unread_notifications} New`;
+          drawerCount.textContent = `${data.user.unread_notifications} New`;
         }
       }
     } else {
+      // Unauthenticated: Show Sign-In screen first, keep dashboard hidden
       currentUser = null;
+      if (appShell) appShell.classList.add('hidden');
+      if (authScreen) authScreen.classList.remove('hidden');
+      showAuthView('login');
       renderGuestAuthUI();
     }
   } catch (err) {
     console.warn('Auth check fallback to guest:', err);
     currentUser = null;
+    if (appShell) appShell.classList.add('hidden');
+    if (authScreen) authScreen.classList.remove('hidden');
+    showAuthView('login');
     renderGuestAuthUI();
   }
 }
 
+function handleSetupStageChange() {
+  const stage = document.getElementById('setup-stage')?.value || 'B.Tech';
+  const branchSelect = document.getElementById('setup-branch');
+  const branchLabel = document.getElementById('setup-branch-label');
+  const notice10th = document.getElementById('setup-10th-notice');
+  const optData = window.APP_OPTIONS || APP_OPTIONS;
+
+  if (stage === '10th') {
+    // 10th Standard: DO NOT SHOW ANY ENGINEERING BRANCHES!
+    if (branchSelect) {
+      branchSelect.innerHTML = '<option value="General" selected>General / All Subjects (Secondary School Foundation)</option>';
+      branchSelect.classList.add('hidden');
+    }
+    if (branchLabel) branchLabel.classList.add('hidden');
+    if (notice10th) notice10th.classList.remove('hidden');
+  } else {
+    if (notice10th) notice10th.classList.add('hidden');
+    if (branchLabel) branchLabel.classList.remove('hidden');
+    if (branchSelect) {
+      branchSelect.classList.remove('hidden');
+      const branches = (optData.branches_by_qual && optData.branches_by_qual[stage]) ||
+                       (optData.streams_by_qual && optData.streams_by_qual[stage]) ||
+                       optData.btech_branches || ['CSE'];
+      branchSelect.innerHTML = branches.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
+    }
+  }
+  refreshIcons();
+}
+
+async function handleAuthLoginSubmit(e) {
+  e.preventDefault();
+  const emailInput = document.getElementById('auth-login-email');
+  const passwordInput = document.getElementById('auth-login-password');
+  const errBox = document.getElementById('auth-login-error');
+  const submitBtn = document.getElementById('auth-login-btn-submit');
+  const btnText = submitBtn?.querySelector('.btn-text');
+  const btnSpinner = submitBtn?.querySelector('.btn-spinner');
+
+  const email = emailInput?.value?.trim() || '';
+  const password = passwordInput?.value || '';
+
+  if (errBox) errBox.classList.add('hidden');
+
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    if (errBox) {
+      errBox.textContent = t('auth.validation_email', 'Please enter a valid email address.');
+      errBox.classList.remove('hidden');
+    }
+    emailInput?.focus();
+    return;
+  }
+
+  if (!password) {
+    if (errBox) {
+      errBox.textContent = t('auth.validation_password', 'Please enter your password.');
+      errBox.classList.remove('hidden');
+    }
+    passwordInput?.focus();
+    return;
+  }
+
+  if (submitBtn) submitBtn.disabled = true;
+  if (btnText) btnText.textContent = t('auth.signing_in', 'Signing in...');
+  if (btnSpinner) btnSpinner.classList.remove('hidden');
+
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'success') {
+      currentUser = data.user;
+      const isProfileComplete = data.profile && (data.profile.is_onboarded === 1 || data.profile.is_onboarded === '1' || data.profile.is_onboarded === true);
+
+      if (isProfileComplete) {
+        document.getElementById('auth-screen')?.classList.add('hidden');
+        document.getElementById('app-shell')?.classList.remove('hidden');
+        renderUserAuthUI(data.user);
+        setStoredRadarProfile(data.profile);
+        updateRadarProfileChip(data.profile);
+        loadRadarAlerts();
+        navigateToSection('home');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showAuthView('profile_setup');
+      }
+    } else {
+      if (errBox) {
+        errBox.textContent = data.message || t('auth.invalid_credentials', 'Invalid email or password. Please try again.');
+        errBox.classList.remove('hidden');
+      }
+    }
+  } catch (err) {
+    if (errBox) {
+      errBox.textContent = t('auth.server_error', 'Unable to sign in right now. Please try again.');
+      errBox.classList.remove('hidden');
+    }
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+    if (btnText) btnText.textContent = t('auth.sign_in_btn', 'SIGN IN');
+    if (btnSpinner) btnSpinner.classList.add('hidden');
+  }
+}
+
+async function handleAuthSignupSubmit(e) {
+  e.preventDefault();
+  const nameInput = document.getElementById('auth-signup-name');
+  const emailInput = document.getElementById('auth-signup-email');
+  const passwordInput = document.getElementById('auth-signup-password');
+  const confirmInput = document.getElementById('auth-signup-confirm');
+  const errBox = document.getElementById('auth-signup-error');
+  const submitBtn = document.getElementById('auth-signup-btn-submit');
+  const btnText = submitBtn?.querySelector('.btn-text');
+  const btnSpinner = submitBtn?.querySelector('.btn-spinner');
+
+  const fullName = nameInput?.value?.trim() || '';
+  const email = emailInput?.value?.trim() || '';
+  const password = passwordInput?.value || '';
+  const confirmPassword = confirmInput?.value || '';
+
+  if (errBox) errBox.classList.add('hidden');
+
+  if (!fullName) {
+    if (errBox) {
+      errBox.textContent = t('auth.validation_name', 'Please enter your full name.');
+      errBox.classList.remove('hidden');
+    }
+    nameInput?.focus();
+    return;
+  }
+
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    if (errBox) {
+      errBox.textContent = t('auth.validation_email', 'Please enter a valid email address.');
+      errBox.classList.remove('hidden');
+    }
+    emailInput?.focus();
+    return;
+  }
+
+  if (password.length < 8) {
+    if (errBox) {
+      errBox.textContent = t('auth.validation_password_length', 'Password must be at least 8 characters long.');
+      errBox.classList.remove('hidden');
+    }
+    passwordInput?.focus();
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    if (errBox) {
+      errBox.textContent = t('auth.validation_password_match', 'Passwords do not match.');
+      errBox.classList.remove('hidden');
+    }
+    confirmInput?.focus();
+    return;
+  }
+
+  if (submitBtn) submitBtn.disabled = true;
+  if (btnText) btnText.textContent = t('auth.creating_account', 'Creating Account...');
+  if (btnSpinner) btnSpinner.classList.remove('hidden');
+
+  try {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        full_name: fullName,
+        email: email,
+        password: password
+      })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'success') {
+      currentUser = data.user;
+      // Post-registration: Show Profile Setup wizard
+      showAuthView('profile_setup');
+    } else {
+      if (errBox) {
+        errBox.textContent = data.message || 'Unable to create account. Please try a different email.';
+        errBox.classList.remove('hidden');
+      }
+    }
+  } catch (err) {
+    if (errBox) {
+      errBox.textContent = t('auth.server_error', 'Connection failed. Please try again.');
+      errBox.classList.remove('hidden');
+    }
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+    if (btnText) btnText.textContent = t('auth.create_account_btn', 'CREATE ACCOUNT');
+    if (btnSpinner) btnSpinner.classList.add('hidden');
+  }
+}
+
+async function handleAuthForgotSubmit(e) {
+  e.preventDefault();
+  const emailInput = document.getElementById('auth-forgot-email');
+  const statusBox = document.getElementById('auth-forgot-status');
+  const submitBtn = document.getElementById('auth-forgot-btn-submit');
+  const btnText = submitBtn?.querySelector('.btn-text');
+  const btnSpinner = submitBtn?.querySelector('.btn-spinner');
+
+  const email = emailInput?.value?.trim() || '';
+
+  if (statusBox) statusBox.classList.add('hidden');
+
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    if (statusBox) {
+      statusBox.textContent = t('auth.validation_email', 'Please enter a valid email address.');
+      statusBox.className = 'auth-alert-box alert-danger';
+      statusBox.classList.remove('hidden');
+    }
+    emailInput?.focus();
+    return;
+  }
+
+  if (submitBtn) submitBtn.disabled = true;
+  if (btnText) btnText.textContent = t('auth.sending_reset', 'Sending reset link...');
+  if (btnSpinner) btnSpinner.classList.remove('hidden');
+
+  try {
+    const res = await fetch('/api/auth/forgot-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (statusBox) {
+      statusBox.textContent = data.message || 'If an account exists with this email address, a password reset link has been dispatched.';
+      statusBox.className = 'auth-alert-box alert-success';
+      statusBox.classList.remove('hidden');
+    }
+  } catch (err) {
+    if (statusBox) {
+      statusBox.textContent = 'Unable to send reset request right now. Please try again later.';
+      statusBox.className = 'auth-alert-box alert-danger';
+      statusBox.classList.remove('hidden');
+    }
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+    if (btnText) btnText.textContent = t('auth.send_reset_link', 'SEND RESET LINK');
+    if (btnSpinner) btnSpinner.classList.add('hidden');
+  }
+}
+
+async function handleProfileSetupSubmit(e) {
+  e.preventDefault();
+  const stage = document.getElementById('setup-stage')?.value || 'B.Tech';
+  const branchSelect = document.getElementById('setup-branch');
+  const branch = (stage === '10th') ? 'General' : (branchSelect?.value || 'CSE');
+  const status = document.getElementById('setup-status')?.value || 'Final Year';
+  const state = document.getElementById('setup-state')?.value || 'All India / National';
+  const dreamGoal = document.getElementById('setup-dream-goal')?.value?.trim() || '';
+  const errBox = document.getElementById('setup-error-msg');
+  const submitBtn = document.getElementById('setup-submit-btn');
+  const btnText = submitBtn?.querySelector('.btn-text');
+  const btnSpinner = submitBtn?.querySelector('.btn-spinner');
+
+  if (errBox) errBox.classList.add('hidden');
+  if (submitBtn) submitBtn.disabled = true;
+  if (btnText) btnText.textContent = t('auth.saving_profile', 'Setting up your compass...');
+  if (btnSpinner) btnSpinner.classList.remove('hidden');
+
+  try {
+    const payload = {
+      qualification: stage,
+      stream: stage === 'Intermediate' ? branch : '',
+      branch: branch,
+      current_status: status,
+      home_state: state,
+      dream_goal: dreamGoal,
+      is_onboarded: 1
+    };
+
+    const res = await fetch('/api/radar/profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'success') {
+      if (data.profile) {
+        setStoredRadarProfile(data.profile);
+        updateRadarProfileChip(data.profile);
+      }
+      if (currentUser) {
+        renderUserAuthUI(currentUser);
+      }
+      // Successfully onboarded: transition into personalized dashboard!
+      document.getElementById('auth-screen')?.classList.add('hidden');
+      document.getElementById('app-shell')?.classList.remove('hidden');
+      loadRadarAlerts();
+      navigateToSection('home');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      if (errBox) {
+        errBox.textContent = data.message || 'Error saving profile setup. Please try again.';
+        errBox.classList.remove('hidden');
+      }
+    }
+  } catch (err) {
+    if (errBox) {
+      errBox.textContent = 'Server communication error. Please try again.';
+      errBox.classList.remove('hidden');
+    }
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+    if (btnText) btnText.textContent = t('auth.continue_to_cc', 'CONTINUE TO CAREER COMPASS');
+    if (btnSpinner) btnSpinner.classList.add('hidden');
+  }
+}
+
 function renderUserAuthUI(user) {
-  const loginBtn = document.getElementById('auth-login-btn');
   const userMenu = document.getElementById('user-profile-menu');
   const avatarInitials = document.getElementById('user-avatar-initials');
   const displayName = document.getElementById('user-display-name');
   const dropdownName = document.getElementById('dropdown-user-name');
   const dropdownEmail = document.getElementById('dropdown-user-email');
 
-  if (loginBtn) loginBtn.classList.add('hidden');
   if (userMenu) userMenu.classList.remove('hidden');
 
   const rawName = user.full_name || user.name || 'Student';
@@ -3430,9 +3843,7 @@ function renderUserAuthUI(user) {
 }
 
 function renderGuestAuthUI() {
-  const loginBtn = document.getElementById('auth-login-btn');
   const userMenu = document.getElementById('user-profile-menu');
-  if (loginBtn) loginBtn.classList.remove('hidden');
   if (userMenu) userMenu.classList.add('hidden');
 }
 
@@ -3441,201 +3852,43 @@ function toggleUserDropdown() {
   if (panel) panel.classList.toggle('hidden');
 }
 
-function openAuthModal(initialTab = 'login') {
-  switchAuthTab(initialTab);
-  const modal = document.getElementById('auth-modal');
-  if (modal) modal.classList.remove('hidden');
-  refreshIcons();
-}
-
-function closeAuthModal(e) {
-  if (e && e.target !== e.currentTarget && !e.target.classList.contains('close-btn')) return;
-  const modal = document.getElementById('auth-modal');
-  if (modal) modal.classList.add('hidden');
-}
-
-function switchAuthTab(tab) {
-  const loginForm = document.getElementById('form-auth-login');
-  const signupForm = document.getElementById('form-auth-signup');
-  const forgotForm = document.getElementById('form-auth-forgot');
-  const loginTab = document.getElementById('auth-tab-login');
-  const signupTab = document.getElementById('auth-tab-signup');
-  const forgotTab = document.getElementById('auth-tab-forgot');
-
-  [loginForm, signupForm, forgotForm].forEach(f => f && f.classList.add('hidden'));
-  [loginTab, signupTab, forgotTab].forEach(t => t && t.classList.remove('active'));
-
-  if (tab === 'signup') {
-    if (signupForm) signupForm.classList.remove('hidden');
-    if (signupTab) signupTab.classList.add('active');
-  } else if (tab === 'forgot') {
-    if (forgotForm) forgotForm.classList.remove('hidden');
-    if (forgotTab) {
-      forgotTab.classList.remove('hidden');
-      forgotTab.classList.add('active');
-    }
-  } else {
-    if (loginForm) loginForm.classList.remove('hidden');
-    if (loginTab) loginTab.classList.add('active');
-  }
-}
-
-function handleSignupQualChange() {
-  const qual = document.getElementById('signup-qual')?.value || 'B.Tech';
-  const branchSelect = document.getElementById('signup-branch');
-  if (!branchSelect) return;
-  const optData = window.APP_OPTIONS || APP_OPTIONS;
-  const branches = (optData.branches_by_qual && optData.branches_by_qual[qual]) || optData.btech_branches || ['CSE'];
-  branchSelect.innerHTML = branches.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
-}
-
-async function handleAuthLogin(e) {
-  e.preventDefault();
-  const email = document.getElementById('login-email')?.value?.trim();
-  const password = document.getElementById('login-password')?.value;
-  const errBox = document.getElementById('login-error-msg');
-  const submitBtn = document.getElementById('btn-login-submit');
-
-  if (errBox) errBox.classList.add('hidden');
-  if (submitBtn) submitBtn.disabled = true;
-
-  try {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
-    const data = await res.json();
-    if (res.ok && data.status === 'success') {
-      currentUser = data.user;
-      renderUserAuthUI(data.user);
-      closeAuthModal();
-      await checkAuthStatus();
-      loadRadarAlerts();
-    } else {
-      if (errBox) {
-        errBox.textContent = data.message || 'Invalid email or password.';
-        errBox.classList.remove('hidden');
-      }
-    }
-  } catch (err) {
-    if (errBox) {
-      errBox.textContent = 'Server communication error. Please try again.';
-      errBox.classList.remove('hidden');
-    }
-  } finally {
-    if (submitBtn) submitBtn.disabled = false;
-  }
-}
-
-async function handleAuthSignup(e) {
-  e.preventDefault();
-  const fullName = document.getElementById('signup-name')?.value?.trim();
-  const email = document.getElementById('signup-email')?.value?.trim();
-  const qual = document.getElementById('signup-qual')?.value;
-  const branch = document.getElementById('signup-branch')?.value;
-  const password = document.getElementById('signup-password')?.value;
-  const confirmPassword = document.getElementById('signup-password-confirm')?.value;
-  const errBox = document.getElementById('signup-error-msg');
-  const submitBtn = document.getElementById('btn-signup-submit');
-
-  if (password !== confirmPassword) {
-    if (errBox) {
-      errBox.textContent = 'Passwords do not match.';
-      errBox.classList.remove('hidden');
-    }
-    return;
-  }
-
-  if (password.length < 8) {
-    if (errBox) {
-      errBox.textContent = 'Password must be at least 8 characters long.';
-      errBox.classList.remove('hidden');
-    }
-    return;
-  }
-
-  if (errBox) errBox.classList.add('hidden');
-  if (submitBtn) submitBtn.disabled = true;
-
-  try {
-    const res = await fetch('/api/auth/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        full_name: fullName,
-        email: email,
-        password: password,
-        qualification: qual,
-        stream_or_branch: branch
-      })
-    });
-    const data = await res.json();
-    if (res.ok && data.status === 'success') {
-      currentUser = data.user;
-      renderUserAuthUI(data.user);
-      closeAuthModal();
-      await checkAuthStatus();
-      loadRadarAlerts();
-    } else {
-      if (errBox) {
-        errBox.textContent = data.message || 'Signup failed. Please try a different email.';
-        errBox.classList.remove('hidden');
-      }
-    }
-  } catch (err) {
-    if (errBox) {
-      errBox.textContent = 'Network or server connection failed.';
-      errBox.classList.remove('hidden');
-    }
-  } finally {
-    if (submitBtn) submitBtn.disabled = false;
-  }
-}
-
-async function handleAuthForgot(e) {
-  e.preventDefault();
-  const email = document.getElementById('forgot-email')?.value?.trim();
-  const statusBox = document.getElementById('forgot-status-msg');
-  const submitBtn = document.getElementById('btn-forgot-submit');
-
-  if (submitBtn) submitBtn.disabled = true;
-
-  try {
-    const res = await fetch('/api/auth/forgot-password', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    });
-    const data = await res.json();
-    if (statusBox) {
-      statusBox.textContent = data.message || 'If an account exists, reset instructions have been generated.';
-      statusBox.style.background = '#ecfdf5';
-      statusBox.style.color = '#065f46';
-      statusBox.style.border = '1px solid #a7f3d0';
-      statusBox.classList.remove('hidden');
-    }
-  } catch (err) {
-    if (statusBox) {
-      statusBox.textContent = 'Unable to send reset request.';
-      statusBox.style.background = '#fef2f2';
-      statusBox.style.color = '#b91c1c';
-      statusBox.classList.remove('hidden');
-    }
-  } finally {
-    if (submitBtn) submitBtn.disabled = false;
-  }
-}
-
 async function logoutUser() {
   try {
     await fetch('/api/auth/logout', { method: 'POST' });
   } catch (e) {}
   currentUser = null;
+  AppState.radarProfile = null;
+  try {
+    localStorage.removeItem('cc_radar_profile');
+  } catch (e) {}
+  const userDropdown = document.getElementById('user-dropdown-panel');
+  if (userDropdown) userDropdown.classList.add('hidden');
   renderGuestAuthUI();
-  const dropdown = document.getElementById('user-dropdown-panel');
-  if (dropdown) dropdown.classList.add('hidden');
-  loadRadarAlerts();
+  // Transition back to first screen: Sign-In
+  const appShell = document.getElementById('app-shell');
+  const authScreen = document.getElementById('auth-screen');
+  if (appShell) appShell.classList.add('hidden');
+  if (authScreen) authScreen.classList.remove('hidden');
+  showAuthView('login');
+}
+
+// Backward-compatible modal helpers (if referenced anywhere)
+function openAuthModal(initialTab = 'login') {
+  showAuthView(initialTab === 'signup' ? 'signup' : 'login');
+  document.getElementById('app-shell')?.classList.add('hidden');
+  document.getElementById('auth-screen')?.classList.remove('hidden');
+}
+
+function closeAuthModal() {
+  // no-op for full-screen auth
+}
+
+function switchAuthTab(tab) {
+  showAuthView(tab);
+}
+
+function handleSignupQualChange() {
+  handleSetupStageChange();
 }
 
 // ==========================================

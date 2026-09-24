@@ -13,6 +13,309 @@
 </head>
 <body>
 
+  <!-- ==================================================== -->
+  <!-- 0. ENTRY / AUTHENTICATION SCREEN (FIRST SCREEN)       -->
+  <!-- ==================================================== -->
+  <div id="auth-screen" class="auth-viewport">
+    <!-- Top Utility Bar: Logo, Language Selector & Theme Toggle -->
+    <header class="auth-header-bar">
+      <div class="auth-header-brand">
+        <div class="logo-compass"><i data-lucide="compass" class="icon-logo"></i></div>
+        <div class="brand-text">
+          <span class="brand-name">CareerCompass</span>
+          <span class="brand-tagline" data-i18n="auth.brand_tagline">FIND YOUR TRUE NORTH</span>
+        </div>
+      </div>
+      <div class="auth-header-actions">
+        <!-- Language Selector -->
+        <div class="lang-dropdown-wrapper">
+          <button id="auth-lang-btn" class="action-btn lang-btn" onclick="toggleAuthLangMenu(event)" title="Select Language">
+            <i data-lucide="globe" class="icon-xs"></i>
+            <span id="auth-current-lang-label">EN</span>
+            <i data-lucide="chevron-down" class="icon-xs"></i>
+          </button>
+          <div id="auth-lang-menu" class="dropdown-panel lang-panel hidden">
+            <button class="dropdown-item" onclick="changeLanguage('en')">English (Default)</button>
+            <button class="dropdown-item" onclick="changeLanguage('te')">తెలుగు (Telugu)</button>
+            <button class="dropdown-item" onclick="changeLanguage('hi')">हिंदी (Hindi)</button>
+          </div>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button id="auth-theme-toggle-btn" class="action-btn theme-btn" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Toggle Light/Dark Theme">
+          <i data-lucide="moon" class="theme-icon-moon"></i>
+          <i data-lucide="sun" class="theme-icon-sun"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Center Stage: Split Card Layout -->
+    <div class="auth-container">
+      <div class="auth-split-card">
+        
+        <!-- Left Side Panel (Subtle minimal educational banner, desktop only) -->
+        <div class="auth-side-panel">
+          <div class="auth-side-inner">
+            <div class="auth-side-brand-icon">
+              <div class="auth-side-compass"><i data-lucide="compass" class="icon-xl text-primary"></i></div>
+            </div>
+            <h2 class="auth-side-title">Career Compass</h2>
+            <div class="auth-side-pill" data-i18n="auth.brand_tagline">FIND YOUR TRUE NORTH</div>
+            <p class="auth-side-quote" data-i18n="auth.hero_quote">
+              Your journey starts with the right direction. Discover education pathways, career opportunities, exams, preparation resources and personalized alerts.
+            </p>
+            <div class="auth-side-features">
+              <div class="auth-side-feature">
+                <span class="feat-icon">🎯</span>
+                <span data-i18n="auth.feature_btech">33+ B.Tech branches & multidisciplinary pathways</span>
+              </div>
+              <div class="auth-side-feature">
+                <span class="feat-icon">🏛️</span>
+                <span data-i18n="auth.feature_govt">Verified Govt exams, PSUs & national eligibility</span>
+              </div>
+              <div class="auth-side-feature">
+                <span class="feat-icon">🔔</span>
+                <span data-i18n="auth.feature_radar">Personalized Career Radar alerts & updates</span>
+              </div>
+              <div class="auth-side-feature">
+                <span class="feat-icon">📚</span>
+                <span data-i18n="auth.feature_prep">Real exam preparation blueprints & syllabus tracking</span>
+              </div>
+            </div>
+            <div class="auth-side-footer">
+              <span>© 2026 CareerCompass. Built for Indian students.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side Panel (Dynamic Interactive Auth Forms) -->
+        <div class="auth-card-body">
+          
+          <!-- VIEW 1: SIGN IN -->
+          <div id="auth-view-login" class="auth-form-view">
+            <div class="auth-form-header">
+              <h2 class="auth-view-title" data-i18n="auth.welcome_back">Welcome back 👋</h2>
+              <p class="auth-view-subtitle" data-i18n="auth.signin_subtitle">Sign in to continue your journey and access your personalized dashboard.</p>
+            </div>
+
+            <form id="auth-login-form" onsubmit="handleAuthLoginSubmit(event)" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="auth-login-email" data-i18n="auth.email_label">Email Address</label>
+                <div class="input-with-icon">
+                  <i data-lucide="mail" class="input-icon"></i>
+                  <input type="email" id="auth-login-email" class="form-control" data-i18n-placeholder="auth.email_placeholder" placeholder="student@example.com" required autocomplete="email">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="form-label-row">
+                  <label class="form-label" for="auth-login-password" data-i18n="auth.password_label">Password</label>
+                  <button type="button" class="auth-link-text" onclick="showAuthView('forgot')" data-i18n="auth.forgot_password">Forgot Password?</button>
+                </div>
+                <div class="input-with-icon password-input-wrap">
+                  <i data-lucide="lock" class="input-icon"></i>
+                  <input type="password" id="auth-login-password" class="form-control" data-i18n-placeholder="auth.password_placeholder" placeholder="Enter your password" required autocomplete="current-password">
+                  <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('auth-login-password', this)" title="Show/Hide Password" aria-label="Toggle password visibility">
+                    <i data-lucide="eye" class="icon-xs"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div id="auth-login-error" class="auth-alert-box alert-danger hidden"></div>
+
+              <button type="submit" id="auth-login-btn-submit" class="btn btn-primary btn-block auth-submit-btn">
+                <span class="btn-text" data-i18n="auth.sign_in_btn">SIGN IN</span>
+                <div class="btn-spinner hidden"><div class="spinner-sm"></div></div>
+              </button>
+
+              <div class="auth-switch-prompt">
+                <span data-i18n="auth.new_to_cc">New to Career Compass?</span>
+                <button type="button" class="auth-link-btn" onclick="showAuthView('signup')" data-i18n="auth.sign_up_free">Create an account</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- VIEW 2: CREATE ACCOUNT -->
+          <div id="auth-view-signup" class="auth-form-view hidden">
+            <div class="auth-form-header">
+              <h2 class="auth-view-title" data-i18n="auth.create_account_title">Create Account</h2>
+              <p class="auth-view-subtitle" data-i18n="auth.create_account_subtitle">Join Career Compass to discover personalized educational pathways and career alerts.</p>
+            </div>
+
+            <form id="auth-signup-form" onsubmit="handleAuthSignupSubmit(event)" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="auth-signup-name" data-i18n="auth.full_name_label">Full Name</label>
+                <div class="input-with-icon">
+                  <i data-lucide="user" class="input-icon"></i>
+                  <input type="text" id="auth-signup-name" class="form-control" data-i18n-placeholder="auth.full_name_placeholder" placeholder="e.g. Aditi Rao" required autocomplete="name">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="auth-signup-email" data-i18n="auth.email_label">Email Address</label>
+                <div class="input-with-icon">
+                  <i data-lucide="mail" class="input-icon"></i>
+                  <input type="email" id="auth-signup-email" class="form-control" data-i18n-placeholder="auth.email_placeholder" placeholder="student@example.com" required autocomplete="email">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="auth-signup-password" data-i18n="auth.password_label">Password (min 8 characters)</label>
+                <div class="input-with-icon password-input-wrap">
+                  <i data-lucide="lock" class="input-icon"></i>
+                  <input type="password" id="auth-signup-password" class="form-control" data-i18n-placeholder="auth.password_placeholder" placeholder="Enter your password" required autocomplete="new-password">
+                  <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('auth-signup-password', this)" title="Show/Hide Password" aria-label="Toggle password visibility">
+                    <i data-lucide="eye" class="icon-xs"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="auth-signup-confirm" data-i18n="auth.confirm_password_label">Confirm Password</label>
+                <div class="input-with-icon password-input-wrap">
+                  <i data-lucide="lock" class="input-icon"></i>
+                  <input type="password" id="auth-signup-confirm" class="form-control" data-i18n-placeholder="auth.confirm_password_placeholder" placeholder="Re-enter your password" required autocomplete="new-password">
+                  <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('auth-signup-confirm', this)" title="Show/Hide Password" aria-label="Toggle password visibility">
+                    <i data-lucide="eye" class="icon-xs"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div id="auth-signup-error" class="auth-alert-box alert-danger hidden"></div>
+
+              <button type="submit" id="auth-signup-btn-submit" class="btn btn-primary btn-block auth-submit-btn">
+                <span class="btn-text" data-i18n="auth.create_account_btn">CREATE ACCOUNT</span>
+                <div class="btn-spinner hidden"><div class="spinner-sm"></div></div>
+              </button>
+
+              <div class="auth-switch-prompt">
+                <span data-i18n="auth.already_have_account">Already have an account?</span>
+                <button type="button" class="auth-link-btn" onclick="showAuthView('login')" data-i18n="auth.sign_in_btn">Sign In</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- VIEW 3: FORGOT PASSWORD -->
+          <div id="auth-view-forgot" class="auth-form-view hidden">
+            <div class="auth-form-header">
+              <h2 class="auth-view-title" data-i18n="auth.reset_password_title">Reset Password</h2>
+              <p class="auth-view-subtitle" data-i18n="auth.reset_password_desc">Enter your registered email address. We'll send you secure instructions to reset your password.</p>
+            </div>
+
+            <form id="auth-forgot-form" onsubmit="handleAuthForgotSubmit(event)" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="auth-forgot-email" data-i18n="auth.email_label">Email Address</label>
+                <div class="input-with-icon">
+                  <i data-lucide="mail" class="input-icon"></i>
+                  <input type="email" id="auth-forgot-email" class="form-control" data-i18n-placeholder="auth.email_placeholder" placeholder="student@example.com" required autocomplete="email">
+                </div>
+              </div>
+
+              <div id="auth-forgot-status" class="auth-alert-box hidden"></div>
+
+              <button type="submit" id="auth-forgot-btn-submit" class="btn btn-primary btn-block auth-submit-btn">
+                <span class="btn-text" data-i18n="auth.send_reset_link">SEND RESET LINK</span>
+                <div class="btn-spinner hidden"><div class="spinner-sm"></div></div>
+              </button>
+
+              <div class="auth-switch-prompt">
+                <button type="button" class="auth-link-btn" onclick="showAuthView('login')" data-i18n="auth.back_to_signin">← Back to Sign In</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- VIEW 4: POST-REGISTRATION PROFILE SETUP ("Let's set up your Career Compass") -->
+          <div id="auth-view-profile-setup" class="auth-form-view hidden">
+            <div class="auth-form-header">
+              <div class="auth-setup-badge"><i data-lucide="compass" class="icon-xs"></i> WELCOME ABOARD</div>
+              <h2 class="auth-view-title" data-i18n="auth.setup_title">Let's set up your Career Compass</h2>
+              <p class="auth-view-subtitle" data-i18n="auth.setup_subtitle">Tell us your current educational stage so we can curate verified paths and alerts.</p>
+            </div>
+
+            <form id="auth-profile-setup-form" onsubmit="handleProfileSetupSubmit(event)">
+              <!-- 1. Educational Stage -->
+              <div class="form-group">
+                <label class="form-label" for="setup-stage" data-i18n="auth.stage_label">Current Educational Stage *</label>
+                <select id="setup-stage" class="form-control" onchange="handleSetupStageChange()">
+                  <option value="10th">10th Standard</option>
+                  <option value="Intermediate">Intermediate / 10+2</option>
+                  <option value="Diploma">Diploma (Polytechnic)</option>
+                  <option value="B.Tech" selected>B.Tech / B.E.</option>
+                  <option value="Degree">Degree (B.Sc, B.Com, BA, BCA, etc.)</option>
+                  <option value="Postgraduate">Postgraduate (M.Tech, MCA, MBA, M.Sc)</option>
+                </select>
+              </div>
+
+              <!-- 2. Stream / Branch (Tailored dynamically) -->
+              <div id="setup-stream-branch-group" class="form-group">
+                <label id="setup-branch-label" class="form-label" for="setup-branch" data-i18n="auth.stream_or_branch_label">Stream / Branch *</label>
+                <select id="setup-branch" class="form-control">
+                  <!-- Populated dynamically by JS -->
+                </select>
+                <!-- 10th Stage Notice (Displayed strictly when 10th is selected, engineering branches hidden) -->
+                <div id="setup-10th-notice" class="auth-setup-notice hidden">
+                  <i data-lucide="info" class="icon-xs text-primary"></i>
+                  <span data-i18n="auth.note_10th">10th Standard has a general curriculum. Engineering branches begin after Diploma or 10+2.</span>
+                </div>
+              </div>
+
+              <!-- 3. Current Status / Year -->
+              <div class="form-group">
+                <label class="form-label" for="setup-status" data-i18n="auth.status_label">Current Status / Year *</label>
+                <select id="setup-status" class="form-control">
+                  <option value="1st Year">1st Year</option>
+                  <option value="2nd Year">2nd Year</option>
+                  <option value="3rd Year">3rd Year</option>
+                  <option value="Final Year" selected>Final Year</option>
+                  <option value="Completed / Graduate">Completed / Graduate</option>
+                </select>
+              </div>
+
+              <!-- 4. Home State / Region -->
+              <div class="form-group">
+                <label class="form-label" for="setup-state" data-i18n="auth.state_label">Home State / Region *</label>
+                <select id="setup-state" class="form-control">
+                  <option value="All India / National" selected>All India / National</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="Delhi NCR">Delhi NCR</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="West Bengal">West Bengal</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Other">Other States</option>
+                </select>
+              </div>
+
+              <!-- 5. Dream Goal / Target Career (Optional) -->
+              <div class="form-group">
+                <label class="form-label" for="setup-dream-goal" data-i18n="auth.dream_goal_label">Dream Career / Target Goal (Optional)</label>
+                <input type="text" id="setup-dream-goal" class="form-control" data-i18n-placeholder="auth.dream_goal_placeholder" placeholder="e.g. ISRO Scientist, Software Engineer, PSU Executive, Civil Services">
+              </div>
+
+              <div id="setup-error-msg" class="auth-alert-box alert-danger hidden"></div>
+
+              <button type="submit" id="setup-submit-btn" class="btn btn-primary btn-block auth-submit-btn">
+                <span class="btn-text" data-i18n="auth.continue_to_cc">CONTINUE TO CAREER COMPASS</span>
+                <div class="btn-spinner hidden"><div class="spinner-sm"></div></div>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================== -->
+  <!-- 1. AUTHENTICATED APPLICATION SHELL                   -->
+  <!-- ==================================================== -->
+  <div id="app-shell" class="hidden">
+
   <!-- 1. LIVE NOTIFICATION TICKER -->
   <div id="ticker-bar" class="ticker-container" role="region" aria-label="Active verified notifications ticker">
     <div class="ticker-label">
@@ -52,13 +355,9 @@
       </nav>
 
       <div class="header-actions">
-        <!-- User Authentication & Account Menu -->
+        <!-- User Authentication & Account Menu (Inside Authenticated Shell) -->
         <div id="auth-actions" class="auth-actions-group">
-          <button id="auth-login-btn" class="btn btn-outline-primary btn-sm" onclick="openAuthModal('login')">
-            <i data-lucide="user" class="icon-xs"></i> <span data-i18n="auth.sign_in">Sign In</span>
-          </button>
-          
-          <div id="user-profile-menu" class="user-profile-dropdown hidden">
+          <div id="user-profile-menu" class="user-profile-dropdown">
             <button id="user-chip-btn" class="action-btn user-chip-btn" onclick="toggleUserDropdown()" title="Account & Profile Settings">
               <span id="user-avatar-initials" class="avatar-circle">U</span>
               <span id="user-display-name" class="user-name-label">User</span>
@@ -896,6 +1195,7 @@
       </div>
     </div>
   </footer>
+  </div> <!-- /#app-shell -->
 
   <!-- Notification Detail Modal -->
   <div id="notif-modal" class="modal-overlay hidden" onclick="closeNotifModal(event)">

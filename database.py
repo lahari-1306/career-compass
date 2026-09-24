@@ -90,11 +90,17 @@ def init_db() -> None:
         preferred_pathways TEXT DEFAULT '[]',
         preferred_language TEXT DEFAULT 'en',
         dream_goal TEXT,
+        is_onboarded INTEGER NOT NULL DEFAULT 0,
         created_at TEXT NOT NULL,
         updated_at TEXT NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
     """)
+    try:
+        cursor.execute("ALTER TABLE user_profiles ADD COLUMN is_onboarded INTEGER NOT NULL DEFAULT 0;")
+        conn.commit()
+    except sqlite3.OperationalError:
+        pass  # Column already exists
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_user_profiles_user_id ON user_profiles(user_id);")
 
     # 3. User Preferences

@@ -8,6 +8,7 @@ data/backups/*
 !data/backups/.gitkeep
 edge_profile/
 edge_profile_prod/
+edge_profile*/
 *.db
 data/*.db
 data/email_logs.json

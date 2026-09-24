@@ -45,10 +45,10 @@ class UserRepository:
             """, (email.strip().lower(), pwd_hash, name.strip(), role, now_str, now_str))
             user_id = cursor.lastrowid
 
-            # Initialize empty education-aware profile
+            # Initialize empty education-aware profile (default is_onboarded = 0)
             cursor.execute("""
-            INSERT INTO user_profiles (user_id, qualification, current_status, created_at, updated_at)
-            VALUES (?, 'B.Tech', 'Final Year', ?, ?)
+            INSERT INTO user_profiles (user_id, qualification, current_status, is_onboarded, created_at, updated_at)
+            VALUES (?, 'B.Tech', 'Final Year', 0, ?, ?)
             """, (user_id, now_str, now_str))
 
             # Initialize user preferences
@@ -250,12 +250,14 @@ class ProfileRepository:
         exams = json.dumps(data.get("selected_exams") or [])
         pathways = json.dumps(data.get("preferred_pathways") or [])
 
+        is_onboarded = 1 if data.get("is_onboarded", 1) in (1, "1", True) else 0
+
         cursor.execute("""
         INSERT INTO user_profiles (
             user_id, qualification, current_status, stream, branch, completion_year,
             home_state, scope, score, age, career_interests, selected_exams, preferred_pathways,
-            preferred_language, dream_goal, created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            preferred_language, dream_goal, is_onboarded, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(user_id) DO UPDATE SET
             qualification = excluded.qualification,
             current_status = excluded.current_status,
@@ -271,6 +273,7 @@ class ProfileRepository:
             preferred_pathways = excluded.preferred_pathways,
             preferred_language = excluded.preferred_language,
             dream_goal = excluded.dream_goal,
+            is_onboarded = excluded.is_onboarded,
             updated_at = excluded.updated_at
         """, (
             user_id,
@@ -288,6 +291,7 @@ class ProfileRepository:
             pathways,
             data.get("preferred_language", "en"),
             data.get("dream_goal", ""),
+            is_onboarded,
             now_str,
             now_str
         ))
