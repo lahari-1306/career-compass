@@ -7,8 +7,8 @@
     "qualification": "B.Tech",
     "state": "Andhra Pradesh",
     "stream_or_branch": "CSE",
-    "updated_at": "2026-09-23T16:18:44.901786+05:30",
-    "created_at": "2026-09-23T16:18:44.901786+05:30"
+    "updated_at": "2026-09-24T19:50:59.927375+05:30",
+    "created_at": "2026-09-24T19:50:59.927375+05:30"
   },
   "prof_20260921213456832472": {
     "interests": [
@@ -206,5 +206,82 @@
     "profile_id": "prof_20260923161844973781",
     "updated_at": "2026-09-23T16:18:44.973781+05:30",
     "created_at": "2026-09-23T16:18:44.973781+05:30"
+  },
+  "prof_20260924184415797867": {
+    "interests": [
+      "Higher Studies / M.Tech",
+      "PSU / Govt Jobs"
+    ],
+    "qualification": "B.Tech",
+    "state": "Andhra Pradesh",
+    "stream_or_branch": "CSE",
+    "profile_id": "prof_20260924184415797867",
+    "updated_at": "2026-09-24T18:44:15.797867+05:30",
+    "created_at": "2026-09-24T18:44:15.797867+05:30"
+  },
+  "prof_20260924184440883790": {
+    "interests": [
+      "Higher Studies / M.Tech",
+      "PSU / Govt Jobs"
+    ],
+    "qualification": "B.Tech",
+    "state": "Andhra Pradesh",
+    "stream_or_branch": "CSE",
+    "profile_id": "prof_20260924184440883790",
+    "updated_at": "2026-09-24T18:44:40.883790+05:30",
+    "created_at": "2026-09-24T18:44:40.883790+05:30"
+  },
+  "prof_20260924190626303130": {
+    "interests": [
+      "Higher Studies / M.Tech",
+      "PSU / Govt Jobs"
+    ],
+    "qualification": "B.Tech",
+    "state": "Andhra Pradesh",
+    "stream_or_branch": "CSE",
+    "profile_id": "prof_20260924190626303130",
+    "updated_at": "2026-09-24T19:06:26.303642+05:30",
+    "created_at": "2026-09-24T19:06:26.303642+05:30"
+  },
+  "prof_1xuvq6y": {
+    "profile_id": "prof_1xuvq6y",
+    "qualification": "B.Tech",
+    "stream_or_branch": "Information Technology (IT)",
+    "completion_status": "Completed",
+    "state": "Maharashtra",
+    "completion_year": "2024",
+    "category": "General",
+    "interests": [
+      "Software / IT Roles",
+      "Cyber Security",
+      "Data Science / Analytics",
+      "GATE"
+    ],
+    "updated_at": "2026-09-24T19:06:42.213595+05:30",
+    "created_at": "2026-09-24T19:06:42.213595+05:30"
+  },
+  "prof_20260924192049225341": {
+    "interests": [
+      "Higher Studies / M.Tech",
+      "PSU / Govt Jobs"
+    ],
+    "qualification": "B.Tech",
+    "state": "Andhra Pradesh",
+    "stream_or_branch": "CSE",
+    "profile_id": "prof_20260924192049225341",
+    "updated_at": "2026-09-24T19:20:49.225341+05:30",
+    "created_at": "2026-09-24T19:20:49.225341+05:30"
+  },
+  "prof_20260924195100316294": {
+    "interests": [
+      "Higher Studies / M.Tech",
+      "PSU / Govt Jobs"
+    ],
+    "qualification": "B.Tech",
+    "state": "Andhra Pradesh",
+    "stream_or_branch": "CSE",
+    "profile_id": "prof_20260924195100316294",
+    "updated_at": "2026-09-24T19:51:00.316294+05:30",
+    "created_at": "2026-09-24T19:51:00.316294+05:30"
   }
 }

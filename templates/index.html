@@ -45,12 +45,41 @@
         <button class="nav-link active" onclick="navigateToSection('home')" data-section="home" data-i18n="nav.home">Home</button>
         <button class="nav-link" onclick="navigateToSection('career-paths')" data-section="career-paths" data-i18n="nav.career_paths">Career Paths</button>
         <button class="nav-link" onclick="navigateToSection('entrance-exams')" data-section="entrance-exams" data-i18n="nav.exams">Entrance Exams</button>
+        <button class="nav-link" onclick="navigateToSection('exam-prep')" data-section="exam-prep"><i data-lucide="book-open" class="icon-xs"></i> <span data-i18n="nav.exam_prep">Exam Prep Hub</span></button>
         <button class="nav-link" onclick="navigateToSection('govt-jobs')" data-section="govt-jobs" data-i18n="nav.govt_jobs">Govt Jobs</button>
         <button class="nav-link" onclick="navigateToSection('defence')" data-section="defence" data-i18n="nav.defence">Defence</button>
         <button class="nav-link" onclick="navigateToSection('ai-guide')" data-section="ai-guide"><span class="ai-badge-pulse">AI</span> <span data-i18n="nav.ai_guide">AI Career Guide</span></button>
       </nav>
 
       <div class="header-actions">
+        <!-- User Authentication & Account Menu -->
+        <div id="auth-actions" class="auth-actions-group">
+          <button id="auth-login-btn" class="btn btn-outline-primary btn-sm" onclick="openAuthModal('login')">
+            <i data-lucide="user" class="icon-xs"></i> <span data-i18n="auth.sign_in">Sign In</span>
+          </button>
+          
+          <div id="user-profile-menu" class="user-profile-dropdown hidden">
+            <button id="user-chip-btn" class="action-btn user-chip-btn" onclick="toggleUserDropdown()" title="Account & Profile Settings">
+              <span id="user-avatar-initials" class="avatar-circle">U</span>
+              <span id="user-display-name" class="user-name-label">User</span>
+              <i data-lucide="chevron-down" class="icon-xs"></i>
+            </button>
+            <div id="user-dropdown-panel" class="dropdown-panel user-panel hidden">
+              <div class="user-panel-header">
+                <strong id="dropdown-user-name">Student Name</strong>
+                <small id="dropdown-user-email">email@test.com</small>
+              </div>
+              <hr class="panel-divider" />
+              <button class="dropdown-item" onclick="openRadarProfileModal()"><i data-lucide="user" class="icon-xs"></i> My Profile</button>
+              <button class="dropdown-item" onclick="openSavedOpportunitiesModal()"><i data-lucide="bookmark" class="icon-xs"></i> Saved Opportunities</button>
+              <button class="dropdown-item" onclick="openSettingsModal()"><i data-lucide="settings" class="icon-xs"></i> Notification Settings</button>
+              <button class="dropdown-item" onclick="enablePushNotifications()"><i data-lucide="bell-ring" class="icon-xs"></i> Enable Push Alerts</button>
+              <hr class="panel-divider" />
+              <button class="dropdown-item text-danger" onclick="logoutUser()"><i data-lucide="log-out" class="icon-xs"></i> Sign Out</button>
+            </div>
+          </div>
+        </div>
+
         <!-- Radar Notification Bell -->
         <div class="radar-bell-wrapper">
           <button id="radar-bell-btn" class="action-btn bell-btn" aria-label="Personalized Career Alerts" title="My Career Radar Alerts" onclick="toggleRadarDrawer()">
@@ -402,6 +431,50 @@
         </div>
 
         <div id="entrance-exams-grid" class="cards-grid">
+          <div class="loading-state"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION: EXAM PREPARATION HUB (24-POINT BLUEPRINTS) ==================== -->
+    <section id="section-exam-prep" class="page-section">
+      <div class="container section-padding">
+        <div class="section-header">
+          <div class="badge badge-primary">24-POINT PREPARATION BLUEPRINTS</div>
+          <h2 class="section-title">Exam Preparation Hub</h2>
+          <p class="section-desc">Comprehensive preparation blueprints, official conducting body syllabi, verified standard textbooks with accredited publisher links, previous year questions (PYQs), mock tests, and personal checklist progress tracking.</p>
+        </div>
+
+        <div id="push-permission-banner" class="push-banner hidden">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <i data-lucide="bell-ring" class="icon-md"></i>
+            <div>
+              <strong>Instant Opportunity & Exam Alerts</strong>
+              <p style="margin: 0; font-size: 0.8rem; opacity: 0.9;">Receive official application open dates, admit card alerts, and last-day reminders right on your browser.</p>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button onclick="enablePushNotifications()" class="btn btn-sm btn-light">Enable Notifications</button>
+            <button onclick="dismissPushBanner()" class="btn btn-sm text-btn" style="color: #ffffff; opacity: 0.8;">Dismiss</button>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-box">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="exam-prep-search-input" placeholder="Search exam blueprints (e.g. GATE CSE, JEE Main, NEET UG, NDA, ECET)..." oninput="filterExamPrepCards()">
+          </div>
+          <div class="filter-chips" id="exam-prep-filter-chips">
+            <button class="filter-chip active" onclick="filterExamPrepCategory('All')">All Examinations</button>
+            <button class="filter-chip" onclick="filterExamPrepCategory('Engineering')">Engineering (GATE / JEE / ECET)</button>
+            <button class="filter-chip" onclick="filterExamPrepCategory('Medical')">Medical (NEET)</button>
+            <button class="filter-chip" onclick="filterExamPrepCategory('Diploma')">Polytechnic / Lateral (POLYCET / ECET)</button>
+            <button class="filter-chip" onclick="filterExamPrepCategory('Government')">Government & Defence (UPSC / SSC)</button>
+            <button class="filter-chip" onclick="filterExamPrepCategory('Higher Studies')">Teaching & Higher Studies (UGC NET)</button>
+          </div>
+        </div>
+
+        <div id="exam-prep-grid" class="cards-grid">
           <div class="loading-state"><div class="spinner"></div></div>
         </div>
       </div>
@@ -1138,8 +1211,242 @@
     </div>
   </div>
 
-  <script src="/static/js/locales.js"></script>
-  <script src="/static/js/app.js"></script>
+  <!-- ==================== AUTHENTICATION MODAL ==================== -->
+  <div id="auth-modal" class="modal-overlay hidden" onclick="closeAuthModal(event)">
+    <div class="modal-card" style="max-width: 480px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="badge badge-primary" id="auth-modal-badge"><i data-lucide="shield" class="icon-xs"></i> CAREER COMPASS ACCOUNT</div>
+        <button class="close-btn" onclick="closeAuthModal()">&times;</button>
+      </div>
+
+      <div class="modal-tabs" style="display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border-color); margin-top: 0.75rem; margin-bottom: 1.25rem;">
+        <button id="auth-tab-login" class="tab-btn active" onclick="switchAuthTab('login')">Sign In</button>
+        <button id="auth-tab-signup" class="tab-btn" onclick="switchAuthTab('signup')">Create Account</button>
+        <button id="auth-tab-forgot" class="tab-btn hidden" onclick="switchAuthTab('forgot')">Reset Password</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form id="form-auth-login" onsubmit="handleAuthLogin(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email Address *</label>
+          <input type="email" id="login-email" class="form-control" placeholder="student@example.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <label class="form-label" for="login-password" style="margin: 0;">Password *</label>
+            <a href="#" onclick="switchAuthTab('forgot'); return false;" style="font-size: 0.8rem; color: var(--primary);">Forgot Password?</a>
+          </div>
+          <input type="password" id="login-password" class="form-control" placeholder="Enter password" required autocomplete="current-password">
+        </div>
+        <div id="login-error-msg" class="alert-box hidden" style="padding: 0.6rem 0.8rem; font-size: 0.82rem; color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px;"></div>
+        <button type="submit" class="btn btn-primary w-full" id="btn-login-submit">
+          <i data-lucide="log-in" class="icon-xs"></i> <span>Sign In to Career Compass</span>
+        </button>
+        <p style="text-align: center; font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.25rem;">
+          Don't have an account? <a href="#" onclick="switchAuthTab('signup'); return false;" style="color: var(--primary); font-weight: 600;">Sign up free</a>
+        </p>
+      </form>
+
+      <!-- Sign Up Form -->
+      <form id="form-auth-signup" class="hidden" onsubmit="handleAuthSignup(event)" style="display: flex; flex-direction: column; gap: 0.85rem;">
+        <div class="form-group">
+          <label class="form-label" for="signup-name">Full Name *</label>
+          <input type="text" id="signup-name" class="form-control" placeholder="e.g. Aditi Rao" required autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signup-email">Email Address *</label>
+          <input type="email" id="signup-email" class="form-control" placeholder="student@example.com" required autocomplete="email">
+        </div>
+        <div class="form-group-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-group">
+            <label class="form-label" for="signup-qual">Qualification *</label>
+            <select id="signup-qual" class="form-control" onchange="handleSignupQualChange()">
+              <option value="B.Tech" selected>B.Tech / B.E.</option>
+              <option value="Intermediate">Intermediate / 10+2</option>
+              <option value="Diploma">Diploma (Polytechnic)</option>
+              <option value="Degree">Degree (B.Sc, BCA, etc.)</option>
+              <option value="10th">10th Standard</option>
+              <option value="Postgraduate">Postgraduate</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-branch">Branch / Stream *</label>
+            <select id="signup-branch" class="form-control">
+              <option value="CSE" selected>CSE</option>
+              <option value="ECE">ECE</option>
+              <option value="EEE">EEE</option>
+              <option value="Mechanical Engineering">Mechanical Engineering</option>
+              <option value="Civil Engineering">Civil Engineering</option>
+              <option value="Information Technology (IT)">Information Technology (IT)</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signup-password">Password (min 8 chars, mixed case + number) *</label>
+          <input type="password" id="signup-password" class="form-control" placeholder="Create strong password" required autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signup-password-confirm">Confirm Password *</label>
+          <input type="password" id="signup-password-confirm" class="form-control" placeholder="Re-enter password" required autocomplete="new-password">
+        </div>
+        <div id="signup-error-msg" class="alert-box hidden" style="padding: 0.6rem 0.8rem; font-size: 0.82rem; color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px;"></div>
+        <button type="submit" class="btn btn-primary w-full" id="btn-signup-submit">
+          <i data-lucide="user-plus" class="icon-xs"></i> <span>Create Account</span>
+        </button>
+        <p style="text-align: center; font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.25rem;">
+          Already have an account? <a href="#" onclick="switchAuthTab('login'); return false;" style="color: var(--primary); font-weight: 600;">Sign In</a>
+        </p>
+      </form>
+
+      <!-- Forgot Password Form -->
+      <form id="form-auth-forgot" class="hidden" onsubmit="handleAuthForgot(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+          Enter your registered email address. We'll send you secure password reset instructions.
+        </p>
+        <div class="form-group">
+          <label class="form-label" for="forgot-email">Registered Email Address *</label>
+          <input type="email" id="forgot-email" class="form-control" placeholder="student@example.com" required>
+        </div>
+        <div id="forgot-status-msg" class="alert-box hidden" style="padding: 0.6rem 0.8rem; font-size: 0.82rem; border-radius: 6px;"></div>
+        <button type="submit" class="btn btn-primary w-full" id="btn-forgot-submit">
+          <i data-lucide="mail" class="icon-xs"></i> <span>Send Reset Instructions</span>
+        </button>
+        <p style="text-align: center; font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.25rem;">
+          <a href="#" onclick="switchAuthTab('login'); return false;" style="color: var(--primary); font-weight: 600;">← Back to Sign In</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== EXAM PREPARATION 24-POINT MODAL ==================== -->
+  <div id="exam-detail-modal" class="modal-overlay hidden" onclick="closeExamDetailModal(event)">
+    <div class="modal-card" style="max-width: 920px; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="badge badge-primary" id="exam-detail-badge">OFFICIAL PREPARATION BLUEPRINT</div>
+        <button class="close-btn" onclick="closeExamDetailModal()">&times;</button>
+      </div>
+
+      <div class="exam-detail-header-card" id="exam-detail-header">
+        <!-- Dynamically rendered header content -->
+      </div>
+
+      <!-- Navigation Tabs inside Blueprint -->
+      <div class="modal-tabs" style="display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border-color); margin-bottom: 1.25rem; overflow-x: auto;">
+        <button id="exam-tab-overview" class="tab-btn active" onclick="switchExamDetailTab('overview')">Overview & Pattern</button>
+        <button id="exam-tab-syllabus" class="tab-btn" onclick="switchExamDetailTab('syllabus')">Syllabus & Checklist</button>
+        <button id="exam-tab-books" class="tab-btn" onclick="switchExamDetailTab('books')">Verified Textbooks</button>
+        <button id="exam-tab-pyqs" class="tab-btn" onclick="switchExamDetailTab('pyqs')">PYQs & Mocks</button>
+        <button id="exam-tab-strategy" class="tab-btn" onclick="switchExamDetailTab('strategy')">Study Strategy & Plans</button>
+      </div>
+
+      <div class="modal-body" id="exam-detail-body">
+        <!-- Tab Content dynamically filled -->
+      </div>
+
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 1rem; margin-top: 1rem;">
+        <div id="exam-footer-stats" style="font-size: 0.8rem; color: var(--text-secondary);">
+          <!-- Checklist progress -->
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn btn-secondary" onclick="closeExamDetailModal()">Close</button>
+          <a id="exam-official-link-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">
+            <i data-lucide="external-link" class="icon-xs"></i> <span>Official Website</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== USER SETTINGS & NOTIFICATIONS MODAL ==================== -->
+  <div id="settings-modal" class="modal-overlay hidden" onclick="closeSettingsModal(event)">
+    <div class="modal-card" style="max-width: 580px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="badge badge-primary"><i data-lucide="settings" class="icon-xs"></i> NOTIFICATION & ACCOUNT SETTINGS</div>
+        <button class="close-btn" onclick="closeSettingsModal()">&times;</button>
+      </div>
+      <h3 class="modal-title">Preferences & Channels</h3>
+      <p class="modal-org">Control how and when you receive verified opportunity and deadline alerts.</p>
+
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 1.25rem;">
+        <div class="settings-group" style="background: var(--bg-hover); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+          <strong style="font-size: 0.9rem; display: block; margin-bottom: 0.75rem;">Delivery Channels</strong>
+          
+          <label style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; cursor: pointer;">
+            <input type="checkbox" id="setting-inapp" checked>
+            <span>In-App Notification Center (Bell Drawer)</span>
+          </label>
+          
+          <label style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; cursor: pointer;">
+            <input type="checkbox" id="setting-email" checked>
+            <span>Verified Email Notifications (SMTP)</span>
+          </label>
+
+          <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer;">
+            <input type="checkbox" id="setting-push">
+            <span>Browser Web Push Alerts (Instant Desktop / Mobile)</span>
+          </label>
+        </div>
+
+        <div class="settings-group">
+          <label class="form-label" for="setting-email-freq">Email Notification Frequency</label>
+          <select id="setting-email-freq" class="form-control">
+            <option value="instant" selected>Instant (As new verified alerts match)</option>
+            <option value="daily">Daily Digest (Summary at 8:00 AM)</option>
+            <option value="weekly">Weekly Summary (Every Monday morning)</option>
+          </select>
+        </div>
+
+        <div class="settings-group">
+          <label class="form-label">Alert Topics to Receive</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.25rem;">
+            <label style="font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem;">
+              <input type="checkbox" id="cat-exams" checked> Entrance Exams
+            </label>
+            <label style="font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem;">
+              <input type="checkbox" id="cat-jobs" checked> Govt Jobs & PSUs
+            </label>
+            <label style="font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem;">
+              <input type="checkbox" id="cat-scholarships" checked> Scholarships
+            </label>
+            <label style="font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem;">
+              <input type="checkbox" id="cat-counselling" checked> Counselling & Admissions
+            </label>
+          </div>
+        </div>
+
+        <div id="settings-status-msg" class="alert-box hidden" style="padding: 0.5rem 0.75rem; font-size: 0.82rem; border-radius: 6px;"></div>
+      </div>
+
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+        <button class="btn btn-outline-danger btn-sm" onclick="promptDeleteAccount()">Delete Account</button>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary" onclick="closeSettingsModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="saveUserSettings()">Save Preferences</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SAVED OPPORTUNITIES MODAL ==================== -->
+  <div id="saved-opps-modal" class="modal-overlay hidden" onclick="closeSavedOpportunitiesModal(event)">
+    <div class="modal-card" style="max-width: 680px; max-height: 85vh; overflow-y: auto;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="badge badge-primary"><i data-lucide="bookmark" class="icon-xs"></i> MY BOOKMARKS</div>
+        <button class="close-btn" onclick="closeSavedOpportunitiesModal()">&times;</button>
+      </div>
+      <h3 class="modal-title">Saved Opportunities</h3>
+      <p class="modal-org">All bookmarked entrance exams, job applications, and scholarship deadlines.</p>
+
+      <div id="saved-opps-list" class="modal-body" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+        <div class="loading-state"><div class="spinner"></div></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeSavedOpportunitiesModal()">Close</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Admin Data Verification & Auto-Updater Modal -->
   <div id="admin-modal" class="modal-overlay hidden" onclick="closeAdminModal(event)">
@@ -1224,5 +1531,7 @@
     </div>
   </div>
 
+  <script src="/static/js/locales.js"></script>
+  <script src="/static/js/app.js"></script>
 </body>
 </html>

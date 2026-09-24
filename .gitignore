@@ -7,3 +7,9 @@ __pycache__/
 data/backups/*
 !data/backups/.gitkeep
 edge_profile/
+edge_profile_prod/
+*.db
+data/*.db
+data/email_logs.json
+data/vapid_keys.json
+

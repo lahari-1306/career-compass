@@ -12,8 +12,18 @@ from data_updater.registry import SourceRegistry
 from data_updater.change_detector import ChangeDetector
 from data_updater.updater import DataUpdater
 from ai_engine import AIEngine, get_verified_current_data
+from auth import auth_bp, get_current_user, login_required
+from services.email_service import EmailService
+from services.push_service import PushService
+from services.pipeline_service import PipelineService
+from db_repository import (
+    ProfileRepository, NotificationRepository, PushRepository,
+    SavedOpportunitiesRepository, ExamProgressRepository
+)
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
+app.register_blueprint(auth_bp)
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.environ.get("DATA_DIR", os.path.join(BASE_DIR, "data"))
 
@@ -88,11 +98,13 @@ def server_error_handler(e):
         return jsonify({"error": "Internal server error", "status": 500}), 500
     return render_template("index.html"), 500
 
-@app.route("/", defaults={"path": ""})
-@app.route("/<path:path>")
-def index(path=""):
-    if path.startswith("api/"):
-        return jsonify({"error": "Resource not found", "status": 404}), 404
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+@app.route("/exam-preparation")
+@app.route("/exam-preparation/<exam_id>")
+def exam_prep_view(exam_id=None):
     return render_template("index.html")
 
 
@@ -362,7 +374,12 @@ def ai_chat():
 
 @app.route("/api/radar/profile", methods=["GET", "POST"])
 def radar_profile():
+    user = get_current_user()
+
     if request.method == "GET":
+        if user:
+            prof = ProfileRepository.get_profile(user["id"])
+            return jsonify({"status": "success", "profile": prof})
         prof_id = request.args.get("id", "").strip()
         if not prof_id:
             return jsonify({"status": "error", "message": "Missing profile id parameter"}), 400
@@ -373,13 +390,27 @@ def radar_profile():
 
     # POST: Save profile and return immediate radar matches
     prof_data = request.get_json() or {}
-    saved_profile = RadarStorage.save_profile(prof_data)
-    
-    # Run immediate matching against verified notifications
     all_notifs = load_json("notifications.json")
+
+    if user:
+        saved_profile = ProfileRepository.save_profile(user["id"], prof_data)
+        matches = RadarMatcher.match(saved_profile, all_notifs)
+        # Dispatch in-app and configured alerts for this logged in user
+        try:
+            PipelineService.run_matching_and_dispatch_for_all_users(all_notifs)
+        except Exception:
+            pass
+        return jsonify({
+            "status": "success",
+            "message": "Personal profile saved to your account and radar scan complete",
+            "profile": saved_profile,
+            "total_matches": len(matches),
+            "matches": matches
+        })
+
+    # Guest fallback
+    saved_profile = RadarStorage.save_profile(prof_data)
     matches = RadarMatcher.match(saved_profile, all_notifs)
-    
-    # Dispatch any initial unread alerts for this profile
     RadarDispatcher.dispatch_for_profile(saved_profile, all_notifs)
 
     return jsonify({
@@ -403,9 +434,21 @@ def radar_matches():
 
 @app.route("/api/radar/alerts", methods=["GET"])
 def radar_alerts():
+    user = get_current_user()
+    if user:
+        alerts = NotificationRepository.get_user_notifications(user["id"])
+        unread = NotificationRepository.get_unread_count(user["id"])
+        return jsonify({
+            "status": "success",
+            "user_id": user["id"],
+            "total_alerts": len(alerts),
+            "unread_count": unread,
+            "alerts": alerts
+        })
+
     prof_id = request.args.get("id", "").strip()
     if not prof_id:
-        return jsonify({"status": "error", "message": "Profile ID required"}), 400
+        return jsonify({"status": "error", "message": "Profile ID or login required"}), 400
     alerts = RadarStorage.get_alerts_for_profile(prof_id)
     unread = sum(1 for a in alerts if not a.get("is_read"))
     return jsonify({
@@ -418,13 +461,265 @@ def radar_alerts():
 
 @app.route("/api/radar/mark-read", methods=["POST"])
 def radar_mark_read():
+    user = get_current_user()
     data = request.get_json() or {}
+    if user:
+        delivery_id = data.get("delivery_id")
+        count = NotificationRepository.mark_as_read(user["id"], delivery_id)
+        return jsonify({"status": "success", "marked_read": count})
+
     prof_id = data.get("profile_id", "").strip()
-    alert_ids = data.get("alert_ids")  # None or list of ids
+    alert_ids = data.get("alert_ids")
     if not prof_id:
         return jsonify({"status": "error", "message": "Profile ID required"}), 400
     count = RadarStorage.mark_alerts_read(prof_id, alert_ids)
     return jsonify({"status": "success", "marked_read": count})
+
+# ====================================================
+# EXAM PREPARATION HUB REST APIs
+# ====================================================
+
+@app.route("/api/exam-prep", methods=["GET"])
+@app.route("/api/exam-prep/list", methods=["GET"])
+def get_exam_prep_list():
+    prep_data = load_json("exam_preparation.json")
+    exams = prep_data.get("exams", []) if isinstance(prep_data, dict) else []
+    
+    qual = request.args.get("qualification", "").strip()
+    branch = request.args.get("branch", "").strip().upper()
+    search = request.args.get("search", "").strip().lower()
+
+    filtered = []
+    for e in exams:
+        if qual:
+            target_quals = e.get("target_qualifications", [])
+            if target_quals and not any(q.lower() in qual.lower() or qual.lower() in q.lower() for q in target_quals):
+                continue
+        if branch and branch != "ALL":
+            target_branches = [b.upper() for b in e.get("target_branches", [])]
+            if target_branches and "ALL" not in target_branches and "NONE" not in target_branches:
+                if not any(b in branch or branch in b for b in target_branches):
+                    continue
+        if search:
+            blob = (e.get("name", "") + " " + e.get("full_title", "") + " " + e.get("overview", "")).lower()
+            if search not in blob:
+                continue
+        filtered.append(e)
+
+    return jsonify({
+        "status": "success",
+        "total": len(filtered),
+        "exams": filtered
+    })
+
+@app.route("/api/exam-prep/<exam_id>", methods=["GET"])
+def get_exam_prep_detail(exam_id):
+    prep_data = load_json("exam_preparation.json")
+    exams = prep_data.get("exams", []) if isinstance(prep_data, dict) else []
+    target = next((e for e in exams if e.get("id") == exam_id), None)
+    if not target:
+        return jsonify({"status": "error", "message": f"Exam '{exam_id}' not found in preparation repository."}), 404
+    
+    # Check if logged in user has progress/study plan for this exam
+    user = get_current_user()
+    user_progress = None
+    user_plan = None
+    if user:
+        user_progress = ExamProgressRepository.get_progress(user["id"], exam_id)
+        user_plan = ExamProgressRepository.get_study_plan(user["id"], exam_id)
+
+    return jsonify({
+        "status": "success",
+        "exam": target,
+        "user_progress": user_progress,
+        "user_study_plan": user_plan
+    })
+
+@app.route("/api/exam-prep/progress", methods=["GET", "POST"])
+@app.route("/api/exam-prep/<exam_id>/progress", methods=["GET", "POST"])
+@login_required
+def exam_prep_progress(exam_id=None):
+    from flask import g
+    user_id = g.user["id"]
+
+    if request.method == "GET":
+        target_exam_id = exam_id or request.args.get("exam_id", "").strip()
+        if not target_exam_id:
+            return jsonify({"status": "error", "message": "exam_id is required"}), 400
+        progress = ExamProgressRepository.get_progress(user_id, target_exam_id)
+        return jsonify({"status": "success", "progress": progress})
+
+    data = request.get_json() or {}
+    target_exam_id = exam_id or (data.get("exam_id") or "").strip()
+    if not target_exam_id:
+        return jsonify({"status": "error", "message": "exam_id is required"}), 400
+
+    stage = data.get("preparation_stage", "In Progress")
+    target_year = data.get("target_year")
+    topics = data.get("completed_topics") or []
+    notes = data.get("notes", "")
+
+    ExamProgressRepository.save_progress(user_id, target_exam_id, stage, target_year, topics, notes)
+    updated = ExamProgressRepository.get_progress(user_id, target_exam_id)
+    return jsonify({
+        "status": "success",
+        "message": "Preparation progress saved successfully.",
+        "progress": updated
+    })
+
+@app.route("/api/exam-prep/study-plan", methods=["GET", "POST"])
+@login_required
+def exam_study_plan():
+    from flask import g
+    user_id = g.user["id"]
+
+    if request.method == "GET":
+        exam_id = request.args.get("exam_id", "").strip()
+        if not exam_id:
+            return jsonify({"status": "error", "message": "exam_id is required"}), 400
+        plan = ExamProgressRepository.get_study_plan(user_id, exam_id)
+        return jsonify({"status": "success", "study_plan": plan})
+
+    data = request.get_json() or {}
+    exam_id = (data.get("exam_id") or "").strip()
+    duration = data.get("duration", "3_MONTHS")
+    schedule = data.get("schedule") or {}
+
+    if not exam_id:
+        return jsonify({"status": "error", "message": "exam_id is required"}), 400
+
+    ExamProgressRepository.save_study_plan(user_id, exam_id, duration, schedule)
+    saved = ExamProgressRepository.get_study_plan(user_id, exam_id)
+    return jsonify({
+        "status": "success",
+        "message": "Study plan saved successfully.",
+        "study_plan": saved
+    })
+
+# ====================================================
+# WEB PUSH REST APIs
+# ====================================================
+
+@app.route("/api/push/vapid-public-key", methods=["GET"])
+def push_vapid_key():
+    key = PushService.get_public_key()
+    return jsonify({"status": "success", "public_key": key})
+
+@app.route("/api/push/subscribe", methods=["POST"])
+@login_required
+def push_subscribe():
+    from flask import g
+    user_id = g.user["id"]
+    data = request.get_json() or {}
+    endpoint = data.get("endpoint")
+    keys = data.get("keys") or {}
+    p256dh = keys.get("p256dh")
+    auth = keys.get("auth")
+
+    if not endpoint or not p256dh or not auth:
+        return jsonify({"status": "error", "message": "Valid PushSubscription payload required."}), 400
+
+    ua = request.headers.get("User-Agent", "")
+    device_label = data.get("device_label") or ("Mobile" if "Mobi" in ua else "Desktop")
+
+    PushRepository.save_subscription(user_id, endpoint, p256dh, auth, ua, device_label)
+    return jsonify({"status": "success", "message": "Push notification subscription registered successfully."})
+
+@app.route("/api/push/unsubscribe", methods=["POST"])
+@login_required
+def push_unsubscribe():
+    data = request.get_json() or {}
+    endpoint = data.get("endpoint")
+    if endpoint:
+        PushRepository.deactivate_subscription(endpoint)
+    return jsonify({"status": "success", "message": "Push subscription deactivated."})
+
+@app.route("/api/push/test", methods=["POST"])
+@login_required
+def push_test():
+    from flask import g
+    user_id = g.user["id"]
+    results = PushService.send_push_to_user(
+        user_id,
+        title="🧭 CareerCompass Test Alert",
+        message="Web Push notifications are active and verified for your device!",
+        deep_link="/",
+        tag="test-alert"
+    )
+    return jsonify({
+        "status": "success",
+        "message": f"Test push sent to {len(results)} device(s).",
+        "results": results
+    })
+
+# ====================================================
+# USER NOTIFICATIONS & SAVED OPPORTUNITIES REST APIs
+# ====================================================
+
+@app.route("/api/notifications/user", methods=["GET"])
+@login_required
+def get_user_notifications_route():
+    from flask import g
+    user_id = g.user["id"]
+    deliveries = NotificationRepository.get_user_notifications(user_id)
+    unread = NotificationRepository.get_unread_count(user_id)
+    return jsonify({
+        "status": "success",
+        "total": len(deliveries),
+        "unread_count": unread,
+        "notifications": deliveries
+    })
+
+@app.route("/api/notifications/dismiss", methods=["POST"])
+@login_required
+def dismiss_notification_route():
+    from flask import g
+    user_id = g.user["id"]
+    data = request.get_json() or {}
+    delivery_id = data.get("delivery_id")
+    if not delivery_id:
+        return jsonify({"status": "error", "message": "delivery_id is required"}), 400
+    success = NotificationRepository.dismiss(user_id, delivery_id)
+    return jsonify({"status": "success", "dismissed": success})
+
+@app.route("/api/opportunities/saved", methods=["GET"])
+@login_required
+def get_saved_opportunities_route():
+    from flask import g
+    user_id = g.user["id"]
+    items = SavedOpportunitiesRepository.get_saved(user_id)
+    return jsonify({"status": "success", "total": len(items), "saved_opportunities": items})
+
+@app.route("/api/opportunities/save", methods=["POST"])
+@login_required
+def save_opportunity_route():
+    from flask import g
+    user_id = g.user["id"]
+    data = request.get_json() or {}
+    opp_id = data.get("opportunity_id")
+    if not opp_id:
+        return jsonify({"status": "error", "message": "opportunity_id is required"}), 400
+    
+    title = data.get("title", "")
+    category = data.get("category", "")
+    org = data.get("organization", "")
+    deadline = data.get("deadline", "")
+    url = data.get("official_url", "")
+
+    success = SavedOpportunitiesRepository.save(user_id, opp_id, title, category, org, deadline, url)
+    return jsonify({"status": "success", "saved": success})
+
+@app.route("/api/opportunities/remove", methods=["POST"])
+@login_required
+def remove_saved_opportunity_route():
+    from flask import g
+    user_id = g.user["id"]
+    data = request.get_json() or {}
+    opp_id = data.get("opportunity_id")
+    if not opp_id:
+        return jsonify({"status": "error", "message": "opportunity_id is required"}), 400
+    removed = SavedOpportunitiesRepository.remove(user_id, opp_id)
+    return jsonify({"status": "success", "removed": removed})
 
 # ====================================================
 # ADMIN DATA UPDATER & REGISTRY REST APIs
@@ -471,6 +766,28 @@ def admin_verify():
             json.dump(notifications, f, indent=2, ensure_ascii=False)
         return jsonify({"success": True, "message": "Notification " + str(notif_id) + " verified successfully."})
     return jsonify({"success": False, "message": "Notification not found"}), 404
+
+@app.route("/api/admin/run-pipeline", methods=["POST"])
+def admin_run_pipeline():
+    updater = DataUpdater(dry_run=False)
+    update_report = updater.run_update()
+    all_notifs = load_json("notifications.json")
+    dispatch_report = PipelineService.run_matching_and_dispatch_for_all_users(all_notifs)
+    return jsonify({
+        "status": "success",
+        "update_report": update_report,
+        "dispatch_report": dispatch_report
+    })
+
+# ====================================================
+# CLIENT-SIDE WILDCARD ROUTE (MUST BE LAST)
+# ====================================================
+
+@app.route("/<path:path>")
+def client_route_fallback(path=""):
+    if path.startswith("api/"):
+        return jsonify({"error": "Resource not found", "status": 404}), 404
+    return render_template("index.html")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

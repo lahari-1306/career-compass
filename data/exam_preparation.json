@@ -1,0 +1,706 @@
+{
+  "exams": [
+    {
+      "id": "gate-cse",
+      "name": "GATE Computer Science & Information Technology (CS)",
+      "full_title": "Graduate Aptitude Test in Engineering — Computer Science (CS)",
+      "target_qualifications": ["B.Tech", "Degree", "Postgraduate"],
+      "target_branches": ["CSE", "IT", "AI/ML", "DATA SCIENCE", "CYBER SECURITY", "MCA"],
+      "overview": "GATE CS is a national computer-based examination conducted jointly by IISc Bangalore and 7 IITs on behalf of the National Coordination Board (NCB-GATE), Ministry of Education, Govt. of India. It assesses comprehensive understanding of undergraduate computer science concepts for Master's/Direct Ph.D. admissions at IITs, NITs, and IIITs, and executive recruitment across Maharatna and Navratna Public Sector Undertakings (PSUs).",
+      "eligibility": "Candidates currently studying in 3rd or higher years of any undergraduate degree program OR already completed any government-approved degree in Engineering / Technology / Science / MCA.",
+      "educational_qualification": "B.E. / B.Tech / MCA / M.Sc (Computer Science / IT / Mathematics / Statistics) or equivalent.",
+      "age_criteria": "No age limit.",
+      "current_notification": "GATE 2027 Registration Portal active at official IIT organising institute portal from August to October.",
+      "official_website": "https://gate2025.iitr.ac.in",
+      "official_syllabus_url": "https://gate2025.iitr.ac.in/syllabus.html",
+      "subjects": [
+        "Engineering Mathematics & Discrete Mathematics",
+        "Digital Logic",
+        "Computer Organization and Architecture (COA)",
+        "Programming and Data Structures",
+        "Algorithms",
+        "Theory of Computation (TOC)",
+        "Compiler Design",
+        "Operating System",
+        "Databases (DBMS)",
+        "Computer Networks",
+        "General Aptitude"
+      ],
+      "topic_wise_syllabus": {
+        "Engineering Mathematics": "Discrete Mathematics (Propositional and first order logic, Sets, relations, functions, partial orders and lattices, Monoids, Groups, Graphs, Combinatorics), Linear Algebra (Matrices, determinants, system of linear equations, eigenvalues and eigenvectors), Calculus, Probability and Statistics.",
+        "Programming and Data Structures": "Programming in C, Recursion, Arrays, stacks, queues, linked lists, trees, binary search trees, binary heaps, graphs.",
+        "Algorithms": "Searching, sorting, hashing, Asymptotic worst and average time complexity analysis. Greedy algorithms, dynamic programming, divide-and-conquer, Graph traversals, Minimum spanning trees, Shortest paths.",
+        "Theory of Computation": "Regular expressions and finite automata. Context-free grammars and push-down automata. Regular and context-free languages, pumping lemma. Turing machines and undecidability.",
+        "Operating System": "Processes, threads, inter-process communication, concurrency and synchronization, deadlocks, CPU and I/O scheduling, Memory management and virtual memory, File systems."
+      },
+      "what_to_study": "Focus deeply on conceptual clarity from standard textbooks, solve all 35-year previous GATE CS questions topic-wise, and take full-length mock tests under real time constraints.",
+      "study_materials": [
+        {"title": "Official GATE CS Information Brochure & Syllabus PDF", "type": "Official PDF", "url": "https://gate2025.iitr.ac.in/syllabus.html", "source": "IIT Gate Office"},
+        {"title": "NPTEL Video Lectures on Data Structures & Algorithms", "type": "Official Video Lectures", "url": "https://nptel.ac.in/courses/106106133", "source": "IIT Madras / NPTEL"},
+        {"title": "NPTEL Video Lectures on Operating Systems", "type": "Official Video Lectures", "url": "https://nptel.ac.in/courses/106106144", "source": "IIT Madras / NPTEL"}
+      ],
+      "recommended_books": [
+        {
+          "book_name": "Introduction to Algorithms (CLRS)",
+          "author": "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
+          "subject": "Algorithms",
+          "level": "Main preparation & Reference",
+          "purpose": "Comprehensive theory, recurrence relations, and graph algorithms analysis.",
+          "publisher": "MIT Press / PHI Learning",
+          "edition": "4th Edition",
+          "verified_link": "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/",
+          "last_verified_date": "2026-09-20"
+        },
+        {
+          "book_name": "Operating System Concepts",
+          "author": "Abraham Silberschatz, Peter Baer Galvin, Greg Gagne",
+          "subject": "Operating System",
+          "level": "Core Text",
+          "purpose": "Process synchronization, deadlocks, and virtual memory management.",
+          "publisher": "John Wiley & Sons",
+          "edition": "10th Edition",
+          "verified_link": "https://www.wiley.com/en-us/Operating+System+Concepts%2C+10th+Edition-p-9781119456339",
+          "last_verified_date": "2026-09-20"
+        },
+        {
+          "book_name": "Database System Concepts",
+          "author": "Abraham Silberschatz, Henry F. Korth, S. Sudarshan",
+          "subject": "Databases (DBMS)",
+          "level": "Core Text",
+          "purpose": "Relational calculus, SQL, Normalization (BCNF/3NF), and Transactions/Concurrency.",
+          "publisher": "McGraw-Hill Education",
+          "edition": "7th Edition",
+          "verified_link": "https://www.mheducation.com/highered/product/database-system-concepts-silberschatz-korth/M9780078022159.html",
+          "last_verified_date": "2026-09-20"
+        },
+        {
+          "book_name": "Discrete Mathematics and Its Applications",
+          "author": "Kenneth H. Rosen",
+          "subject": "Discrete Mathematics",
+          "level": "Foundation",
+          "purpose": "Mathematical logic, combinatorics, set theory, and graph theory.",
+          "publisher": "McGraw-Hill Education",
+          "edition": "8th Edition",
+          "verified_link": "https://www.mheducation.com/highered/product/discrete-mathematics-applications-rosen/M9781259676512.html",
+          "last_verified_date": "2026-09-20"
+        }
+      ],
+      "previous_year_papers": [
+        {"year": "2024", "title": "GATE CS 2024 Question Paper with Official Answer Key", "url": "https://gate2024.iisc.ac.in/question-papers/"},
+        {"year": "2023", "title": "GATE CS 2023 Question Paper with Official Answer Key", "url": "https://gate2023.iitk.ac.in/"},
+        {"year": "2022", "title": "GATE CS 2022 Question Paper with Official Answer Key", "url": "https://gate2022.iitkgp.ac.in/"}
+      ],
+      "mock_tests": [
+        {"title": "Official GATE CS Computer Based Test Mock Interface", "url": "https://gate2025.iitr.ac.in/mock-test.html", "provider": "IIT National Coordination Board"}
+      ],
+      "preparation_strategy": "1. Divide subjects into high-weightage clusters: Engineering Math (15%), General Aptitude (15%), Data Structures & Algorithms (16%), OS & DBMS (18%). 2. Complete subject syllabus notes. 3. Solve previous 20 years papers topic-wise. 4. Devote last 60 days exclusively to full-length mocks and error analysis.",
+      "study_plans": {
+        "30_days": [
+          {"week": "Week 1", "focus": "Revision of Engineering Math, Discrete Math, and General Aptitude + 2 previous year papers."},
+          {"week": "Week 2", "focus": "Revision of Data Structures, Algorithms, Theory of Computation, and Compiler Design."},
+          {"week": "Week 3", "focus": "Revision of Operating Systems, DBMS, Computer Networks, and Digital Logic."},
+          {"week": "Week 4", "focus": "5 Full-length national mock tests in real exam 3-hour slots + revision of formula notebook."}
+        ],
+        "3_months": [
+          {"month": "Month 1", "focus": "Complete core subjects: Programming, Data Structures, Algorithms, TOC, and Linear Algebra with daily 50 PYQs."},
+          {"month": "Month 2", "focus": "Complete system subjects: OS, DBMS, Computer Networks, COA, Digital Logic, and Calculus/Probability."},
+          {"month": "Month 3", "focus": "Subject-wise test series, 10 full-length mock tests, formula consolidation, and speed/accuracy optimization."}
+        ],
+        "6_months": [
+          {"period": "Months 1-3", "focus": "Comprehensive first pass of all 10 technical subjects from standard textbooks and NPTEL lectures."},
+          {"period": "Months 4-5", "focus": "Topic-wise problem solving of all GATE papers from 1990 to 2025. Weak area identification and second-pass notes."},
+          {"period": "Month 6", "focus": "15 National-level mock tests, virtual calculator mastery, time management, and extensive formula revisions."}
+        ]
+      },
+      "application_info": "Online application via GOAPS portal. Fee: General/OBC Male: Rs. 1800, Female/SC/ST/PwD: Rs. 900. Documents: Degree certificate, photograph, signature, valid ID card.",
+      "admit_card": "Available for download in the first week of January from official portal.",
+      "result": "Scorecards released in late March. Score remains valid for admissions for 3 years.",
+      "counselling_info": "COAP (Common Offer Acceptance Portal) for IIT admissions and CCMT for NIT/IIIT centralized counselling."
+    },
+    {
+      "id": "gate-me",
+      "name": "GATE Mechanical Engineering (ME)",
+      "full_title": "Graduate Aptitude Test in Engineering — Mechanical Engineering (ME)",
+      "target_qualifications": ["B.Tech", "Degree", "Postgraduate"],
+      "target_branches": ["MECHANICAL", "AUTOMOBILE", "AEROSPACE", "PRODUCTION", "INDUSTRIAL", "MECHATRONICS"],
+      "overview": "GATE Mechanical Engineering is the primary national examination for M.Tech admissions at IITs/IISc and executive engineering engineer-trainee selections at India's top PSUs (ONGC, IOCL, NTPC, BHEL, GAIL, SAIL, HPCL, BPCL, BARC, and ISRO).",
+      "eligibility": "Candidates in 3rd or final year B.Tech Mechanical / Production / Automobile / Aerospace or degree holders.",
+      "educational_qualification": "B.E. / B.Tech in Mechanical Engineering or allied disciplines recognized by AICTE.",
+      "age_criteria": "No age limit.",
+      "current_notification": "GATE 2027 Registration Portal active at official IIT organising institute portal.",
+      "official_website": "https://gate2025.iitr.ac.in",
+      "official_syllabus_url": "https://gate2025.iitr.ac.in/syllabus.html",
+      "subjects": [
+        "Engineering Mathematics",
+        "Applied Mechanics and Design",
+        "Fluid Mechanics and Thermal Sciences",
+        "Materials, Manufacturing and Industrial Engineering",
+        "General Aptitude"
+      ],
+      "topic_wise_syllabus": {
+        "Applied Mechanics and Design": "Engineering Mechanics (free-body diagrams, trusses, friction), Strength of Materials (stress, strain, Mohr circle, bending and shear stresses, deflection of beams, torsion), Theory of Machines (kinematics, governors, flywheels, balancing), Vibrations, Machine Design (fatigue strength, design of shafts, gears, bearings).",
+        "Fluid Mechanics and Thermal Sciences": "Fluid Mechanics (fluid statics, Bernoulli equation, boundary layer, pipe flow), Heat Transfer (conduction, convection, radiation, heat exchangers), Thermodynamics (laws of thermodynamics, thermodynamic cycles, availability), Applications (Power Engineering, IC Engines, Refrigeration and Air-conditioning, Turbomachinery).",
+        "Materials, Manufacturing and Industrial Engineering": "Engineering Materials (phase diagrams, heat treatment), Casting, Forming and Joining Processes, Machining and Machine Tool Operations, Metrology and Inspection, Computer Integrated Manufacturing, Production Planning and Control, Operations Research."
+      },
+      "what_to_study": "Thermal and Fluid Sciences (28%), Manufacturing & Industrial (25%), Mechanics and Machine Design (22%), Engineering Math (15%), Aptitude (15%).",
+      "study_materials": [
+        {"title": "Official GATE ME Syllabus Document", "type": "Official PDF", "url": "https://gate2025.iitr.ac.in/syllabus.html", "source": "IIT Gate Office"},
+        {"title": "NPTEL Video Lectures on Fluid Mechanics", "type": "Official Video Lectures", "url": "https://nptel.ac.in/courses/112105171", "source": "IIT Kharagpur / NPTEL"}
+      ],
+      "recommended_books": [
+        {
+          "book_name": "Engineering Thermodynamics",
+          "author": "P.K. Nag",
+          "subject": "Thermodynamics",
+          "level": "Core Text",
+          "purpose": "First and Second law applications, thermodynamic property relations, and Rankine/Brayton cycles.",
+          "publisher": "McGraw-Hill Education",
+          "edition": "6th Edition",
+          "verified_link": "https://www.mheducation.com",
+          "last_verified_date": "2026-09-20"
+        },
+        {
+          "book_name": "Fluid Mechanics: Fundamentals and Applications",
+          "author": "Yunus A. Cengel, John M. Cimbala",
+          "subject": "Fluid Mechanics",
+          "level": "Core Text",
+          "purpose": "Bernoulli equation, Navier-Stokes, and boundary layer theory.",
+          "publisher": "McGraw-Hill Education",
+          "edition": "4th Edition",
+          "verified_link": "https://www.mheducation.com",
+          "last_verified_date": "2026-09-20"
+        },
+        {
+          "book_name": "Mechanics of Materials",
+          "author": "James M. Gere, Barry J. Goodno",
+          "subject": "Strength of Materials",
+          "level": "Core Text",
+          "purpose": "Stress-strain tensors, Mohr circle, and beam deflection under load.",
+          "publisher": "Cengage Learning",
+          "edition": "9th Edition",
+          "verified_link": "https://www.cengage.com",
+          "last_verified_date": "2026-09-20"
+        }
+      ],
+      "previous_year_papers": [
+        {"year": "2024", "title": "GATE ME 2024 Question Paper & Key", "url": "https://gate2024.iisc.ac.in/question-papers/"},
+        {"year": "2023", "title": "GATE ME 2023 Question Paper & Key", "url": "https://gate2023.iitk.ac.in/"}
+      ],
+      "mock_tests": [
+        {"title": "Official GATE ME CBT Mock Simulator", "url": "https://gate2025.iitr.ac.in/mock-test.html", "provider": "IIT National Coordination Board"}
+      ],
+      "preparation_strategy": "1. Master formula derivations in Thermodynamics and Fluid Mechanics. 2. Practice numerical problems daily. 3. Memorize manufacturing formulas for metal cutting and forming. 4. Full-length mock tests under 3-hour constraint.",
+      "study_plans": {
+        "3_months": [
+          {"month": "Month 1", "focus": "Thermodynamics, Heat Transfer, Fluid Mechanics + Engineering Mathematics."},
+          {"month": "Month 2", "focus": "Strength of Materials, Theory of Machines, Machine Design + Manufacturing Science."},
+          {"month": "Month 3", "focus": "Industrial Engineering, 10 Full Length Mocks, and PSU formula revision."}
+        ]
+      },
+      "application_info": "Online application via GOAPS portal. Fee: General/OBC Rs. 1800.",
+      "admit_card": "January 1st week on official portal.",
+      "result": "Scorecards released in March.",
+      "counselling_info": "COAP for IITs, CCMT for NITs, and individual PSU application portals for ONGC, IOCL, NTPC."
+    },
+    {
+      "id": "jee-main",
+      "name": "JEE Main (Joint Entrance Examination)",
+      "full_title": "Joint Entrance Examination (Main) — NTA",
+      "target_qualifications": ["Intermediate"],
+      "target_branches": ["MPC"],
+      "overview": "JEE (Main) is conducted by the National Testing Agency (NTA) for admission to undergraduate engineering programs (B.Tech/B.Arch) at NITs, IIITs, other Centrally Funded Technical Institutions (CFTIs), and serves as the screening test for JEE (Advanced) for admission to the Indian Institutes of Technology (IITs).",
+      "eligibility": "Class 12th passed in current year or preceding two years with Physics, Mathematics, and Chemistry/Biotechnology.",
+      "educational_qualification": "10+2 Intermediate (MPC stream) from any recognized Central or State Board of Secondary Education.",
+      "age_criteria": "No age limit for appearing in JEE (Main).",
+      "current_notification": "JEE Main Session 1 (January) and Session 2 (April) annual notifications published on nta.ac.in and jeemain.nta.nic.in.",
+      "official_website": "https://jeemain.nta.nic.in",
+      "official_syllabus_url": "https://jeemain.nta.nic.in/syllabus/",
+      "subjects": ["Physics", "Chemistry", "Mathematics"],
+      "topic_wise_syllabus": {
+        "Mathematics": "Sets, Relations, Functions, Complex Numbers, Quadratic Equations, Matrices and Determinants, Permutations and Combinations, Binomial Theorem, Sequences and Series, Differential and Integral Calculus, Differential Equations, Coordinate Geometry, Vectors and 3D Geometry, Statistics and Probability, Trigonometry.",
+        "Physics": "Kinematics, Laws of Motion, Work Energy and Power, Rotational Motion, Gravitation, Properties of Solids and Liquids, Thermodynamics, Kinetic Theory of Gases, Oscillations and Waves, Electrostatics, Current Electricity, Magnetic Effects of Current and Magnetism, Electromagnetic Induction and Alternating Currents, Optics, Dual Nature of Matter, Atoms and Nuclei, Electronic Devices.",
+        "Chemistry": "Physical Chemistry (Some Basic Concepts, Atomic Structure, Chemical Bonding, Chemical Thermodynamics, Solutions, Equilibrium, Redox Reactions, Chemical Kinetics), Inorganic Chemistry (Periodic Table, p-block, d and f-block, Coordination Compounds), Organic Chemistry (Purification, Hydrocarbons, Organic compounds containing Halogens, Oxygen, Nitrogen, Biomolecules)."
+      },
+      "what_to_study": "Master NCERT textbooks line-by-line for Chemistry; practice H.C. Verma and PYQs for Physics; solve multi-concept analytical questions for Mathematics.",
+      "study_materials": [
+        {"title": "NCERT Official Digital Textbooks (Class 11 & 12)", "type": "Official Textbooks", "url": "https://ncert.nic.in/textbook.php", "source": "NCERT, Govt. of India"},
+        {"title": "NTA National Test Abhyas (Official Mock App)", "type": "Official Practice Tool", "url": "https://www.nta.ac.in/abhyas", "source": "National Testing Agency"}
+      ],
+      "recommended_books": [
+        {
+          "book_name": "Concepts of Physics (Vol 1 & 2)",
+          "author": "Dr. H.C. Verma",
+          "subject": "Physics",
+          "level": "Foundation & Core",
+          "purpose": "Conceptual problem solving and mechanics, electromagnetism, and optics foundations.",
+          "publisher": "Bharati Bhawan Publishers",
+          "edition": "Revised Edition",
+          "verified_link": "https://bharatibhawan.com",
+          "last_verified_date": "2026-09-20"
+        },
+        {
+          "book_name": "NCERT Chemistry Textbooks (Class XI & XII)",
+          "author": "NCERT Textbook Development Committee",
+          "subject": "Chemistry",
+          "level": "Mandatory Textbook",
+          "purpose": "Inorganic and Organic Chemistry reaction mechanisms and standard definitions.",
+          "publisher": "NCERT",
+          "edition": "Latest NCERT Edition",
+          "verified_link": "https://ncert.nic.in/textbook.php",
+          "last_verified_date": "2026-09-20"
+        },
+        {
+          "book_name": "Skills in Mathematics for JEE Main & Advanced",
+          "author": "Dr. S.K. Goyal / Amit M. Agarwal",
+          "subject": "Mathematics",
+          "level": "Advanced Problem Solving",
+          "purpose": "Calculus, Coordinate Geometry, and Algebra problem drill.",
+          "publisher": "Arihant Publications",
+          "edition": "Current Series",
+          "verified_link": "https://arihantbooks.com",
+          "last_verified_date": "2026-09-20"
+        }
+      ],
+      "previous_year_papers": [
+        {"year": "2024", "title": "NTA JEE Main 2024 All Shift Official Papers & Keys", "url": "https://jeemain.nta.nic.in"},
+        {"year": "2023", "title": "NTA JEE Main 2023 Shift Papers", "url": "https://jeemain.nta.nic.in"}
+      ],
+      "mock_tests": [
+        {"title": "NTA National Test Abhyas Official Mock Tests", "url": "https://www.nta.ac.in/abhyas", "provider": "National Testing Agency"}
+      ],
+      "preparation_strategy": "1. Dedicate equal time (2.5 hours each) daily to Physics, Chemistry, and Math. 2. Solve previous 5 years shift papers under strict 3-hour timing. 3. Zero tolerance for negative marking: do not guess uncalculated answers.",
+      "study_plans": {
+        "6_months": [
+          {"period": "Months 1-3", "focus": "Complete entire Class 11 & 12 NCERT Chemistry, H.C. Verma Physics mechanics/electrodynamics, and Math algebra/calculus."},
+          {"period": "Months 4-5", "focus": "Solve last 10 years chapter-wise JEE Main papers (min 30 questions/subject/day)."},
+          {"period": "Month 6", "focus": "Full length mock tests every alternate day, rapid formula sheets, and organic reaction maps."}
+        ]
+      },
+      "application_info": "Online application on jeemain.nta.nic.in. Fee: Rs. 1000 for General/OBC male candidates.",
+      "admit_card": "Released 3-4 days before scheduled exam date on NTA portal.",
+      "result": "NTA Score and All India Ranks published in April Session 2.",
+      "counselling_info": "Joint Seat Allocation Authority (JoSAA) and CSAB for NIT, IIIT, and CFTI admissions."
+    },
+    {
+      "id": "neet-ug",
+      "name": "NEET (UG) — National Eligibility cum Entrance Test",
+      "full_title": "National Eligibility cum Entrance Test (Undergraduate) — NTA",
+      "target_qualifications": ["Intermediate"],
+      "target_branches": ["BIPC"],
+      "overview": "NEET (UG) is India's single national entrance examination conducted by the National Testing Agency (NTA) for admission to undergraduate medical (MBBS), dental (BDS), AYUSH (BAMS, BHMS, BUMS), veterinary (BVSc & AH), and B.Sc Nursing courses across all government and private medical colleges, including AIIMS and JIPMER.",
+      "eligibility": "Passed 10+2 Intermediate with Physics, Chemistry, Biology/Biotechnology, and English as core subjects.",
+      "educational_qualification": "10+2 Intermediate (BiPC stream) with minimum 50% marks in aggregate in PCB (40% for SC/ST/OBC).",
+      "age_criteria": "Minimum 17 years completed on or before 31st December of the year of admission. No upper age limit.",
+      "current_notification": "Annual notification released in February; Pen & Paper offline exam conducted on the first Sunday of May.",
+      "official_website": "https://neet.nta.nic.in",
+      "official_syllabus_url": "https://neet.nta.nic.in/information-bulletin/",
+      "subjects": ["Biology (Botany & Zoology)", "Physics", "Chemistry"],
+      "topic_wise_syllabus": {
+        "Biology": "Diversity in Living World, Structural Organisation in Animals and Plants, Cell Structure and Function, Plant Physiology, Human Physiology, Reproduction, Genetics and Evolution, Biology and Human Welfare, Biotechnology and Its Applications, Ecology and Environment.",
+        "Physics": "Units and Measurements, Kinematics, Laws of Motion, Work, Energy, Power, System of Particles and Rotational Motion, Gravitation, Mechanical Properties of Solids and Fluids, Thermal Properties of Matter, Thermodynamics, Oscillations and Waves, Electrostatics, Current Electricity, Magnetic Effects, Optics, Modern Physics.",
+        "Chemistry": "Chemical Bonding, Thermodynamics, Equilibrium, Solutions, Electrochemistry, Chemical Kinetics, Coordination Compounds, Hydrocarbons, Haloalkanes, Alcohols, Carbonyl Compounds, Amines, Biomolecules."
+      },
+      "what_to_study": "NCERT Biology Class 11 and 12 is 100% compulsory (accounting for 360/720 marks). Chemistry NCERT for Inorganic & Organic. Physics conceptual numerical practice.",
+      "study_materials": [
+        {"title": "NCERT Official Biology Class 11 & 12 PDFs", "type": "Official Textbooks", "url": "https://ncert.nic.in/textbook.php", "source": "NCERT"},
+        {"title": "NTA NEET Official Information Bulletin", "type": "Official Document", "url": "https://neet.nta.nic.in", "source": "National Testing Agency"}
+      ],
+      "recommended_books": [
+        {
+          "book_name": "NCERT Biology Class 11 and Class 12",
+          "author": "NCERT Editorial Board",
+          "subject": "Biology",
+          "level": "Absolute Essential",
+          "purpose": "Direct source of 90-95% questions in NEET Botany and Zoology sections.",
+          "publisher": "NCERT",
+          "edition": "Latest NCERT Edition",
+          "verified_link": "https://ncert.nic.in/textbook.php",
+          "last_verified_date": "2026-09-20"
+        },
+        {
+          "book_name": "Concepts of Physics",
+          "author": "Dr. H.C. Verma",
+          "subject": "Physics",
+          "level": "Conceptual Physics",
+          "purpose": "Mechanics, electrostatics, and optics problem solving.",
+          "publisher": "Bharati Bhawan",
+          "edition": "Latest Edition",
+          "verified_link": "https://bharatibhawan.com",
+          "last_verified_date": "2026-09-20"
+        },
+        {
+          "book_name": "Objective NCERT at your Fingertips — Biology",
+          "author": "MTG Editorial Board",
+          "subject": "Biology Practice",
+          "level": "Question Drill",
+          "purpose": "Line-by-line NCERT extract MCQs and assertion-reason practice.",
+          "publisher": "MTG Learning Media",
+          "edition": "Current NEET Edition",
+          "verified_link": "https://mtg.in",
+          "last_verified_date": "2026-09-20"
+        }
+      ],
+      "previous_year_papers": [
+        {"year": "2024", "title": "NEET UG 2024 Question Paper with Answer Key", "url": "https://neet.nta.nic.in"},
+        {"year": "2023", "title": "NEET UG 2023 Question Paper with Answer Key", "url": "https://neet.nta.nic.in"}
+      ],
+      "mock_tests": [
+        {"title": "National Test Abhyas NEET UG Full Length Mocks", "url": "https://www.nta.ac.in/abhyas", "provider": "NTA"}
+      ],
+      "preparation_strategy": "1. Read NCERT Biology at least 5 times cover-to-cover. 2. Solve 100 physics numericals daily. 3. Target 650+ marks out of 720 for Government Medical Colleges. 4. Weekly OMR-based offline test practice.",
+      "study_plans": {
+        "6_months": [
+          {"period": "Months 1-3", "focus": "Complete syllabus coverage: NCERT Biology (1 chapter/day), Physical Chemistry formulas, Physics Kinematics and Electromagnetism."},
+          {"period": "Months 4-5", "focus": "Previous 15 years NEET papers, error tracking diary, weak subject targeted revision."},
+          {"period": "Month 6", "focus": "Daily full-length 2:00 PM to 5:20 PM mock tests matching real exam timing + OMR bubbling practice."}
+        ]
+      },
+      "application_info": "Online application at neet.nta.nic.in. Fee: General Rs. 1700, OBC Rs. 1600, SC/ST Rs. 1000.",
+      "admit_card": "Downloadable 1 week before exam from NTA portal.",
+      "result": "Scorecard and All India Ranks released in June.",
+      "counselling_info": "MCC (Medical Counselling Committee) for 15% All India Quota, and State Health Directorates for 85% State Quota seats."
+    },
+    {
+      "id": "ap-ecet",
+      "name": "AP ECET (Engineering Common Entrance Test)",
+      "full_title": "Andhra Pradesh Engineering Common Entrance Test (Lateral Entry)",
+      "target_qualifications": ["Diploma"],
+      "target_branches": ["ALL_DIPLOMA", "CSE", "ECE", "EEE", "MECHANICAL", "CIVIL"],
+      "overview": "AP ECET is conducted by the Andhra Pradesh State Council of Higher Education (APSCHE) for Diploma holders and B.Sc (Mathematics) graduates for direct lateral entry admission into the 2nd year (3rd semester) of regular B.Tech / B.E. programs in university and private engineering colleges across Andhra Pradesh.",
+      "eligibility": "Diploma in Engineering and Technology from the State Board of Technical Education and Training (SBTET) with at least 45% marks (40% for reserved categories).",
+      "educational_qualification": "3-Year State Board Technical Board Diploma in relevant branch or B.Sc with Mathematics.",
+      "age_criteria": "No upper age limit.",
+      "current_notification": "Annual notification issued in March; exam conducted in May.",
+      "official_website": "https://cets.apsche.ap.gov.in",
+      "official_syllabus_url": "https://cets.apsche.ap.gov.in/ECET/ECET/ECET_HomePage.aspx",
+      "subjects": [
+        "Mathematics (50 Marks)",
+        "Physics (25 Marks)",
+        "Chemistry (25 Marks)",
+        "Selected Engineering Discipline Branch Subject (100 Marks)"
+      ],
+      "topic_wise_syllabus": {
+        "Engineering Mathematics": "Matrices, Partial Fractions, Trigonometry, Analytical Geometry, Differential Calculus, Integration and its applications, Differential Equations, Laplace Transforms, Fourier Series.",
+        "Physics": "Units and Dimensions, Elements of vectors, Kinematics and Friction, Work, Power and Energy, Simple Harmonic Motion, Heat and Thermodynamics, Sound, Electricity and Magnetism, Modern Physics.",
+        "Chemistry": "Atomic Structure, Chemical Bonding, Solutions, Acids and Bases, Electrochemistry, Corrosion, Water Technology, Polymers, Fuels, Environmental Chemistry.",
+        "Branch Engineering": "Covers all 3-year SBTET core subjects in the candidate's respective diploma stream (e.g. Data Structures & OS for CSE, Strength of Materials & Thermodynamics for Mechanical, Circuit Theory & Power Systems for EEE, Structural Engineering & Surveying for Civil)."
+      },
+      "what_to_study": "100 marks out of 200 come from your Diploma Branch subjects! Focus heavily on 2nd and 3rd year technical board subjects, followed by Engineering Mathematics (50 marks).",
+      "study_materials": [
+        {"title": "APSCHE AP ECET Official Syllabus Document", "type": "Official PDF", "url": "https://cets.apsche.ap.gov.in", "source": "APSCHE"},
+        {"title": "SBTET Diploma Course Blueprints & Curriculum", "type": "Official Curriculum", "url": "https://sbtet.ap.gov.in", "source": "SBTET AP"}
+      ],
+      "recommended_books": [
+        {
+          "book_name": "SBTET State Board Diploma Textbooks (Year 1 to 3)",
+          "author": "SBTET Curriculum Committee",
+          "subject": "Core Engineering Discipline",
+          "level": "Mandatory Foundation",
+          "purpose": "Exact syllabus alignment for the 100-mark technical portion.",
+          "publisher": "SBTET Andhra Pradesh",
+          "edition": "Curriculum 20 (C-20 / C-23)",
+          "verified_link": "https://sbtet.ap.gov.in",
+          "last_verified_date": "2026-09-20"
+        },
+        {
+          "book_name": "Higher Engineering Mathematics",
+          "author": "Dr. B.S. Grewal",
+          "subject": "Engineering Mathematics",
+          "level": "Problem Solving",
+          "purpose": "Calculus, differential equations, matrices, and Laplace transforms for ECET Math (50 Marks).",
+          "publisher": "Khanna Publishers",
+          "edition": "44th Edition",
+          "verified_link": "https://khannapublishers.in",
+          "last_verified_date": "2026-09-20"
+        }
+      ],
+      "previous_year_papers": [
+        {"year": "2024", "title": "AP ECET 2024 Master Question Papers and Preliminary Keys", "url": "https://cets.apsche.ap.gov.in"},
+        {"year": "2023", "title": "AP ECET 2023 Branch Question Papers", "url": "https://cets.apsche.ap.gov.in"}
+      ],
+      "mock_tests": [
+        {"title": "APSCHE Official AP ECET Online Mock Examination", "url": "https://cets.apsche.ap.gov.in", "provider": "APSCHE"}
+      ],
+      "preparation_strategy": "1. Ensure 45+ marks out of 50 in Engineering Mathematics. 2. Thoroughly revise core branch notes from C-20 syllabus. 3. Target top 100 state rank to secure tuition-fee reimbursement and direct seat in Andhra University / JNTU colleges.",
+      "study_plans": {
+        "3_months": [
+          {"month": "Month 1", "focus": "Complete Engineering Mathematics (Matrices, Differential Calculus, Integration) + Physics & Chemistry concepts."},
+          {"month": "Month 2", "focus": "Branch Engineering Subject deep review: 2nd year and 3rd year technical subjects with previous ECET question banks."},
+          {"month": "Month 3", "focus": "5 Full-length 200-mark mock tests, speed drill on formula shortcuts, and web option counselling research."}
+        ]
+      },
+      "application_info": "Online application on cets.apsche.ap.gov.in. Registration fee: Rs. 600 (OC), Rs. 550 (BC), Rs. 500 (SC/ST).",
+      "admit_card": "Available 10 days before exam on APSCHE portal.",
+      "result": "Ranks published within 2 weeks of examination.",
+      "counselling_info": "APSCHE Web Counselling for lateral entry seat allotment to 2nd year B.Tech."
+    },
+    {
+      "id": "ap-polycet",
+      "name": "AP POLYCET (Polytechnic Common Entrance Test)",
+      "full_title": "Andhra Pradesh Polytechnic Common Entrance Test",
+      "target_qualifications": ["10th"],
+      "target_branches": ["NONE"],
+      "overview": "AP POLYCET is conducted by the State Board of Technical Education and Training (SBTET), Andhra Pradesh for admission into 3-Year Diploma courses in Engineering & Non-Engineering trades offered by Government, Aided, and Private unaided polytechnics across Andhra Pradesh.",
+      "eligibility": "Passed or appeared for SSC (Class 10th) examination conducted by Board of Secondary Education, Andhra Pradesh or equivalent with Mathematics as one of the subjects.",
+      "educational_qualification": "Class 10th (SSC) with minimum 35% marks.",
+      "age_criteria": "No age restriction.",
+      "current_notification": "Notification published annually in February/March; offline pen-and-paper exam conducted in April/May.",
+      "official_website": "https://polycetap.nic.in",
+      "official_syllabus_url": "https://polycetap.nic.in",
+      "subjects": ["Mathematics (50 Marks)", "Physics (40 Marks)", "Chemistry (30 Marks)"],
+      "topic_wise_syllabus": {
+        "Mathematics": "Real Numbers, Sets, Polynomials, Pair of Linear Equations in Two Variables, Quadratic Equations, Progressions, Coordinate Geometry, Similar Triangles, Tangents and Secants to a Circle, Mensuration, Trigonometry, Applications of Trigonometry, Probability, Statistics (Class 10th AP State Syllabus).",
+        "Physics": "Heat, Chemical Reactions and Equations, Reflection of Light at Curved Surfaces, Refraction of Light at Curved Surfaces, Human Eye and Colourful World, Structure of Atom, Classification of Elements, Chemical Bonding, Electric Current, Electromagnetism, Principles of Metallurgy, Carbon and its Compounds."
+      },
+      "what_to_study": "Class 10th State Board Mathematics and Physical Science textbooks cover 100% of the AP POLYCET question paper.",
+      "study_materials": [
+        {"title": "AP Board Class 10th Mathematics Textbook", "type": "Official Textbook", "url": "https://bse.ap.gov.in", "source": "BSEAP"},
+        {"title": "AP Board Class 10th Physical Science Textbook", "type": "Official Textbook", "url": "https://bse.ap.gov.in", "source": "BSEAP"}
+      ],
+      "recommended_books": [
+        {
+          "book_name": "Class 10th Mathematics Textbook",
+          "author": "State Council of Educational Research and Training (SCERT) AP",
+          "subject": "Mathematics",
+          "level": "Core Board Textbook",
+          "purpose": "Concept definitions and practice exercises matching POLYCET Math (50 Marks).",
+          "publisher": "Government of Andhra Pradesh",
+          "edition": "Latest State Curriculum",
+          "verified_link": "https://scert.ap.gov.in",
+          "last_verified_date": "2026-09-20"
+        },
+        {
+          "book_name": "Class 10th Physical Science",
+          "author": "SCERT Andhra Pradesh",
+          "subject": "Physics and Chemistry",
+          "level": "Core Board Textbook",
+          "purpose": "Ray optics, electricity, atomic structure, and chemical reactions for 70 marks.",
+          "publisher": "Government of Andhra Pradesh",
+          "edition": "Latest State Curriculum",
+          "verified_link": "https://scert.ap.gov.in",
+          "last_verified_date": "2026-09-20"
+        }
+      ],
+      "previous_year_papers": [
+        {"year": "2024", "title": "AP POLYCET 2024 Question Paper with Official Key", "url": "https://polycetap.nic.in"},
+        {"year": "2023", "title": "AP POLYCET 2023 Question Paper with Official Key", "url": "https://polycetap.nic.in"}
+      ],
+      "mock_tests": [
+        {"title": "Official Model Question Paper", "url": "https://polycetap.nic.in", "provider": "SBTET AP"}
+      ],
+      "preparation_strategy": "1. Solve every exercise in the Class 10 textbook without using a calculator. 2. Practice OMR bubble filling for 120 questions in 2 hours. 3. Target 100+ marks for Government Polytechnic colleges.",
+      "study_plans": {
+        "30_days": [
+          {"week": "Week 1", "focus": "Class 10 Mathematics: Real Numbers, Polynomials, Linear Equations, Trigonometry."},
+          {"week": "Week 2", "focus": "Class 10 Physical Science: Light, Heat, Electricity, Structure of Atom."},
+          {"week": "Week 3", "focus": "Class 10 Mathematics: Coordinate Geometry, Mensuration, Statistics, Probability."},
+          {"week": "Week 4", "focus": "Solve last 5 years POLYCET papers + daily time-bound mock practice."}
+        ]
+      },
+      "application_info": "Online application at polycetap.nic.in or APOnline / MeeSeva centres. Fee: Rs. 400.",
+      "admit_card": "Generated instantly or downloaded 1 week before exam.",
+      "result": "Scorecard and State Rank released in May.",
+      "counselling_info": "SBTET Web Counselling for Polytechnic seat allotment."
+    },
+    {
+      "id": "upsc-nda",
+      "name": "UPSC NDA & NA Examination",
+      "full_title": "National Defence Academy & Naval Academy Examination — UPSC",
+      "target_qualifications": ["Intermediate"],
+      "target_branches": ["MPC", "ALL_INTERMEDIATE"],
+      "overview": "Conducted twice a year by the Union Public Service Commission (UPSC) for recruiting candidates as commissioned officers into the Army, Navy, and Air Force wings of the National Defence Academy (NDA), Khadakwasla, Pune, and the 10+2 Cadet Entry Scheme of the Indian Naval Academy (INA), Ezhimala.",
+      "eligibility": "Unmarried male and female candidates who have passed or are appearing in Class 12th. For Air Force and Navy wings: Physics and Mathematics are compulsory.",
+      "educational_qualification": "10+2 Intermediate (Army wing: any stream; Navy & Air Force wings: MPC stream).",
+      "age_criteria": "Between 16.5 and 19.5 years as of course commencement date.",
+      "current_notification": "UPSC NDA-I (April exam, January notification) and NDA-II (September exam, May notification) on upsc.gov.in.",
+      "official_website": "https://upsc.gov.in",
+      "official_syllabus_url": "https://upsc.gov.in/examinations/active-exams",
+      "subjects": [
+        "Mathematics (Paper I - 300 Marks)",
+        "General Ability Test (GAT - Paper II - 600 Marks)"
+      ],
+      "topic_wise_syllabus": {
+        "Mathematics": "Algebra, Matrices and Determinants, Trigonometry, Analytical Geometry of 2D and 3D, Differential Calculus, Integral Calculus and Differential Equations, Vector Algebra, Statistics and Probability.",
+        "General Ability Test": "Part A - English (200 Marks: Grammar, vocabulary, comprehension); Part B - General Knowledge (400 Marks: Physics, Chemistry, General Science, History & Freedom Movement, Geography, Current Events)."
+      },
+      "what_to_study": "Class 11 & 12 Mathematics (focus on speed shortcuts), English grammar & vocabulary, Indian History, Geography, and current national/international defence affairs.",
+      "study_materials": [
+        {"title": "UPSC Official NDA Examination Syllabus and Scheme", "type": "Official PDF", "url": "https://upsc.gov.in", "source": "UPSC"},
+        {"title": "Join Indian Army Official Officer Entry Guide", "type": "Official Guide", "url": "https://joinindianarmy.nic.in", "source": "Indian Army"}
+      ],
+      "recommended_books": [
+        {
+          "book_name": "Pathfinder for NDA & NA Entrance Examination",
+          "author": "Sanjeev Joon / Arihant Editorial",
+          "subject": "Math & GAT",
+          "level": "All-in-one Preparation",
+          "purpose": "Comprehensive theory and solved exercises covering both Paper 1 and Paper 2.",
+          "publisher": "Arihant Publications",
+          "edition": "Latest UPSC Edition",
+          "verified_link": "https://arihantbooks.com",
+          "last_verified_date": "2026-09-20"
+        },
+        {
+          "book_name": "Word Power Made Easy",
+          "author": "Norman Lewis",
+          "subject": "English Vocabulary",
+          "level": "Foundation",
+          "purpose": "Vocabulary expansion for NDA GAT Part A (English 200 Marks).",
+          "publisher": "Penguin Random House",
+          "edition": "Revised Edition",
+          "verified_link": "https://www.penguinrandomhouse.com",
+          "last_verified_date": "2026-09-20"
+        }
+      ],
+      "previous_year_papers": [
+        {"year": "2024", "title": "UPSC NDA I & II 2024 Question Papers", "url": "https://upsc.gov.in/examinations/previous-question-papers"},
+        {"year": "2023", "title": "UPSC NDA I & II 2023 Question Papers", "url": "https://upsc.gov.in/examinations/previous-question-papers"}
+      ],
+      "mock_tests": [
+        {"title": "UPSC Previous Year Online Practice Papers", "url": "https://upsc.gov.in", "provider": "UPSC"}
+      ],
+      "preparation_strategy": "1. Clear sectional cutoff in Mathematics (min 25-30%). 2. Score maximum marks in GAT English and Modern Indian History. 3. Physical fitness: run 2.4 km in 15 mins, pushups, sit-ups for SSB readiness.",
+      "study_plans": {
+        "3_months": [
+          {"month": "Month 1", "focus": "Complete 11th & 12th NDA Math (Trigonometry, Calculus, Matrices) + Daily English grammar rules."},
+          {"month": "Month 2", "focus": "General Knowledge: Modern Indian History, Indian Geography, Physics basics, and 6 months current affairs."},
+          {"month": "Month 3", "focus": "Solve last 10 NDA papers under real exam timing + OMR bubbling practice."}
+        ]
+      },
+      "application_info": "Apply on upsconline.nic.in via OTR (One Time Registration). Fee: Rs. 100 (Female/SC/ST candidates exempt).",
+      "admit_card": "Released 3 weeks before exam on upsc.gov.in.",
+      "result": "Written results declared in 45 days. Qualified candidates appear for 5-Day SSB Interview.",
+      "counselling_info": "SSB Interview (Service Selection Board) followed by Medical Examination and Final All India Merit List."
+    },
+    {
+      "id": "ssc-je",
+      "name": "SSC Junior Engineer (JE)",
+      "full_title": "Staff Selection Commission Junior Engineer (Civil, Mechanical & Electrical)",
+      "target_qualifications": ["Diploma", "B.Tech"],
+      "target_branches": ["CIVIL", "MECHANICAL", "EEE", "ECE"],
+      "overview": "SSC JE is conducted annually by the Staff Selection Commission (SSC) for recruiting Group 'B' (Non-Gazetted) Junior Engineers in Central Government organisations such as CPWD, Military Engineer Services (MES), Central Water Commission (CWC), Farakka Barrage Project, and Border Roads Organisation (BRO).",
+      "eligibility": "Diploma or Degree in Civil, Mechanical, or Electrical Engineering from a recognized University or Institute.",
+      "educational_qualification": "3-Year Diploma or 4-Year B.Tech in Civil, Electrical, or Mechanical Engineering.",
+      "age_criteria": "Up to 30 years (up to 32 years for CWC & CPWD) with government age relaxations for OBC/SC/ST/PwD.",
+      "current_notification": "Annual notification published on ssc.gov.in; Computer Based Exam Paper 1 held in May/June, Paper 2 in October.",
+      "official_website": "https://ssc.gov.in",
+      "official_syllabus_url": "https://ssc.gov.in",
+      "subjects": [
+        "General Intelligence & Reasoning (50 Marks)",
+        "General Awareness (50 Marks)",
+        "General Engineering (Civil / Electrical / Mechanical - 100 Marks)"
+      ],
+      "topic_wise_syllabus": {
+        "General Intelligence & Reasoning": "Analogies, similarities and differences, spatial visualization, problem solving, analysis, judgment, decision making, visual memory, discriminating observation, relationship concepts, arithmetical reasoning, verbal and figure classification, arithmetical number series.",
+        "General Awareness": "Current Events, India and its neighboring countries, History, Culture, Geography, Economic Scene, General Polity, Scientific Research.",
+        "Civil Engineering": "Building Materials, Estimating, Costing and Valuation, Surveying, Soil Mechanics, Hydraulics, Irrigation Engineering, Transportation Engineering, Environmental Engineering, Structural Engineering, Concrete Technology, RCC Design, Steel Design.",
+        "Mechanical Engineering": "Theory of Machines, Machine Design, Engineering Mechanics, Strength of Materials, Thermal Engineering, Fluid Mechanics, Hydraulic Turbines, Centrifugal Pumps, Manufacturing Engineering.",
+        "Electrical Engineering": "Basic concepts, Circuit law, Magnetic Circuit, AC Fundamentals, Measurement and measuring instruments, Electrical Machines, Synchronous Machines, Generation, Transmission and Distribution, Estimation and costing, Utilization of Electrical Energy, Basic Electronics."
+      },
+      "what_to_study": "100 marks technical engineering + 50 marks Reasoning. High score in technical domain and reasoning guarantees Paper-1 qualification.",
+      "study_materials": [
+        {"title": "SSC Official JE Notification & Syllabus Gazette", "type": "Official PDF", "url": "https://ssc.gov.in", "source": "Staff Selection Commission"}
+      ],
+      "recommended_books": [
+        {
+          "book_name": "SSC JE Civil / Mechanical / Electrical Previous Years Solved Papers",
+          "author": "Made Easy Editorial Board",
+          "subject": "Technical & Non-Technical",
+          "level": "Solved Papers",
+          "purpose": "Chapter-wise detailed solutions for all SSC JE papers from 2007 to 2024.",
+          "publisher": "Made Easy Publications",
+          "edition": "Latest Edition",
+          "verified_link": "https://madeeasypublications.org",
+          "last_verified_date": "2026-09-20"
+        },
+        {
+          "book_name": "A Modern Approach to Verbal & Non-Verbal Reasoning",
+          "author": "Dr. R.S. Aggarwal",
+          "subject": "Reasoning (50 Marks)",
+          "level": "Core Practice",
+          "purpose": "Syllogisms, series, coding-decoding, and pattern recognition for SSC JE.",
+          "publisher": "S. Chand Publishing",
+          "edition": "Revised Edition",
+          "verified_link": "https://www.schandpublishing.com",
+          "last_verified_date": "2026-09-20"
+        }
+      ],
+      "previous_year_papers": [
+        {"year": "2024", "title": "SSC JE 2024 Official CBT Question Papers", "url": "https://ssc.gov.in"},
+        {"year": "2023", "title": "SSC JE 2023 Official CBT Question Papers", "url": "https://ssc.gov.in"}
+      ],
+      "mock_tests": [
+        {"title": "SSC Official CBT Mock Practice Module", "url": "https://ssc.gov.in", "provider": "SSC"}
+      ],
+      "preparation_strategy": "1. Target 45/50 in Reasoning section. 2. Thoroughly master standard formula sheets for core discipline. 3. Practice negative-marking control: 0.25 negative marks per wrong answer.",
+      "study_plans": {
+        "3_months": [
+          {"month": "Month 1", "focus": "Complete Core Engineering 1st half + Daily 1 hour Reasoning drill."},
+          {"month": "Month 2", "focus": "Complete Core Engineering 2nd half + Static GK and Indian Geography."},
+          {"month": "Month 3", "focus": "Previous 10 years SSC JE shift papers + 10 full length 200-question CBT mocks."}
+        ]
+      },
+      "application_info": "Online application at ssc.gov.in. Application fee: Rs. 100 (Women/SC/ST/PwD/Ex-Servicemen exempt).",
+      "admit_card": "Downloadable from respective regional SSC websites 1 week before exam.",
+      "result": "Paper 1 cutoffs published in PDF format; qualified candidates appear for Paper 2 Computer Based Exam.",
+      "counselling_info": "Document Verification and Department Allocation based on merit and candidate preferences."
+    },
+    {
+      "id": "ugc-net",
+      "name": "UGC NET (National Eligibility Test)",
+      "full_title": "University Grants Commission National Eligibility Test — NTA",
+      "target_qualifications": ["Postgraduate"],
+      "target_branches": ["ALL"],
+      "overview": "UGC NET is conducted biannually (June and December cycles) by the National Testing Agency on behalf of the University Grants Commission for determining the eligibility of Indian nationals for 'Assistant Professor' as well as 'Junior Research Fellowship (JRF) and Assistant Professor' in Indian universities and colleges.",
+      "eligibility": "Master's Degree or equivalent with at least 55% marks (50% for OBC-NCL, SC, ST, PwD, Third gender). Candidates in final year of Master's degree are also eligible.",
+      "educational_qualification": "Postgraduate Degree (M.Tech, M.Sc, M.Com, MA, MBA, MCA) in relevant discipline.",
+      "age_criteria": "For JRF: Maximum 30 years (with up to 5 years relaxation for reserved categories and women). For Assistant Professor: No upper age limit.",
+      "current_notification": "Notifications released in April (June cycle) and October (December cycle) on ugcnet.nta.ac.in.",
+      "official_website": "https://ugcnet.nta.ac.in",
+      "official_syllabus_url": "https://www.ugcnetonline.in/syllabus-new.php",
+      "subjects": [
+        "Paper I: General Paper on Teaching and Research Aptitude (50 Questions - 100 Marks)",
+        "Paper II: Subject-Specific Core (100 Questions - 200 Marks)"
+      ],
+      "topic_wise_syllabus": {
+        "Paper I": "Teaching Aptitude, Research Aptitude, Reading Comprehension, Communication, Mathematical Reasoning and Aptitude, Logical Reasoning, Data Interpretation, Information and Communication Technology (ICT), People, Development and Environment, Higher Education System.",
+        "Paper II": "In-depth specialization syllabus based on Master's discipline (e.g. Computer Science and Applications, Management, Commerce, Economics, English, Physical Sciences)."
+      },
+      "what_to_study": "Master Paper 1 (target 70+ marks out of 100) using previous papers; revise core Master's syllabus thoroughly for Paper 2.",
+      "study_materials": [
+        {"title": "UGC Official Subject-Wise Syllabus PDFs (All 83 Subjects)", "type": "Official PDF", "url": "https://www.ugcnetonline.in/syllabus-new.php", "source": "University Grants Commission"}
+      ],
+      "recommended_books": [
+        {
+          "book_name": "UGC NET/JRF/SET Teaching and Research Aptitude (General Paper-I)",
+          "author": "K.V.S. Madaan",
+          "subject": "Paper 1 (Teaching & Research Aptitude)",
+          "level": "Core Guide",
+          "purpose": "Comprehensive theory, pedagogy concepts, ICT, and environment for Paper 1.",
+          "publisher": "Pearson Education",
+          "edition": "7th Edition",
+          "verified_link": "https://in.pearson.com",
+          "last_verified_date": "2026-09-20"
+        }
+      ],
+      "previous_year_papers": [
+        {"year": "2024", "title": "UGC NET June & December 2024 Official Papers", "url": "https://ugcnet.nta.ac.in"}
+      ],
+      "mock_tests": [
+        {"title": "NTA National Test Abhyas UGC NET Mock Modules", "url": "https://www.nta.ac.in/abhyas", "provider": "NTA"}
+      ],
+      "preparation_strategy": "1. Solve all Paper 1 questions from 2018 to 2024. 2. Connect research terminology with practical thesis methodology. 3. Target JRF cutoff (top 1% merit) for monthly fellowship of ~Rs. 37,000 + HRA.",
+      "study_plans": {
+        "3_months": [
+          {"month": "Month 1", "focus": "Complete Paper 1 all 10 units + 1 hour daily Paper 2 core theory."},
+          {"month": "Month 2", "focus": "Paper 2 unit-wise deep study with previous year question tagging."},
+          {"month": "Month 3", "focus": "Full length 3-hour mock tests combining Paper 1 and Paper 2 without break."}
+        ]
+      },
+      "application_info": "Online application on ugcnet.nta.ac.in. Fee: General Rs. 1150, Gen-EWS/OBC Rs. 600, SC/ST/PwD Rs. 325.",
+      "admit_card": "Downloadable 4 days before exam date on NTA website.",
+      "result": "Scorecards, Percentiles, and e-Certificates published on ugcnet.nta.ac.in.",
+      "counselling_info": "Direct eligibility for Assistant Professor recruitment in central/state universities and JRF fellowship enrollment."
+    }
+  ]
+}

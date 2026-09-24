@@ -391,6 +391,8 @@ document.addEventListener('DOMContentLoaded', () => {
   try { loadAllDatasets(); } catch (e) { console.error('Datasets load error:', e); }
   try { renderSavedRoadmaps(); } catch (e) { console.error('Saved roadmaps error:', e); }
   try { initCareerRadar(); } catch (e) { console.error('Radar init error:', e); }
+  try { checkAuthStatus(); } catch (e) { console.error('Auth status error:', e); }
+  try { checkPushBanner(); } catch (e) { console.error('Push banner error:', e); }
   try { refreshIcons(); } catch (e) { console.error('Icons refresh error:', e); }
 
   // Close menus on outside click
@@ -406,6 +408,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const bellDrawer = document.getElementById('radar-alerts-drawer');
         if (bellDrawer && !bellDrawer.contains(e.target) && !bellBtn?.contains(e.target)) {
           bellDrawer.classList.add('hidden');
+        }
+        const userChipBtn = document.getElementById('user-chip-btn');
+        const userDropdown = document.getElementById('user-dropdown-panel');
+        if (userDropdown && !userDropdown.contains(e.target) && !userChipBtn?.contains(e.target)) {
+          userDropdown.classList.add('hidden');
         }
       } catch (err) {
         console.warn('Click outside handler error:', err);
@@ -595,6 +602,7 @@ function navigateToSection(sectionId) {
     const readableTitles = {
       'career-paths': 'Career Paths & Qualification Roadmaps',
       'entrance-exams': 'Entrance Exams Database',
+      'exam-prep': 'Exam Preparation Hub (24-Point Blueprints)',
       'govt-jobs': 'Government Exams for Engineers',
       'defence': 'Defence Forces Roadmaps',
       'colleges': 'Colleges & Courses Explorer',
@@ -608,6 +616,10 @@ function navigateToSection(sectionId) {
       'about': 'About CareerCompass'
     };
     breadcrumbTitle.innerText = readableTitles[sectionId] || sectionId;
+  }
+
+  if (sectionId === 'exam-prep') {
+    loadExamPrepHub();
   }
 
   // Scroll to top
@@ -2130,10 +2142,10 @@ function toggleRadarDrawer() {
 
 async function loadRadarAlerts() {
   const profile = getStoredRadarProfile();
-  if (!profile || !profile.profile_id) return;
+  const url = (profile && profile.profile_id) ? `/api/radar/alerts?id=${encodeURIComponent(profile.profile_id)}` : '/api/radar/alerts';
 
   try {
-    const res = await fetch(`/api/radar/alerts?id=${profile.profile_id}`);
+    const res = await fetch(url);
     const data = await res.json();
     if (data.status === 'success') {
       renderRadarAlerts(data.alerts || [], data.unread_count || 0);
@@ -2190,13 +2202,11 @@ function renderRadarAlerts(alerts, unreadCount) {
 
 async function markAllAlertsRead() {
   const profile = getStoredRadarProfile();
-  if (!profile || !profile.profile_id) return;
-
   try {
     await fetch('/api/radar/mark-read', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ profile_id: profile.profile_id })
+      body: JSON.stringify({ profile_id: profile?.profile_id })
     });
     loadRadarAlerts();
   } catch (err) {
@@ -3353,5 +3363,984 @@ async function loadAndRenderComparison(scenarioId) {
     `;
   } catch (err) {
     container.innerHTML = '<p>Unable to load comparison.</p>';
+  }
+}
+
+// ==========================================
+// 14. AUTHENTICATION & USER SESSIONS
+// ==========================================
+let currentUser = null;
+
+async function checkAuthStatus() {
+  try {
+    const res = await fetch('/api/auth/me');
+    const data = await res.json();
+    if (data.authenticated && data.user) {
+      currentUser = data.user;
+      renderUserAuthUI(data.user);
+      if (data.profile) {
+        setStoredRadarProfile(data.profile);
+        updateRadarProfileChip(data.profile);
+      }
+      if (typeof data.unread_notifications === 'number') {
+        const badge = document.getElementById('radar-unread-badge');
+        const drawerCount = document.getElementById('drawer-unread-count');
+        if (badge) {
+          if (data.unread_notifications > 0) {
+            badge.textContent = data.unread_notifications > 9 ? '9+' : data.unread_notifications;
+            badge.classList.remove('hidden');
+          } else {
+            badge.classList.add('hidden');
+          }
+        }
+        if (drawerCount) {
+          drawerCount.textContent = `${data.unread_notifications} New`;
+        }
+      }
+    } else {
+      currentUser = null;
+      renderGuestAuthUI();
+    }
+  } catch (err) {
+    console.warn('Auth check fallback to guest:', err);
+    currentUser = null;
+    renderGuestAuthUI();
+  }
+}
+
+function renderUserAuthUI(user) {
+  const loginBtn = document.getElementById('auth-login-btn');
+  const userMenu = document.getElementById('user-profile-menu');
+  const avatarInitials = document.getElementById('user-avatar-initials');
+  const displayName = document.getElementById('user-display-name');
+  const dropdownName = document.getElementById('dropdown-user-name');
+  const dropdownEmail = document.getElementById('dropdown-user-email');
+
+  if (loginBtn) loginBtn.classList.add('hidden');
+  if (userMenu) userMenu.classList.remove('hidden');
+
+  const rawName = user.full_name || user.name || 'Student';
+  const names = rawName.trim().split(' ');
+  const initials = names.length > 1 ? (names[0][0] + names[names.length - 1][0]).toUpperCase() : names[0].substring(0, 2).toUpperCase();
+
+  if (avatarInitials) avatarInitials.textContent = initials;
+  if (displayName) displayName.textContent = rawName.split(' ')[0] || 'Account';
+  if (dropdownName) dropdownName.textContent = rawName;
+  if (dropdownEmail) dropdownEmail.textContent = user.email || '';
+}
+
+function renderGuestAuthUI() {
+  const loginBtn = document.getElementById('auth-login-btn');
+  const userMenu = document.getElementById('user-profile-menu');
+  if (loginBtn) loginBtn.classList.remove('hidden');
+  if (userMenu) userMenu.classList.add('hidden');
+}
+
+function toggleUserDropdown() {
+  const panel = document.getElementById('user-dropdown-panel');
+  if (panel) panel.classList.toggle('hidden');
+}
+
+function openAuthModal(initialTab = 'login') {
+  switchAuthTab(initialTab);
+  const modal = document.getElementById('auth-modal');
+  if (modal) modal.classList.remove('hidden');
+  refreshIcons();
+}
+
+function closeAuthModal(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('close-btn')) return;
+  const modal = document.getElementById('auth-modal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function switchAuthTab(tab) {
+  const loginForm = document.getElementById('form-auth-login');
+  const signupForm = document.getElementById('form-auth-signup');
+  const forgotForm = document.getElementById('form-auth-forgot');
+  const loginTab = document.getElementById('auth-tab-login');
+  const signupTab = document.getElementById('auth-tab-signup');
+  const forgotTab = document.getElementById('auth-tab-forgot');
+
+  [loginForm, signupForm, forgotForm].forEach(f => f && f.classList.add('hidden'));
+  [loginTab, signupTab, forgotTab].forEach(t => t && t.classList.remove('active'));
+
+  if (tab === 'signup') {
+    if (signupForm) signupForm.classList.remove('hidden');
+    if (signupTab) signupTab.classList.add('active');
+  } else if (tab === 'forgot') {
+    if (forgotForm) forgotForm.classList.remove('hidden');
+    if (forgotTab) {
+      forgotTab.classList.remove('hidden');
+      forgotTab.classList.add('active');
+    }
+  } else {
+    if (loginForm) loginForm.classList.remove('hidden');
+    if (loginTab) loginTab.classList.add('active');
+  }
+}
+
+function handleSignupQualChange() {
+  const qual = document.getElementById('signup-qual')?.value || 'B.Tech';
+  const branchSelect = document.getElementById('signup-branch');
+  if (!branchSelect) return;
+  const optData = window.APP_OPTIONS || APP_OPTIONS;
+  const branches = (optData.branches_by_qual && optData.branches_by_qual[qual]) || optData.btech_branches || ['CSE'];
+  branchSelect.innerHTML = branches.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
+}
+
+async function handleAuthLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('login-email')?.value?.trim();
+  const password = document.getElementById('login-password')?.value;
+  const errBox = document.getElementById('login-error-msg');
+  const submitBtn = document.getElementById('btn-login-submit');
+
+  if (errBox) errBox.classList.add('hidden');
+  if (submitBtn) submitBtn.disabled = true;
+
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'success') {
+      currentUser = data.user;
+      renderUserAuthUI(data.user);
+      closeAuthModal();
+      await checkAuthStatus();
+      loadRadarAlerts();
+    } else {
+      if (errBox) {
+        errBox.textContent = data.message || 'Invalid email or password.';
+        errBox.classList.remove('hidden');
+      }
+    }
+  } catch (err) {
+    if (errBox) {
+      errBox.textContent = 'Server communication error. Please try again.';
+      errBox.classList.remove('hidden');
+    }
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+  }
+}
+
+async function handleAuthSignup(e) {
+  e.preventDefault();
+  const fullName = document.getElementById('signup-name')?.value?.trim();
+  const email = document.getElementById('signup-email')?.value?.trim();
+  const qual = document.getElementById('signup-qual')?.value;
+  const branch = document.getElementById('signup-branch')?.value;
+  const password = document.getElementById('signup-password')?.value;
+  const confirmPassword = document.getElementById('signup-password-confirm')?.value;
+  const errBox = document.getElementById('signup-error-msg');
+  const submitBtn = document.getElementById('btn-signup-submit');
+
+  if (password !== confirmPassword) {
+    if (errBox) {
+      errBox.textContent = 'Passwords do not match.';
+      errBox.classList.remove('hidden');
+    }
+    return;
+  }
+
+  if (password.length < 8) {
+    if (errBox) {
+      errBox.textContent = 'Password must be at least 8 characters long.';
+      errBox.classList.remove('hidden');
+    }
+    return;
+  }
+
+  if (errBox) errBox.classList.add('hidden');
+  if (submitBtn) submitBtn.disabled = true;
+
+  try {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        full_name: fullName,
+        email: email,
+        password: password,
+        qualification: qual,
+        stream_or_branch: branch
+      })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'success') {
+      currentUser = data.user;
+      renderUserAuthUI(data.user);
+      closeAuthModal();
+      await checkAuthStatus();
+      loadRadarAlerts();
+    } else {
+      if (errBox) {
+        errBox.textContent = data.message || 'Signup failed. Please try a different email.';
+        errBox.classList.remove('hidden');
+      }
+    }
+  } catch (err) {
+    if (errBox) {
+      errBox.textContent = 'Network or server connection failed.';
+      errBox.classList.remove('hidden');
+    }
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+  }
+}
+
+async function handleAuthForgot(e) {
+  e.preventDefault();
+  const email = document.getElementById('forgot-email')?.value?.trim();
+  const statusBox = document.getElementById('forgot-status-msg');
+  const submitBtn = document.getElementById('btn-forgot-submit');
+
+  if (submitBtn) submitBtn.disabled = true;
+
+  try {
+    const res = await fetch('/api/auth/forgot-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (statusBox) {
+      statusBox.textContent = data.message || 'If an account exists, reset instructions have been generated.';
+      statusBox.style.background = '#ecfdf5';
+      statusBox.style.color = '#065f46';
+      statusBox.style.border = '1px solid #a7f3d0';
+      statusBox.classList.remove('hidden');
+    }
+  } catch (err) {
+    if (statusBox) {
+      statusBox.textContent = 'Unable to send reset request.';
+      statusBox.style.background = '#fef2f2';
+      statusBox.style.color = '#b91c1c';
+      statusBox.classList.remove('hidden');
+    }
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+  }
+}
+
+async function logoutUser() {
+  try {
+    await fetch('/api/auth/logout', { method: 'POST' });
+  } catch (e) {}
+  currentUser = null;
+  renderGuestAuthUI();
+  const dropdown = document.getElementById('user-dropdown-panel');
+  if (dropdown) dropdown.classList.add('hidden');
+  loadRadarAlerts();
+}
+
+// ==========================================
+// 15. USER SETTINGS & PREFERENCES
+// ==========================================
+async function openSettingsModal() {
+  const modal = document.getElementById('settings-modal');
+  const dropdown = document.getElementById('user-dropdown-panel');
+  if (dropdown) dropdown.classList.add('hidden');
+
+  try {
+    const res = await fetch('/api/auth/me');
+    const data = await res.json();
+    if (data.preferences) {
+      const p = data.preferences;
+      const inApp = document.getElementById('setting-inapp');
+      const email = document.getElementById('setting-email');
+      const push = document.getElementById('setting-push');
+      const freq = document.getElementById('setting-email-freq');
+      if (inApp) inApp.checked = p.in_app_enabled;
+      if (email) email.checked = p.email_enabled;
+      if (push) push.checked = p.push_enabled;
+      if (freq && p.email_frequency) freq.value = p.email_frequency;
+    }
+  } catch (e) {}
+
+  if (modal) modal.classList.remove('hidden');
+  refreshIcons();
+}
+
+function closeSettingsModal(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('close-btn')) return;
+  const modal = document.getElementById('settings-modal');
+  if (modal) modal.classList.add('hidden');
+}
+
+async function saveUserSettings() {
+  const statusBox = document.getElementById('settings-status-msg');
+  const inApp = document.getElementById('setting-inapp')?.checked ?? true;
+  const email = document.getElementById('setting-email')?.checked ?? true;
+  const push = document.getElementById('setting-push')?.checked ?? false;
+  const freq = document.getElementById('setting-email-freq')?.value || 'instant';
+
+  try {
+    const res = await fetch('/api/auth/settings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        in_app_enabled: inApp,
+        email_enabled: email,
+        push_enabled: push,
+        email_frequency: freq
+      })
+    });
+    const data = await res.json();
+    if (statusBox) {
+      statusBox.textContent = data.message || 'Preferences updated successfully.';
+      statusBox.style.background = '#ecfdf5';
+      statusBox.style.color = '#065f46';
+      statusBox.classList.remove('hidden');
+      setTimeout(() => statusBox.classList.add('hidden'), 3500);
+    }
+  } catch (err) {
+    if (statusBox) {
+      statusBox.textContent = 'Failed to update preferences.';
+      statusBox.style.background = '#fef2f2';
+      statusBox.style.color = '#b91c1c';
+      statusBox.classList.remove('hidden');
+    }
+  }
+}
+
+async function promptDeleteAccount() {
+  if (!confirm('Are you sure you want to permanently delete your account, saved preferences, study plans, and notifications? This action cannot be reversed.')) {
+    return;
+  }
+  try {
+    const res = await fetch('/api/auth/delete-account', { method: 'POST' });
+    if (res.ok) {
+      alert('Your account has been deleted.');
+      window.location.reload();
+    }
+  } catch (e) {
+    alert('Account deletion failed.');
+  }
+}
+
+// ==========================================
+// 16. WEB PUSH NOTIFICATIONS
+// ==========================================
+function checkPushBanner() {
+  const banner = document.getElementById('push-permission-banner');
+  if (!banner) return;
+  if (!('Notification' in window) || Notification.permission === 'granted' || Notification.permission === 'denied' || localStorage.getItem('cc_dismiss_push') === '1') {
+    banner.classList.add('hidden');
+  } else {
+    banner.classList.remove('hidden');
+  }
+}
+
+function dismissPushBanner() {
+  localStorage.setItem('cc_dismiss_push', '1');
+  const banner = document.getElementById('push-permission-banner');
+  if (banner) banner.classList.add('hidden');
+}
+
+function urlB64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+async function enablePushNotifications() {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    alert('Web Push Notifications are not supported by this browser.');
+    return;
+  }
+
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      alert('Notification permission was not granted.');
+      return;
+    }
+
+    const reg = await navigator.serviceWorker.register('/static/sw.js');
+    await navigator.serviceWorker.ready;
+
+    const keyRes = await fetch('/api/push/vapid-public-key');
+    const keyData = await keyRes.json();
+    if (!keyData.public_key) {
+      console.warn('VAPID public key unavailable.');
+      return;
+    }
+
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlB64ToUint8Array(keyData.public_key)
+    });
+
+    const subJSON = sub.toJSON();
+    await fetch('/api/push/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        endpoint: sub.endpoint,
+        keys: subJSON.keys
+      })
+    });
+
+    dismissPushBanner();
+    alert('Push Notifications enabled! You will now receive verified opportunity and deadline alerts.');
+  } catch (err) {
+    console.error('Push notification registration error:', err);
+    alert('Could not subscribe for push notifications: ' + err.message);
+  }
+}
+
+// ==========================================
+// 17. SAVED OPPORTUNITIES & BOOKMARKS
+// ==========================================
+async function openSavedOpportunitiesModal() {
+  const modal = document.getElementById('saved-opps-modal');
+  const dropdown = document.getElementById('user-dropdown-panel');
+  if (dropdown) dropdown.classList.add('hidden');
+  if (modal) modal.classList.remove('hidden');
+  refreshIcons();
+  await loadSavedOpportunities();
+}
+
+function closeSavedOpportunitiesModal(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('close-btn')) return;
+  const modal = document.getElementById('saved-opps-modal');
+  if (modal) modal.classList.add('hidden');
+}
+
+async function loadSavedOpportunities() {
+  const container = document.getElementById('saved-opps-list');
+  if (!container) return;
+  container.innerHTML = '<div class="loading-state"><div class="spinner"></div></div>';
+
+  try {
+    const res = await fetch('/api/opportunities/saved');
+    if (res.status === 401) {
+      container.innerHTML = '<div class="empty-state" style="text-align: center; padding: 2rem;"><p>Please <a href="#" onclick="openAuthModal(\'login\'); return false;" style="color: var(--primary); font-weight: 600;">Sign In</a> to save and track opportunity deadlines.</p></div>';
+      return;
+    }
+    const data = await res.json();
+    const saved = data.saved_opportunities || [];
+    if (saved.length === 0) {
+      container.innerHTML = '<div class="empty-state" style="text-align: center; padding: 2rem;"><p style="color: var(--text-secondary);">No saved opportunities yet. Click the bookmark icon on any exam or job card to save it here.</p></div>';
+      return;
+    }
+
+    container.innerHTML = saved.map(opp => `
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+        <div>
+          <span class="badge badge-primary" style="font-size: 0.7rem; text-transform: uppercase;">${escapeHtml(opp.category || 'OPPORTUNITY')}</span>
+          <h4 style="font-size: 0.98rem; font-weight: 700; margin: 0.35rem 0 0.2rem; color: var(--text-main);">${escapeHtml(opp.title)}</h4>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0;">${escapeHtml(opp.organization || '')} • Deadline: <strong>${escapeHtml(opp.deadline || 'Ongoing')}</strong></p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
+          ${opp.link ? `<a href="${escapeHtml(opp.link)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary"><i data-lucide="external-link" class="icon-xs"></i> Visit</a>` : ''}
+          <button class="btn btn-sm btn-outline-danger" onclick="removeSavedOpportunity('${escapeHtml(opp.opportunity_id)}')"><i data-lucide="trash-2" class="icon-xs"></i></button>
+        </div>
+      </div>
+    `).join('');
+    refreshIcons();
+  } catch (err) {
+    container.innerHTML = '<p class="text-danger">Unable to load saved opportunities.</p>';
+  }
+}
+
+async function removeSavedOpportunity(oppId) {
+  try {
+    const res = await fetch('/api/opportunities/unsave', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ opportunity_id: oppId })
+    });
+    if (res.ok) {
+      await loadSavedOpportunities();
+    }
+  } catch (e) {
+    console.error('Error removing saved opportunity:', e);
+  }
+}
+
+async function saveOpportunity(oppId, title, org, cat, deadline, link) {
+  try {
+    const res = await fetch('/api/opportunities/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        opportunity_id: oppId,
+        title: title,
+        organization: org,
+        category: cat,
+        deadline: deadline,
+        link: link
+      })
+    });
+    if (res.status === 401) {
+      openAuthModal('login');
+      return;
+    }
+    const data = await res.json();
+    alert(data.message || 'Saved to your bookmarks!');
+  } catch (e) {
+    console.error('Error saving opportunity:', e);
+  }
+}
+
+// ==========================================
+// 18. EXAM PREPARATION HUB (24-POINT BLUEPRINTS)
+// ==========================================
+let currentExamDetailData = null;
+let currentExamProgress = { completed_topics: [] };
+let currentExamDetailTab = 'overview';
+
+async function loadExamPrepHub() {
+  const container = document.getElementById('exam-prep-grid');
+  if (!container) return;
+  container.innerHTML = '<div class="loading-state"><div class="spinner"></div></div>';
+
+  try {
+    const res = await fetch('/api/exam-prep/list');
+    const data = await res.json();
+    window.EXAM_PREP_DATA = data.exams || [];
+    renderExamPrepCards(window.EXAM_PREP_DATA);
+  } catch (err) {
+    container.innerHTML = '<p class="text-danger">Unable to load exam preparation blueprints.</p>';
+  }
+}
+
+function renderExamPrepCards(exams) {
+  const container = document.getElementById('exam-prep-grid');
+  if (!container) return;
+
+  if (!exams || exams.length === 0) {
+    container.innerHTML = '<div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 3rem;"><p>No examination blueprints matched your criteria.</p></div>';
+    return;
+  }
+
+  container.innerHTML = exams.map(e => `
+    <div class="exam-prep-card">
+      <div>
+        <span class="exam-card-badge">${escapeHtml(e.level || 'All India Exam')} • ${escapeHtml(e.frequency || 'Annual')}</span>
+        <h3 class="exam-card-title">${escapeHtml(e.name)}</h3>
+        <p style="font-size: 0.8rem; font-weight: 600; color: var(--primary); margin-bottom: 0.5rem;">${escapeHtml(e.conducting_body)}</p>
+        <p class="exam-card-overview">${escapeHtml(e.overview || '')}</p>
+        <div class="exam-card-tags">
+          <span class="exam-tag"><i data-lucide="book" class="icon-xs"></i> ${e.total_syllabus_topics || 12} Topics</span>
+          <span class="exam-tag"><i data-lucide="book-open" class="icon-xs"></i> ${e.standard_books_count || 4} Books</span>
+          <span class="exam-tag"><i data-lucide="file-text" class="icon-xs"></i> ${e.pyq_papers_count || 5}+ PYQs</span>
+        </div>
+      </div>
+      <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+        <button class="btn btn-primary btn-sm w-full" onclick="openExamDetailModal('${escapeHtml(e.id)}')">
+          <i data-lucide="list-checks" class="icon-xs"></i> <span>24-Point Blueprint</span>
+        </button>
+        <button class="btn btn-outline-secondary btn-sm" title="Bookmark exam" onclick="saveOpportunity('${escapeHtml(e.id)}', '${escapeHtml(e.name)}', '${escapeHtml(e.conducting_body)}', 'Entrance Exam', 'See Blueprint', '${escapeHtml(e.official_website || '')}')">
+          <i data-lucide="bookmark" class="icon-xs"></i>
+        </button>
+      </div>
+    </div>
+  `).join('');
+  refreshIcons();
+}
+
+function filterExamPrepCards() {
+  const query = (document.getElementById('exam-prep-search-input')?.value || '').toLowerCase().trim();
+  const exams = window.EXAM_PREP_DATA || [];
+  if (!query) {
+    renderExamPrepCards(exams);
+    return;
+  }
+  const filtered = exams.filter(e => 
+    (e.name && e.name.toLowerCase().includes(query)) ||
+    (e.conducting_body && e.conducting_body.toLowerCase().includes(query)) ||
+    (e.target_qualification && e.target_qualification.toLowerCase().includes(query)) ||
+    (Array.isArray(e.target_qualifications) && e.target_qualifications.some(q => q.toLowerCase().includes(query))) ||
+    (e.overview && e.overview.toLowerCase().includes(query))
+  );
+  renderExamPrepCards(filtered);
+}
+
+function filterExamPrepCategory(cat) {
+  document.querySelectorAll('#exam-prep-filter-chips .filter-chip').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.includes(cat) || (cat === 'All' && btn.textContent.includes('All')));
+  });
+
+  const exams = window.EXAM_PREP_DATA || [];
+  if (cat === 'All') {
+    renderExamPrepCards(exams);
+    return;
+  }
+
+  const filtered = exams.filter(e => {
+    const qual = (e.target_qualification || '').toLowerCase();
+    const id = e.id.toLowerCase();
+    if (cat === 'Engineering') return id.includes('gate') || id.includes('jee') || id.includes('ecet');
+    if (cat === 'Medical') return id.includes('neet');
+    if (cat === 'Diploma') return id.includes('polycet') || id.includes('ecet');
+    if (cat === 'Government') return id.includes('upsc') || id.includes('ssc');
+    if (cat === 'Higher Studies') return id.includes('ugc') || id.includes('gate');
+    return true;
+  });
+  renderExamPrepCards(filtered);
+}
+
+async function openExamDetailModal(examId) {
+  const modal = document.getElementById('exam-detail-modal');
+  const header = document.getElementById('exam-detail-header');
+  const body = document.getElementById('exam-detail-body');
+  const linkBtn = document.getElementById('exam-official-link-btn');
+  if (modal) modal.classList.remove('hidden');
+
+  if (header) header.innerHTML = '<div class="spinner"></div>';
+  if (body) body.innerHTML = '<div class="spinner"></div>';
+
+  try {
+    const res = await fetch(`/api/exam-prep/${encodeURIComponent(examId)}`);
+    const data = await res.json();
+    const exam = data.exam;
+    currentExamDetailData = exam;
+
+    try {
+      const progRes = await fetch(`/api/exam-prep/${encodeURIComponent(examId)}/progress`);
+      if (progRes.ok) {
+        const progData = await progRes.json();
+        currentExamProgress = progData.progress || { completed_topics: [] };
+      } else {
+        currentExamProgress = { completed_topics: [] };
+      }
+    } catch (pe) {
+      currentExamProgress = { completed_topics: [] };
+    }
+
+    if (linkBtn) {
+      linkBtn.href = exam.official_website || '#';
+    }
+
+    if (header) {
+      header.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.75rem;">
+          <div>
+            <span class="badge badge-primary">${escapeHtml(exam.level)} • ${escapeHtml(exam.frequency)}</span>
+            <h2 style="font-size: 1.5rem; font-weight: 800; margin: 0.35rem 0 0.2rem; color: var(--text-main);">${escapeHtml(exam.name)}</h2>
+            <p style="font-size: 0.88rem; color: var(--primary); font-weight: 600; margin: 0;">${escapeHtml(exam.conducting_body)}</p>
+          </div>
+          <div style="text-align: right;">
+            <span class="badge badge-warning" style="font-size: 0.8rem;">Target: ${escapeHtml(exam.target_qualification)}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    switchExamDetailTab('overview');
+    refreshIcons();
+  } catch (err) {
+    if (body) body.innerHTML = '<p class="text-danger">Unable to load examination blueprint.</p>';
+  }
+}
+
+function closeExamDetailModal(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('close-btn')) return;
+  const modal = document.getElementById('exam-detail-modal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function switchExamDetailTab(tab) {
+  currentExamDetailTab = tab;
+  ['overview', 'syllabus', 'books', 'pyqs', 'strategy'].forEach(t => {
+    const btn = document.getElementById(`exam-tab-${t}`);
+    if (btn) btn.classList.toggle('active', t === tab);
+  });
+
+  const body = document.getElementById('exam-detail-body');
+  const footerStats = document.getElementById('exam-footer-stats');
+  const exam = currentExamDetailData;
+  if (!body || !exam) return;
+
+  if (tab === 'overview') {
+    body.innerHTML = `
+      <div class="exam-point-block">
+        <h4 class="exam-point-title"><i data-lucide="info" class="icon-xs"></i> 1. Examination Overview & Purpose</h4>
+        <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary);">${escapeHtml(exam.overview || '')}</p>
+      </div>
+
+      <div class="exam-point-block">
+        <h4 class="exam-point-title"><i data-lucide="user-check" class="icon-xs"></i> 2. Eligibility & Academic Qualifications</h4>
+        <div style="background: var(--bg-hover); padding: 1rem; border-radius: 8px; font-size: 0.85rem; line-height: 1.6;">
+          <p><strong>Qualifying Degree / Exam:</strong> ${escapeHtml(exam.eligibility?.qualification || '')}</p>
+          <p><strong>Minimum Marks:</strong> ${escapeHtml(exam.eligibility?.minimum_percentage || 'Passing marks as per regulations')}</p>
+          <p><strong>Age Limits:</strong> ${escapeHtml(exam.eligibility?.age_criteria || 'No upper age limit for general eligibility')}</p>
+          <p><strong>Number of Attempts:</strong> ${escapeHtml(exam.eligibility?.attempts || 'Unlimited attempts permitted')}</p>
+        </div>
+      </div>
+
+      <div class="exam-point-block">
+        <h4 class="exam-point-title"><i data-lucide="layout-grid" class="icon-xs"></i> 3. Exam Pattern & Marking Scheme</h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; font-size: 0.85rem;">
+          <div style="background: var(--bg-hover); padding: 0.85rem; border-radius: 6px;">
+            <strong>Mode:</strong><br>${escapeHtml(exam.pattern?.mode || 'Computer Based Test (CBT)')}
+          </div>
+          <div style="background: var(--bg-hover); padding: 0.85rem; border-radius: 6px;">
+            <strong>Duration:</strong><br>${escapeHtml(exam.pattern?.duration || '180 Minutes (3 Hours)')}
+          </div>
+          <div style="background: var(--bg-hover); padding: 0.85rem; border-radius: 6px;">
+            <strong>Total Marks:</strong><br>${escapeHtml(exam.pattern?.total_marks ? exam.pattern.total_marks.toString() : '100')} Marks
+          </div>
+          <div style="background: var(--bg-hover); padding: 0.85rem; border-radius: 6px;">
+            <strong>Negative Marking:</strong><br>${escapeHtml(exam.pattern?.negative_marking || 'Applicable as per official brochure')}
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (tab === 'syllabus') {
+    const completed = new Set(currentExamProgress?.completed_topics || []);
+    let sections = [];
+    if (Array.isArray(exam.subjects) && exam.subjects.length > 0) {
+      sections = exam.subjects.map(subj => {
+        const raw = (exam.topic_wise_syllabus && exam.topic_wise_syllabus[subj]) || '';
+        let subtopics = [];
+        if (typeof raw === 'string' && raw.trim()) {
+          subtopics = raw.split(/,\s*|\.\s*/).map(s => s.trim()).filter(s => s.length > 2);
+          if (subtopics.length === 0) subtopics = [subj];
+        } else if (Array.isArray(raw)) {
+          subtopics = raw;
+        } else {
+          subtopics = [subj];
+        }
+        return { name: subj, topics: subtopics.slice(0, 8) };
+      });
+    } else if (exam.syllabus?.sections) {
+      sections = exam.syllabus.sections;
+    }
+
+    let allTopicsCount = 0;
+    const sectionsHtml = sections.map((sec) => {
+      const topics = sec.topics || [sec.name];
+      allTopicsCount += topics.length;
+      return `
+        <div style="margin-bottom: 1.25rem;">
+          <h5 style="font-size: 0.95rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+            <i data-lucide="folder" class="icon-xs"></i> ${escapeHtml(sec.name)}
+          </h5>
+          <div style="display: flex; flex-direction: column; gap: 0.35rem; padding-left: 0.5rem;">
+            ${topics.map((t) => {
+              const topicKey = `${sec.name}:::${t}`;
+              const isChecked = completed.has(topicKey) || completed.has(t);
+              return `
+                <label class="topic-checklist-item" style="cursor: pointer;">
+                  <input type="checkbox" onchange="toggleTopicProgress('${escapeHtml(exam.id)}', '${escapeHtml(topicKey)}', this)" ${isChecked ? 'checked' : ''}>
+                  <span class="${isChecked ? 'text-muted' : ''}" style="${isChecked ? 'text-decoration: line-through;' : ''}">${escapeHtml(t)}</span>
+                </label>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    body.innerHTML = `
+      <div class="exam-point-block">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <h4 class="exam-point-title" style="margin: 0;"><i data-lucide="check-square" class="icon-xs"></i> 4. Official Syllabus & Interactive Checklist</h4>
+          <span style="font-size: 0.8rem; font-weight: 600; color: var(--primary);">${completed.size} / ${allTopicsCount} Completed</span>
+        </div>
+        <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1rem;">
+          Track your preparation mastery. Check off topics as you complete theory and standard problem-solving. Progress is saved directly to your account.
+        </p>
+        ${sectionsHtml || '<p>Detailed syllabus module breakdown coming soon.</p>'}
+      </div>
+    `;
+
+    if (footerStats) {
+      const pct = allTopicsCount > 0 ? Math.round((completed.size / allTopicsCount) * 100) : 0;
+      footerStats.innerHTML = `<span><strong>Progress:</strong> ${completed.size} of ${allTopicsCount} topics checked (${pct}%)</span>`;
+    }
+  } else if (tab === 'books') {
+    const books = exam.recommended_books || exam.verified_books || [];
+    body.innerHTML = `
+      <div class="exam-point-block">
+        <h4 class="exam-point-title"><i data-lucide="book-open" class="icon-xs"></i> 5. Verified Accredited Textbooks (Zero Fake Books)</h4>
+        <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1rem;">
+          Standard accredited reference books utilized by professors, GATE/JEE paper-setters, and top rankers. Verified with official publisher references and standard libraries.
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+          ${books.map(b => {
+            const title = b.book_name || b.title || 'Standard Textbook';
+            const author = b.author || 'Renowned Author';
+            const edition = b.edition || 'Standard Edition';
+            const purpose = b.purpose || b.why_recommended || '';
+            const link = b.verified_link || b.official_publisher_link || '';
+            return `
+              <div class="book-card">
+                <span class="badge badge-secondary" style="font-size: 0.68rem; margin-bottom: 0.4rem;">${escapeHtml(b.subject || 'Standard Reference')}</span>
+                <div class="book-card-title">${escapeHtml(title)}</div>
+                <div class="book-meta"><strong>Author:</strong> ${escapeHtml(author)} • ${escapeHtml(edition)}</div>
+                ${purpose ? `<p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.75rem;">${escapeHtml(purpose)}</p>` : ''}
+                ${link ? `
+                  <a href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" style="font-size: 0.75rem;">
+                    <i data-lucide="external-link" class="icon-xs"></i> Official Reference
+                  </a>
+                ` : ''}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  } else if (tab === 'pyqs') {
+    const pyqs = exam.previous_year_papers || exam.previous_year_questions || exam.pyqs || [];
+    const mocks = exam.mock_tests || exam.mock_test_portals || [];
+    body.innerHTML = `
+      <div class="exam-point-block">
+        <h4 class="exam-point-title"><i data-lucide="file-text" class="icon-xs"></i> 6. Official Previous Year Question Papers (PYQs) & Answer Keys</h4>
+        <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1rem;">
+          Direct verified links to official master question papers with final answer keys released by the conducting institute.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          ${pyqs.map(p => {
+            const yr = p.year ? p.year.toString() : 'Official';
+            const desc = p.title || p.description || `${yr} Question Paper with Official Answer Key`;
+            const url = p.url || p.official_pdf_url || p.download_url || '#';
+            return `
+              <div style="background: var(--bg-hover); padding: 0.75rem 1rem; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong>${escapeHtml(yr)} Paper & Official Key</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-secondary);">${escapeHtml(desc)}</div>
+                </div>
+                <div style="display: flex; gap: 0.4rem;">
+                  <a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary">
+                    <i data-lucide="download" class="icon-xs"></i> Official PDF
+                  </a>
+                  ${p.answer_key_url ? `
+                    <a href="${escapeHtml(p.answer_key_url)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-secondary">
+                      <i data-lucide="check" class="icon-xs"></i> Key
+                    </a>
+                  ` : ''}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
+      <div class="exam-point-block">
+        <h4 class="exam-point-title"><i data-lucide="monitor" class="icon-xs"></i> 7. Official Mock Tests & CBT Simulation</h4>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          ${mocks.map(m => {
+            const name = m.title || m.name || m.portal_name || 'Official CBT Mock';
+            const url = m.url || m.official_url || '#';
+            const details = m.provider || m.type || m.details || 'Official NTA / IIT CBT exam interface simulator';
+            return `
+              <div style="background: var(--bg-hover); padding: 0.75rem 1rem; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong>${escapeHtml(name)}</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-secondary);">${escapeHtml(details)}</div>
+                </div>
+                <a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary">
+                  <i data-lucide="play" class="icon-xs"></i> Launch Simulator
+                </a>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  } else if (tab === 'strategy') {
+    const plans = exam.study_plans || exam.study_strategy || {};
+    const tips = (exam.toppers_strategy && exam.toppers_strategy.length > 0) ? exam.toppers_strategy : 
+                 (exam.topper_tips && exam.topper_tips.length > 0) ? exam.topper_tips :
+                 (exam.preparation_strategy ? [exam.preparation_strategy] : [
+                   "Focus heavily on concept mastery from standard textbooks rather than rote memorization.",
+                   "Solve previous 25-30 years of official question papers topic-wise.",
+                   "Dedicate the final 4-6 weeks strictly to timed computer-based test full mocks."
+                 ]);
+    const mistakes = exam.pitfalls_to_avoid || [
+      "Referring to multiple contradictory coaching booklets instead of standard accredited textbooks.",
+      "Postponing full-length mock tests until the final two weeks.",
+      "Neglecting negative marking and virtual calculator time penalties."
+    ];
+
+    function formatPlan(p) {
+      if (!p) return 'Structured multi-week milestone plan under active curation.';
+      if (Array.isArray(p)) {
+        return p.map(item => `<div><strong>${escapeHtml(item.period || item.week || item.month || 'Phase')}:</strong> ${escapeHtml(item.focus || '')}</div>`).join('');
+      }
+      return escapeHtml(p);
+    }
+
+    body.innerHTML = `
+      <div class="exam-point-block">
+        <h4 class="exam-point-title"><i data-lucide="calendar" class="icon-xs"></i> 8. Multi-Phase Preparation Roadmaps</h4>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <div class="study-plan-card">
+            <h5 style="margin: 0 0 0.35rem; color: var(--primary);">🗓️ 6-Month Comprehensive Mastery Plan</h5>
+            <div style="font-size: 0.82rem; margin: 0; line-height: 1.5; color: var(--text-secondary);">${formatPlan(plans['6_months'])}</div>
+          </div>
+          <div class="study-plan-card" style="border-left-color: #f59e0b;">
+            <h5 style="margin: 0 0 0.35rem; color: #d97706;">⚡ 3-Month Fast-Track Sprint</h5>
+            <div style="font-size: 0.82rem; margin: 0; line-height: 1.5; color: var(--text-secondary);">${formatPlan(plans['3_months'])}</div>
+          </div>
+          <div class="study-plan-card" style="border-left-color: #ef4444;">
+            <h5 style="margin: 0 0 0.35rem; color: #dc2626;">🔥 30-Day Final Exam Blitz</h5>
+            <div style="font-size: 0.82rem; margin: 0; line-height: 1.5; color: var(--text-secondary);">${formatPlan(plans['30_days'])}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exam-point-block">
+        <h4 class="exam-point-title"><i data-lucide="award" class="icon-xs"></i> 9. Proven Ranker Strategies & Advice</h4>
+        <ul style="padding-left: 1.25rem; font-size: 0.84rem; line-height: 1.7; color: var(--text-secondary);">
+          ${tips.map(t => `<li>${escapeHtml(t)}</li>`).join('')}
+        </ul>
+      </div>
+
+      <div class="exam-point-block" style="border-bottom: none;">
+        <h4 class="exam-point-title" style="color: #dc2626;"><i data-lucide="alert-triangle" class="icon-xs"></i> 10. Critical Pitfalls to Avoid</h4>
+        <ul style="padding-left: 1.25rem; font-size: 0.84rem; line-height: 1.7; color: var(--text-secondary);">
+          ${mistakes.map(m => `<li>${escapeHtml(m)}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  }
+
+  refreshIcons();
+}
+
+async function toggleTopicProgress(examId, topicKey, checkbox) {
+  if (!currentUser) {
+    alert('Please sign in to save your checklist progress across sessions.');
+    checkbox.checked = !checkbox.checked;
+    openAuthModal('login');
+    return;
+  }
+
+  const completed = new Set(currentExamProgress?.completed_topics || []);
+  if (checkbox.checked) {
+    completed.add(topicKey);
+  } else {
+    completed.delete(topicKey);
+  }
+
+  currentExamProgress.completed_topics = Array.from(completed);
+
+  try {
+    await fetch(`/api/exam-prep/${encodeURIComponent(examId)}/progress`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ completed_topics: currentExamProgress.completed_topics })
+    });
+    const footerStats = document.getElementById('exam-footer-stats');
+    if (footerStats) {
+      footerStats.innerHTML = `<span><strong>Updated:</strong> ${completed.size} topics completed</span>`;
+    }
+  } catch (err) {
+    console.error('Error saving topic progress:', err);
   }
 }
