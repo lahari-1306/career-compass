@@ -188,6 +188,7 @@ def signup():
         "name": user["name"],
         "role": user["role"],
         "is_verified": user["is_verified"],
+        "is_active": user.get("is_active", 1),
         "created_at": user.get("created_at"),
         "last_login_at": user.get("last_login_at"),
         "unread_notifications": 0
@@ -253,6 +254,7 @@ def login():
         "name": user["name"],
         "role": user["role"],
         "is_verified": user["is_verified"],
+        "is_active": user.get("is_active", 1),
         "unread_notifications": unread
     }
 
@@ -311,6 +313,7 @@ def get_me():
             "name": user["name"],
             "role": user["role"],
             "is_verified": user["is_verified"],
+            "is_active": user.get("is_active", 1),
             "unread_notifications": unread
         },
         "profile": profile,
@@ -326,14 +329,24 @@ def forgot_password():
     if not email:
         return jsonify({"status": "error", "message": "Email is required."}), 400
 
+    if not EmailService.is_configured():
+        return jsonify({
+            "status": "error",
+            "code": "SMTP_NOT_CONFIGURED",
+            "message": "Password reset service is unavailable because SMTP email delivery is not configured on this server. Please contact your system administrator to configure SMTP_HOST, SMTP_PORT, SMTP_USERNAME, and SMTP_PASSWORD."
+        }), 503
+
     user = UserRepository.get_by_email(email)
     if user:
         token = TokenRepository.create_password_reset_token(user["id"])
-        base_url = request.host_url.rstrip("/")
+        base_url = os.environ.get("APP_BASE_URL") or request.host_url.rstrip("/")
         try:
             EmailService.send_password_reset_email(email, token, base_url)
-        except Exception:
-            pass
+        except Exception as e:
+            return jsonify({
+                "status": "error",
+                "message": f"Failed to dispatch password reset email: {str(e)}"
+            }), 500
 
     # Always return a generic success message to prevent user enumeration
     return jsonify({
@@ -346,7 +359,7 @@ def forgot_password():
 def reset_password():
     data = request.get_json() or {}
     token = (data.get("token") or "").strip()
-    new_password = data.get("password") or ""
+    new_password = data.get("password") or data.get("new_password") or ""
 
     if not token or not new_password:
         return jsonify({"status": "error", "message": "Token and new password are required."}), 400

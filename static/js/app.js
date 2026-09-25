@@ -392,6 +392,15 @@ document.addEventListener('DOMContentLoaded', () => {
   try { renderSavedRoadmaps(); } catch (e) { console.error('Saved roadmaps error:', e); }
   try { initCareerRadar(); } catch (e) { console.error('Radar init error:', e); }
   try { checkAuthStatus(); } catch (e) { console.error('Auth status error:', e); }
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const resetToken = urlParams.get('reset_token') || urlParams.get('token');
+    if (resetToken) {
+      showAuthView('reset');
+      const resetTokenInput = document.getElementById('auth-reset-token');
+      if (resetTokenInput) resetTokenInput.value = resetToken;
+    }
+  } catch (e) { console.error('Reset token check error:', e); }
   try { checkPushBanner(); } catch (e) { console.error('Push banner error:', e); }
   try { refreshIcons(); } catch (e) { console.error('Icons refresh error:', e); }
 
@@ -439,6 +448,13 @@ function toggleTheme() {
   AppState.theme = AppState.theme === 'light' ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', AppState.theme);
   localStorage.setItem('cc_theme', AppState.theme);
+  if (currentUser) {
+    fetch('/api/auth/preferences', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ theme: AppState.theme })
+    }).catch(() => {});
+  }
   refreshIcons();
 }
 
@@ -446,10 +462,12 @@ function initTheme() {
   document.documentElement.setAttribute('data-theme', AppState.theme);
   const toggleBtn = document.getElementById('theme-toggle-btn');
   if (toggleBtn) {
+    toggleBtn.removeEventListener('click', toggleTheme);
     toggleBtn.addEventListener('click', toggleTheme);
   }
   const authToggleBtn = document.getElementById('auth-theme-toggle-btn');
   if (authToggleBtn) {
+    authToggleBtn.removeEventListener('click', toggleTheme);
     authToggleBtn.addEventListener('click', toggleTheme);
   }
 }
@@ -523,6 +541,49 @@ function toggleMenu() {
 }
 
 document.getElementById('menu-toggle-btn')?.addEventListener('click', toggleMenu);
+
+// Global User-Facing Toast & Retry Alerts
+function showAppToast(message, type = 'info', retryCallback = null) {
+  let toastContainer = document.getElementById('app-toast-container');
+  if (!toastContainer) {
+    toastContainer = document.createElement('div');
+    toastContainer.id = 'app-toast-container';
+    toastContainer.style.cssText = 'position: fixed; bottom: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 8px; max-width: 360px;';
+    document.body.appendChild(toastContainer);
+  }
+
+  const toast = document.createElement('div');
+  const bg = type === 'error' ? '#ef4444' : (type === 'success' ? '#10b981' : '#3b82f6');
+  toast.style.cssText = `background: ${bg}; color: white; padding: 12px 16px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 0.88rem; display: flex; align-items: center; justify-content: space-between; gap: 10px; animation: slideIn 0.3s ease;`;
+
+  const msgSpan = document.createElement('span');
+  msgSpan.textContent = message;
+  toast.appendChild(msgSpan);
+
+  if (retryCallback && typeof retryCallback === 'function') {
+    const retryBtn = document.createElement('button');
+    retryBtn.textContent = 'Retry';
+    retryBtn.style.cssText = 'background: rgba(255,255,255,0.25); border: none; color: white; font-weight: bold; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;';
+    retryBtn.onclick = () => {
+      toast.remove();
+      retryCallback();
+    };
+    toast.appendChild(retryBtn);
+  }
+
+  const closeBtn = document.createElement('button');
+  closeBtn.innerHTML = '&times;';
+  closeBtn.style.cssText = 'background: transparent; border: none; color: white; font-size: 1.2rem; cursor: pointer; padding: 0 4px; line-height: 1;';
+  closeBtn.onclick = () => toast.remove();
+  toast.appendChild(closeBtn);
+
+  toastContainer.appendChild(toast);
+  setTimeout(() => {
+    if (toast.parentNode) toast.remove();
+  }, 6000);
+}
+window.showAppToast = showAppToast;
+
 // ==========================================
 // 4. LIVE NOTIFICATION TICKER
 // ==========================================
@@ -806,21 +867,95 @@ function renderCareerPaths(tabId) {
         ${item.eligibility ? `<div class="card-org">${t("career.eligibility", "Eligibility")}: ${escapeHtml(item.eligibility)}</div>` : ''}
         <div class="card-body">
           ${item.future_prospects ? `<p><strong>${t("career.prospects", "Prospects")}:</strong> ${escapeHtml(item.future_prospects)}</p>` : ''}
+          ${item.career_prospects ? `<p style="margin-top: 0.35rem; color: var(--text-secondary);"><strong>Career Prospects:</strong> ${escapeHtml(item.career_prospects)}</p>` : ''}
           ${item.details ? `<p>${escapeHtml(item.details)}</p>` : ''}
           ${item.sub_branches ? `
             <div style="margin-top: 0.75rem;">
               <strong>${t("career.streams_label", "Streams / Specializations")}:</strong>
               <ul style="padding-left: 1.25rem; margin-top: 0.35rem;">
-                ${item.sub_branches.map(sb => `<li><strong>${escapeHtml(sb.name)}:</strong> ${escapeHtml(sb.future_prospects || '')}</li>`).join('')}
+                ${(Array.isArray(item.sub_branches) ? item.sub_branches : []).map(sb => `<li><strong>${escapeHtml(sb.name || '')}:</strong> ${escapeHtml(sb.future_prospects || '')}</li>`).join('')}
               </ul>
             </div>
           ` : ''}
           ${item.roles ? `
             <div style="margin-top: 0.75rem;">
               <strong>${t("career.roles_label", "Key Job Roles")}:</strong>
+              ${Array.isArray(item.roles) ? `
+                <ul style="padding-left: 1.25rem; margin-top: 0.35rem;">
+                  ${item.roles.map(r => `<li>${escapeHtml(r)}</li>`).join('')}
+                </ul>
+              ` : `<p style="margin-top: 0.25rem; color: var(--text-secondary); font-size: 0.88rem;">${escapeHtml(item.roles)}</p>`}
+            </div>
+          ` : ''}
+          ${item.key_exams ? `
+            <div style="margin-top: 0.75rem;">
+              <strong>Key Technical & Government Examinations:</strong>
               <ul style="padding-left: 1.25rem; margin-top: 0.35rem;">
-                ${item.roles.map(r => `<li>${escapeHtml(r)}</li>`).join('')}
+                ${item.key_exams.map(ke => `<li><strong>${escapeHtml(ke.name || '')}:</strong> ${escapeHtml(ke.org || '')} ${ke.scale ? `<span class="badge badge-info" style="font-size: 0.7rem; margin-left: 0.25rem;">${escapeHtml(ke.scale)}</span>` : ''}</li>`).join('')}
               </ul>
+            </div>
+          ` : ''}
+          ${item.exams ? `
+            <div style="margin-top: 0.75rem;">
+              <strong>Key Examinations & Career Roles:</strong>
+              <ul style="padding-left: 1.25rem; margin-top: 0.35rem;">
+                ${item.exams.map(ex => `<li><strong>${escapeHtml(ex.name || '')}:</strong> ${escapeHtml(ex.roles || ex.org || '')} ${ex.url ? `<a href="${escapeHtml(ex.url)}" target="_blank" rel="noopener noreferrer" style="font-size: 0.75rem; color: var(--primary); margin-left: 0.35rem;">Official Portal ↗</a>` : ''}</li>`).join('')}
+              </ul>
+            </div>
+          ` : ''}
+          ${item.employers ? `
+            <div style="margin-top: 0.75rem;">
+              <strong>Top Recruiting Employers & PSUs:</strong>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.35rem;">
+                ${(Array.isArray(item.employers) ? item.employers : [item.employers]).map(emp => `<span class="badge badge-light" style="font-size: 0.78rem;">${escapeHtml(emp)}</span>`).join('')}
+              </div>
+            </div>
+          ` : ''}
+          ${item.salary ? `<div style="margin-top: 0.5rem; font-size: 0.88rem;"><strong>Initial CTC / Salary:</strong> <span class="text-success" style="font-weight: 600;">${escapeHtml(item.salary)}</span></div>` : ''}
+          ${item.stipend ? `<div style="margin-top: 0.5rem; font-size: 0.88rem;"><strong>Monthly Stipend:</strong> <span class="text-success" style="font-weight: 600;">${escapeHtml(item.stipend)}</span></div>` : ''}
+          ${item.routes ? `
+            <div style="margin-top: 0.75rem;">
+              <strong>Commission Routes & Entries:</strong>
+              <ul style="padding-left: 1.25rem; margin-top: 0.35rem;">
+                ${item.routes.map(rt => {
+                  if (typeof rt === 'string') return `<li>${escapeHtml(rt)}</li>`;
+                  return `<li><strong>${escapeHtml(rt.name || '')}:</strong> ${escapeHtml(rt.academies || rt.branches || rt.details || '')} ${rt.url ? `<a href="${escapeHtml(rt.url)}" target="_blank" rel="noopener noreferrer" style="font-size: 0.75rem; color: var(--primary); margin-left: 0.35rem;">Official Portal ↗</a>` : ''}</li>`;
+                }).join('')}
+              </ul>
+            </div>
+          ` : ''}
+          ${item.specializations ? `
+            <div style="margin-top: 0.75rem;">
+              <strong>Major Specializations:</strong>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.35rem;">
+                ${item.specializations.map(sp => `<span class="badge badge-light" style="font-size: 0.78rem;">${escapeHtml(sp)}</span>`).join('')}
+              </div>
+            </div>
+          ` : ''}
+          ${item.qualifications ? `
+            <div style="margin-top: 0.75rem;">
+              <strong>Essential Eligibility & Certifications:</strong>
+              <ul style="padding-left: 1.25rem; margin-top: 0.35rem;">
+                ${item.qualifications.map(q => `<li>${escapeHtml(q)}</li>`).join('')}
+              </ul>
+            </div>
+          ` : ''}
+          ${item.avenues ? `
+            <div style="margin-top: 0.75rem;">
+              <strong>Key Business & Technical Avenues:</strong>
+              <ul style="padding-left: 1.25rem; margin-top: 0.35rem;">
+                ${item.avenues.map(av => `<li>${escapeHtml(av)}</li>`).join('')}
+              </ul>
+            </div>
+          ` : ''}
+          ${item.govt_funding ? `
+            <div style="margin-top: 0.5rem; font-size: 0.88rem; background: var(--bg-surface-muted); padding: 0.5rem 0.75rem; border-radius: 6px;">
+              <strong>Govt Schemes & Subsidies:</strong> ${escapeHtml(item.govt_funding)}
+            </div>
+          ` : ''}
+          ${item.recommendation ? `
+            <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--primary); font-style: italic;">
+              💡 <strong>Recommendation:</strong> ${escapeHtml(item.recommendation)}
             </div>
           ` : ''}
           ${item.entrance_exams ? `
@@ -3442,6 +3577,7 @@ function showAuthView(viewName) {
     'login': document.getElementById('auth-view-login'),
     'signup': document.getElementById('auth-view-signup'),
     'forgot': document.getElementById('auth-view-forgot'),
+    'reset': document.getElementById('auth-view-reset'),
     'profile_setup': document.getElementById('auth-view-profile-setup')
   };
 
@@ -3453,6 +3589,7 @@ function showAuthView(viewName) {
     document.getElementById('auth-login-error'),
     document.getElementById('auth-signup-error'),
     document.getElementById('auth-forgot-status'),
+    document.getElementById('auth-reset-status'),
     document.getElementById('setup-error-msg')
   ];
   alerts.forEach(a => {
@@ -3469,6 +3606,11 @@ function showAuthView(viewName) {
 
   if (viewName === 'profile_setup') {
     handleSetupStageChange();
+  }
+
+  if (viewName === 'reset') {
+    document.getElementById('auth-screen')?.classList.remove('hidden');
+    document.getElementById('app-shell')?.classList.add('hidden');
   }
 
   refreshIcons();
@@ -3506,6 +3648,7 @@ async function checkAuthStatus() {
         setStoredRadarProfile(data.profile);
         updateRadarProfileChip(data.profile);
         loadRadarAlerts();
+        loadTrackerProgress();
       } else {
         // Authenticated but profile setup is pending: show Profile Setup screen
         if (appShell) appShell.classList.add('hidden');
@@ -3572,6 +3715,51 @@ function handleSetupStageChange() {
       branchSelect.innerHTML = branches.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
     }
   }
+
+  // Populate dynamic interests tailored to qualification
+  const interestsContainer = document.getElementById('setup-interests-container');
+  if (interestsContainer) {
+    let directions = [];
+    if (stage === '10th') {
+      directions = [
+        'Intermediate (MPC / BiPC / CEC / MEC)', 'Polytechnic Diploma', 'ITI Technical Trades',
+        'Government / Defence Entries (Agniveer, SSC GD)', 'Foundational Science & Mathematics', 'Computer Basics & Digital Skills'
+      ];
+    } else if (stage === 'Intermediate') {
+      directions = [
+        'Engineering (B.Tech / B.E.)', 'Medical & Healthcare (MBBS, BDS, Pharma)', 'General Degrees (B.Sc, B.Com, BBA, BA)',
+        'Defence Cadet Entries (NDA, TES)', 'Law & Legal Studies (CLAT)', 'Chartered Accountancy (CA / CMA)'
+      ];
+    } else if (stage === 'Diploma') {
+      directions = [
+        'Lateral Entry to B.Tech (ECET)', 'Junior Engineer (JE) Government Exams', 'Core Technical Industry Jobs',
+        'NATS Apprenticeship', 'Defence Technical Roles', 'Entrepreneurship & Startups'
+      ];
+    } else if (stage === 'Degree') {
+      directions = [
+        'Post Graduation (M.Sc, M.Com, MA, MCA)', 'MBA / Business Management', 'Civil Services (UPSC CSE, State PSC)',
+        'Banking & Insurance (IBPS, SBI PO)', 'Corporate Private Sector Jobs', '3-Year LLB / Law', 'Defence (CDS, AFCAT)'
+      ];
+    } else if (stage === 'Postgraduate') {
+      directions = [
+        'Ph.D. / Doctoral Research', 'University Assistant Professor (UGC NET)', 'Senior Corporate R&D Roles',
+        'Government Scientist (DRDO, ISRO, BARC)', 'Executive Leadership'
+      ];
+    } else {
+      directions = (optData.preferred_career_directions_by_qual && optData.preferred_career_directions_by_qual[stage]) || [
+        'Software / IT Industry', 'Cyber Security & Cloud', 'Core Engineering Jobs', 'PSUs & Govt Engineering (GATE, IES/ESE)',
+        'Higher Studies (M.Tech via GATE)', 'Higher Studies Abroad (MS via GRE)', 'Management (MBA via CAT)', 'Defence Technical Entry (TGC, SSC Tech)'
+      ];
+    }
+
+    interestsContainer.innerHTML = directions.map(dir => `
+      <label class="checkbox-pill-label" style="display:flex; align-items:center; gap:0.4rem; padding:0.35rem 0.6rem; background:var(--bg-surface); border:1px solid var(--border-color); border-radius:4px; font-size:0.8rem; cursor:pointer;">
+        <input type="checkbox" name="setup-interest" value="${escapeHtml(dir)}" checked>
+        <span>${escapeHtml(dir)}</span>
+      </label>
+    `).join('');
+  }
+
   refreshIcons();
 }
 
@@ -3629,6 +3817,7 @@ async function handleAuthLoginSubmit(e) {
         setStoredRadarProfile(data.profile);
         updateRadarProfileChip(data.profile);
         loadRadarAlerts();
+        loadTrackerProgress();
         navigateToSection('home');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
@@ -3783,10 +3972,18 @@ async function handleAuthForgotSubmit(e) {
       body: JSON.stringify({ email })
     });
     const data = await res.json();
-    if (statusBox) {
-      statusBox.textContent = data.message || 'If an account exists with this email address, a password reset link has been dispatched.';
-      statusBox.className = 'auth-alert-box alert-success';
-      statusBox.classList.remove('hidden');
+    if (res.ok && data.status === 'success') {
+      if (statusBox) {
+        statusBox.textContent = data.message || 'If an account exists with this email address, a password reset link has been dispatched.';
+        statusBox.className = 'auth-alert-box alert-success';
+        statusBox.classList.remove('hidden');
+      }
+    } else {
+      if (statusBox) {
+        statusBox.textContent = data.message || 'Unable to send reset request. Please contact administrator.';
+        statusBox.className = 'auth-alert-box alert-danger';
+        statusBox.classList.remove('hidden');
+      }
     }
   } catch (err) {
     if (statusBox) {
@@ -3801,6 +3998,85 @@ async function handleAuthForgotSubmit(e) {
   }
 }
 
+async function handleAuthResetSubmit(e) {
+  e.preventDefault();
+  const token = document.getElementById('auth-reset-token')?.value?.trim();
+  const password = document.getElementById('auth-reset-password')?.value;
+  const confirmPassword = document.getElementById('auth-reset-confirm')?.value;
+  const statusBox = document.getElementById('auth-reset-status');
+  const submitBtn = document.getElementById('auth-reset-btn-submit');
+  const btnText = submitBtn?.querySelector('.btn-text');
+  const btnSpinner = submitBtn?.querySelector('.btn-spinner');
+
+  if (statusBox) statusBox.classList.add('hidden');
+
+  if (!token) {
+    if (statusBox) {
+      statusBox.textContent = 'Reset token is required or reset link is invalid.';
+      statusBox.className = 'auth-alert-box alert-danger';
+      statusBox.classList.remove('hidden');
+    }
+    return;
+  }
+
+  if (!password || password.length < 8) {
+    if (statusBox) {
+      statusBox.textContent = 'Password must be at least 8 characters long.';
+      statusBox.className = 'auth-alert-box alert-danger';
+      statusBox.classList.remove('hidden');
+    }
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    if (statusBox) {
+      statusBox.textContent = 'Passwords do not match.';
+      statusBox.className = 'auth-alert-box alert-danger';
+      statusBox.classList.remove('hidden');
+    }
+    return;
+  }
+
+  if (submitBtn) submitBtn.disabled = true;
+  if (btnText) btnText.textContent = 'UPDATING...';
+  if (btnSpinner) btnSpinner.classList.remove('hidden');
+
+  try {
+    const res = await fetch('/api/auth/reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, new_password: password })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'success') {
+      if (statusBox) {
+        statusBox.textContent = data.message || 'Password successfully updated! You can now sign in.';
+        statusBox.className = 'auth-alert-box alert-success';
+        statusBox.classList.remove('hidden');
+      }
+      setTimeout(() => {
+        showAuthView('login');
+      }, 2000);
+    } else {
+      if (statusBox) {
+        statusBox.textContent = data.message || 'Failed to reset password. Token may be invalid or expired.';
+        statusBox.className = 'auth-alert-box alert-danger';
+        statusBox.classList.remove('hidden');
+      }
+    }
+  } catch (err) {
+    if (statusBox) {
+      statusBox.textContent = 'Server communication error. Please try again.';
+      statusBox.className = 'auth-alert-box alert-danger';
+      statusBox.classList.remove('hidden');
+    }
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+    if (btnText) btnText.textContent = t('tracker.reset_btn', 'UPDATE PASSWORD');
+    if (btnSpinner) btnSpinner.classList.add('hidden');
+  }
+}
+
 async function handleProfileSetupSubmit(e) {
   e.preventDefault();
   const stage = document.getElementById('setup-stage')?.value || 'B.Tech';
@@ -3809,6 +4085,7 @@ async function handleProfileSetupSubmit(e) {
   const status = document.getElementById('setup-status')?.value || 'Final Year';
   const state = document.getElementById('setup-state')?.value || 'All India / National';
   const dreamGoal = document.getElementById('setup-dream-goal')?.value?.trim() || '';
+  const checkedInterests = Array.from(document.querySelectorAll('#setup-interests-container input[name="setup-interest"]:checked')).map(cb => cb.value);
   const errBox = document.getElementById('setup-error-msg');
   const submitBtn = document.getElementById('setup-submit-btn');
   const btnText = submitBtn?.querySelector('.btn-text');
@@ -3827,6 +4104,7 @@ async function handleProfileSetupSubmit(e) {
       current_status: status,
       home_state: state,
       dream_goal: dreamGoal,
+      career_interests: checkedInterests,
       is_onboarded: 1
     };
 
@@ -3842,8 +4120,10 @@ async function handleProfileSetupSubmit(e) {
         updateRadarProfileChip(data.profile);
       }
       if (currentUser) {
+        currentUser.profile = data.profile;
         renderUserAuthUI(currentUser);
       }
+      loadTrackerProgress();
       // Successfully onboarded: transition into personalized dashboard!
       document.getElementById('auth-screen')?.classList.add('hidden');
       document.getElementById('app-shell')?.classList.remove('hidden');
@@ -4204,6 +4484,7 @@ async function initPreparationHub() {
   updatePrepHubUserSummary();
   const activeTab = AppState.currentPrepHubTab || 'practice';
   switchPrepHubTab(activeTab);
+  loadTrackerProgress();
 }
 
 function updatePrepHubUserSummary() {
@@ -4223,9 +4504,144 @@ function updatePrepHubUserSummary() {
   if (examEl) examEl.textContent = exam;
 
   const completedCount = (currentExamProgress?.completed_topics || []).length;
-  const pct = completedCount > 0 ? Math.min(100, Math.round((completedCount / 12) * 100)) : 20;
+  const pct = completedCount > 0 ? Math.min(100, Math.round((completedCount / 12) * 100)) : 0;
   if (pctEl) pctEl.textContent = `${pct}%`;
   if (barFillEl) barFillEl.style.width = `${pct}%`;
+}
+
+let currentTrackerSession = null;
+let trackerSessionStartTime = null;
+
+async function loadTrackerProgress() {
+  try {
+    const [progRes, planRes] = await Promise.all([
+      fetch('/api/tracker/progress'),
+      fetch('/api/tracker/study-plan')
+    ]);
+
+    if (progRes.ok) {
+      const progData = await progRes.json();
+      const summary = progData.summary || {};
+
+      const pctEl = document.getElementById('tracker-overall-stat');
+      if (pctEl) pctEl.textContent = `${summary.overall_completion_pct || 0}%`;
+
+      const topicsEl = document.getElementById('tracker-topics-count');
+      if (topicsEl) topicsEl.textContent = summary.completed_topics_count || 0;
+
+      const studyEl = document.getElementById('tracker-study-mins');
+      if (studyEl) studyEl.textContent = `${((summary.total_study_minutes || 0) / 60).toFixed(1)} hrs`;
+
+      const practiceEl = document.getElementById('tracker-practice-mins');
+      if (practiceEl) practiceEl.textContent = `${((summary.total_practice_minutes || 0) / 60).toFixed(1)} hrs`;
+
+      const qEl = document.getElementById('tracker-questions-count');
+      if (qEl) qEl.textContent = summary.total_questions_solved || 0;
+
+      const streakEl = document.getElementById('tracker-streak-count');
+      if (streakEl) streakEl.textContent = `${summary.current_streak_days || 0} Days`;
+
+      // Update the mini progress bar in prep-summary card
+      const prepPctEl = document.getElementById('prep-summary-pct');
+      const prepBarFillEl = document.getElementById('prep-summary-bar-fill');
+      const progressVal = summary.overall_completion_pct || 0;
+      if (prepPctEl) prepPctEl.textContent = `${progressVal}%`;
+      if (prepBarFillEl) prepBarFillEl.style.width = `${progressVal}%`;
+    }
+
+    if (planRes.ok) {
+      const planData = await planRes.json();
+      const plan = planData.plan || {};
+      if (plan.topics && plan.topics.length > 0) {
+        const activeTopic = plan.topics[0];
+        const topicEl = document.getElementById('tracker-active-topic');
+        const descEl = document.getElementById('tracker-active-desc');
+        const badgeEl = document.getElementById('tracker-topic-badge');
+        if (topicEl) topicEl.textContent = activeTopic.topic;
+        if (descEl) descEl.textContent = `${plan.target_focus || 'Core Preparation'} • Est: ${activeTopic.estimated_hours}h • Stage 1 Priority`;
+        if (badgeEl) badgeEl.textContent = plan.target_focus || 'Target Plan';
+      }
+    }
+  } catch (err) {
+    console.error('Error loading tracker progress:', err);
+  }
+}
+
+async function handleTrackerStartTopic() {
+  const topicEl = document.getElementById('tracker-active-topic');
+  const topic = topicEl?.textContent || 'Core Concepts';
+  const startBtn = document.getElementById('btn-tracker-start');
+
+  try {
+    if (startBtn) {
+      startBtn.disabled = true;
+      startBtn.innerHTML = '<i data-lucide="loader" class="icon-xs spin"></i> Starting...';
+    }
+    const res = await fetch('/api/tracker/start-topic', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ subject: 'General', topic: topic })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'success') {
+      currentTrackerSession = data.session_id;
+      trackerSessionStartTime = Date.now();
+      if (startBtn) {
+        startBtn.classList.remove('btn-primary');
+        startBtn.classList.add('btn-success');
+        startBtn.innerHTML = '<i data-lucide="check" class="icon-xs"></i> Learning Active';
+      }
+      refreshIcons();
+    }
+  } catch (err) {
+    console.error('Error starting topic:', err);
+  } finally {
+    if (startBtn) startBtn.disabled = false;
+    refreshIcons();
+  }
+}
+
+async function handleTrackerCompleteTopic() {
+  const topicEl = document.getElementById('tracker-active-topic');
+  const topic = topicEl?.textContent || 'Core Concepts';
+  const compBtn = document.getElementById('btn-tracker-complete');
+  const duration = trackerSessionStartTime ? Math.max(1, Math.round((Date.now() - trackerSessionStartTime) / 60000)) : 30;
+
+  try {
+    if (compBtn) {
+      compBtn.disabled = true;
+      compBtn.innerHTML = '<i data-lucide="loader" class="icon-xs spin"></i> Saving...';
+    }
+    const res = await fetch('/api/tracker/complete-topic', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        subject: 'General',
+        topic: topic,
+        duration_minutes: duration,
+        questions_solved: 5,
+        score_pct: 100
+      })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'success') {
+      trackerSessionStartTime = null;
+      currentTrackerSession = null;
+      await loadTrackerProgress();
+      if (compBtn) {
+        compBtn.innerHTML = '<i data-lucide="check-circle" class="icon-xs"></i> Completed!';
+        setTimeout(() => {
+          compBtn.innerHTML = '<i data-lucide="check-circle" class="icon-xs"></i> Mark Complete';
+          refreshIcons();
+        }, 2000);
+      }
+    }
+  } catch (err) {
+    console.error('Error completing topic:', err);
+  } finally {
+    if (compBtn) compBtn.disabled = false;
+    refreshIcons();
+  }
 }
 
 function switchPrepHubTab(tabName) {

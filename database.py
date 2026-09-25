@@ -93,7 +93,8 @@ class PostgresCursorWrapper:
             "users", "user_profiles", "user_preferences", "user_sessions",
             "password_reset_tokens", "email_verifications", "notification_preferences",
             "notification_deliveries", "push_subscriptions", "saved_opportunities",
-            "exam_progress", "study_plans", "ai_conversations"
+            "exam_progress", "study_plans", "ai_conversations",
+            "learning_progress", "study_sessions"
         )
 
         should_return_id = is_insert and not has_returning and any(
@@ -207,12 +208,18 @@ def init_db() -> None:
             name TEXT NOT NULL,
             role TEXT NOT NULL DEFAULT 'user',
             is_verified INTEGER NOT NULL DEFAULT 0,
+            is_active INTEGER NOT NULL DEFAULT 1,
             created_at TEXT NOT NULL,
             updated_at TEXT NOT NULL,
             last_login_at TEXT
         );
         CREATE INDEX IF NOT EXISTS idx_users_email_lower ON users (LOWER(email));
         """)
+        try:
+            cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS is_active INTEGER NOT NULL DEFAULT 1;")
+            conn.commit()
+        except Exception:
+            pass
 
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS user_profiles (
@@ -426,6 +433,43 @@ def init_db() -> None:
         """)
 
         cursor.execute("""
+        CREATE TABLE IF NOT EXISTS learning_progress (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            resource_id TEXT,
+            topic TEXT NOT NULL,
+            category TEXT,
+            status TEXT NOT NULL DEFAULT 'NOT_STARTED',
+            progress_percent INTEGER NOT NULL DEFAULT 0,
+            study_minutes INTEGER NOT NULL DEFAULT 0,
+            practice_minutes INTEGER NOT NULL DEFAULT 0,
+            questions_solved INTEGER NOT NULL DEFAULT 0,
+            quiz_score REAL,
+            completed_at TEXT,
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL,
+            UNIQUE(user_id, topic)
+        );
+        CREATE INDEX IF NOT EXISTS idx_learning_progress_user ON learning_progress(user_id);
+        """)
+
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS study_sessions (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            topic TEXT NOT NULL,
+            category TEXT,
+            session_type TEXT DEFAULT 'STUDY',
+            duration_minutes INTEGER NOT NULL DEFAULT 0,
+            started_at TEXT NOT NULL,
+            ended_at TEXT,
+            notes TEXT,
+            created_at TEXT NOT NULL
+        );
+        CREATE INDEX IF NOT EXISTS idx_study_sessions_user ON study_sessions(user_id);
+        """)
+
+        cursor.execute("""
         CREATE TABLE IF NOT EXISTS learning_resources (
             id TEXT PRIMARY KEY,
             name TEXT NOT NULL,
@@ -560,11 +604,17 @@ def init_db() -> None:
             name TEXT NOT NULL,
             role TEXT NOT NULL DEFAULT 'user',
             is_verified INTEGER NOT NULL DEFAULT 0,
+            is_active INTEGER NOT NULL DEFAULT 1,
             created_at TEXT NOT NULL,
             updated_at TEXT NOT NULL,
             last_login_at TEXT
         );
         """)
+        try:
+            cursor.execute("ALTER TABLE users ADD COLUMN is_active INTEGER NOT NULL DEFAULT 1;")
+            conn.commit()
+        except sqlite3.OperationalError:
+            pass  # Column already exists
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);")
 
         # 2. User Profiles
@@ -808,7 +858,48 @@ def init_db() -> None:
         );
         """)
 
-        # 15. Learning Resources
+        # 15. Learning Progress
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS learning_progress (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            resource_id TEXT,
+            topic TEXT NOT NULL,
+            category TEXT,
+            status TEXT NOT NULL DEFAULT 'NOT_STARTED',
+            progress_percent INTEGER NOT NULL DEFAULT 0,
+            study_minutes INTEGER NOT NULL DEFAULT 0,
+            practice_minutes INTEGER NOT NULL DEFAULT 0,
+            questions_solved INTEGER NOT NULL DEFAULT 0,
+            quiz_score REAL,
+            completed_at TEXT,
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+            UNIQUE(user_id, topic)
+        );
+        """)
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_learning_progress_user ON learning_progress(user_id);")
+
+        # 16. Study Sessions
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS study_sessions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            topic TEXT NOT NULL,
+            category TEXT,
+            session_type TEXT DEFAULT 'STUDY',
+            duration_minutes INTEGER NOT NULL DEFAULT 0,
+            started_at TEXT NOT NULL,
+            ended_at TEXT,
+            notes TEXT,
+            created_at TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+        """)
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_study_sessions_user ON study_sessions(user_id);")
+
+        # 17. Learning Resources
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS learning_resources (
             id TEXT PRIMARY KEY,

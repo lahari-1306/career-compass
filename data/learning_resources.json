@@ -6,11 +6,49 @@
     "official_url": "https://www.geeksforgeeks.org",
     "logo_url": "https://media.geeksforgeeks.org/wp-content/cdn-uploads/gfg_favicon.png",
     "category": "Coding & CS Fundamentals",
-    "education_levels": ["B.Tech", "Degree", "Diploma", "Postgraduate"],
-    "streams": ["Engineering", "Computer Science", "BCA / MCA"],
-    "branches": ["CSE", "IT", "AI & ML", "Data Science", "ECE", "EEE", "All Engineering"],
-    "skills": ["DSA", "C", "C++", "Java", "Python", "SQL", "Web Development", "Data Science", "Machine Learning", "Cloud", "DevOps", "CS Subjects", "Interview Preparation", "Coding Practice"],
-    "exams": ["GATE CSE", "GATE DA", "Campus Placements", "TCS NQT", "Infosys"],
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Diploma",
+      "Postgraduate"
+    ],
+    "streams": [
+      "Engineering",
+      "Computer Science",
+      "BCA / MCA"
+    ],
+    "branches": [
+      "CSE",
+      "IT",
+      "AI & ML",
+      "Data Science",
+      "ECE",
+      "EEE",
+      "All Engineering"
+    ],
+    "skills": [
+      "DSA",
+      "C",
+      "C++",
+      "Java",
+      "Python",
+      "SQL",
+      "Web Development",
+      "Data Science",
+      "Machine Learning",
+      "Cloud",
+      "DevOps",
+      "CS Subjects",
+      "Interview Preparation",
+      "Coding Practice"
+    ],
+    "exams": [
+      "GATE CSE",
+      "GATE DA",
+      "Campus Placements",
+      "TCS NQT",
+      "Infosys"
+    ],
     "resource_type": "Practice & Learning Platform",
     "access_type": "FREE + PAID",
     "language": "English",
@@ -29,11 +67,46 @@
     "official_url": "https://prepinsta.com",
     "logo_url": "",
     "category": "Placement Preparation",
-    "education_levels": ["B.Tech", "Degree", "Diploma"],
-    "streams": ["Engineering", "Computer Science", "Degree"],
-    "branches": ["CSE", "IT", "ECE", "EEE", "Mechanical", "Civil", "All Branches"],
-    "skills": ["Aptitude", "Logical Reasoning", "Verbal Ability", "Coding", "DSA", "SQL", "Technical Interview", "HR Interview", "Company-specific preparation"],
-    "exams": ["TCS NQT", "Infosys DSE/SE", "Wipro Elite", "Cognizant GenC", "Accenture ASE", "Capgemini", "AMCAT", "CoCubes"],
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Diploma"
+    ],
+    "streams": [
+      "Engineering",
+      "Computer Science",
+      "Degree"
+    ],
+    "branches": [
+      "CSE",
+      "IT",
+      "ECE",
+      "EEE",
+      "Mechanical",
+      "Civil",
+      "All Branches"
+    ],
+    "skills": [
+      "Aptitude",
+      "Logical Reasoning",
+      "Verbal Ability",
+      "Coding",
+      "DSA",
+      "SQL",
+      "Technical Interview",
+      "HR Interview",
+      "Company-specific preparation"
+    ],
+    "exams": [
+      "TCS NQT",
+      "Infosys DSE/SE",
+      "Wipro Elite",
+      "Cognizant GenC",
+      "Accenture ASE",
+      "Capgemini",
+      "AMCAT",
+      "CoCubes"
+    ],
     "resource_type": "Placement Preparation Portal",
     "access_type": "FREE + PAID",
     "language": "English",
@@ -52,11 +125,37 @@
     "official_url": "https://www.placementpreparation.io",
     "logo_url": "",
     "category": "Placement Preparation",
-    "education_levels": ["B.Tech", "Degree", "Diploma"],
-    "streams": ["Engineering", "Degree", "Polytechnic"],
-    "branches": ["All Branches", "CSE", "ECE", "EEE", "Mechanical", "Civil"],
-    "skills": ["Aptitude", "Logical Reasoning", "Verbal Ability", "Programming", "SQL", "Company Tests"],
-    "exams": ["Campus Placement Drives", "IT Off-Campus Exams", "State Govt Tests"],
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Diploma"
+    ],
+    "streams": [
+      "Engineering",
+      "Degree",
+      "Polytechnic"
+    ],
+    "branches": [
+      "All Branches",
+      "CSE",
+      "ECE",
+      "EEE",
+      "Mechanical",
+      "Civil"
+    ],
+    "skills": [
+      "Aptitude",
+      "Logical Reasoning",
+      "Verbal Ability",
+      "Programming",
+      "SQL",
+      "Company Tests"
+    ],
+    "exams": [
+      "Campus Placement Drives",
+      "IT Off-Campus Exams",
+      "State Govt Tests"
+    ],
     "resource_type": "Practice Portal",
     "access_type": "FREE + PAID",
     "language": "English",
@@ -75,11 +174,39 @@
     "official_url": "https://www.codechef.com",
     "logo_url": "",
     "category": "Coding & Programming",
-    "education_levels": ["B.Tech", "Degree", "Diploma", "Intermediate"],
-    "streams": ["Engineering", "MPC", "Computer Science"],
-    "branches": ["CSE", "IT", "AI & ML", "Data Science", "ECE", "All Engineering"],
-    "skills": ["Programming", "DSA", "C++", "Java", "Python", "Competitive Programming", "Algorithms"],
-    "exams": ["ICPC", "Coding Contests", "Tech Interview Coding Rounds"],
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Diploma",
+      "Intermediate"
+    ],
+    "streams": [
+      "Engineering",
+      "MPC",
+      "Computer Science"
+    ],
+    "branches": [
+      "CSE",
+      "IT",
+      "AI & ML",
+      "Data Science",
+      "ECE",
+      "All Engineering"
+    ],
+    "skills": [
+      "Programming",
+      "DSA",
+      "C++",
+      "Java",
+      "Python",
+      "Competitive Programming",
+      "Algorithms"
+    ],
+    "exams": [
+      "ICPC",
+      "Coding Contests",
+      "Tech Interview Coding Rounds"
+    ],
     "resource_type": "Coding Practice & Contests",
     "access_type": "FREE + PAID",
     "language": "English",
@@ -98,11 +225,35 @@
     "official_url": "https://leetcode.com",
     "logo_url": "",
     "category": "Coding & Interview Preparation",
-    "education_levels": ["B.Tech", "Degree", "Postgraduate"],
-    "streams": ["Engineering", "Computer Science", "MCA"],
-    "branches": ["CSE", "IT", "AI & ML", "Data Science", "ECE"],
-    "skills": ["DSA", "Algorithms", "Data Structures", "SQL", "Technical Interview", "System Design"],
-    "exams": ["Product-Based Company Interviews (FAANG / Tier 1)", "Campus Placements"],
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Postgraduate"
+    ],
+    "streams": [
+      "Engineering",
+      "Computer Science",
+      "MCA"
+    ],
+    "branches": [
+      "CSE",
+      "IT",
+      "AI & ML",
+      "Data Science",
+      "ECE"
+    ],
+    "skills": [
+      "DSA",
+      "Algorithms",
+      "Data Structures",
+      "SQL",
+      "Technical Interview",
+      "System Design"
+    ],
+    "exams": [
+      "Product-Based Company Interviews (FAANG / Tier 1)",
+      "Campus Placements"
+    ],
     "resource_type": "Interview Practice Portal",
     "access_type": "FREE + PAID",
     "language": "English",
@@ -121,13 +272,39 @@
     "official_url": "https://www.hackerrank.com",
     "logo_url": "",
     "category": "Coding & Skills Certification",
-    "education_levels": ["B.Tech", "Degree", "Diploma"],
-    "streams": ["Engineering", "Computer Science", "Polytechnic"],
-    "branches": ["CSE", "IT", "AI & ML", "ECE", "EEE", "All Engineering"],
-    "skills": ["Coding", "Problem Solving", "Python", "Java", "C++", "SQL", "Data Structures"],
-    "exams": ["Skill Certification Tests", "Campus Placement Coding Rounds"],
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Diploma"
+    ],
+    "streams": [
+      "Engineering",
+      "Computer Science",
+      "Polytechnic"
+    ],
+    "branches": [
+      "CSE",
+      "IT",
+      "AI & ML",
+      "ECE",
+      "EEE",
+      "All Engineering"
+    ],
+    "skills": [
+      "Coding",
+      "Problem Solving",
+      "Python",
+      "Java",
+      "C++",
+      "SQL",
+      "Data Structures"
+    ],
+    "exams": [
+      "Skill Certification Tests",
+      "Campus Placement Coding Rounds"
+    ],
     "resource_type": "Practice & Skill Verification",
-    "access_type": "OFFICIAL FREE RESOURCE",
+    "access_type": "FREE + PAID",
     "language": "English",
     "free_features": "100% free practice tracks, domain challenges, and accredited HackerRank Skills Certifications for individual students.",
     "paid_features": "Enterprise hiring solutions (for employers only; completely free for students).",
@@ -144,16 +321,50 @@
     "official_url": "https://nptel.ac.in",
     "logo_url": "",
     "category": "Core Engineering & Higher Education",
-    "education_levels": ["B.Tech", "Degree", "Diploma", "Postgraduate"],
-    "streams": ["Engineering", "Sciences", "Humanities", "Management"],
-    "branches": ["CSE", "ECE", "EEE", "Mechanical", "Civil", "Chemical", "Biotechnology", "All Branches"],
-    "skills": ["Core Engineering", "Digital Electronics", "Thermodynamics", "Structural Engineering", "DSA", "AI/ML", "Signal Processing", "Electric Drives", "GATE Preparation"],
-    "exams": ["GATE", "Semester University Credits", "PSU Interviews", "UGC NET"],
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Diploma",
+      "Postgraduate"
+    ],
+    "streams": [
+      "Engineering",
+      "Sciences",
+      "Humanities",
+      "Management"
+    ],
+    "branches": [
+      "CSE",
+      "ECE",
+      "EEE",
+      "Mechanical",
+      "Civil",
+      "Chemical",
+      "Biotechnology",
+      "All Branches"
+    ],
+    "skills": [
+      "Core Engineering",
+      "Digital Electronics",
+      "Thermodynamics",
+      "Structural Engineering",
+      "DSA",
+      "AI/ML",
+      "Signal Processing",
+      "Electric Drives",
+      "GATE Preparation"
+    ],
+    "exams": [
+      "GATE",
+      "Semester University Credits",
+      "PSU Interviews",
+      "UGC NET"
+    ],
     "resource_type": "Official Academic Repository",
     "access_type": "OFFICIAL FREE RESOURCE",
     "language": "English (Transcripts in Regional Languages)",
     "free_features": "100% free access to all video lectures, course lecture notes, assignments, and reading materials from IIT professors.",
-    "paid_features": "Optional proctored in-person certification exam carries a nominal fee (approx ₹1,000 with scholarship waivers for eligible categories).",
+    "paid_features": "Optional proctored in-person certification exam carries a nominal fee (approx \u20b91,000 with scholarship waivers for eligible categories).",
     "official_source": "https://nptel.ac.in",
     "verification_status": "VERIFIED",
     "last_verified": "2026-09-24",
@@ -167,11 +378,38 @@
     "official_url": "https://swayam.gov.in",
     "logo_url": "",
     "category": "Academic Courses & Certification",
-    "education_levels": ["10th", "Intermediate", "Diploma", "Degree", "B.Tech", "Postgraduate"],
-    "streams": ["All Streams", "Engineering", "Commerce", "Science", "Humanities"],
-    "branches": ["All Branches"],
-    "skills": ["School Subjects", "Mathematics", "Science", "Economics", "Core Engineering", "Research Methodology", "Soft Skills"],
-    "exams": ["Academic Credit Transfer", "UGC NET", "Higher Education"],
+    "education_levels": [
+      "10th",
+      "Intermediate",
+      "Diploma",
+      "Degree",
+      "B.Tech",
+      "Postgraduate"
+    ],
+    "streams": [
+      "All Streams",
+      "Engineering",
+      "Commerce",
+      "Science",
+      "Humanities"
+    ],
+    "branches": [
+      "All Branches"
+    ],
+    "skills": [
+      "School Subjects",
+      "Mathematics",
+      "Science",
+      "Economics",
+      "Core Engineering",
+      "Research Methodology",
+      "Soft Skills"
+    ],
+    "exams": [
+      "Academic Credit Transfer",
+      "UGC NET",
+      "Higher Education"
+    ],
     "resource_type": "Official Govt Learning Portal",
     "access_type": "OFFICIAL FREE RESOURCE",
     "language": "English, Hindi, and Regional Languages",
@@ -190,11 +428,30 @@
     "official_url": "https://diksha.gov.in",
     "logo_url": "",
     "category": "School & Foundation Learning",
-    "education_levels": ["10th"],
-    "streams": ["Secondary School (Classes 6-10)"],
-    "branches": ["General Foundation"],
-    "skills": ["Mathematics", "Science", "Physics", "Chemistry", "Biology", "Social Science", "Languages", "Computer Basics"],
-    "exams": ["10th Board Exams (CBSE / ICSE / State SSC)", "NTSE Foundation", "NMMS"],
+    "education_levels": [
+      "10th"
+    ],
+    "streams": [
+      "Secondary School (Classes 6-10)"
+    ],
+    "branches": [
+      "General Foundation"
+    ],
+    "skills": [
+      "Mathematics",
+      "Science",
+      "Physics",
+      "Chemistry",
+      "Biology",
+      "Social Science",
+      "Languages",
+      "Computer Basics"
+    ],
+    "exams": [
+      "10th Board Exams (CBSE / ICSE / State SSC)",
+      "NTSE Foundation",
+      "NMMS"
+    ],
     "resource_type": "Official School E-Learning",
     "access_type": "OFFICIAL FREE RESOURCE",
     "language": "English, Telugu, Hindi, and 30+ Indian Languages",
@@ -213,11 +470,37 @@
     "official_url": "https://epathshala.nic.in",
     "logo_url": "",
     "category": "School Subjects & Textbooks",
-    "education_levels": ["10th", "Intermediate"],
-    "streams": ["Secondary (10th)", "MPC", "BiPC", "MEC", "CEC", "HEC"],
-    "branches": ["Foundational"],
-    "skills": ["Mathematics", "Physics", "Chemistry", "Biology", "Social Science", "Economics", "English", "Languages"],
-    "exams": ["10th Board Exams", "Intermediate Board Exams", "JEE Foundation", "NEET Foundation"],
+    "education_levels": [
+      "10th",
+      "Intermediate"
+    ],
+    "streams": [
+      "Secondary (10th)",
+      "MPC",
+      "BiPC",
+      "MEC",
+      "CEC",
+      "HEC"
+    ],
+    "branches": [
+      "Foundational"
+    ],
+    "skills": [
+      "Mathematics",
+      "Physics",
+      "Chemistry",
+      "Biology",
+      "Social Science",
+      "Economics",
+      "English",
+      "Languages"
+    ],
+    "exams": [
+      "10th Board Exams",
+      "Intermediate Board Exams",
+      "JEE Foundation",
+      "NEET Foundation"
+    ],
     "resource_type": "Official Textbook Repository",
     "access_type": "OFFICIAL FREE RESOURCE",
     "language": "English, Hindi, Urdu",
@@ -236,11 +519,35 @@
     "official_url": "https://www.nta.ac.in/Abhyas",
     "logo_url": "",
     "category": "Official Mock Tests & Entrance Exams",
-    "education_levels": ["Intermediate", "Degree", "Postgraduate"],
-    "streams": ["MPC", "BiPC", "Sciences", "Higher Studies"],
-    "branches": ["Engineering Entrances", "Medical Entrances"],
-    "skills": ["Physics", "Chemistry", "Mathematics", "Biology", "Entrance Exams", "Mock Test Practice"],
-    "exams": ["JEE Main", "NEET UG", "UGC NET", "CUET"],
+    "education_levels": [
+      "Intermediate",
+      "Degree",
+      "Postgraduate"
+    ],
+    "streams": [
+      "MPC",
+      "BiPC",
+      "Sciences",
+      "Higher Studies"
+    ],
+    "branches": [
+      "Engineering Entrances",
+      "Medical Entrances"
+    ],
+    "skills": [
+      "Physics",
+      "Chemistry",
+      "Mathematics",
+      "Biology",
+      "Entrance Exams",
+      "Mock Test Practice"
+    ],
+    "exams": [
+      "JEE Main",
+      "NEET UG",
+      "UGC NET",
+      "CUET"
+    ],
     "resource_type": "Official Mock Test Portal",
     "access_type": "OFFICIAL FREE RESOURCE",
     "language": "English, Hindi",
@@ -259,11 +566,31 @@
     "official_url": "https://www.khanacademy.org",
     "logo_url": "",
     "category": "School & Foundation Learning",
-    "education_levels": ["10th", "Intermediate"],
-    "streams": ["Class 10", "MPC", "BiPC"],
-    "branches": ["Science & Math Foundation"],
-    "skills": ["Mathematics", "Physics", "Chemistry", "Biology", "Computer Basics", "Foundational Reasoning"],
-    "exams": ["10th Board Exams", "JEE Foundation", "NEET Foundation"],
+    "education_levels": [
+      "10th",
+      "Intermediate"
+    ],
+    "streams": [
+      "Class 10",
+      "MPC",
+      "BiPC"
+    ],
+    "branches": [
+      "Science & Math Foundation"
+    ],
+    "skills": [
+      "Mathematics",
+      "Physics",
+      "Chemistry",
+      "Biology",
+      "Computer Basics",
+      "Foundational Reasoning"
+    ],
+    "exams": [
+      "10th Board Exams",
+      "JEE Foundation",
+      "NEET Foundation"
+    ],
     "resource_type": "Interactive Learning Platform",
     "access_type": "OFFICIAL FREE RESOURCE",
     "language": "English, Hindi, Hinglish",
@@ -282,11 +609,40 @@
     "official_url": "https://spoken-tutorial.org",
     "logo_url": "",
     "category": "Technical & Diploma Skill Building",
-    "education_levels": ["Diploma", "B.Tech", "Degree", "10th"],
-    "streams": ["Polytechnic", "Engineering", "Vocational"],
-    "branches": ["Mechanical", "Civil", "ECE", "EEE", "CSE", "All Branches"],
-    "skills": ["Linux", "Python", "C", "C++", "LibreOffice", "AutoCAD / FreeCAD", "Blender", "Arduino", "Web Development"],
-    "exams": ["Diploma Practical Exams", "Skill Certifications"],
+    "education_levels": [
+      "Diploma",
+      "B.Tech",
+      "Degree",
+      "10th"
+    ],
+    "streams": [
+      "Polytechnic",
+      "Engineering",
+      "Vocational"
+    ],
+    "branches": [
+      "Mechanical",
+      "Civil",
+      "ECE",
+      "EEE",
+      "CSE",
+      "All Branches"
+    ],
+    "skills": [
+      "Linux",
+      "Python",
+      "C",
+      "C++",
+      "LibreOffice",
+      "AutoCAD / FreeCAD",
+      "Blender",
+      "Arduino",
+      "Web Development"
+    ],
+    "exams": [
+      "Diploma Practical Exams",
+      "Skill Certifications"
+    ],
     "resource_type": "Interactive Hands-on Tutorials",
     "access_type": "OFFICIAL FREE RESOURCE",
     "language": "English, Telugu, Hindi, Tamil, and 20+ Languages",
@@ -305,11 +661,35 @@
     "official_url": "https://www.vlab.co.in",
     "logo_url": "",
     "category": "Core Engineering Lab Simulations",
-    "education_levels": ["Diploma", "B.Tech", "Degree"],
-    "streams": ["Engineering", "Polytechnic"],
-    "branches": ["Mechanical", "Civil", "EEE", "ECE", "Chemical", "CSE"],
-    "skills": ["Core Engineering", "Fluid Mechanics Lab", "Strength of Materials Lab", "Analog Electronics Lab", "Microprocessors", "Surveying"],
-    "exams": ["Semester University Practicals", "GATE Core Subjects"],
+    "education_levels": [
+      "Diploma",
+      "B.Tech",
+      "Degree"
+    ],
+    "streams": [
+      "Engineering",
+      "Polytechnic"
+    ],
+    "branches": [
+      "Mechanical",
+      "Civil",
+      "EEE",
+      "ECE",
+      "Chemical",
+      "CSE"
+    ],
+    "skills": [
+      "Core Engineering",
+      "Fluid Mechanics Lab",
+      "Strength of Materials Lab",
+      "Analog Electronics Lab",
+      "Microprocessors",
+      "Surveying"
+    ],
+    "exams": [
+      "Semester University Practicals",
+      "GATE Core Subjects"
+    ],
     "resource_type": "Virtual Lab Simulator",
     "access_type": "OFFICIAL FREE RESOURCE",
     "language": "English",
@@ -328,13 +708,42 @@
     "official_url": "https://www.indiabix.com",
     "logo_url": "",
     "category": "Aptitude & Technical Practice",
-    "education_levels": ["B.Tech", "Degree", "Diploma"],
-    "streams": ["Engineering", "Polytechnic", "Degree"],
-    "branches": ["All Branches", "CSE", "ECE", "EEE", "Mechanical", "Civil"],
-    "skills": ["Aptitude", "Reasoning", "Verbal Ability", "Core Engineering", "Technical MCQs", "Interview Preparation"],
-    "exams": ["Campus Placements", "RRB JE", "SSC JE", "State PSCs", "Bank PO", "ECET"],
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Diploma"
+    ],
+    "streams": [
+      "Engineering",
+      "Polytechnic",
+      "Degree"
+    ],
+    "branches": [
+      "All Branches",
+      "CSE",
+      "ECE",
+      "EEE",
+      "Mechanical",
+      "Civil"
+    ],
+    "skills": [
+      "Aptitude",
+      "Reasoning",
+      "Verbal Ability",
+      "Core Engineering",
+      "Technical MCQs",
+      "Interview Preparation"
+    ],
+    "exams": [
+      "Campus Placements",
+      "RRB JE",
+      "SSC JE",
+      "State PSCs",
+      "Bank PO",
+      "ECET"
+    ],
     "resource_type": "Practice Question Bank",
-    "access_type": "OFFICIAL FREE RESOURCE",
+    "access_type": "FREE",
     "language": "English",
     "free_features": "100% free access to thousands of solved questions with detailed step-by-step explanations, online tests, and discussion threads.",
     "paid_features": "None (ad-supported free public practice portal).",
@@ -351,11 +760,37 @@
     "official_url": "https://gateoverflow.in",
     "logo_url": "",
     "category": "GATE Preparation & CS Fundamentals",
-    "education_levels": ["B.Tech", "Postgraduate"],
-    "streams": ["Engineering", "Computer Science"],
-    "branches": ["CSE", "IT", "AI & ML", "Data Science"],
-    "skills": ["GATE", "Theory of Computation", "Algorithms", "Operating Systems", "DBMS", "Computer Networks", "Digital Logic", "Compiler Design"],
-    "exams": ["GATE CSE", "GATE DA", "ISRO Scientist SC", "BARC", "DRDO"],
+    "education_levels": [
+      "B.Tech",
+      "Postgraduate"
+    ],
+    "streams": [
+      "Engineering",
+      "Computer Science"
+    ],
+    "branches": [
+      "CSE",
+      "IT",
+      "AI & ML",
+      "Data Science"
+    ],
+    "skills": [
+      "GATE",
+      "Theory of Computation",
+      "Algorithms",
+      "Operating Systems",
+      "DBMS",
+      "Computer Networks",
+      "Digital Logic",
+      "Compiler Design"
+    ],
+    "exams": [
+      "GATE CSE",
+      "GATE DA",
+      "ISRO Scientist SC",
+      "BARC",
+      "DRDO"
+    ],
     "resource_type": "PYQ & Discussion Forum",
     "access_type": "OFFICIAL FREE RESOURCE",
     "language": "English",
@@ -374,13 +809,40 @@
     "official_url": "https://www.kaggle.com",
     "logo_url": "",
     "category": "AI, ML & Data Science",
-    "education_levels": ["B.Tech", "Degree", "Postgraduate"],
-    "streams": ["Engineering", "Computer Science", "Mathematics", "Statistics"],
-    "branches": ["CSE", "IT", "AI & ML", "Data Science"],
-    "skills": ["Python", "Pandas", "Data Science", "Machine Learning", "Deep Learning", "SQL", "Feature Engineering", "Data Visualization"],
-    "exams": ["Data Science Roles", "AI Research", "Kaggle Competitions"],
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Postgraduate"
+    ],
+    "streams": [
+      "Engineering",
+      "Computer Science",
+      "Mathematics",
+      "Statistics"
+    ],
+    "branches": [
+      "CSE",
+      "IT",
+      "AI & ML",
+      "Data Science"
+    ],
+    "skills": [
+      "Python",
+      "Pandas",
+      "Data Science",
+      "Machine Learning",
+      "Deep Learning",
+      "SQL",
+      "Feature Engineering",
+      "Data Visualization"
+    ],
+    "exams": [
+      "Data Science Roles",
+      "AI Research",
+      "Kaggle Competitions"
+    ],
     "resource_type": "Hands-on Data Science Hub",
-    "access_type": "OFFICIAL FREE RESOURCE",
+    "access_type": "FREE",
     "language": "English",
     "free_features": "Free micro-courses with certificates, interactive Jupyter notebooks with free GPU/TPU hours, public datasets, and competitions.",
     "paid_features": "None (Google subsidiary free for developer community).",
@@ -397,13 +859,35 @@
     "official_url": "https://www.allaboutcircuits.com",
     "logo_url": "",
     "category": "Core Engineering (ECE / EEE)",
-    "education_levels": ["B.Tech", "Diploma"],
-    "streams": ["Engineering", "Polytechnic"],
-    "branches": ["ECE", "EEE", "Instrumentation"],
-    "skills": ["Core Engineering", "Digital Electronics", "Analog Electronics", "Circuit Theory", "Embedded Systems", "Power Electronics", "Microcontrollers"],
-    "exams": ["GATE ECE", "GATE EE", "Core Hardware Placements"],
+    "education_levels": [
+      "B.Tech",
+      "Diploma"
+    ],
+    "streams": [
+      "Engineering",
+      "Polytechnic"
+    ],
+    "branches": [
+      "ECE",
+      "EEE",
+      "Instrumentation"
+    ],
+    "skills": [
+      "Core Engineering",
+      "Digital Electronics",
+      "Analog Electronics",
+      "Circuit Theory",
+      "Embedded Systems",
+      "Power Electronics",
+      "Microcontrollers"
+    ],
+    "exams": [
+      "GATE ECE",
+      "GATE EE",
+      "Core Hardware Placements"
+    ],
     "resource_type": "Textbook & Technical Guide",
-    "access_type": "OFFICIAL FREE RESOURCE",
+    "access_type": "FREE",
     "language": "English",
     "free_features": "100% free open textbooks (Vols 1-6 covering DC, AC, Semiconductors, Digital), technical articles, interactive calculators, and forum.",
     "paid_features": "None (industry-sponsored free open educational resource).",
@@ -420,13 +904,34 @@
     "official_url": "https://www.engineeringtoolbox.com",
     "logo_url": "",
     "category": "Core Engineering (Mechanical / Civil)",
-    "education_levels": ["B.Tech", "Diploma"],
-    "streams": ["Engineering", "Polytechnic"],
-    "branches": ["Mechanical", "Civil"],
-    "skills": ["Core Engineering", "Thermodynamics", "Fluid Mechanics", "Strength of Materials", "Structural Engineering", "HVAC", "Piping"],
-    "exams": ["GATE ME", "GATE CE", "Core PSU Exams"],
+    "education_levels": [
+      "B.Tech",
+      "Diploma"
+    ],
+    "streams": [
+      "Engineering",
+      "Polytechnic"
+    ],
+    "branches": [
+      "Mechanical",
+      "Civil"
+    ],
+    "skills": [
+      "Core Engineering",
+      "Thermodynamics",
+      "Fluid Mechanics",
+      "Strength of Materials",
+      "Structural Engineering",
+      "HVAC",
+      "Piping"
+    ],
+    "exams": [
+      "GATE ME",
+      "GATE CE",
+      "Core PSU Exams"
+    ],
     "resource_type": "Technical Engineering Reference",
-    "access_type": "OFFICIAL FREE RESOURCE",
+    "access_type": "FREE",
     "language": "English",
     "free_features": "100% free open reference tables, design formulas, fluid property charts, and unit conversion software.",
     "paid_features": "None (free public technical handbook).",
@@ -443,11 +948,33 @@
     "official_url": "https://ndl.iitkgp.ac.in",
     "logo_url": "",
     "category": "Digital Library & Academic Research",
-    "education_levels": ["10th", "Intermediate", "Diploma", "Degree", "B.Tech", "Postgraduate"],
-    "streams": ["All Streams"],
-    "branches": ["All Branches"],
-    "skills": ["School Subjects", "Core Engineering", "Research", "Books & References", "Previous Papers"],
-    "exams": ["Board Exams", "GATE", "UPSC", "UGC NET"],
+    "education_levels": [
+      "10th",
+      "Intermediate",
+      "Diploma",
+      "Degree",
+      "B.Tech",
+      "Postgraduate"
+    ],
+    "streams": [
+      "All Streams"
+    ],
+    "branches": [
+      "All Branches"
+    ],
+    "skills": [
+      "School Subjects",
+      "Core Engineering",
+      "Research",
+      "Books & References",
+      "Previous Papers"
+    ],
+    "exams": [
+      "Board Exams",
+      "GATE",
+      "UPSC",
+      "UGC NET"
+    ],
     "resource_type": "National Academic Repository",
     "access_type": "OFFICIAL FREE RESOURCE",
     "language": "English, Hindi, Telugu, and 70+ Languages",
@@ -466,11 +993,28 @@
     "official_url": "https://shodhganga.inflibnet.ac.in",
     "logo_url": "",
     "category": "Research & Higher Studies",
-    "education_levels": ["Postgraduate"],
-    "streams": ["Sciences", "Engineering", "Commerce", "Humanities"],
-    "branches": ["All Specializations"],
-    "skills": ["Research", "Literature Review", "Thesis Writing", "Academic Publishing"],
-    "exams": ["Ph.D. Coursework", "UGC NET JRF"],
+    "education_levels": [
+      "Postgraduate"
+    ],
+    "streams": [
+      "Sciences",
+      "Engineering",
+      "Commerce",
+      "Humanities"
+    ],
+    "branches": [
+      "All Specializations"
+    ],
+    "skills": [
+      "Research",
+      "Literature Review",
+      "Thesis Writing",
+      "Academic Publishing"
+    ],
+    "exams": [
+      "Ph.D. Coursework",
+      "UGC NET JRF"
+    ],
     "resource_type": "Official Research Archive",
     "access_type": "OFFICIAL FREE RESOURCE",
     "language": "English, Hindi, Sanskrit, Regional Languages",
@@ -489,11 +1033,38 @@
     "official_url": "https://www.w3schools.com",
     "logo_url": "",
     "category": "Web Development & Programming",
-    "education_levels": ["B.Tech", "Degree", "Diploma", "Intermediate"],
-    "streams": ["Computer Science", "Engineering", "Degree"],
-    "branches": ["CSE", "IT", "AI & ML", "ECE", "All Branches"],
-    "skills": ["Web Development", "Programming", "Python", "SQL", "JavaScript", "HTML/CSS", "Java", "C++"],
-    "exams": ["Web Dev Project Preparation", "Internship Technical Rounds"],
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Diploma",
+      "Intermediate"
+    ],
+    "streams": [
+      "Computer Science",
+      "Engineering",
+      "Degree"
+    ],
+    "branches": [
+      "CSE",
+      "IT",
+      "AI & ML",
+      "ECE",
+      "All Branches"
+    ],
+    "skills": [
+      "Web Development",
+      "Programming",
+      "Python",
+      "SQL",
+      "JavaScript",
+      "HTML/CSS",
+      "Java",
+      "C++"
+    ],
+    "exams": [
+      "Web Dev Project Preparation",
+      "Internship Technical Rounds"
+    ],
     "resource_type": "Interactive Reference Portal",
     "access_type": "FREE + PAID",
     "language": "English",
@@ -512,11 +1083,36 @@
     "official_url": "https://www.coursera.org",
     "logo_url": "",
     "category": "Professional Skills & Certifications",
-    "education_levels": ["B.Tech", "Degree", "Postgraduate"],
-    "streams": ["Engineering", "Computer Science", "Business", "Sciences"],
-    "branches": ["CSE", "IT", "AI & ML", "Data Science", "All Branches"],
-    "skills": ["Data Science", "AI/ML", "Cloud/DevOps", "Cyber Security", "Management", "Career Skills"],
-    "exams": ["Industry Skill Verification", "Placement Prep"],
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Postgraduate"
+    ],
+    "streams": [
+      "Engineering",
+      "Computer Science",
+      "Business",
+      "Sciences"
+    ],
+    "branches": [
+      "CSE",
+      "IT",
+      "AI & ML",
+      "Data Science",
+      "All Branches"
+    ],
+    "skills": [
+      "Data Science",
+      "AI/ML",
+      "Cloud/DevOps",
+      "Cyber Security",
+      "Management",
+      "Career Skills"
+    ],
+    "exams": [
+      "Industry Skill Verification",
+      "Placement Prep"
+    ],
     "resource_type": "Online Course Platform",
     "access_type": "FREE + PAID",
     "language": "English (Subtitles in 40+ languages)",
@@ -535,11 +1131,28 @@
     "official_url": "https://resumeworded.com",
     "logo_url": "",
     "category": "Resume & Interview Skills",
-    "education_levels": ["B.Tech", "Degree", "Diploma", "Postgraduate"],
-    "streams": ["All Streams"],
-    "branches": ["All Branches"],
-    "skills": ["Resume & Interview", "Soft Skills", "Career Skills", "Communication Skills"],
-    "exams": ["Campus Placement Shortlisting", "Off-Campus Job Applications"],
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Diploma",
+      "Postgraduate"
+    ],
+    "streams": [
+      "All Streams"
+    ],
+    "branches": [
+      "All Branches"
+    ],
+    "skills": [
+      "Resume & Interview",
+      "Soft Skills",
+      "Career Skills",
+      "Communication Skills"
+    ],
+    "exams": [
+      "Campus Placement Shortlisting",
+      "Off-Campus Job Applications"
+    ],
     "resource_type": "Resume Review Tool",
     "access_type": "FREE + PAID",
     "language": "English",

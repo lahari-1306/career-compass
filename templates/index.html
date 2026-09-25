@@ -9,6 +9,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/styles.css">
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('cc_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        var lang = localStorage.getItem('cc_lang') || 'en';
+        document.documentElement.setAttribute('lang', lang);
+      } catch (e) {}
+    })();
+  </script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
@@ -38,11 +48,16 @@
             <button class="dropdown-item" onclick="changeLanguage('en')">English (Default)</button>
             <button class="dropdown-item" onclick="changeLanguage('te')">తెలుగు (Telugu)</button>
             <button class="dropdown-item" onclick="changeLanguage('hi')">हिंदी (Hindi)</button>
+            <button class="dropdown-item" onclick="changeLanguage('ta')">தமிழ் (Tamil)</button>
+            <button class="dropdown-item" onclick="changeLanguage('kn')">ಕನ್ನಡ (Kannada)</button>
+            <button class="dropdown-item" onclick="changeLanguage('ml')">മലയാളം (Malayalam)</button>
+            <button class="dropdown-item" onclick="changeLanguage('mr')">मराठी (Marathi)</button>
+            <button class="dropdown-item" onclick="changeLanguage('bn')">বাংলা (Bengali)</button>
           </div>
         </div>
 
         <!-- Theme Toggle -->
-        <button id="auth-theme-toggle-btn" class="action-btn theme-btn" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Toggle Light/Dark Theme">
+        <button id="auth-theme-toggle-btn" class="action-btn theme-btn" aria-label="Toggle light/dark theme" title="Toggle Light/Dark Theme">
           <i data-lucide="moon" class="theme-icon-moon"></i>
           <i data-lucide="sun" class="theme-icon-sun"></i>
         </button>
@@ -224,6 +239,51 @@
             </form>
           </div>
 
+          <!-- VIEW 3B: DEDICATED PASSWORD RESET FORM (FROM TOKEN) -->
+          <div id="auth-view-reset" class="auth-form-view hidden">
+            <div class="auth-form-header">
+              <h2 class="auth-view-title" data-i18n="tracker.reset_pwd_title">Set New Password</h2>
+              <p class="auth-view-subtitle">Enter your new secure password below to regain full access to your account.</p>
+            </div>
+
+            <form id="auth-reset-form" onsubmit="handleAuthResetSubmit(event)" novalidate>
+              <input type="hidden" id="auth-reset-token" value="">
+
+              <div class="form-group">
+                <label class="form-label" for="auth-reset-password" data-i18n="tracker.new_password">New Password</label>
+                <div class="input-with-icon password-input-wrap">
+                  <i data-lucide="lock" class="input-icon"></i>
+                  <input type="password" id="auth-reset-password" class="form-control" placeholder="At least 8 characters" required autocomplete="new-password">
+                  <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('auth-reset-password', this)" title="Show/Hide Password" aria-label="Toggle password visibility">
+                    <i data-lucide="eye" class="icon-xs"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="auth-reset-confirm" data-i18n="tracker.confirm_password">Confirm New Password</label>
+                <div class="input-with-icon password-input-wrap">
+                  <i data-lucide="lock" class="input-icon"></i>
+                  <input type="password" id="auth-reset-confirm" class="form-control" placeholder="Re-enter your new password" required autocomplete="new-password">
+                  <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('auth-reset-confirm', this)" title="Show/Hide Password" aria-label="Toggle password visibility">
+                    <i data-lucide="eye" class="icon-xs"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div id="auth-reset-status" class="auth-alert-box hidden"></div>
+
+              <button type="submit" id="auth-reset-btn-submit" class="btn btn-primary btn-block auth-submit-btn">
+                <span class="btn-text" data-i18n="tracker.reset_btn">UPDATE PASSWORD</span>
+                <div class="btn-spinner hidden"><div class="spinner-sm"></div></div>
+              </button>
+
+              <div class="auth-switch-prompt">
+                <button type="button" class="auth-link-btn" onclick="showAuthView('login')" data-i18n="auth.back_to_signin">← Back to Sign In</button>
+              </div>
+            </form>
+          </div>
+
           <!-- VIEW 4: POST-REGISTRATION PROFILE SETUP ("Let's set up your Career Compass") -->
           <div id="auth-view-profile-setup" class="auth-form-view hidden">
             <div class="auth-form-header">
@@ -291,9 +351,20 @@
                 </select>
               </div>
 
-              <!-- 5. Dream Goal / Target Career (Optional) -->
+              <!-- 5. Future Goals & Career Interests (Multi-select checkboxes, dynamically tailored) -->
               <div class="form-group">
-                <label class="form-label" for="setup-dream-goal" data-i18n="auth.dream_goal_label">Dream Career / Target Goal (Optional)</label>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                  <label class="form-label" style="margin: 0;">Target Career Goals & Interests *</label>
+                  <span style="font-size: 0.72rem; color: var(--text-muted);">Select multiple</span>
+                </div>
+                <div id="setup-interests-container" class="checkbox-pill-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.35rem; max-height: 180px; overflow-y: auto; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-surface-muted);">
+                  <!-- Populated dynamically based on stage -->
+                </div>
+              </div>
+
+              <!-- 6. Dream Goal / Target Career (Optional) -->
+              <div class="form-group">
+                <label class="form-label" for="setup-dream-goal" data-i18n="auth.dream_goal_label">Dream Career / Specific Target Goal (Optional)</label>
                 <input type="text" id="setup-dream-goal" class="form-control" data-i18n-placeholder="auth.dream_goal_placeholder" placeholder="e.g. ISRO Scientist, Software Engineer, PSU Executive, Civil Services">
               </div>
 
@@ -424,9 +495,14 @@
             <i data-lucide="chevron-down" class="icon-xs"></i>
           </button>
           <div id="lang-menu" class="dropdown-panel lang-panel hidden">
-            <button class="dropdown-item active" onclick="changeLanguage('en')">English</button>
-            <button class="dropdown-item" onclick="changeLanguage('hi')">हिन्दी (Hindi)</button>
+            <button class="dropdown-item active" onclick="changeLanguage('en')">English (Default)</button>
             <button class="dropdown-item" onclick="changeLanguage('te')">తెలుగు (Telugu)</button>
+            <button class="dropdown-item" onclick="changeLanguage('hi')">हिंदी (Hindi)</button>
+            <button class="dropdown-item" onclick="changeLanguage('ta')">தமிழ் (Tamil)</button>
+            <button class="dropdown-item" onclick="changeLanguage('kn')">ಕನ್ನಡ (Kannada)</button>
+            <button class="dropdown-item" onclick="changeLanguage('ml')">മലയാളം (Malayalam)</button>
+            <button class="dropdown-item" onclick="changeLanguage('mr')">मराठी (Marathi)</button>
+            <button class="dropdown-item" onclick="changeLanguage('bn')">বাংলা (Bengali)</button>
           </div>
         </div>
 
@@ -783,6 +859,59 @@
               <div class="prep-progress-bar"><div id="prep-summary-bar-fill" class="bar-fill" style="width: 0%;"></div></div>
             </div>
             <button id="prep-continue-btn" class="btn btn-primary btn-sm" onclick="continueUserPreparation()"><i data-lucide="play-circle" class="icon-xs"></i> <span data-i18n="prep_hub.continue_prep">Continue Preparation</span></button>
+          </div>
+        </div>
+
+        <!-- Real Learning Tracker & Today's Preparation (Requirements 13, 14, 15) -->
+        <div id="tracker-dashboard-panel" class="tracker-dashboard-grid mb-4" style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.25rem;">
+          <!-- Active Lesson / Today's Preparation Card -->
+          <div class="card" style="padding: 1.25rem; border-left: 4px solid var(--primary); background: var(--bg-surface);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.75rem;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+                  <span class="badge badge-primary"><i data-lucide="book-open" class="icon-xs"></i> <span data-i18n="tracker.today_prep">Today's Preparation</span></span>
+                  <span id="tracker-topic-badge" class="badge badge-info">Stage 1</span>
+                </div>
+                <h4 id="tracker-active-topic" style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.35rem 0;">Engineering Fundamentals & Aptitude</h4>
+                <p id="tracker-active-desc" style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">Interactive lesson plan mapped to your current qualification profile and target goals.</p>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                <button id="btn-tracker-start" class="btn btn-primary btn-sm" onclick="handleTrackerStartTopic()">
+                  <i data-lucide="play" class="icon-xs"></i> <span data-i18n="tracker.start_learning">Start Learning</span>
+                </button>
+                <button id="btn-tracker-complete" class="btn btn-secondary btn-sm" onclick="handleTrackerCompleteTopic()">
+                  <i data-lucide="check-circle" class="icon-xs"></i> <span data-i18n="tracker.mark_complete">Mark Complete</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- My Learning Progress Metrics Grid -->
+          <div class="metrics-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.85rem;">
+            <div class="card" style="padding: 1rem; text-align: center; background: var(--bg-surface);">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;" data-i18n="tracker.overall_progress">Overall Progress</div>
+              <div id="tracker-overall-stat" style="font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-top: 0.35rem;">0%</div>
+            </div>
+            <div class="card" style="padding: 1rem; text-align: center; background: var(--bg-surface);">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;" data-i18n="tracker.topics_completed">Topics Completed</div>
+              <div id="tracker-topics-count" style="font-size: 1.5rem; font-weight: 800; color: var(--status-open); margin-top: 0.35rem;">0</div>
+            </div>
+            <div class="card" style="padding: 1rem; text-align: center; background: var(--bg-surface);">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;" data-i18n="tracker.study_time">Study Time</div>
+              <div id="tracker-study-mins" style="font-size: 1.5rem; font-weight: 800; color: var(--accent-cyan); margin-top: 0.35rem;">0 hrs</div>
+            </div>
+            <div class="card" style="padding: 1rem; text-align: center; background: var(--bg-surface);">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;" data-i18n="tracker.practice_time">Practice Time</div>
+              <div id="tracker-practice-mins" style="font-size: 1.5rem; font-weight: 800; color: #8b5cf6; margin-top: 0.35rem;">0 hrs</div>
+            </div>
+            <div class="card" style="padding: 1rem; text-align: center; background: var(--bg-surface);">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;" data-i18n="tracker.questions_solved">Questions Solved</div>
+              <div id="tracker-questions-count" style="font-size: 1.5rem; font-weight: 800; color: #ec4899; margin-top: 0.35rem;">0</div>
+            </div>
+            <div class="card" style="padding: 1rem; text-align: center; background: var(--bg-surface);">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;" data-i18n="tracker.study_streak">Study Streak</div>
+              <div id="tracker-streak-count" style="font-size: 1.5rem; font-weight: 800; color: #f59e0b; margin-top: 0.35rem;">0 Days</div>
+            </div>
           </div>
         </div>
 

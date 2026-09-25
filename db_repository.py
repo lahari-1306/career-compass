@@ -41,8 +41,8 @@ class UserRepository:
 
         try:
             cursor.execute("""
-            INSERT INTO users (email, password_hash, name, role, is_verified, created_at, updated_at)
-            VALUES (?, ?, ?, ?, 1, ?, ?)
+            INSERT INTO users (email, password_hash, name, role, is_verified, is_active, created_at, updated_at)
+            VALUES (?, ?, ?, ?, 1, 1, ?, ?)
             """, (email.strip().lower(), pwd_hash, name.strip(), role, now_str, now_str))
             user_id = cursor.lastrowid
 
@@ -76,7 +76,7 @@ class UserRepository:
     def get_by_id(user_id: int) -> Optional[Dict[str, Any]]:
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT id, email, name, role, is_verified, created_at, last_login_at FROM users WHERE id = ?", (user_id,))
+        cursor.execute("SELECT id, email, name, role, is_verified, is_active, created_at, last_login_at FROM users WHERE id = ?", (user_id,))
         row = cursor.fetchone()
         conn.close()
         return dict(row) if row else None
@@ -949,3 +949,271 @@ class LearningResourceRepository:
         conn.commit()
         conn.close()
         return deleted
+
+
+# ====================================================
+# LEARNING TRACKER REPOSITORY (REAL USER PROGRESS)
+# ====================================================
+
+class TrackerRepository:
+    """Manages real database-backed learning metrics, study sessions, and topic completion."""
+
+    @classmethod
+    def get_progress(cls, user_id: int) -> Dict[str, Any]:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+        SELECT * FROM learning_progress
+        WHERE user_id = ?
+        ORDER BY updated_at DESC
+        """, (user_id,))
+        rows = cursor.fetchall()
+        topics = [dict(r) for r in rows] if rows else []
+
+        # Get recent study sessions
+        cursor.execute("""
+        SELECT * FROM study_sessions
+        WHERE user_id = ?
+        ORDER BY started_at DESC
+        LIMIT 10
+        """, (user_id,))
+        session_rows = cursor.fetchall()
+        sessions = [dict(s) for s in session_rows] if session_rows else []
+
+        conn.close()
+
+        total_tracked = len(topics)
+        completed_count = sum(1 for t in topics if t.get("status") == "COMPLETED")
+        in_progress_count = sum(1 for t in topics if t.get("status") == "IN_PROGRESS")
+        total_study_mins = sum(int(t.get("study_minutes") or 0) for t in topics)
+        total_practice_mins = sum(int(t.get("practice_minutes") or 0) for t in topics)
+        total_questions = sum(int(t.get("questions_solved") or 0) for t in topics)
+
+        # For brand new users with no tracked topics, overall_progress_percent MUST be 0%
+        if total_tracked == 0:
+            overall_pct = 0
+        else:
+            overall_pct = min(100, round((completed_count / total_tracked) * 100))
+
+        # Calculate study streak from unique active days in study_sessions
+        unique_dates = sorted({s.get("started_at", "")[:10] for s in sessions if s.get("started_at")}, reverse=True)
+        streak = len(unique_dates)
+
+        return {
+            "total_topics_tracked": total_tracked,
+            "completed_topics_count": completed_count,
+            "in_progress_count": in_progress_count,
+            "overall_progress_percent": overall_pct,
+            "total_study_minutes": total_study_mins,
+            "total_practice_minutes": total_practice_mins,
+            "total_questions_solved": total_questions,
+            "study_streak_days": streak,
+            "topics": topics,
+            "recent_sessions": sessions
+        }
+
+    @classmethod
+    def start_topic(cls, user_id: int, topic: str, category: str = "General", resource_id: Optional[str] = None) -> Dict[str, Any]:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        now_str = now_ist_iso()
+
+        cursor.execute("""
+        SELECT * FROM learning_progress WHERE user_id = ? AND topic = ?
+        """, (user_id, topic))
+        existing = cursor.fetchone()
+
+        if existing:
+            cursor.execute("""
+            UPDATE learning_progress
+            SET status = CASE WHEN status = 'COMPLETED' THEN 'COMPLETED' ELSE 'IN_PROGRESS' END,
+                updated_at = ?
+            WHERE user_id = ? AND topic = ?
+            """, (now_str, user_id, topic))
+        else:
+            cursor.execute("""
+            INSERT INTO learning_progress (
+                user_id, resource_id, topic, category, status, progress_percent,
+                study_minutes, practice_minutes, questions_solved, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, 'IN_PROGRESS', 25, 15, 0, 0, ?, ?)
+            """, (user_id, resource_id or "", topic, category, now_str, now_str))
+
+        # Log session
+        cursor.execute("""
+        INSERT INTO study_sessions (
+            user_id, topic, category, session_type, duration_minutes, started_at, created_at, notes
+        ) VALUES (?, ?, ?, 'STUDY', 15, ?, ?, ?)
+        """, (user_id, topic, category, now_str, now_str, f"Started learning: {topic}"))
+
+        conn.commit()
+        conn.close()
+        return cls.get_progress(user_id)
+
+    @classmethod
+    def complete_topic(cls, user_id: int, topic: str, category: str = "General",
+                       study_minutes: int = 45, practice_minutes: int = 20,
+                       questions_solved: int = 15, quiz_score: float = 90.0) -> Dict[str, Any]:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        now_str = now_ist_iso()
+
+        cursor.execute("""
+        SELECT * FROM learning_progress WHERE user_id = ? AND topic = ?
+        """, (user_id, topic))
+        existing = cursor.fetchone()
+
+        if existing:
+            prev_study = int(existing["study_minutes"] or 0)
+            prev_practice = int(existing["practice_minutes"] or 0)
+            prev_questions = int(existing["questions_solved"] or 0)
+            cursor.execute("""
+            UPDATE learning_progress
+            SET status = 'COMPLETED',
+                progress_percent = 100,
+                study_minutes = ?,
+                practice_minutes = ?,
+                questions_solved = ?,
+                quiz_score = ?,
+                completed_at = ?,
+                updated_at = ?
+            WHERE user_id = ? AND topic = ?
+            """, (
+                max(prev_study, study_minutes),
+                max(prev_practice, practice_minutes),
+                prev_questions + questions_solved,
+                quiz_score,
+                now_str,
+                now_str,
+                user_id,
+                topic
+            ))
+        else:
+            cursor.execute("""
+            INSERT INTO learning_progress (
+                user_id, resource_id, topic, category, status, progress_percent,
+                study_minutes, practice_minutes, questions_solved, quiz_score,
+                completed_at, created_at, updated_at
+            ) VALUES (?, '', ?, ?, 'COMPLETED', 100, ?, ?, ?, ?, ?, ?, ?)
+            """, (user_id, topic, category, study_minutes, practice_minutes, questions_solved, quiz_score, now_str, now_str, now_str))
+
+        # Log completion session
+        cursor.execute("""
+        INSERT INTO study_sessions (
+            user_id, topic, category, session_type, duration_minutes, started_at, created_at, notes
+        ) VALUES (?, ?, ?, 'PRACTICE', ?, ?, ?, ?)
+        """, (user_id, topic, category, practice_minutes, now_str, now_str, f"Completed topic and solved {questions_solved} questions"))
+
+        conn.commit()
+        conn.close()
+        return cls.get_progress(user_id)
+
+    @classmethod
+    def log_session(cls, user_id: int, topic: str, duration_minutes: int,
+                    session_type: str = "STUDY", notes: Optional[str] = None) -> Dict[str, Any]:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        now_str = now_ist_iso()
+
+        cursor.execute("""
+        INSERT INTO study_sessions (
+            user_id, topic, category, session_type, duration_minutes, started_at, created_at, notes
+        ) VALUES (?, ?, 'General', ?, ?, ?, ?, ?)
+        """, (user_id, topic, session_type, duration_minutes, now_str, now_str, notes or f"Logged {duration_minutes}m session"))
+
+        # Update topic in learning_progress if it exists
+        cursor.execute("SELECT * FROM learning_progress WHERE user_id = ? AND topic = ?", (user_id, topic))
+        row = cursor.fetchone()
+        if row:
+            if session_type == "PRACTICE":
+                cursor.execute("""
+                UPDATE learning_progress
+                SET practice_minutes = practice_minutes + ?, updated_at = ?
+                WHERE user_id = ? AND topic = ?
+                """, (duration_minutes, now_str, user_id, topic))
+            else:
+                cursor.execute("""
+                UPDATE learning_progress
+                SET study_minutes = study_minutes + ?, updated_at = ?
+                WHERE user_id = ? AND topic = ?
+                """, (duration_minutes, now_str, user_id, topic))
+
+        conn.commit()
+        conn.close()
+        return cls.get_progress(user_id)
+
+    @classmethod
+    def get_personalized_study_plan(cls, user_id: int) -> Dict[str, Any]:
+        profile = ProfileRepository.get_profile(user_id) or {}
+        qual = (profile.get("qualification") or "B.Tech").strip()
+        stream = (profile.get("stream") or profile.get("branch") or "CSE").strip()
+        interests = profile.get("career_interests") or []
+        dream_goal = profile.get("dream_goal") or ""
+
+        # Build qualification and branch tailored modules
+        if "10th" in qual:
+            modules = [
+                {"title": "Mathematics Foundation", "topics": ["Linear Equations & Quadratic Formulas", "Trigonometry Basics", "Coordinate Geometry", "Mensuration & Surface Areas"], "hours": 20},
+                {"title": "Science & Tech Literacy", "topics": ["Physics Mechanics & Electricity", "Chemistry Chemical Reactions & Acids", "Biology Life Processes", "Computer Basics & Coding Intro"], "hours": 25},
+                {"title": "Competitive Aptitude & NTSE", "topics": ["Mental Ability (MAT)", "Scholastic Aptitude (SAT)", "PolyCET / APRJC Maths & Physics", "English Comprehension"], "hours": 20},
+                {"title": "Future Path Exploration", "topics": ["Polytechnic vs Intermediate MPC/BiPC", "ITI Technical Trades", "Armed Forces (NDA / Sailor Prep)", "Scholarship Application Deadlines"], "hours": 15}
+            ]
+        elif "Intermediate" in qual:
+            if "bipc" in stream.lower() or "medical" in stream.lower():
+                modules = [
+                    {"title": "NEET Biology Masterclass", "topics": ["Human Physiology & Anatomy", "Genetics & Molecular Evolution", "Cell Biology & Division", "Ecology & Plant Diversity"], "hours": 40},
+                    {"title": "Physics for Medical Entrances", "topics": ["Kinematics & Newton's Laws", "Electrodynamics & Optics", "Thermodynamics & Heat", "Modern Physics"], "hours": 30},
+                    {"title": "Chemistry Foundation", "topics": ["Organic Reaction Mechanisms", "Physical Equilibrium & Electrochemistry", "Inorganic Periodic Trends & Coordination", "NCERT Line-by-Line Practice"], "hours": 35},
+                    {"title": "Mock Tests & Revision", "topics": ["Full-Length 720-Mark Mock 1", "Error Analysis & Time Management", "State Counselling & College Selection", "Alternative Allied Medical Careers"], "hours": 25}
+                ]
+            else: # MPC / General
+                modules = [
+                    {"title": "Mathematics (JEE / EAPCET)", "topics": ["Calculus (Differential & Integral)", "Vectors & 3D Geometry", "Matrices, Determinants & Complex Numbers", "Coordinate Geometry & Conic Sections"], "hours": 40},
+                    {"title": "Physics (Concepts & Problem Solving)", "topics": ["Rotational Dynamics & Mechanics", "Electromagnetism & AC Circuits", "Wave Optics & Ray Optics", "Modern Physics & Semiconductors"], "hours": 35},
+                    {"title": "Chemistry (Score Booster)", "topics": ["Organic Carbonyls & Polymers", "Thermodynamics & Kinetics", "P-Block & Transition Elements", "Mock Question Bank & PYQs"], "hours": 30},
+                    {"title": "Exam Blueprint & Strategy", "topics": ["JEE Main Speed Drills", "EAPCET / State CET High-Weightage Chapters", "NDA Mathematics & GAT Entry", "Counselling Cutoff Strategies"], "hours": 25}
+                ]
+        elif "Diploma" in qual:
+            modules = [
+                {"title": "Lateral Entry B.Tech (ECET)", "topics": ["Engineering Mathematics (Matrices, Differential Eqns, Laplace)", "Physics & Chemistry Core MCQs", "Branch Engineering Subject Test", "Previous 10-Year ECET Paper Analysis"], "hours": 35},
+                {"title": "Government JE Exams (RRB & SSC)", "topics": ["Reasoning & General Intelligence", "General Science & Current Affairs", "Core Engineering MCQs (Level 6)", "CBT-1 Speed Practice"], "hours": 30},
+                {"title": "Core Industry & NATS Apprenticeship", "topics": ["Hands-on Lab & Plant Operations", "Industrial Safety & Standards", "NATS Portal Registration & PSU Applications", "Technical Interview Questions"], "hours": 20},
+                {"title": "IT & Software Skills Bridge", "topics": ["Python Programming & Logic", "Database Basics (SQL)", "Web Development Fundamentals", "Git & GitHub Version Control"], "hours": 25}
+            ]
+        elif "Degree" in qual:
+            modules = [
+                {"title": "Civil Services & State PSC (UPSC/Group 1)", "topics": ["Indian Polity & Constitution", "Indian Economy & Budget", "Modern Indian History & Geography", "Current Affairs & CSAT Analytical Reasoning"], "hours": 45},
+                {"title": "Banking & Insurance (IBPS/SBI PO)", "topics": ["Quantitative Aptitude (Data Interpretation)", "Logical Reasoning & Puzzles", "English Language Comprehension", "Banking Awareness & Economic News"], "hours": 35},
+                {"title": "Management & Higher Studies (CAT/ICET/CUET)", "topics": ["Quantitative Ability (Arithmetic & Algebra)", "Data Interpretation & Logical Reasoning (DILR)", "Verbal Ability & Reading Comprehension (VARC)", "NIMCET / MCA Computer Awareness"], "hours": 35},
+                {"title": "Corporate Placements & Skill Portfolio", "topics": ["Excel & Business Analytics", "Communication & Group Discussions", "Resume Building & LinkedIn Optimization", "Campus & Walk-in Interview Preparation"], "hours": 25}
+            ]
+        elif "Postgraduate" in qual:
+            modules = [
+                {"title": "Research & Thesis Methodology", "topics": ["Literature Review & Indexing", "IEEE / ACM / Springer Paper Formatting", "Statistical Testing & Analysis", "IPR & Patent Filing Process"], "hours": 30},
+                {"title": "UGC-NET / CSIR-NET & JRF", "topics": ["Teaching & Research Aptitude (Paper 1)", "Specialized Subject Domain (Paper 2)", "Higher Education System in India", "Previous Years Solved Papers"], "hours": 40},
+                {"title": "Corporate R&D & Specialist Careers", "topics": ["Advanced Algorithm Design / Core Domain", "Domain Consulting & Industry Collaboration", "Ph.D. Entrance (IIT / IISc / Top Universities)", "Statement of Purpose (SOP) & Interview Prep"], "hours": 30}
+            ]
+        else: # B.Tech / Default
+            modules = [
+                {"title": "Data Structures & Core CS / Tech", "topics": ["Arrays, Linked Lists, Stacks & Queues", "Trees, Graphs & Dynamic Programming", "Object-Oriented Programming (Java/Python/C++)", "Database Management & SQL Queries"], "hours": 45},
+                {"title": "System Design & Modern Tech Stack", "topics": ["RESTful APIs & Backend Architecture", "Frontend Frameworks (React/HTML5)", "Cloud Computing (AWS/Docker) Basics", "Git, Unit Testing & CI/CD Pipelines"], "hours": 35},
+                {"title": "Aptitude, Reasoning & Verbal Ability", "topics": ["Quantitative Aptitude (Permutations, Probability, Speed-Distance)", "Logical Reasoning & Critical Thinking", "Verbal Ability & Reading Comprehension", "Company-Specific Mock Rounds (TCS, Infosys, Wipro, Accenture)"], "hours": 30},
+                {"title": "GATE / PSU & Core Technical Roadmap", "topics": ["Engineering Mathematics & Discrete Maths", "Branch Core Subjects (Digital Logic, Operating Systems, Networks)", "PSU Recruitment via GATE", "Technical Interview Questions & Coding Challenges"], "hours": 40}
+            ]
+
+        progress = cls.get_progress(user_id)
+        return {
+            "qualification": qual,
+            "stream": stream,
+            "dream_goal": dream_goal,
+            "interests": interests,
+            "modules": modules,
+            "stats": {
+                "overall_progress_percent": progress["overall_progress_percent"],
+                "total_study_minutes": progress["total_study_minutes"],
+                "total_practice_minutes": progress["total_practice_minutes"],
+                "completed_topics_count": progress["completed_topics_count"],
+                "study_streak_days": progress["study_streak_days"]
+            }
+        }
+

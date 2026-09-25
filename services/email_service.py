@@ -33,11 +33,15 @@ IST = timezone(timedelta(hours=5, minutes=30))
 
 class EmailService:
     @staticmethod
-    def _is_configured() -> bool:
-        server = os.environ.get("MAIL_SERVER", "").strip()
-        user = os.environ.get("MAIL_USERNAME", "").strip()
-        pwd = os.environ.get("MAIL_PASSWORD", "").strip()
+    def is_configured() -> bool:
+        server = os.environ.get("SMTP_HOST", "").strip() or os.environ.get("MAIL_SERVER", "").strip()
+        user = os.environ.get("SMTP_USERNAME", "").strip() or os.environ.get("MAIL_USERNAME", "").strip()
+        pwd = os.environ.get("SMTP_PASSWORD", "").strip() or os.environ.get("MAIL_PASSWORD", "").strip()
         return bool(server and user and pwd)
+
+    @staticmethod
+    def _is_configured() -> bool:
+        return EmailService.is_configured()
 
     @staticmethod
     def _log_email(to_email: str, subject: str, body_text: str, body_html: str, template_type: str, status: str) -> None:
@@ -74,9 +78,9 @@ class EmailService:
         If SMTP is configured, dispatches real email.
         Otherwise, records in audit log for dev/test environments.
         """
-        mail_from = os.environ.get("MAIL_FROM", "CareerCompass <noreply@careercompass.gov.in>")
+        mail_from = os.environ.get("MAIL_FROM") or "CareerCompass <noreply@careercompass.org>"
         
-        if not EmailService._is_configured():
+        if not EmailService.is_configured():
             logger.info(f"[DEV/TEST EMAIL] To: {to_email} | Subject: {subject}")
             EmailService._log_email(to_email, subject, body_text, body_html or body_text, template_type, "QUEUED_DEV_LOGGED")
             return {
@@ -86,10 +90,10 @@ class EmailService:
                 "subject": subject
             }
 
-        server_host = os.environ.get("MAIL_SERVER")
-        server_port = int(os.environ.get("MAIL_PORT", 587))
-        username = os.environ.get("MAIL_USERNAME")
-        password = os.environ.get("MAIL_PASSWORD")
+        server_host = os.environ.get("SMTP_HOST") or os.environ.get("MAIL_SERVER")
+        server_port = int(os.environ.get("SMTP_PORT") or os.environ.get("MAIL_PORT", 587))
+        username = os.environ.get("SMTP_USERNAME") or os.environ.get("MAIL_USERNAME")
+        password = os.environ.get("SMTP_PASSWORD") or os.environ.get("MAIL_PASSWORD")
         use_tls = os.environ.get("MAIL_USE_TLS", "true").lower() in ("1", "true", "yes")
 
         msg = MIMEMultipart("alternative")
@@ -178,7 +182,8 @@ The CareerCompass Team
 
     @staticmethod
     def send_password_reset_email(to_email: str, reset_token: str, app_url: str = "https://career-compass.onrender.com") -> Dict[str, Any]:
-        reset_link = f"{app_url}/?reset_token={reset_token}#reset-password"
+        base_url = os.environ.get("APP_BASE_URL") or app_url
+        reset_link = f"{base_url.rstrip('/')}/?reset_token={reset_token}#reset-password"
         subject = "Reset Your CareerCompass Account Password"
         text = f"""Hello,
 

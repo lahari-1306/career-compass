@@ -19,7 +19,7 @@ from services.pipeline_service import PipelineService
 from db_repository import (
     ProfileRepository, NotificationRepository, PushRepository,
     SavedOpportunitiesRepository, ExamProgressRepository,
-    LearningResourceRepository
+    LearningResourceRepository, TrackerRepository
 )
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
@@ -321,6 +321,16 @@ def ai_chat():
     profile = req_data.get("profile", {})
     language = (req_data.get("language") or "en").lower().strip()
 
+    user = get_current_user()
+    if user:
+        db_prof = ProfileRepository.get_profile(user["id"]) or {}
+        merged = dict(db_prof)
+        if isinstance(profile, dict):
+            merged.update({k: v for k, v in profile.items() if v})
+        profile = merged
+        if not req_data.get("language") and db_prof.get("preferred_language"):
+            language = db_prof.get("preferred_language").lower()
+
     if not message:
         return jsonify({"error": "Message is required"}), 400
 
@@ -595,6 +605,150 @@ def exam_study_plan():
         "status": "success",
         "message": "Study plan saved successfully.",
         "study_plan": saved
+    })
+
+# ====================================================
+# LEARNING TRACKER: REAL TIME PROGRESS & SESSIONS APIs
+# ====================================================
+
+@app.route("/api/tracker/progress", methods=["GET"])
+def get_tracker_progress():
+    user = get_current_user()
+    if not user:
+        return jsonify({
+            "status": "success",
+            "authenticated": False,
+            "progress": {
+                "total_topics_tracked": 0,
+                "completed_topics_count": 0,
+                "in_progress_count": 0,
+                "overall_progress_percent": 0,
+                "total_study_minutes": 0,
+                "total_practice_minutes": 0,
+                "total_questions_solved": 0,
+                "study_streak_days": 0,
+                "topics": [],
+                "recent_sessions": []
+            },
+            "summary": {
+                "completed_topics_count": 0,
+                "overall_completion_pct": 0,
+                "total_study_minutes": 0,
+                "total_practice_minutes": 0,
+                "total_questions_solved": 0,
+                "current_streak_days": 0
+            }
+        })
+    progress = TrackerRepository.get_progress(user["id"])
+    return jsonify({
+        "status": "success",
+        "authenticated": True,
+        "progress": progress,
+        "summary": {
+            "completed_topics_count": progress.get("completed_topics_count", 0),
+            "overall_completion_pct": progress.get("overall_progress_percent", 0),
+            "total_study_minutes": progress.get("total_study_minutes", 0),
+            "total_practice_minutes": progress.get("total_practice_minutes", 0),
+            "total_questions_solved": progress.get("total_questions_solved", 0),
+            "current_streak_days": progress.get("study_streak_days", 0)
+        }
+    })
+
+@app.route("/api/tracker/start-topic", methods=["POST"])
+@login_required
+def start_tracker_topic():
+    from flask import g
+    data = request.get_json() or {}
+    topic = (data.get("topic") or "").strip()
+    category = data.get("category") or "General"
+    resource_id = data.get("resource_id")
+    if not topic:
+        return jsonify({"status": "error", "message": "Topic name is required."}), 400
+
+    progress = TrackerRepository.start_topic(g.user["id"], topic, category, resource_id)
+    recent = progress.get("recent_sessions", [])
+    session_id = recent[0]["id"] if recent else 1
+    return jsonify({
+        "status": "success",
+        "message": f"Started topic: {topic}",
+        "session_id": session_id,
+        "progress": progress
+    })
+
+@app.route("/api/tracker/complete-topic", methods=["POST"])
+@login_required
+def complete_tracker_topic():
+    from flask import g
+    data = request.get_json() or {}
+    topic = (data.get("topic") or "").strip()
+    category = data.get("category") or "General"
+    study_minutes = int(data.get("study_minutes") or 45)
+    practice_minutes = int(data.get("practice_minutes") or 20)
+    questions_solved = int(data.get("questions_solved") or 15)
+    quiz_score = float(data.get("quiz_score") or 90.0)
+
+    if not topic:
+        return jsonify({"status": "error", "message": "Topic name is required."}), 400
+
+    progress = TrackerRepository.complete_topic(
+        g.user["id"], topic, category,
+        study_minutes=study_minutes,
+        practice_minutes=practice_minutes,
+        questions_solved=questions_solved,
+        quiz_score=quiz_score
+    )
+    return jsonify({
+        "status": "success",
+        "message": f"Successfully completed topic: {topic}",
+        "progress": progress
+    })
+
+@app.route("/api/tracker/log-session", methods=["POST"])
+@login_required
+def log_tracker_session():
+    from flask import g
+    data = request.get_json() or {}
+    topic = (data.get("topic") or "General Revision").strip()
+    duration = int(data.get("duration_minutes") or 30)
+    session_type = data.get("session_type") or "STUDY"
+    notes = data.get("notes")
+
+    progress = TrackerRepository.log_session(g.user["id"], topic, duration, session_type, notes)
+    return jsonify({
+        "status": "success",
+        "message": "Study session logged successfully.",
+        "progress": progress
+    })
+
+@app.route("/api/tracker/study-plan", methods=["GET"])
+def get_tracker_study_plan():
+    user = get_current_user()
+    if user:
+        plan = TrackerRepository.get_personalized_study_plan(user["id"])
+    else:
+        qual = request.args.get("qualification") or "B.Tech"
+        stream = request.args.get("stream") or "CSE"
+        plan = {
+            "qualification": qual,
+            "stream": stream,
+            "dream_goal": "Career Readiness",
+            "interests": [],
+            "modules": [
+                {"title": "Core Subject Fundamentals", "topics": ["Foundation Concepts & Review", "High-Yield Topics", "Previous Year Question Analysis", "Mock Problem Sets"], "hours": 30},
+                {"title": "Competitive Exam & Placement Prep", "topics": ["Quantitative Aptitude", "Logical Reasoning", "Verbal Ability & Comprehension", "Interview Preparation"], "hours": 25}
+            ],
+            "stats": {
+                "overall_progress_percent": 0,
+                "total_study_minutes": 0,
+                "total_practice_minutes": 0,
+                "completed_topics_count": 0,
+                "study_streak_days": 0
+            }
+        }
+    return jsonify({
+        "status": "success",
+        "study_plan": plan,
+        "plan": plan
     })
 
 # ====================================================
