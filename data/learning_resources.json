@@ -364,7 +364,7 @@
     "access_type": "OFFICIAL FREE RESOURCE",
     "language": "English (Transcripts in Regional Languages)",
     "free_features": "100% free access to all video lectures, course lecture notes, assignments, and reading materials from IIT professors.",
-    "paid_features": "Optional proctored in-person certification exam carries a nominal fee (approx \u20b91,000 with scholarship waivers for eligible categories).",
+    "paid_features": "Optional proctored in-person certification exam carries a nominal fee (approx ₹1,000 with scholarship waivers for eligible categories).",
     "official_source": "https://nptel.ac.in",
     "verification_status": "VERIFIED",
     "last_verified": "2026-09-24",
@@ -1163,5 +1163,355 @@
     "last_verified": "2026-09-24",
     "created_at": "2026-09-24T21:18:00+05:30",
     "updated_at": "2026-09-24T21:18:00+05:30"
+  },
+  {
+    "id": "res-mdn",
+    "name": "MDN Web Docs",
+    "description": "The premier open documentation and learning resource by Mozilla, covering HTML5, CSS Grid/Flexbox, JavaScript ES6+, Web APIs, and web accessibility standards.",
+    "official_url": "https://developer.mozilla.org",
+    "logo_url": "https://developer.mozilla.org/favicon-48x48.png",
+    "category": "Web Development",
+    "resource_type": "Official Documentation",
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Diploma",
+      "Intermediate",
+      "All"
+    ],
+    "streams": [
+      "Computer Science",
+      "Information Technology",
+      "All Streams"
+    ],
+    "branches": [
+      "CSE",
+      "IT",
+      "All Branches"
+    ],
+    "skills": [
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "Web APIs",
+      "Frontend Development"
+    ],
+    "exams": [
+      "Campus Placements",
+      "Technical Interviews"
+    ],
+    "access_type": "OFFICIAL FREE RESOURCE",
+    "free_features": [
+      "Complete open web documentation",
+      "Interactive examples",
+      "Web technology references"
+    ],
+    "paid_features": "",
+    "language": "English",
+    "official_source": "https://developer.mozilla.org",
+    "verification_status": "VERIFIED",
+    "last_verified": "2026-09-25",
+    "created_at": "2026-09-25T12:00:00+05:30",
+    "updated_at": "2026-09-25T12:00:00+05:30"
+  },
+  {
+    "id": "res-freecodecamp",
+    "name": "freeCodeCamp",
+    "description": "Donor-supported non-profit educational platform offering structured, interactive certifications in Responsive Web Design, JavaScript Algorithms, and Front End Development.",
+    "official_url": "https://www.freecodecamp.org",
+    "logo_url": "https://www.freecodecamp.org/favicon-32x32.png",
+    "category": "Web Development",
+    "resource_type": "Learning Platform",
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Diploma",
+      "Intermediate",
+      "All"
+    ],
+    "streams": [
+      "Computer Science",
+      "Information Technology",
+      "All Streams"
+    ],
+    "branches": [
+      "CSE",
+      "IT",
+      "All Branches"
+    ],
+    "skills": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "React",
+      "Node.js"
+    ],
+    "exams": [
+      "Campus Placements",
+      "Full Stack Certifications"
+    ],
+    "access_type": "OFFICIAL FREE RESOURCE",
+    "free_features": [
+      "Full curriculum free",
+      "Interactive coding challenges",
+      "Verified project certifications"
+    ],
+    "paid_features": "",
+    "language": "English",
+    "official_source": "https://www.freecodecamp.org",
+    "verification_status": "VERIFIED",
+    "last_verified": "2026-09-25",
+    "created_at": "2026-09-25T12:00:00+05:30",
+    "updated_at": "2026-09-25T12:00:00+05:30"
+  },
+  {
+    "id": "res-indiabix-reasoning",
+    "name": "IndiaBIX Reasoning & Analytical Practice",
+    "description": "Comprehensive practice bank for verbal and non-verbal logical reasoning, syllogisms, blood relations, seating arrangements, and direction sense.",
+    "official_url": "https://www.indiabix.com/logical-reasoning/questions-and-answers/",
+    "logo_url": "https://www.indiabix.com/favicon.ico",
+    "category": "Reasoning",
+    "resource_type": "Practice & Assessment Portal",
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Diploma",
+      "Intermediate",
+      "All"
+    ],
+    "streams": [
+      "All Streams"
+    ],
+    "branches": [
+      "All Branches"
+    ],
+    "skills": [
+      "Logical Reasoning",
+      "Analytical Deduction",
+      "Syllogisms",
+      "Seating Arrangement",
+      "Puzzles"
+    ],
+    "exams": [
+      "TCS NQT",
+      "Infosys",
+      "Cognizant",
+      "Wipro",
+      "SSC",
+      "Banking"
+    ],
+    "access_type": "FREE",
+    "free_features": [
+      "Unlimited reasoning MCQs",
+      "Step-by-step explanations",
+      "Topic-wise practice sets"
+    ],
+    "paid_features": "",
+    "language": "English",
+    "official_source": "https://www.indiabix.com",
+    "verification_status": "VERIFIED",
+    "last_verified": "2026-09-25",
+    "created_at": "2026-09-25T12:00:00+05:30",
+    "updated_at": "2026-09-25T12:00:00+05:30"
+  },
+  {
+    "id": "res-google-mlcc",
+    "name": "Google Machine Learning Crash Course",
+    "description": "Fast-paced, practical introduction to machine learning featuring video lectures from Google researchers, interactive visualizations, and TensorFlow/scikit-learn coding exercises.",
+    "official_url": "https://developers.google.com/machine-learning/crash-course",
+    "logo_url": "https://www.gstatic.com/devrel-devsite/prod/v22d25039f/developers/images/favicon.png",
+    "category": "AI, ML & Data Science",
+    "resource_type": "Official Educational Portal",
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Postgraduate",
+      "All"
+    ],
+    "streams": [
+      "Computer Science",
+      "Data Science",
+      "All Engineering"
+    ],
+    "branches": [
+      "CSE",
+      "AI/ML",
+      "Data Science",
+      "All Branches"
+    ],
+    "skills": [
+      "Machine Learning",
+      "TensorFlow",
+      "Regression",
+      "Neural Networks",
+      "Data Preparation"
+    ],
+    "exams": [
+      "Campus Placements",
+      "Data Science Interviews"
+    ],
+    "access_type": "OFFICIAL FREE RESOURCE",
+    "free_features": [
+      "25+ interactive lessons",
+      "Real-world case studies",
+      "Interactive Colab notebooks"
+    ],
+    "paid_features": "",
+    "language": "English",
+    "official_source": "https://developers.google.com",
+    "verification_status": "VERIFIED",
+    "last_verified": "2026-09-25",
+    "created_at": "2026-09-25T12:00:00+05:30",
+    "updated_at": "2026-09-25T12:00:00+05:30"
+  },
+  {
+    "id": "res-github-skills",
+    "name": "GitHub Skills",
+    "description": "Interactive GitHub-hosted learning laboratory teaching Git version control, branching, resolving merge conflicts, and automated GitHub Actions workflows.",
+    "official_url": "https://skills.github.com/",
+    "logo_url": "https://github.githubassets.com/favicons/favicon.png",
+    "category": "Skill Development",
+    "resource_type": "Interactive Learning Platform",
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Diploma",
+      "Postgraduate",
+      "All"
+    ],
+    "streams": [
+      "Computer Science",
+      "Information Technology",
+      "All Streams"
+    ],
+    "branches": [
+      "CSE",
+      "ECE",
+      "All Branches"
+    ],
+    "skills": [
+      "Git",
+      "GitHub",
+      "Version Control",
+      "Pull Requests",
+      "CI/CD"
+    ],
+    "exams": [
+      "Campus Placements",
+      "Software Engineering Interviews"
+    ],
+    "access_type": "OFFICIAL FREE RESOURCE",
+    "free_features": [
+      "Interactive repository-based courses",
+      "Automated bot feedback",
+      "Free certification badges"
+    ],
+    "paid_features": "",
+    "language": "English",
+    "official_source": "https://skills.github.com",
+    "verification_status": "VERIFIED",
+    "last_verified": "2026-09-25",
+    "created_at": "2026-09-25T12:00:00+05:30",
+    "updated_at": "2026-09-25T12:00:00+05:30"
+  },
+  {
+    "id": "res-linux-journey",
+    "name": "Linux Journey",
+    "description": "Free, beautifully organized web guide teaching Linux command-line essentials, filesystem hierarchies, file permissions, shell scripting, and process management.",
+    "official_url": "https://linuxjourney.com/",
+    "logo_url": "https://linuxjourney.com/favicon.ico",
+    "category": "Skill Development",
+    "resource_type": "Interactive Guide",
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Diploma",
+      "Postgraduate",
+      "All"
+    ],
+    "streams": [
+      "Computer Science",
+      "Information Technology",
+      "All Streams"
+    ],
+    "branches": [
+      "CSE",
+      "IT",
+      "ECE",
+      "All Branches"
+    ],
+    "skills": [
+      "Linux",
+      "Bash",
+      "Shell Scripting",
+      "CLI",
+      "File Permissions"
+    ],
+    "exams": [
+      "DevOps Interviews",
+      "Technical Rounds"
+    ],
+    "access_type": "FREE",
+    "free_features": [
+      "Full course modules",
+      "Command exercises",
+      "Self-assessments"
+    ],
+    "paid_features": "",
+    "language": "English",
+    "official_source": "https://linuxjourney.com",
+    "verification_status": "VERIFIED",
+    "last_verified": "2026-09-25",
+    "created_at": "2026-09-25T12:00:00+05:30",
+    "updated_at": "2026-09-25T12:00:00+05:30"
+  },
+  {
+    "id": "res-interviewbit",
+    "name": "InterviewBit",
+    "description": "Structured technical interview prep platform featuring company-tagged algorithmic problem tracks, system design tutorials, and timed mock coding assessments.",
+    "official_url": "https://www.interviewbit.com/practice/",
+    "logo_url": "https://www.interviewbit.com/favicon.ico",
+    "category": "Interview Preparation",
+    "resource_type": "Interview Preparation Platform",
+    "education_levels": [
+      "B.Tech",
+      "Degree",
+      "Postgraduate",
+      "All"
+    ],
+    "streams": [
+      "Computer Science",
+      "Engineering",
+      "All Streams"
+    ],
+    "branches": [
+      "CSE",
+      "IT",
+      "ECE",
+      "All Branches"
+    ],
+    "skills": [
+      "Algorithms",
+      "Data Structures",
+      "System Design",
+      "Mock Interviews"
+    ],
+    "exams": [
+      "Campus Placements",
+      "Product Company Interviews"
+    ],
+    "access_type": "FREE + PAID",
+    "free_features": [
+      "Topic-wise practice questions",
+      "Company-specific tracks",
+      "Solution discussions"
+    ],
+    "paid_features": "Premium mock interviews and mentorship bootcamps",
+    "language": "English",
+    "official_source": "https://www.interviewbit.com",
+    "verification_status": "VERIFIED",
+    "last_verified": "2026-09-25",
+    "created_at": "2026-09-25T12:00:00+05:30",
+    "updated_at": "2026-09-25T12:00:00+05:30"
   }
 ]

@@ -4,6 +4,8 @@ Handles all relational queries, user isolation, Argon2id password hashing,
 session tokens, and notification tracking with complete parameterization.
 """
 
+import os
+import logging
 import sqlite3
 import secrets
 import json
@@ -11,8 +13,9 @@ from datetime import datetime, timezone, timedelta
 from typing import Dict, Any, List, Optional, Tuple
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError, VerificationError
-from database import get_db_connection, now_ist_iso, IST
+from database import get_db_connection, now_ist_iso, IST, DATA_DIR
 
+logger = logging.getLogger("careercompass.repository")
 ph = PasswordHasher(time_cost=3, memory_cost=65536, parallelism=4)
 
 
@@ -758,13 +761,41 @@ class LearningResourceRepository:
 
             # 2. Category filter
             if category and category.lower() != "all":
-                cat_lower = category.lower()
-                r_cat = r.get("category", "").lower()
+                cat_lower = category.lower().strip()
+                r_cat = r.get("category", "").lower().strip()
                 r_type = r.get("resource_type", "").lower()
-                matched_cat = (cat_lower in r_cat or cat_lower in r_type or
-                               any(cat_lower in sk for sk in r_skills))
-                if not matched_cat:
-                    continue
+                # Strict match for Coding & CS Fundamentals
+                if cat_lower in ("coding & cs fundamentals", "coding and cs fundamentals"):
+                    if r_cat != "coding & cs fundamentals":
+                        continue
+                else:
+                    cat_norm = cat_lower.replace(" & ", " and ")
+                    r_cat_norm = r_cat.replace(" & ", " and ")
+
+                    # Alias dictionary for cross-category compatibility
+                    alias_map = {
+                        "aptitude": ["aptitude", "quantitative", "math"],
+                        "reasoning": ["reasoning", "logical", "analytical"],
+                        "engineering preparation": ["core engineering", "engineering"],
+                        "engineering": ["core engineering", "engineering"],
+                        "placement preparation": ["placement", "interview", "resume"],
+                        "interview preparation": ["interview", "resume", "coding & interview"],
+                        "skill development": ["skill", "technical & diploma skill", "professional skills"],
+                        "web development": ["web development", "programming"],
+                        "ai and data science": ["ai, ml & data science", "data science", "machine learning"],
+                        "ai & data science": ["ai, ml & data science", "data science", "machine learning"]
+                    }
+
+                    matched_cat = (cat_norm in r_cat_norm or r_cat_norm in cat_norm or
+                                   cat_norm in r_type or
+                                   any(cat_norm in sk for sk in r_skills))
+
+                    if not matched_cat and cat_norm in alias_map:
+                        matched_cat = any(a in r_cat_norm or a in r_type or any(a in sk for sk in r_skills)
+                                          for a in alias_map[cat_norm])
+
+                    if not matched_cat:
+                        continue
 
             # 3. Access Type filter
             if access_type and access_type.lower() != "all":
@@ -878,11 +909,11 @@ class LearningResourceRepository:
                 "Placement Preparation",
                 "Aptitude",
                 "Reasoning",
-                "Verbal Ability",
                 "Interview Preparation",
-                "SQL",
+                "Engineering Preparation",
+                "Skill Development",
                 "Web Development",
-                "AI, ML & Data Science",
+                "AI and Data Science",
                 "Core Engineering",
                 "GATE",
                 "Resume & Interview"
@@ -1233,4 +1264,203 @@ class TrackerRepository:
                 "study_streak_days": progress["study_streak_days"]
             }
         }
+
+
+# ====================================================
+# PRACTICE & TRAINING TOPICS AND QUIZ REPOSITORY
+# ====================================================
+
+class PracticeTrainingRepository:
+    _cached_data = None
+
+    @classmethod
+    def _get_data(cls) -> List[Dict[str, Any]]:
+        data_path = os.path.join(DATA_DIR, "practice_training_topics.json")
+        if os.path.exists(data_path):
+            try:
+                with open(data_path, "r", encoding="utf-8") as f:
+                    cls._cached_data = json.load(f)
+                    return cls._cached_data
+            except Exception as e:
+                logger.error(f"Error loading practice_training_topics.json: {e}")
+        return []
+
+    @classmethod
+    def get_categories(cls, qualification: Optional[str] = None, stream: Optional[str] = None) -> List[Dict[str, Any]]:
+        data = cls._get_data()
+        qual = (qualification or "B.Tech").lower()
+
+        # Qualification-specific category orders and prioritization
+        if "10th" in qual or "school" in qual:
+            cat_ids = ["all", "school-foundation", "aptitude", "coding-cs"]
+        elif "intermediate" in qual or "10+2" in qual:
+            cat_ids = ["all", "entrance-exams", "aptitude", "reasoning", "coding-cs"]
+        elif "diploma" in qual or "polytechnic" in qual:
+            cat_ids = ["all", "engineering-prep", "lateral-entry", "aptitude", "reasoning", "skill-dev", "coding-cs"]
+        else:  # B.Tech, Degree, Postgraduate, default
+            cat_ids = [
+                "all",
+                "coding-cs",
+                "placement-prep",
+                "aptitude",
+                "reasoning",
+                "interview-prep",
+                "engineering-prep",
+                "skill-dev",
+                "web-dev",
+                "ai-datascience"
+            ]
+
+        # Calculate counts
+        category_map = {c["category_id"]: c for c in data}
+        total_topics = sum(len(c.get("topics", [])) for c in data)
+        total_questions = sum(len(t.get("practice_questions", [])) for c in data for t in c.get("topics", []))
+
+        results = []
+        for cid in cat_ids:
+            if cid == "all":
+                results.append({
+                    "id": "All",
+                    "category_id": "all",
+                    "name": "All Categories",
+                    "icon": "layers",
+                    "count": total_topics,
+                    "question_count": total_questions,
+                    "description": "Explore comprehensive preparation topics, formulas, cheat sheets, and verified quizzes across all domains."
+                })
+            elif cid in category_map:
+                c = category_map[cid]
+                q_count = sum(len(t.get("practice_questions", [])) for t in c.get("topics", []))
+                results.append({
+                    "id": c["category_name"],
+                    "category_id": c["category_id"],
+                    "name": c["category_name"],
+                    "icon": c.get("icon", "book"),
+                    "count": len(c.get("topics", [])),
+                    "question_count": q_count,
+                    "description": c.get("description", "")
+                })
+
+        return results
+
+    @classmethod
+    def get_topics(cls, category: Optional[str] = None, qualification: Optional[str] = None,
+                   stream: Optional[str] = None, search: Optional[str] = None) -> List[Dict[str, Any]]:
+        data = cls._get_data()
+        selected_cat = (category or "All").strip()
+        search_term = (search or "").lower().strip()
+
+        matching_topics = []
+
+        for cat in data:
+            cat_name = cat["category_name"]
+            cat_id = cat["category_id"]
+            aliases = [a.lower() for a in cat.get("aliases", [])]
+
+            # Category filter
+            cat_matched = False
+            if selected_cat == "All" or not selected_cat:
+                cat_matched = True
+            elif selected_cat.lower() == cat_id.lower() or selected_cat.lower() == cat_name.lower():
+                cat_matched = True
+            elif any(selected_cat.lower() in a or a in selected_cat.lower() for a in aliases):
+                cat_matched = True
+            elif selected_cat.lower() in cat_name.lower() or cat_name.lower() in selected_cat.lower():
+                cat_matched = True
+
+            if not cat_matched:
+                continue
+
+            for t in cat.get("topics", []):
+                # Search filter
+                if search_term:
+                    searchable = f"{t.get('title', '')} {t.get('short_description', '')} {' '.join(t.get('key_concepts', []))} {t.get('study_notes', '')}".lower()
+                    if search_term not in searchable:
+                        continue
+
+                topic_copy = dict(t)
+                topic_copy["category_id"] = cat_id
+                topic_copy["category_name"] = cat_name
+                topic_copy["category_icon"] = cat.get("icon", "book")
+                matching_topics.append(topic_copy)
+
+        return matching_topics
+
+    @classmethod
+    def get_topic_by_id(cls, topic_id: str) -> Optional[Dict[str, Any]]:
+        data = cls._get_data()
+        for cat in data:
+            for t in cat.get("topics", []):
+                if t.get("id") == topic_id:
+                    t_copy = dict(t)
+                    t_copy["category_id"] = cat["category_id"]
+                    t_copy["category_name"] = cat["category_name"]
+                    t_copy["category_icon"] = cat.get("icon", "book")
+                    return t_copy
+        return None
+
+    @classmethod
+    def get_quiz(cls, category: Optional[str] = None, topic_id: Optional[str] = None) -> List[Dict[str, Any]]:
+        topics = cls.get_topics(category=category)
+        questions = []
+        for t in topics:
+            if topic_id and t.get("id") != topic_id:
+                continue
+            for q in t.get("practice_questions", []):
+                q_copy = dict(q)
+                q_copy["topic_id"] = t.get("id")
+                q_copy["topic_title"] = t.get("title")
+                q_copy["category_id"] = t.get("category_id")
+                q_copy["category_name"] = t.get("category_name")
+                questions.append(q_copy)
+        return questions
+
+    @classmethod
+    def record_quiz_progress(cls, user_id: int, topic_id: str, score: float, total: int, practice_minutes: int = 15):
+        if not user_id:
+            return False
+        topic = cls.get_topic_by_id(topic_id)
+        topic_title = topic.get("title", topic_id) if topic else topic_id
+        cat_name = topic.get("category_name", "General") if topic else "General"
+        percent = int(round((score / max(1, total)) * 100))
+        status = "COMPLETED" if percent >= 60 else "IN_PROGRESS"
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        now_str = now_ist_iso()
+
+        cursor.execute("SELECT id, questions_solved, practice_minutes FROM learning_progress WHERE user_id = ? AND topic = ?", (user_id, topic_title))
+        existing = cursor.fetchone()
+
+        if existing:
+            rec_id = existing["id"] if isinstance(existing, dict) else existing[0]
+            prev_qs = existing["questions_solved"] if isinstance(existing, dict) else existing[1]
+            prev_mins = existing["practice_minutes"] if isinstance(existing, dict) else existing[2]
+            cursor.execute("""
+            UPDATE learning_progress
+            SET status = ?, progress_percent = MAX(progress_percent, ?),
+                practice_minutes = practice_minutes + ?,
+                questions_solved = questions_solved + ?,
+                quiz_score = MAX(COALESCE(quiz_score, 0), ?),
+                updated_at = ?,
+                completed_at = CASE WHEN ? = 'COMPLETED' THEN ? ELSE completed_at END
+            WHERE id = ?
+            """, (status, percent, practice_minutes, total, score, now_str, status, now_str, rec_id))
+        else:
+            cursor.execute("""
+            INSERT INTO learning_progress (
+                user_id, resource_id, topic, category, status, progress_percent,
+                study_minutes, practice_minutes, questions_solved, quiz_score,
+                completed_at, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                user_id, topic_id, topic_title, cat_name, status, percent,
+                0, practice_minutes, total, score,
+                now_str if status == "COMPLETED" else None, now_str, now_str
+            ))
+
+        conn.commit()
+        conn.close()
+        return True
+
 

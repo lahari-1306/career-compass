@@ -4757,6 +4757,54 @@ function switchPrepHubTab(tabName) {
   refreshIcons();
 }
 
+// ====================================================
+// PRACTICE & TRAINING: TOPICS, QUIZ & LEARNING PLATFORMS
+// ====================================================
+
+let currentSelectedResourceCategory = 'All';
+let currentPracticeTopics = [];
+let currentQuizQuestions = [];
+let currentQuizIndex = 0;
+let quizAnswerState = {}; // { question_id: { selected_index, is_correct } }
+let quizScore = 0;
+let activePracticeViewMode = 'topics';
+
+function matchPracticeCategory(resourceCategory, selectedCategory) {
+  if (!selectedCategory || selectedCategory === 'All' || selectedCategory === 'All Categories') return true;
+  if (!resourceCategory) return false;
+  const rCat = resourceCategory.toLowerCase().trim();
+  const sCat = selectedCategory.toLowerCase().trim();
+  if (rCat === sCat) return true;
+
+  const aliasMap = {
+    'aptitude': ['aptitude & technical practice', 'aptitude', 'quantitative aptitude', 'quantitative', 'math'],
+    'reasoning': ['reasoning', 'logical reasoning', 'analytical reasoning', 'aptitude & technical practice', 'mental ability'],
+    'coding and cs fundamentals': ['coding & cs fundamentals', 'coding & programming', 'coding & interview preparation', 'coding & skills certification', 'gate preparation & cs fundamentals', 'computer science'],
+    'coding & cs fundamentals': ['coding and cs fundamentals', 'coding & programming', 'coding & interview preparation', 'coding & skills certification', 'gate preparation & cs fundamentals', 'computer science'],
+    'placement preparation': ['placement preparation', 'resume & interview skills', 'coding & interview preparation', 'aptitude & technical practice'],
+    'interview preparation': ['interview preparation', 'resume & interview skills', 'coding & interview preparation'],
+    'engineering preparation': ['core engineering', 'core engineering (ece / eee)', 'core engineering (mechanical / civil)', 'core engineering lab simulations', 'core engineering & higher education', 'engineering'],
+    'core engineering': ['core engineering', 'core engineering (ece / eee)', 'core engineering (mechanical / civil)', 'core engineering lab simulations', 'core engineering & higher education', 'engineering preparation'],
+    'skill development': ['skill development', 'technical & diploma skill building', 'professional skills & certifications'],
+    'web development': ['web development & programming', 'web development', 'programming'],
+    'ai and data science': ['ai, ml & data science', 'ai and data science', 'data science', 'ai & data science', 'machine learning'],
+    'ai & data science': ['ai, ml & data science', 'ai and data science', 'data science', 'ai & data science', 'machine learning'],
+    'ai, ml & data science': ['ai, ml & data science', 'ai and data science', 'data science', 'ai & data science', 'machine learning'],
+    'school & foundation learning': ['school & foundation learning', 'school subjects & textbooks', 'school subjects'],
+    'school subjects': ['school & foundation learning', 'school subjects & textbooks', 'school subjects'],
+    'entrance exams': ['official mock tests & entrance exams', 'entrance exams', 'academic courses & certification'],
+    'lateral entry (ecet)': ['technical & diploma skill building', 'core engineering lab simulations', 'lateral entry (ecet)']
+  };
+
+  if (aliasMap[sCat]) {
+    for (const a of aliasMap[sCat]) {
+      if (rCat.includes(a) || a.includes(rCat)) return true;
+    }
+  }
+
+  return rCat.includes(sCat) || sCat.includes(rCat);
+}
+
 async function loadLearningResources() {
   const container = document.getElementById('prep-resource-grid');
   if (!container) return;
@@ -4766,14 +4814,19 @@ async function loadLearningResources() {
   const qual = (currentUser && currentUser.qualification) || (profile && (profile.qualification || profile.education_level)) || 'B.Tech';
   const stream = (currentUser && currentUser.stream) || (profile && (profile.stream || profile.branch)) || '';
 
-  loadResourceCategories(qual, stream);
+  // 1. Load qualification-adapted category chips
+  await loadResourceCategories(qual, stream);
 
+  // 2. Load structured practice topics & quiz
+  await loadPracticeTopics(currentSelectedResourceCategory, qual, stream);
+
+  // 3. Load verified platforms
   try {
     const url = `/api/resources?qualification=${encodeURIComponent(qual)}&stream=${encodeURIComponent(stream)}`;
     const res = await fetch(url);
     const data = await res.json();
     window.LEARNING_RESOURCES_DATA = data.resources || [];
-    renderLearningResourceCards(window.LEARNING_RESOURCES_DATA);
+    filterLearningResources();
   } catch (err) {
     console.error('Error loading learning resources:', err);
     container.innerHTML = '<div class="empty-state text-danger"><p>Unable to load learning resources. Please try again.</p></div>';
@@ -4785,20 +4838,414 @@ async function loadResourceCategories(qual, stream) {
   if (!container) return;
 
   try {
-    const url = `/api/resources/categories?qualification=${encodeURIComponent(qual || '')}&stream=${encodeURIComponent(stream || '')}`;
+    const url = `/api/practice-training/categories?qualification=${encodeURIComponent(qual || '')}&stream=${encodeURIComponent(stream || '')}`;
     const res = await fetch(url);
     const data = await res.json();
     const categories = data.categories || [];
 
-    container.innerHTML = `
-      <button class="filter-chip ${currentSelectedResourceCategory === 'All' ? 'active' : ''}" onclick="filterLearningResourcesByCategory('All')">All Categories</button>
-      ${categories.map(cat => `
-        <button class="filter-chip ${currentSelectedResourceCategory === cat ? 'active' : ''}" onclick="filterLearningResourcesByCategory('${escapeHtml(cat)}')">${escapeHtml(cat)}</button>
-      `).join('')}
-    `;
+    window.PRACTICE_CATEGORIES_METADATA = categories;
+
+    container.innerHTML = categories.map(c => {
+      const catName = typeof c === 'string' ? c : (c.name || c.id);
+      const icon = (typeof c === 'object' && c.icon) ? c.icon : 'book';
+      const isActive = currentSelectedResourceCategory === catName || (currentSelectedResourceCategory === 'All' && (catName === 'All' || catName === 'All Categories'));
+      const countPill = (c.count && c.count > 0) ? `<span style="opacity: 0.7; font-size: 0.72rem; margin-left: 0.25rem;">(${c.count})</span>` : '';
+      return `
+        <button class="filter-chip ${isActive ? 'active' : ''}" onclick="filterLearningResourcesByCategory('${escapeHtml(catName)}')">
+          <i data-lucide="${escapeHtml(icon)}" class="icon-xxs"></i>
+          <span>${escapeHtml(catName)}</span>
+          ${countPill}
+        </button>
+      `;
+    }).join('');
+
+    refreshIcons();
   } catch (err) {
     console.warn('Error loading resource categories:', err);
   }
+}
+
+async function loadPracticeTopics(category, qual, stream) {
+  const topicsContainer = document.getElementById('practice-topics-container');
+  if (!topicsContainer) return;
+
+  topicsContainer.innerHTML = '<div class="loading-state"><div class="spinner"></div></div>';
+
+  try {
+    const query = (document.getElementById('prep-resource-search')?.value || '').trim();
+    const url = `/api/practice-training/topics?category=${encodeURIComponent(category || 'All')}&qualification=${encodeURIComponent(qual || '')}&stream=${encodeURIComponent(stream || '')}&q=${encodeURIComponent(query)}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    currentPracticeTopics = data.topics || [];
+
+    // Render Banner
+    renderPracticeCategoryBanner(category, currentPracticeTopics);
+
+    // Render Topics Accordion
+    renderPracticeTopics(currentPracticeTopics);
+
+    // Initialize Quiz from topics
+    initPracticeQuiz(currentPracticeTopics);
+  } catch (err) {
+    console.error('Error loading practice topics:', err);
+    topicsContainer.innerHTML = '<div class="empty-state text-danger"><p>Unable to load preparation topics. Please try again.</p></div>';
+  }
+}
+
+function renderPracticeCategoryBanner(selectedCat, topics) {
+  const banner = document.getElementById('practice-category-banner');
+  if (!banner) return;
+
+  const metaList = window.PRACTICE_CATEGORIES_METADATA || [];
+  const meta = metaList.find(m => m.name === selectedCat || m.id === selectedCat) || {};
+
+  const iconName = meta.icon || (selectedCat === 'All' || selectedCat === 'All Categories' ? 'layers' : 'book-open');
+  const catTitle = (selectedCat === 'All' || selectedCat === 'All Categories') ? 'All Categories' : selectedCat;
+  const description = meta.description || 'Comprehensive curriculum, formulas, cheatsheets, and verified interactive practice questions.';
+  const questionCount = topics.reduce((sum, t) => sum + (t.practice_questions ? t.practice_questions.length : 0), 0);
+
+  banner.innerHTML = `
+    <div class="practice-cat-banner-header">
+      <div class="practice-cat-banner-title">
+        <span class="resource-icon-wrap" style="background: var(--primary-light); color: var(--primary);"><i data-lucide="${escapeHtml(iconName)}" class="icon-sm"></i></span>
+        <div>
+          <h3>${escapeHtml(catTitle)}</h3>
+          <p class="practice-cat-banner-desc">${escapeHtml(description)}</p>
+        </div>
+      </div>
+      <div class="practice-cat-banner-stats">
+        <span class="practice-stat-pill"><i data-lucide="book" class="icon-xxs"></i> ${topics.length} Study Topics</span>
+        <span class="practice-stat-pill"><i data-lucide="help-circle" class="icon-xxs"></i> ${questionCount} Practice Questions</span>
+        <span class="practice-stat-pill"><i data-lucide="shield-check" class="icon-xxs" style="color: #059669;"></i> Verified Free Resources</span>
+      </div>
+    </div>
+  `;
+
+  refreshIcons();
+}
+
+function renderPracticeTopics(topics) {
+  const container = document.getElementById('practice-topics-container');
+  if (!container) return;
+
+  if (!topics || topics.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state" style="padding: 2.5rem 1rem; text-align: center; border: 1px dashed var(--border-color); border-radius: var(--radius-lg);">
+        <i data-lucide="book-open" class="icon-md text-muted" style="margin-bottom: 0.5rem;"></i>
+        <h4>No topics match your current search</h4>
+        <p style="color: var(--text-secondary); font-size: 0.85rem;">Try clearing your search query or selecting a different category.</p>
+        <button class="btn btn-outline-primary btn-sm" onclick="resetResourceFilters()"><i data-lucide="rotate-ccw" class="icon-xs"></i> Reset Filters</button>
+      </div>
+    `;
+    refreshIcons();
+    return;
+  }
+
+  container.innerHTML = topics.map(t => {
+    const level = (t.level || 'Intermediate').toLowerCase();
+    const concepts = Array.isArray(t.key_concepts) ? t.key_concepts : [];
+    const materials = Array.isArray(t.learning_materials) ? t.learning_materials : [];
+    const questions = Array.isArray(t.practice_questions) ? t.practice_questions : [];
+
+    return `
+      <div class="practice-topic-card" id="topic-card-${escapeHtml(t.id)}">
+        <div class="topic-top-bar">
+          <div class="topic-title-group">
+            <h4>${escapeHtml(t.title)}</h4>
+            <div class="topic-meta-badges">
+              <span class="topic-level-badge ${escapeHtml(level)}">${escapeHtml(t.level || 'Intermediate')}</span>
+              <span class="topic-time-pill"><i data-lucide="clock" class="icon-xxs"></i> ${escapeHtml(t.estimated_time || '30 mins')}</span>
+              <span class="resource-pill" style="font-size: 0.72rem;">${escapeHtml(t.category_name || 'General')}</span>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" style="display: inline-flex; align-items: center; gap: 0.35rem;" onclick="startTopicQuiz('${escapeHtml(t.id)}')">
+            <i data-lucide="sparkles" class="icon-xs"></i> <span>Practice Quiz (${questions.length} Qs)</span>
+          </button>
+        </div>
+
+        <p class="topic-short-desc">${escapeHtml(t.short_description || '')}</p>
+
+        ${concepts.length > 0 ? `
+          <div class="topic-cheat-sheet">
+            <div class="topic-cheat-sheet-title">
+              <i data-lucide="zap" class="icon-xxs"></i> Key Concepts & Formulas Cheat Sheet
+            </div>
+            <ul class="topic-concepts-list">
+              ${concepts.map(c => `<li>${escapeHtml(c)}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        <div id="topic-notes-${escapeHtml(t.id)}" class="topic-notes-drawer hidden">
+          <h5 style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+            <i data-lucide="book-marked" class="icon-xs text-primary"></i> Comprehensive Study Guide & Examples
+          </h5>
+          <p style="margin: 0; white-space: pre-line;">${escapeHtml(t.study_notes || 'No extended notes available.')}</p>
+        </div>
+
+        ${materials.length > 0 ? `
+          <div class="topic-materials-row">
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.25rem;">
+              <i data-lucide="external-link" class="icon-xxs"></i> Verified Tutorials:
+            </span>
+            ${materials.map(m => `
+              <a href="${escapeHtml(m.url)}" target="_blank" rel="noopener noreferrer" class="topic-material-link">
+                <span>${escapeHtml(m.title)}</span> <i data-lucide="arrow-up-right" class="icon-xxs"></i>
+              </a>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        <div class="topic-footer-actions">
+          <button class="btn btn-outline-secondary btn-sm" id="btn-toggle-${escapeHtml(t.id)}" onclick="toggleTopicNotes('${escapeHtml(t.id)}')">
+            <i data-lucide="book-open" class="icon-xs"></i> <span>View Detailed Study Notes</span>
+          </button>
+          <span style="font-size: 0.78rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.35rem;">
+            <i data-lucide="check-circle-2" class="icon-xxs text-primary"></i> Official Free Learning Modules
+          </span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  refreshIcons();
+}
+
+function toggleTopicNotes(topicId) {
+  const drawer = document.getElementById(`topic-notes-${topicId}`);
+  const btn = document.getElementById(`btn-toggle-${topicId}`);
+  if (!drawer || !btn) return;
+
+  const isHidden = drawer.classList.contains('hidden');
+  if (isHidden) {
+    drawer.classList.remove('hidden');
+    btn.innerHTML = '<i data-lucide="chevron-up" class="icon-xs"></i> <span>Hide Study Notes</span>';
+  } else {
+    drawer.classList.add('hidden');
+    btn.innerHTML = '<i data-lucide="book-open" class="icon-xs"></i> <span>View Detailed Study Notes</span>';
+  }
+  refreshIcons();
+}
+
+function switchPracticeViewMode(mode) {
+  activePracticeViewMode = mode;
+  document.querySelectorAll('.practice-switch-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-view') === mode);
+  });
+
+  const topicsWrap = document.getElementById('practice-topics-wrapper');
+  const quizWrap = document.getElementById('practice-quiz-wrapper');
+  const platformsWrap = document.getElementById('practice-platforms-wrapper');
+
+  if (mode === 'topics') {
+    if (topicsWrap) topicsWrap.classList.remove('hidden');
+    if (quizWrap) quizWrap.classList.add('hidden');
+    if (platformsWrap) platformsWrap.classList.remove('hidden');
+  } else if (mode === 'quiz') {
+    if (topicsWrap) topicsWrap.classList.add('hidden');
+    if (quizWrap) quizWrap.classList.remove('hidden');
+    if (platformsWrap) platformsWrap.classList.add('hidden');
+    renderPracticeQuiz();
+  } else if (mode === 'platforms') {
+    if (topicsWrap) topicsWrap.classList.add('hidden');
+    if (quizWrap) quizWrap.classList.add('hidden');
+    if (platformsWrap) platformsWrap.classList.remove('hidden');
+  }
+  refreshIcons();
+}
+
+function initPracticeQuiz(topics) {
+  currentQuizQuestions = [];
+  topics.forEach(t => {
+    if (Array.isArray(t.practice_questions)) {
+      t.practice_questions.forEach(q => {
+        currentQuizQuestions.push({
+          ...q,
+          topic_id: t.id,
+          topic_title: t.title,
+          category_name: t.category_name
+        });
+      });
+    }
+  });
+
+  currentQuizIndex = 0;
+  quizAnswerState = {};
+  quizScore = 0;
+
+  renderPracticeQuiz();
+}
+
+function startTopicQuiz(topicId) {
+  const filtered = [];
+  currentPracticeTopics.forEach(t => {
+    if (t.id === topicId && Array.isArray(t.practice_questions)) {
+      t.practice_questions.forEach(q => {
+        filtered.push({
+          ...q,
+          topic_id: t.id,
+          topic_title: t.title,
+          category_name: t.category_name
+        });
+      });
+    }
+  });
+
+  if (filtered.length > 0) {
+    currentQuizQuestions = filtered;
+    currentQuizIndex = 0;
+    quizAnswerState = {};
+    quizScore = 0;
+  }
+
+  switchPracticeViewMode('quiz');
+  const quizSection = document.getElementById('practice-quiz-wrapper');
+  if (quizSection) {
+    quizSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function renderPracticeQuiz() {
+  const container = document.getElementById('practice-quiz-container');
+  if (!container) return;
+
+  if (!currentQuizQuestions || currentQuizQuestions.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state" style="padding: 2.5rem; text-align: center; border: 1px dashed var(--border-color); border-radius: var(--radius-lg); background: var(--bg-surface);">
+        <i data-lucide="help-circle" class="icon-lg text-muted" style="margin-bottom: 0.75rem;"></i>
+        <h4>No practice questions found for this topic</h4>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem;">Select a different category or topic to take interactive quizzes.</p>
+        <button class="btn btn-outline-primary btn-sm" onclick="switchPracticeViewMode('topics')"><i data-lucide="book-open" class="icon-xs"></i> Browse Topics</button>
+      </div>
+    `;
+    refreshIcons();
+    return;
+  }
+
+  const q = currentQuizQuestions[currentQuizIndex];
+  const qState = quizAnswerState[q.id];
+  const isAnswered = !!qState;
+  const letters = ['A', 'B', 'C', 'D'];
+
+  const answeredCount = Object.keys(quizAnswerState).length;
+  const scorePercent = answeredCount > 0 ? Math.round((quizScore / answeredCount) * 100) : 0;
+
+  container.innerHTML = `
+    <div class="quiz-card">
+      <div class="quiz-header">
+        <div class="quiz-question-counter">
+          <span class="badge badge-primary" style="font-size: 0.75rem;">Question ${currentQuizIndex + 1} of ${currentQuizQuestions.length}</span>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">|</span>
+          <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">${escapeHtml(q.topic_title || q.category_name || 'Practice Question')}</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span class="quiz-score-pill"><i data-lucide="award" class="icon-xxs"></i> Score: ${quizScore}/${answeredCount} (${scorePercent}%)</span>
+          <button class="btn btn-outline-secondary btn-sm" onclick="resetPracticeQuiz()" title="Reset Quiz"><i data-lucide="rotate-ccw" class="icon-xs"></i></button>
+        </div>
+      </div>
+
+      <div class="quiz-question-text">${escapeHtml(q.question)}</div>
+
+      <div class="quiz-options-list">
+        ${q.options.map((opt, idx) => {
+          let optionClass = '';
+          let iconMark = '';
+          if (isAnswered) {
+            if (idx === q.correct_index) {
+              optionClass = 'correct';
+              iconMark = '<i data-lucide="check" class="icon-xs" style="color: #059669; margin-left: auto;"></i>';
+            } else if (idx === qState.selected_index) {
+              optionClass = 'incorrect';
+              iconMark = '<i data-lucide="x" class="icon-xs" style="color: #dc2626; margin-left: auto;"></i>';
+            }
+          }
+          return `
+            <button class="quiz-option-btn ${optionClass} ${isAnswered ? 'disabled' : ''}" onclick="selectQuizOption('${escapeHtml(q.id)}', ${idx})" ${isAnswered ? 'disabled' : ''}>
+              <span class="quiz-option-letter">${letters[idx]}</span>
+              <span>${escapeHtml(opt)}</span>
+              ${iconMark}
+            </button>
+          `;
+        }).join('')}
+      </div>
+
+      ${isAnswered ? `
+        <div class="quiz-explanation-box">
+          <h5><i data-lucide="${qState.is_correct ? 'check-circle' : 'alert-circle'}" class="icon-xs"></i> ${qState.is_correct ? 'Correct! Step-by-Step Solution:' : 'Incorrect. Step-by-Step Solution:'}</h5>
+          <p>${escapeHtml(q.explanation || 'Solution explained above.')}</p>
+        </div>
+      ` : ''}
+
+      <div class="quiz-controls-row">
+        <button class="btn btn-outline-secondary btn-sm" onclick="prevQuizQuestion()" ${currentQuizIndex === 0 ? 'disabled' : ''}>
+          <i data-lucide="arrow-left" class="icon-xs"></i> Previous
+        </button>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">
+          ${isAnswered ? 'Answer verified. Proceed to next question.' : 'Select an option to check your answer.'}
+        </span>
+        <button class="btn btn-primary btn-sm" onclick="nextQuizQuestion()" ${currentQuizIndex >= currentQuizQuestions.length - 1 ? 'disabled' : ''}>
+          Next Question <i data-lucide="arrow-right" class="icon-xs"></i>
+        </button>
+      </div>
+    </div>
+  `;
+
+  refreshIcons();
+}
+
+function selectQuizOption(questionId, optionIndex) {
+  const q = currentQuizQuestions[currentQuizIndex];
+  if (!q || q.id !== questionId) return;
+  if (quizAnswerState[questionId]) return; // Already answered
+
+  const isCorrect = optionIndex === q.correct_index;
+  if (isCorrect) {
+    quizScore++;
+  }
+
+  quizAnswerState[questionId] = {
+    selected_index: optionIndex,
+    is_correct: isCorrect
+  };
+
+  // Record progress via backend API
+  if (currentUser) {
+    try {
+      fetch('/api/practice-training/submit-quiz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          topic_id: q.topic_id || 'general',
+          score: quizScore,
+          total: Object.keys(quizAnswerState).length,
+          practice_minutes: 5
+        })
+      }).catch(() => {});
+    } catch (e) {}
+  }
+
+  renderPracticeQuiz();
+}
+
+function nextQuizQuestion() {
+  if (currentQuizIndex < currentQuizQuestions.length - 1) {
+    currentQuizIndex++;
+    renderPracticeQuiz();
+  }
+}
+
+function prevQuizQuestion() {
+  if (currentQuizIndex > 0) {
+    currentQuizIndex--;
+    renderPracticeQuiz();
+  }
+}
+
+function resetPracticeQuiz() {
+  quizAnswerState = {};
+  quizScore = 0;
+  currentQuizIndex = 0;
+  renderPracticeQuiz();
 }
 
 function renderLearningResourceCards(resources) {
@@ -4895,6 +5342,26 @@ function renderLearningResourceCards(resources) {
   refreshIcons();
 }
 
+function filterPracticeTopics() {
+  const query = (document.getElementById('prep-resource-search')?.value || '').toLowerCase().trim();
+  if (!currentPracticeTopics || currentPracticeTopics.length === 0) return;
+
+  if (!query) {
+    renderPracticeTopics(currentPracticeTopics);
+    return;
+  }
+
+  const filtered = currentPracticeTopics.filter(t => {
+    const matchTitle = t.title && t.title.toLowerCase().includes(query);
+    const matchDesc = t.short_description && t.short_description.toLowerCase().includes(query);
+    const matchConcepts = Array.isArray(t.key_concepts) && t.key_concepts.some(c => c.toLowerCase().includes(query));
+    const matchCat = t.category_name && t.category_name.toLowerCase().includes(query);
+    return matchTitle || matchDesc || matchConcepts || matchCat;
+  });
+
+  renderPracticeTopics(filtered);
+}
+
 function filterLearningResources() {
   const query = (document.getElementById('prep-resource-search')?.value || '').toLowerCase().trim();
   const accessFilter = document.getElementById('prep-resource-access-filter')?.value || 'All';
@@ -4904,8 +5371,10 @@ function filterLearningResources() {
     if (accessFilter !== 'All' && r.access_type !== accessFilter) {
       return false;
     }
-    if (currentSelectedResourceCategory !== 'All' && r.category !== currentSelectedResourceCategory) {
-      return false;
+    if (currentSelectedResourceCategory !== 'All' && currentSelectedResourceCategory !== 'All Categories') {
+      if (!matchPracticeCategory(r.category, currentSelectedResourceCategory)) {
+        return false;
+      }
     }
     if (query) {
       const matchName = r.name && r.name.toLowerCase().includes(query);
@@ -4921,13 +5390,23 @@ function filterLearningResources() {
   });
 
   renderLearningResourceCards(filtered);
+  filterPracticeTopics();
 }
 
 function filterLearningResourcesByCategory(cat) {
   currentSelectedResourceCategory = cat;
   document.querySelectorAll('#prep-resource-category-chips .filter-chip').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.trim() === cat || (cat === 'All' && btn.textContent.includes('All')));
+    const labelSpan = btn.querySelector('span');
+    const labelText = labelSpan ? labelSpan.textContent.trim() : btn.textContent.trim();
+    const isTarget = labelText === cat || (cat === 'All' && (labelText === 'All' || labelText.includes('All')));
+    btn.classList.toggle('active', isTarget);
   });
+
+  const profile = (currentUser && currentUser.profile) ? currentUser.profile : getStoredRadarProfile();
+  const qual = (currentUser && currentUser.qualification) || (profile && (profile.qualification || profile.education_level)) || 'B.Tech';
+  const stream = (currentUser && currentUser.stream) || (profile && (profile.stream || profile.branch)) || '';
+
+  loadPracticeTopics(cat, qual, stream);
   filterLearningResources();
 }
 
@@ -4938,9 +5417,17 @@ function resetResourceFilters() {
   if (accessSelect) accessSelect.value = 'All';
   currentSelectedResourceCategory = 'All';
   document.querySelectorAll('#prep-resource-category-chips .filter-chip').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.includes('All'));
+    const labelSpan = btn.querySelector('span');
+    const labelText = labelSpan ? labelSpan.textContent.trim() : btn.textContent.trim();
+    btn.classList.toggle('active', labelText === 'All' || labelText.includes('All'));
   });
-  renderLearningResourceCards(window.LEARNING_RESOURCES_DATA || []);
+
+  const profile = (currentUser && currentUser.profile) ? currentUser.profile : getStoredRadarProfile();
+  const qual = (currentUser && currentUser.qualification) || (profile && (profile.qualification || profile.education_level)) || 'B.Tech';
+  const stream = (currentUser && currentUser.stream) || (profile && (profile.stream || profile.branch)) || '';
+
+  loadPracticeTopics('All', qual, stream);
+  filterLearningResources();
 }
 
 async function ensureExamPrepDataLoaded() {

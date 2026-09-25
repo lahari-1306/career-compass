@@ -975,50 +975,47 @@ def init_db() -> None:
                 except Exception as e:
                     logger.warning(f"Error seeding notifications: {e}")
 
-        # Seed learning_resources in SQLite if empty
-        cursor.execute("SELECT COUNT(*) AS cnt FROM learning_resources;")
-        res_row = cursor.fetchone()
-        if res_row and res_row["cnt"] == 0:
-            res_path = os.path.join(DATA_DIR, "learning_resources.json")
-            if os.path.exists(res_path):
-                try:
-                    with open(res_path, "r", encoding="utf-8") as f:
-                        resources = json.load(f)
-                    now_str = now_ist_iso()
-                    for r in resources:
-                        cursor.execute("""
-                        INSERT OR REPLACE INTO learning_resources (
-                            id, name, description, official_url, logo_url, category, resource_type,
-                            education_levels, streams, branches, skills, exams, access_type,
-                            free_features, paid_features, language, official_source,
-                            verification_status, last_verified, created_at, updated_at
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                        """, (
-                            r.get("id"),
-                            r.get("name"),
-                            r.get("description"),
-                            r.get("official_url"),
-                            r.get("logo_url", ""),
-                            r.get("category", "General"),
-                            r.get("resource_type", "Practice & Learning Platform"),
-                            json.dumps(r.get("education_levels", [])),
-                            json.dumps(r.get("streams", [])),
-                            json.dumps(r.get("branches", [])),
-                            json.dumps(r.get("skills", [])),
-                            json.dumps(r.get("exams", [])),
-                            r.get("access_type", "FREE"),
-                            r.get("free_features", ""),
-                            r.get("paid_features", ""),
-                            r.get("language", "English"),
-                            r.get("official_source", r.get("official_url")),
-                            r.get("verification_status", "VERIFIED"),
-                            r.get("last_verified", now_str[:10]),
-                            r.get("created_at", now_str),
-                            r.get("updated_at", now_str)
-                        ))
-                    conn.commit()
-                except Exception as e:
-                    logger.warning(f"Error seeding learning resources: {e}")
+        # Sync learning_resources in SQLite so newly added verified platforms are always available
+        res_path = os.path.join(DATA_DIR, "learning_resources.json")
+        if os.path.exists(res_path):
+            try:
+                with open(res_path, "r", encoding="utf-8") as f:
+                    resources = json.load(f)
+                now_str = now_ist_iso()
+                for r in resources:
+                    cursor.execute("""
+                    INSERT OR IGNORE INTO learning_resources (
+                        id, name, description, official_url, logo_url, category, resource_type,
+                        education_levels, streams, branches, skills, exams, access_type,
+                        free_features, paid_features, language, official_source,
+                        verification_status, last_verified, created_at, updated_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (
+                        r.get("id"),
+                        r.get("name"),
+                        r.get("description"),
+                        r.get("official_url"),
+                        r.get("logo_url", ""),
+                        r.get("category", "General"),
+                        r.get("resource_type", "Practice & Learning Platform"),
+                        json.dumps(r.get("education_levels", [])),
+                        json.dumps(r.get("streams", [])),
+                        json.dumps(r.get("branches", [])),
+                        json.dumps(r.get("skills", [])),
+                        json.dumps(r.get("exams", [])),
+                        r.get("access_type", "FREE"),
+                        json.dumps(r.get("free_features", [])) if isinstance(r.get("free_features"), list) else (r.get("free_features") or ""),
+                        json.dumps(r.get("paid_features", [])) if isinstance(r.get("paid_features"), list) else (r.get("paid_features") or ""),
+                        r.get("language", "English"),
+                        r.get("official_source", r.get("official_url")),
+                        r.get("verification_status", "VERIFIED"),
+                        r.get("last_verified", now_str[:10]),
+                        r.get("created_at", now_str),
+                        r.get("updated_at", now_str)
+                    ))
+                conn.commit()
+            except Exception as e:
+                logger.warning(f"Error seeding learning resources: {e}")
 
     conn.close()
 

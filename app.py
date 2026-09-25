@@ -19,7 +19,8 @@ from services.pipeline_service import PipelineService
 from db_repository import (
     ProfileRepository, NotificationRepository, PushRepository,
     SavedOpportunitiesRepository, ExamProgressRepository,
-    LearningResourceRepository, TrackerRepository
+    LearningResourceRepository, TrackerRepository,
+    PracticeTrainingRepository
 )
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
@@ -843,6 +844,91 @@ def ai_study_guidance_route():
         guidance["guidance"] = guidance.get("guidance_html", "")
         guidance["recommended_resources"] = guidance.get("verified_resources", [])
     return jsonify(guidance)
+
+
+# ====================================================
+# PRACTICE & TRAINING: TOPICS, CHEATSHEETS & QUIZ APIs
+# ====================================================
+
+@app.route("/api/practice-training/categories", methods=["GET"])
+def get_practice_training_categories():
+    user = get_current_user()
+    user_prof = ProfileRepository.get_profile(user["id"]) if user else {}
+    qual = request.args.get("qualification") or user_prof.get("qualification") or "B.Tech"
+    stream = request.args.get("stream") or user_prof.get("stream")
+    categories = PracticeTrainingRepository.get_categories(qualification=qual, stream=stream)
+    return jsonify({
+        "status": "success",
+        "success": True,
+        "qualification": qual,
+        "categories": categories
+    })
+
+@app.route("/api/practice-training/topics", methods=["GET"])
+def get_practice_training_topics():
+    user = get_current_user()
+    user_prof = ProfileRepository.get_profile(user["id"]) if user else {}
+    qual = request.args.get("qualification") or user_prof.get("qualification") or "B.Tech"
+    stream = request.args.get("stream") or user_prof.get("stream")
+    category = request.args.get("category") or "All"
+    search = request.args.get("search") or request.args.get("q")
+    topics = PracticeTrainingRepository.get_topics(category=category, qualification=qual, stream=stream, search=search)
+    return jsonify({
+        "status": "success",
+        "success": True,
+        "total": len(topics),
+        "category": category,
+        "qualification": qual,
+        "topics": topics
+    })
+
+@app.route("/api/practice-training/topics/<topic_id>", methods=["GET"])
+def get_practice_training_topic_detail(topic_id):
+    topic = PracticeTrainingRepository.get_topic_by_id(topic_id)
+    if not topic:
+        return jsonify({"status": "error", "success": False, "message": f"Topic '{topic_id}' not found"}), 404
+    return jsonify({
+        "status": "success",
+        "success": True,
+        "topic": topic
+    })
+
+@app.route("/api/practice-training/quiz", methods=["GET"])
+def get_practice_training_quiz():
+    topic_id = request.args.get("topic_id")
+    category = request.args.get("category")
+    questions = PracticeTrainingRepository.get_quiz(category=category, topic_id=topic_id)
+    return jsonify({
+        "status": "success",
+        "success": True,
+        "total": len(questions),
+        "questions": questions
+    })
+
+@app.route("/api/practice-training/submit-quiz", methods=["POST"])
+def submit_practice_quiz():
+    data = request.get_json() or {}
+    topic_id = data.get("topic_id") or "general"
+    score = float(data.get("score", 0))
+    total = int(data.get("total", 0))
+    practice_minutes = int(data.get("practice_minutes", 10))
+    user = get_current_user()
+    if user:
+        PracticeTrainingRepository.record_quiz_progress(
+            user_id=user["id"],
+            topic_id=topic_id,
+            score=score,
+            total=total,
+            practice_minutes=practice_minutes
+        )
+    return jsonify({
+        "status": "success",
+        "success": True,
+        "message": "Practice quiz progress recorded successfully",
+        "score": score,
+        "total": total,
+        "percent": int(round((score / max(1, total)) * 100))
+    })
 
 # ====================================================
 # ADMIN LEARNING RESOURCES REST APIs

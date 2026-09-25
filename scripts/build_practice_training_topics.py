@@ -1,0 +1,2059 @@
+# -*- coding: utf-8 -*-
+"""
+Generates the comprehensive data/practice_training_topics.json dataset for Career Compass.
+Covers all categories:
+- Coding and CS Fundamentals
+- Placement Preparation
+- Aptitude (Quantitative)
+- Reasoning (Logical & Analytical)
+- Interview Preparation
+- Engineering Preparation
+- Skill Development
+- Web Development
+- AI and Data Science
+- School & Foundation Learning
+- Entrance Exams (JEE / NEET / EAMCET)
+- Lateral Entry (ECET & Diploma)
+"""
+
+import json
+import os
+
+PRACTICE_TRAINING_DATA = [
+    {
+        "category_id": "coding-cs",
+        "category_name": "Coding & CS Fundamentals",
+        "aliases": ["Coding and CS Fundamentals", "Coding & CS Fundamentals", "Coding & Programming", "Computer Science"],
+        "icon": "code",
+        "description": "Master core data structures, algorithms, operating systems, and database systems essential for technical rounds and software engineering roles.",
+        "education_levels": ["B.Tech", "Degree", "Diploma", "Postgraduate", "All"],
+        "topics": [
+            {
+                "id": "topic-dsa-arrays",
+                "title": "Arrays, Two-Pointers & Sliding Window",
+                "level": "Intermediate",
+                "estimated_time": "45 mins",
+                "short_description": "Master continuous memory layouts, two-pointer convergence, and dynamic sliding windows for linear time O(N) problem solving.",
+                "key_concepts": [
+                    "Arrays provide O(1) random access by index via pointer arithmetic: address = base + index * size.",
+                    "Two-Pointers technique operates on sorted sequences to find pairs/triplets in O(N) instead of O(N^2).",
+                    "Fixed Sliding Window maintains window sum by adding the new element (r) and subtracting the departing element (r - k).",
+                    "Dynamic Sliding Window expands right pointer until condition is met, then contracts left pointer to find minimum/maximum window.",
+                    "Prefix Sum arrays allow O(1) range sum queries after O(N) pre-processing: sum(i, j) = prefix[j] - prefix[i-1]."
+                ],
+                "study_notes": "Arrays are contiguous blocks of memory where each element can be accessed in O(1) time. However, inserting or deleting at arbitrary positions requires O(N) shifting. Two common algorithmic paradigms overcome brute-force O(N^2) approaches: (1) Two Pointers: placing one pointer at index 0 and another at N-1 to find elements satisfying conditions in sorted arrays (e.g., Two Sum II, Trapping Rain Water); (2) Sliding Window: maintaining a contiguous subarray defined by [left, right] to compute metrics like maximum sum of subarray of size K, or longest substring without repeating characters in linear time.",
+                "learning_materials": [
+                    {
+                        "title": "GeeksforGeeks: Array Data Structure Guide",
+                        "url": "https://www.geeksforgeeks.org/array-data-structure-guide/",
+                        "type": "Tutorial & Reference"
+                    },
+                    {
+                        "title": "LeetCode: Two Pointers Pattern Exploration",
+                        "url": "https://leetcode.com/explore/learn/card/array-and-string/",
+                        "type": "Interactive Practice"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-dsa-arr-1",
+                        "question": "What is the time complexity of finding if two numbers in a sorted array of size N sum to a target value using the two-pointer technique?",
+                        "options": ["O(1)", "O(log N)", "O(N)", "O(N^2)"],
+                        "correct_index": 2,
+                        "explanation": "With two pointers starting at opposite ends of the sorted array, each step either increments the left pointer or decrements the right pointer. Because each element is visited at most once, the total time complexity is strictly linear, O(N)."
+                    },
+                    {
+                        "id": "q-dsa-arr-2",
+                        "question": "In a sliding window of fixed size K over an array of size N, what is the time complexity to compute the sum of all subarrays of size K?",
+                        "options": ["O(N * K)", "O(N)", "O(N log N)", "O(K^2)"],
+                        "correct_index": 1,
+                        "explanation": "By reusing the previous window sum and performing 1 addition (incoming element) and 1 subtraction (outgoing element) at each step, each of the N-K+1 windows is evaluated in O(1) time, yielding total time complexity of O(N)."
+                    },
+                    {
+                        "id": "q-dsa-arr-3",
+                        "question": "Given an array `arr = [2, 7, 11, 15]` and target `9`, what are the 0-based indices of the two elements that sum to the target?",
+                        "options": ["[0, 1]", "[0, 2]", "[1, 2]", "[1, 3]"],
+                        "correct_index": 0,
+                        "explanation": "arr[0] = 2 and arr[1] = 7. Their sum is 2 + 7 = 9, which matches the target. Hence indices are [0, 1]."
+                    }
+                ]
+            },
+            {
+                "id": "topic-dsa-linked-lists",
+                "title": "Linked Lists, Stacks & Queues",
+                "level": "Intermediate",
+                "estimated_time": "50 mins",
+                "short_description": "Understand pointer manipulations, Floyd's cycle detection, monotonic stacks for nearest smaller/greater elements, and queue FIFO structures.",
+                "key_concepts": [
+                    "Singly Linked List nodes store (data, next). Insertion/deletion at head is O(1); arbitrary access is O(N).",
+                    "Floyd's Tortoise and Hare algorithm detects loops in linked lists in O(N) time and O(1) auxiliary space.",
+                    "Stack follows LIFO (Last In, First Out). Core operations: push, pop, peek (all O(1)). Used in recursion and parentheses validation.",
+                    "Monotonic Stack keeps elements in strictly increasing or decreasing order to find Next Greater Element in O(N).",
+                    "Queue follows FIFO (First In, First Out). Implemented with circular array or linked list for O(1) enqueue and dequeue."
+                ],
+                "study_notes": "Unlike arrays, linked lists do not require contiguous memory allocation. Each node contains a data field and one or more reference pointers. Reversing a singly linked list in-place requires three pointers: prev, curr, and next. For stacks, monotonic structures provide optimal O(N) solutions for problems like Largest Rectangle in Histogram and Daily Temperatures. For queues, circular arrays prevent memory wastage from shifting elements.",
+                "learning_materials": [
+                    {
+                        "title": "GeeksforGeeks: Linked List Data Structure",
+                        "url": "https://www.geeksforgeeks.org/data-structures/linked-list/",
+                        "type": "Tutorial & Reference"
+                    },
+                    {
+                        "title": "LeetCode: Stacks and Queues Explore Card",
+                        "url": "https://leetcode.com/explore/learn/card/queue-stack/",
+                        "type": "Practice Problems"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-dsa-ll-1",
+                        "question": "What happens in Floyd's Cycle Detection algorithm if a linked list contains a cycle?",
+                        "options": [
+                            "Fast pointer reaches null",
+                            "Fast pointer and slow pointer will eventually point to the exact same node",
+                            "Slow pointer reaches null while fast pointer loops indefinitely",
+                            "The algorithm throws an OutOfMemoryError"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "Since the fast pointer moves 2 steps while the slow pointer moves 1 step, the relative distance between them decreases by 1 node per iteration inside the loop. Therefore, the fast pointer will always catch up to the slow pointer, meeting at the same node."
+                    },
+                    {
+                        "id": "q-dsa-ll-2",
+                        "question": "Which data structure is primarily used by compilers to check balanced parentheses in an expression?",
+                        "options": ["Queue", "Stack", "Binary Heap", "Hash Map"],
+                        "correct_index": 1,
+                        "explanation": "A Stack (LIFO) pushes opening brackets and pops the top bracket whenever a matching closing bracket is encountered. If the stack is empty at the end and no mismatch occurs, the parentheses are balanced."
+                    },
+                    {
+                        "id": "q-dsa-ll-3",
+                        "question": "What is the minimum number of stacks needed to efficiently implement a First-In, First-Out (FIFO) queue?",
+                        "options": ["1", "2", "3", "4"],
+                        "correct_index": 1,
+                        "explanation": "Two stacks (input stack and output stack) are required. Enqueue pushes to the input stack; dequeue pops from the output stack. When the output stack is empty, all elements are transferred from the input stack to reverse their order to FIFO."
+                    }
+                ]
+            },
+            {
+                "id": "topic-dsa-trees",
+                "title": "Binary Trees, BSTs & Traversals",
+                "level": "Intermediate",
+                "estimated_time": "60 mins",
+                "short_description": "Explore binary tree structures, recursive depth-first traversals (Inorder, Preorder, Postorder), breadth-first level order, and BST search properties.",
+                "key_concepts": [
+                    "A Binary Tree node has at most two children: left and right.",
+                    "Inorder (Left -> Root -> Right) traversal of a Binary Search Tree (BST) produces strictly ascending sorted order.",
+                    "Preorder: Root -> Left -> Right (used for serialization/cloning). Postorder: Left -> Right -> Root (used for bottom-up deletion and subtree calculations).",
+                    "Breadth-First Search (BFS) / Level Order traversal utilizes a FIFO queue and visits nodes level by level.",
+                    "In a balanced BST (AVL/Red-Black), search, insertion, and deletion operate in O(log N) time; in a skewed tree, it degrades to O(N)."
+                ],
+                "study_notes": "Trees represent hierarchical data relationships. A Binary Search Tree enforces the invariant: for every node X, all values in X's left subtree are strictly less than X.val, and all values in X's right subtree are strictly greater than X.val. Common interview problems include Lowest Common Ancestor (LCA), Maximum Depth, Diameter of Binary Tree, and validating whether a given binary tree is a valid BST.",
+                "learning_materials": [
+                    {
+                        "title": "GeeksforGeeks: Binary Search Tree",
+                        "url": "https://www.geeksforgeeks.org/binary-search-tree-data-structure/",
+                        "type": "Tutorial & Reference"
+                    },
+                    {
+                        "title": "LeetCode: Binary Tree Explore Card",
+                        "url": "https://leetcode.com/explore/learn/card/data-structure-tree/",
+                        "type": "Interactive Visualizations"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-dsa-tree-1",
+                        "question": "Which tree traversal yields elements in non-decreasing sorted order for any valid Binary Search Tree?",
+                        "options": ["Preorder traversal", "Inorder traversal", "Postorder traversal", "Level-order traversal"],
+                        "correct_index": 1,
+                        "explanation": "Inorder traversal visits the left subtree, then current node, then right subtree. Since all left nodes are smaller and right nodes larger in a BST, Inorder traversal strictly yields sorted ascending order."
+                    },
+                    {
+                        "id": "q-dsa-tree-2",
+                        "question": "What is the maximum number of nodes at level L of a binary tree (where the root is at level 0)?",
+                        "options": ["2^L", "2^(L+1)", "2^L - 1", "L^2"],
+                        "correct_index": 0,
+                        "explanation": "At level 0, there is 2^0 = 1 node (root). At level 1, there are 2^1 = 2 nodes. In general, at level L, the maximum number of nodes is 2^L."
+                    },
+                    {
+                        "id": "q-dsa-tree-3",
+                        "question": "What is the worst-case time complexity of searching for an element in an unbalanced/skewed Binary Search Tree of N nodes?",
+                        "options": ["O(1)", "O(log N)", "O(N)", "O(N log N)"],
+                        "correct_index": 2,
+                        "explanation": "When elements are inserted in already sorted order, a standard BST degenerates into a linear linked list (skewed tree), causing worst-case search time to become O(N)."
+                    }
+                ]
+            },
+            {
+                "id": "topic-dsa-dp",
+                "title": "Dynamic Programming & Recursion",
+                "level": "Advanced",
+                "estimated_time": "60 mins",
+                "short_description": "Identify overlapping subproblems and optimal substructure, transforming exponential recursion into polynomial time via memoization and tabulation.",
+                "key_concepts": [
+                    "Two conditions for DP: (1) Optimal Substructure (optimal solution to problem contains optimal solutions to subproblems), (2) Overlapping Subproblems.",
+                    "Top-Down (Memoization): Recursive solution caching evaluated state results in a table or hash map.",
+                    "Bottom-Up (Tabulation): Iterative solution solving base cases first and filling a DP table systematically.",
+                    "Classic patterns: 0/1 Knapsack, Longest Common Subsequence (LCS), Coin Change, Matrix Chain Multiplication.",
+                    "Space optimization: When current state only depends on the previous row/state, space can often be reduced from O(N^2) to O(N)."
+                ],
+                "study_notes": "Dynamic Programming is an optimization over plain recursion. When recursive calls compute the same subproblem repeatedly (e.g. Fib(n) taking O(2^n)), memoization avoids redundant calculations, reducing time to O(N). Step 1: Identify state parameters (e.g., index `i`, remaining capacity `w`). Step 2: Formulate the recurrence relation. Step 3: Define base cases clearly.",
+                "learning_materials": [
+                    {
+                        "title": "GeeksforGeeks: Dynamic Programming Algorithms",
+                        "url": "https://www.geeksforgeeks.org/dynamic-programming/",
+                        "type": "Tutorial"
+                    },
+                    {
+                        "title": "LeetCode: Dynamic Programming Explore Card",
+                        "url": "https://leetcode.com/explore/learn/card/dynamic-programming/",
+                        "type": "Practice Problems"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-dsa-dp-1",
+                        "question": "What is the time complexity of solving the 0/1 Knapsack problem with N items and maximum weight capacity W using Dynamic Programming?",
+                        "options": ["O(2^N)", "O(N * W)", "O(N + W)", "O(N log W)"],
+                        "correct_index": 1,
+                        "explanation": "The 2D DP table has dimensions (N+1) x (W+1), and each cell takes O(1) constant time to compute by deciding whether to include or exclude the current item: dp[i][w] = max(dp[i-1][w], val[i-1] + dp[i-1][w - wt[i-1]]). Hence the total time is O(N * W) (pseudo-polynomial)."
+                    },
+                    {
+                        "id": "q-dsa-dp-2",
+                        "question": "Which of the following problems does NOT exhibit optimal substructure?",
+                        "options": [
+                            "Shortest Path in a weighted directed graph",
+                            "Longest Common Subsequence",
+                            "Longest Path in a general directed graph with cycles",
+                            "Matrix Chain Multiplication"
+                        ],
+                        "correct_index": 2,
+                        "explanation": "Longest simple path between two vertices in a general graph does not have optimal substructure because subpaths cannot be combined independently without potentially creating cycles. Finding longest simple paths is NP-hard."
+                    }
+                ]
+            },
+            {
+                "id": "topic-cs-os",
+                "title": "Operating Systems & Concurrency",
+                "level": "Intermediate",
+                "estimated_time": "50 mins",
+                "short_description": "Review process vs thread lifecycles, CPU scheduling, the 4 Coffman conditions for deadlock, and virtual memory paging.",
+                "key_concepts": [
+                    "A Process is an executing program with its own dedicated memory space (Text, Data, Heap, Stack).",
+                    "A Thread is the smallest unit of execution within a process; threads share the heap and code segment but possess private stacks and registers.",
+                    "4 Coffman conditions for Deadlock: Mutual Exclusion, Hold and Wait, No Preemption, and Circular Wait.",
+                    "Virtual Memory provides each process an illusion of contiguous memory using Page Tables, translating virtual addresses to physical frames.",
+                    "Thrashing occurs when the system spends more time servicing page faults and swapping pages than executing user processes."
+                ],
+                "study_notes": "Core OS concepts frequently assessed in placement technical tests: (1) Process Synchronization: critical section problem, race conditions, semaphores (counting vs binary), and mutexes; (2) CPU Scheduling: Preemptive vs Non-preemptive, Round Robin (time quantum trade-offs), Shortest Job First (SJF provably optimal for average waiting time); (3) Memory Management: paging eliminates external fragmentation, but causes internal fragmentation within pages.",
+                "learning_materials": [
+                    {
+                        "title": "GeeksforGeeks: Operating Systems Notes",
+                        "url": "https://www.geeksforgeeks.org/operating-systems/",
+                        "type": "Study Notes"
+                    },
+                    {
+                        "title": "GATE Overflow: Operating Systems Questions",
+                        "url": "https://gateoverflow.in/",
+                        "type": "GATE & Placement MCQs"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-os-1",
+                        "question": "Which of the following is NOT shared among threads belonging to the exact same process?",
+                        "options": ["Heap memory", "Global variables", "CPU registers and Stack", "Open file descriptors"],
+                        "correct_index": 2,
+                        "explanation": "Threads of the same process share the process address space (heap, code segment, and global variables) and open file handles, but each thread must maintain its own private stack and CPU register state to track its independent call execution."
+                    },
+                    {
+                        "id": "q-os-2",
+                        "question": "Which CPU scheduling algorithm is mathematically proven to achieve the minimum average waiting time for a given set of stationary processes?",
+                        "options": ["First-Come, First-Served (FCFS)", "Round Robin (RR)", "Shortest Job First (SJF)", "Priority Scheduling"],
+                        "correct_index": 2,
+                        "explanation": "Shortest Job First (SJF) schedules shorter processes before longer ones, which minimizes the cumulative waiting time for all subsequent processes, achieving the provably minimal average waiting time."
+                    },
+                    {
+                        "id": "q-os-3",
+                        "question": "What is the primary cause of 'Thrashing' in an operating system?",
+                        "options": [
+                            "Deadlock between two high-priority processes",
+                            "Excessive paging activity where the system spends most of its time swapping pages in and out of disk",
+                            "CPU overheating due to high computational clock cycles",
+                            "Network latency during socket communication"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "Thrashing occurs when the working set size of active processes exceeds physical RAM capacity. The OS continuously encounters page faults, spending virtually all CPU cycles on disk I/O swapping rather than productive execution."
+                    }
+                ]
+            },
+            {
+                "id": "topic-cs-dbms",
+                "title": "Database Systems, SQL & ACID Transactions",
+                "level": "Intermediate",
+                "estimated_time": "50 mins",
+                "short_description": "Master relational algebra, complex SQL joins, database normalization (1NF to BCNF), and ACID transaction guarantees.",
+                "key_concepts": [
+                    "ACID Properties: Atomicity (All or nothing), Consistency (preserves invariants), Isolation (concurrent execution equivalent to serial), Durability (committed changes persist).",
+                    "SQL Joins: INNER JOIN returns matching rows; LEFT JOIN returns all rows from left table and matched from right; FULL OUTER returns all rows from both.",
+                    "Normalization eliminates data redundancy: 1NF (atomic values, no repeating groups), 2NF (1NF + no partial functional dependencies), 3NF (2NF + no transitive dependencies), BCNF (for every X -> Y, X must be a super key).",
+                    "Indexes: B+ Trees are standard for disk-based relational databases because leaves are linked, supporting both fast equality lookups (O(log N)) and range scans.",
+                    "Transaction Isolation Levels: Read Uncommitted, Read Committed, Repeatable Read, Serializable."
+                ],
+                "study_notes": "Database queries and normalization form the foundation of backend system interviews. Always know how to write GROUP BY with HAVING clauses (WHERE filters rows before aggregation; HAVING filters groups after aggregation). Understand concurrency anomalies: Dirty Read (reading uncommitted data), Non-repeatable Read (rereading same row produces different values due to committed updates), and Phantom Read (rereading a query range yields newly inserted rows).",
+                "learning_materials": [
+                    {
+                        "title": "GeeksforGeeks: DBMS Tutorials & SQL Guide",
+                        "url": "https://www.geeksforgeeks.org/dbms/",
+                        "type": "Comprehensive Guide"
+                    },
+                    {
+                        "title": "W3Schools: SQL Tutorial & Practice Editor",
+                        "url": "https://www.w3schools.com/sql/",
+                        "type": "Interactive SQL"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-dbms-1",
+                        "question": "What is the key difference between the WHERE clause and the HAVING clause in SQL?",
+                        "options": [
+                            "WHERE is used for numerical comparisons; HAVING is used for string comparisons",
+                            "WHERE filters individual rows before aggregation; HAVING filters aggregated groups",
+                            "WHERE cannot be used with SELECT statements",
+                            "There is no functional difference; they are interchangeable"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "WHERE filters individual table rows before any GROUP BY aggregation takes place. HAVING filters aggregated results produced by GROUP BY."
+                    },
+                    {
+                        "id": "q-dbms-2",
+                        "question": "A relation is in 3NF if it is in 2NF and has no:",
+                        "options": ["Partial functional dependencies", "Transitive functional dependencies", "Primary keys", "Foreign keys"],
+                        "correct_index": 1,
+                        "explanation": "2NF eliminates partial dependencies (where a non-prime attribute depends on part of a composite key). 3NF further eliminates transitive dependencies (where a non-prime attribute depends on another non-prime attribute)."
+                    },
+                    {
+                        "id": "q-dbms-3",
+                        "question": "Which database index structure is most widely used in relational databases for fast range queries?",
+                        "options": ["Hash Table Index", "B+ Tree Index", "Binary Search Tree", "Skip List"],
+                        "correct_index": 1,
+                        "explanation": "B+ Trees maintain balanced height with high fan-out, minimizing disk I/O. Furthermore, all leaf nodes in a B+ Tree are linked sequentially in a doubly-linked list, allowing O(log N) lookup followed by fast sequential range scans."
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "category_id": "aptitude",
+        "category_name": "Aptitude",
+        "aliases": ["Aptitude", "Quantitative Aptitude", "Aptitude & Technical Practice", "Math Aptitude"],
+        "icon": "calculator",
+        "description": "Strengthen quantitative problem-solving speed, arithmetic shortcuts, algebra, geometry, and data interpretation for campus and competitive exams.",
+        "education_levels": ["B.Tech", "Degree", "Diploma", "Intermediate", "All"],
+        "topics": [
+            {
+                "id": "topic-apt-time-work",
+                "title": "Time, Work & Pipes/Cisterns (LCM Method)",
+                "level": "Beginner to Intermediate",
+                "estimated_time": "40 mins",
+                "short_description": "Solve work and pipe problems swiftly using the total unit LCM technique, worker replacement, and alternate hour cycles.",
+                "key_concepts": [
+                    "Total Work = LCM of individual times taken. Efficiency = Total Units / Days taken.",
+                    "Combined rate of A (x days) and B (y days): Total Time = (x * y) / (x + y).",
+                    "Efficiency is inversely proportional to time taken when total work remains constant (E1 * T1 = E2 * T2).",
+                    "In pipe & cistern problems, inlet pipes add positive (+) capacity, while leaks/outlet pipes subtract negative (-) capacity.",
+                    "If A is 50% more efficient than B, Ratio of efficiencies E_A : E_B = 150 : 100 = 3 : 2; Ratio of time taken = 2 : 3."
+                ],
+                "study_notes": "Avoid tedious fraction addition (1/12 + 1/18). Instead, assume Total Work = LCM(12, 18) = 36 units. A's rate = 36/12 = 3 units/day; B's rate = 36/18 = 2 units/day. Together they do 3+2 = 5 units/day. In 4 days they complete 4 * 5 = 20 units. Remaining work = 36 - 20 = 16 units. B finishes the rest in 16 / 2 = 8 days! This integer unit approach is 3x faster and eliminates calculation errors.",
+                "learning_materials": [
+                    {
+                        "title": "IndiaBIX: Time and Work Formulas & Solved Problems",
+                        "url": "https://www.indiabix.com/aptitude/time-and-work/",
+                        "type": "Formulas & Practice"
+                    },
+                    {
+                        "title": "GeeksforGeeks: Aptitude Practice - Time and Work",
+                        "url": "https://www.geeksforgeeks.org/time-and-work/",
+                        "type": "Tutorial & Shortcuts"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-apt-tw-1",
+                        "question": "A can complete a piece of work in 12 days, and B can complete the same work in 18 days. If they work together for 4 days and then A leaves, how many days will B alone take to finish the remaining work?",
+                        "options": ["6 days", "8 days", "10 days", "12 days"],
+                        "correct_index": 1,
+                        "explanation": "Assume Total Work = LCM(12, 18) = 36 units. Rate of A = 36/12 = 3 units/day. Rate of B = 36/18 = 2 units/day. In 4 days together, work completed = 4 * (3 + 2) = 20 units. Remaining work = 36 - 20 = 16 units. Time taken by B alone = 16 / 2 = 8 days."
+                    },
+                    {
+                        "id": "q-apt-tw-2",
+                        "question": "Pipe A can fill a tank in 8 hours, and Pipe B can empty the full tank in 12 hours. If both pipes are opened simultaneously into an empty tank, how many hours will it take to fill the tank?",
+                        "options": ["16 hours", "20 hours", "24 hours", "30 hours"],
+                        "correct_index": 2,
+                        "explanation": "Assume tank capacity = LCM(8, 12) = 24 units. Inflow rate of A = +24/8 = +3 units/hour. Outflow rate of B = -24/12 = -2 units/hour. Net filling rate = +3 - 2 = +1 unit/hour. Total time required = 24 / 1 = 24 hours."
+                    },
+                    {
+                        "id": "q-apt-tw-3",
+                        "question": "A is twice as efficient as B and therefore is able to finish a task in 30 days less than B. How many days will they take to complete the work working together?",
+                        "options": ["15 days", "20 days", "25 days", "30 days"],
+                        "correct_index": 1,
+                        "explanation": "Efficiency ratio E_A : E_B = 2 : 1. Time ratio T_A : T_B = 1 : 2. Difference in time = 2x - 1x = x = 30 days. So A takes 30 days and B takes 60 days. Together, time = (30 * 60) / (30 + 60) = 1800 / 90 = 20 days."
+                    }
+                ]
+            },
+            {
+                "id": "topic-apt-percentages",
+                "title": "Percentages, Profit, Loss & Successive Discounts",
+                "level": "Beginner",
+                "estimated_time": "35 mins",
+                "short_description": "Master Cost Price (CP), Selling Price (SP), Marked Price (MP), margin vs markup, and successive percentage change formulas.",
+                "key_concepts": [
+                    "Profit % = ((SP - CP) / CP) * 100. Loss % = ((CP - SP) / CP) * 100.",
+                    "Markup % is always calculated on CP: MP = CP * (1 + Markup/100).",
+                    "Discount % is always calculated on MP: SP = MP * (1 - Discount/100).",
+                    "Net successive percentage change for changes of +a% and +b%: (a + b + (a * b) / 100)%.",
+                    "Equivalent single discount for two successive discounts d1% and d2%: (d1 + d2 - (d1 * d2) / 100)%."
+                ],
+                "study_notes": "Converting percentages directly into fraction multipliers accelerates calculation. 20% increase = multiply by 6/5. 25% decrease = multiply by 3/4. When a merchant sells goods at CP but uses a false weight of 900g instead of 1000g, Profit % = (Error / (True Value - Error)) * 100 = (100 / 900) * 100 = 11.11%.",
+                "learning_materials": [
+                    {
+                        "title": "IndiaBIX: Profit and Loss Problems",
+                        "url": "https://www.indiabix.com/aptitude/profit-and-loss/",
+                        "type": "Practice Portal"
+                    },
+                    {
+                        "title": "GeeksforGeeks: Percentage & Profit/Loss Formulas",
+                        "url": "https://www.geeksforgeeks.org/profit-and-loss/",
+                        "type": "Formulas"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-apt-pl-1",
+                        "question": "A shopkeeper marks an article at 40% above its cost price and offers a discount of 20% on the marked price. What is his net profit percentage?",
+                        "options": ["10%", "12%", "15%", "18%"],
+                        "correct_index": 1,
+                        "explanation": "Let CP = 100. Marked Price MP = 100 + 40 = 140. Discount = 20% of 140 = 28. Selling Price SP = 140 - 28 = 112. Net Profit = 112 - 100 = 12%. Alternatively, using successive formula: (+40) + (-20) + (40 * -20)/100 = 20 - 8 = +12%."
+                    },
+                    {
+                        "id": "q-apt-pl-2",
+                        "question": "Two successive discounts of 20% and 10% are equivalent to a single discount of:",
+                        "options": ["28%", "30%", "25%", "32%"],
+                        "correct_index": 0,
+                        "explanation": "Single equivalent discount formula: d = d1 + d2 - (d1 * d2)/100 = 20 + 10 - (20 * 10)/100 = 30 - 2 = 28%."
+                    },
+                    {
+                        "id": "q-apt-pl-3",
+                        "question": "By selling an article for Rs. 720, a trader loses 10%. At what price must he sell it to gain 15%?",
+                        "options": ["Rs. 820", "Rs. 900", "Rs. 920", "Rs. 950"],
+                        "correct_index": 2,
+                        "explanation": "SP = 720 corresponds to (100 - 10)% = 90% of CP. Therefore, CP = 720 / 0.9 = Rs. 800. For a gain of 15%, target SP = 800 * 1.15 = Rs. 920."
+                    }
+                ]
+            },
+            {
+                "id": "topic-apt-speed-distance",
+                "title": "Speed, Distance, Time & Relative Speed",
+                "level": "Intermediate",
+                "estimated_time": "45 mins",
+                "short_description": "Tackle train crossing problems, relative speeds in identical and opposite directions, average speed, and boats and streams.",
+                "key_concepts": [
+                    "Conversion: 1 km/hr = 5/18 m/s; 1 m/s = 18/5 km/hr.",
+                    "Average Speed for two equal distance journeys at speeds u and v: (2 * u * v) / (u + v).",
+                    "Relative Speed: In opposite directions = S1 + S2; In same direction = |S1 - S2|.",
+                    "Train crossing a pole/person: Distance covered = Length of Train.",
+                    "Train crossing a platform/bridge: Distance covered = Length of Train + Length of Platform.",
+                    "Boats & Streams: Downstream speed D = u + v; Upstream speed U = u - v; Boat speed in still water u = (D + U)/2; Stream speed v = (D - U)/2."
+                ],
+                "study_notes": "Always check units before executing formulas! If distance is given in meters and speed in km/hr, immediately multiply speed by 5/18 to convert to m/s. When two trains of lengths L1 and L2 cross each other, the total distance traveled during the crossing is always (L1 + L2), irrespective of whether they travel in the same or opposite directions.",
+                "learning_materials": [
+                    {
+                        "title": "IndiaBIX: Time and Distance Problems",
+                        "url": "https://www.indiabix.com/aptitude/time-and-distance/",
+                        "type": "Practice Portal"
+                    },
+                    {
+                        "title": "GeeksforGeeks: Relative Speed Concepts",
+                        "url": "https://www.geeksforgeeks.org/speed-distance-and-time/",
+                        "type": "Tutorial"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-apt-sdt-1",
+                        "question": "A train 180 meters long is traveling at 54 km/hr. How many seconds will it take to completely pass an electric pole?",
+                        "options": ["10 seconds", "12 seconds", "15 seconds", "18 seconds"],
+                        "correct_index": 1,
+                        "explanation": "Convert speed: 54 km/hr = 54 * (5/18) = 15 m/s. Distance to pass a pole = Length of train = 180 m. Time taken = Distance / Speed = 180 / 15 = 12 seconds."
+                    },
+                    {
+                        "id": "q-apt-sdt-2",
+                        "question": "A man rows downstream at 15 km/hr and upstream at 9 km/hr. What is the speed of the river stream?",
+                        "options": ["2 km/hr", "3 km/hr", "4 km/hr", "6 km/hr"],
+                        "correct_index": 1,
+                        "explanation": "Speed of river stream v = (Downstream speed - Upstream speed) / 2 = (15 - 9) / 2 = 6 / 2 = 3 km/hr."
+                    },
+                    {
+                        "id": "q-apt-sdt-3",
+                        "question": "A car travels from city A to city B at 60 km/hr and returns from B to A at 40 km/hr. What is the average speed of the car for the entire round trip?",
+                        "options": ["48 km/hr", "50 km/hr", "52 km/hr", "54 km/hr"],
+                        "correct_index": 0,
+                        "explanation": "Since distance is identical each way, harmonic average speed applies: Avg Speed = (2 * u * v) / (u + v) = (2 * 60 * 40) / (60 + 40) = 4800 / 100 = 48 km/hr."
+                    }
+                ]
+            },
+            {
+                "id": "topic-apt-ratios-mixtures",
+                "title": "Ratios, Proportions & Alligation Mixtures",
+                "level": "Intermediate",
+                "estimated_time": "40 mins",
+                "short_description": "Master ratio manipulations, partnership profit distribution, and the cross-alligation rule for mixing ingredients of different costs.",
+                "key_concepts": [
+                    "If a:b = c:d, then ad = bc. Invertendo, Alternando, and Componendo-Dividendo rules.",
+                    "Partnership profit is distributed in the ratio of (Investment * Time Duration).",
+                    "Alligation Rule: (Quantity of Cheaper / Quantity of Dearer) = (Price of Dearer - Mean Price) / (Mean Price - Price of Cheaper).",
+                    "Successive liquid replacement formula: If a vessel contains x units of pure liquid and y units are removed and replaced by water n times, Remaining liquid = x * (1 - y/x)^n."
+                ],
+                "study_notes": "The Rule of Alligation allows instant calculation of mixing ratios without solving systems of linear equations. Place the cheaper price on the top-left, dearer on top-right, and desired mean price in the center. Subtract along the diagonals to obtain the exact ratio of quantities.",
+                "learning_materials": [
+                    {
+                        "title": "IndiaBIX: Alligation or Mixture Problems",
+                        "url": "https://www.indiabix.com/aptitude/alligation-or-mixture/",
+                        "type": "Formulas & Questions"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-apt-mix-1",
+                        "question": "In what ratio must rice at Rs. 40 per kg be mixed with rice at Rs. 55 per kg so that the mixture is worth Rs. 50 per kg?",
+                        "options": ["1 : 2", "2 : 3", "3 : 2", "1 : 3"],
+                        "correct_index": 0,
+                        "explanation": "Using Alligation: Cheaper price = 40, Dearer price = 55, Mean price = 50. (Dearer - Mean) = 55 - 50 = 5. (Mean - Cheaper) = 50 - 40 = 10. Ratio = 5 : 10 = 1 : 2."
+                    },
+                    {
+                        "id": "q-apt-mix-2",
+                        "question": "A vessel contains 80 liters of pure milk. 8 liters of milk are withdrawn and replaced by water. This process is repeated one more time. How much pure milk remains in the vessel?",
+                        "options": ["64.8 liters", "65.2 liters", "66.4 liters", "68.0 liters"],
+                        "correct_index": 0,
+                        "explanation": "Using replacement formula: Remaining milk = x * (1 - y/x)^n = 80 * (1 - 8/80)^2 = 80 * (9/10)^2 = 80 * 0.81 = 64.8 liters."
+                    }
+                ]
+            },
+            {
+                "id": "topic-apt-prob",
+                "title": "Probability, Permutations & Combinations",
+                "level": "Intermediate to Advanced",
+                "estimated_time": "45 mins",
+                "short_description": "Master factorial counting, permutations (arrangements), combinations (selections), and classical probability rules.",
+                "key_concepts": [
+                    "Permutation (Order matters): nPr = n! / (n - r)!. Combination (Order does not matter): nCr = n! / (r! * (n - r)!).",
+                    "Complementary Counting: P(Event occurs) = 1 - P(Event does NOT occur).",
+                    "Independent Events: P(A and B) = P(A) * P(B).",
+                    "Mutual Exclusivity: P(A or B) = P(A) + P(B) - P(A and B).",
+                    "Circular Permutation of n distinct objects: (n - 1)! arrangements."
+                ],
+                "study_notes": "Use the complementary counting technique when problems mention 'at least one'. For instance, probability of getting at least one Head when tossing 3 coins: 1 - P(No Heads) = 1 - (1/2)^3 = 1 - 1/8 = 7/8. This is far faster than adding P(1H) + P(2H) + P(3H).",
+                "learning_materials": [
+                    {
+                        "title": "IndiaBIX: Probability Problems and Formulas",
+                        "url": "https://www.indiabix.com/aptitude/probability/",
+                        "type": "Practice Portal"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-apt-prob-1",
+                        "question": "In how many ways can a committee of 3 members be selected from a group of 5 men and 4 women such that exactly 2 are men and 1 is a woman?",
+                        "options": ["20", "30", "40", "60"],
+                        "correct_index": 2,
+                        "explanation": "Ways to choose 2 men from 5: 5C2 = (5 * 4) / (2 * 1) = 10. Ways to choose 1 woman from 4: 4C1 = 4. Total combinations = 10 * 4 = 40 ways."
+                    },
+                    {
+                        "id": "q-apt-prob-2",
+                        "question": "Two unbiased dice are rolled simultaneously. What is the probability that the sum of the numbers obtained is equal to 8?",
+                        "options": ["5/36", "1/6", "7/36", "1/9"],
+                        "correct_index": 0,
+                        "explanation": "Total possible outcomes = 6 * 6 = 36. Favorable outcomes with sum 8: (2,6), (3,5), (4,4), (5,3), (6,2) -> 5 outcomes. Probability = 5/36."
+                    }
+                ]
+            },
+            {
+                "id": "topic-apt-interest",
+                "title": "Simple & Compound Interest",
+                "level": "Intermediate",
+                "estimated_time": "40 mins",
+                "short_description": "Understand linear growth in Simple Interest versus exponential compounding, semi-annual compounding, and difference shortcuts.",
+                "key_concepts": [
+                    "Simple Interest SI = (P * R * T) / 100. Amount A = P + SI.",
+                    "Compound Interest Amount A = P * (1 + R/100)^T. CI = A - P.",
+                    "Semi-annual compounding: Rate becomes R/2, Time becomes 2T: A = P * (1 + R/200)^(2T).",
+                    "Difference between CI and SI for 2 years: Difference = P * (R / 100)^2.",
+                    "Difference between CI and SI for 3 years: Difference = P * (R / 100)^2 * (3 + R / 100)."
+                ],
+                "study_notes": "The 2-year difference formula Diff = P * (R/100)^2 is one of the most frequently asked questions in campus and SSC exams. It lets you find Principal P or Rate R in under 20 seconds.",
+                "learning_materials": [
+                    {
+                        "title": "IndiaBIX: Compound Interest Solved Examples",
+                        "url": "https://www.indiabix.com/aptitude/compound-interest/",
+                        "type": "Formulas"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-apt-int-1",
+                        "question": "The difference between Simple Interest and Compound Interest on a sum of money for 2 years at 10% per annum is Rs. 50. What is the principal sum?",
+                        "options": ["Rs. 4,000", "Rs. 5,000", "Rs. 6,000", "Rs. 7,500"],
+                        "correct_index": 1,
+                        "explanation": "Using 2-year difference shortcut: Diff = P * (R / 100)^2 => 50 = P * (10 / 100)^2 => 50 = P * (1/100) => P = 50 * 100 = Rs. 5,000."
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "category_id": "reasoning",
+        "category_name": "Reasoning",
+        "aliases": ["Reasoning", "Logical Reasoning", "Analytical Reasoning", "Mental Ability"],
+        "icon": "brain-circuit",
+        "description": "Develop critical deduction, seating arrangement logic, syllogisms, blood relations, and spatial reasoning skills for assessment clearing.",
+        "education_levels": ["B.Tech", "Degree", "Diploma", "Intermediate", "All"],
+        "topics": [
+            {
+                "id": "topic-reas-syllogisms",
+                "title": "Syllogisms & Logical Deductions",
+                "level": "Intermediate",
+                "estimated_time": "45 mins",
+                "short_description": "Master standard Venn diagram representations, rules of 'Some' / 'All' / 'No' / 'Only a few', and definitive vs possibility conclusions.",
+                "key_concepts": [
+                    "'All A are B': A circle is strictly inside B circle. A -> B.",
+                    "'Some A are B': Overlapping intersection between circle A and circle B.",
+                    "'No A is B': Strict disjoint boundary; no intersection permitted between A and B.",
+                    "'Only a few A are B' means two simultaneous statements: (1) Some A are B, and (2) Some A are NOT B.",
+                    "A conclusion is strictly VALID only if it holds true across ALL possible Venn representations, not just one possible diagram."
+                ],
+                "study_notes": "Syllogisms are the highest-weightage section in TCS, Infosys, and banking exams. Standard mistake: validating a conclusion because it works in the simplest diagram. Golden Rule: Try your hardest to draw an alternative valid diagram that disproves the conclusion. If you cannot disprove it without violating the given statements, the conclusion is true!",
+                "learning_materials": [
+                    {
+                        "title": "IndiaBIX: Syllogism Logical Reasoning",
+                        "url": "https://www.indiabix.com/logical-reasoning/syllogism/",
+                        "type": "Rules & Solved Questions"
+                    },
+                    {
+                        "title": "GeeksforGeeks: Syllogism Concepts & Shortcuts",
+                        "url": "https://www.geeksforgeeks.org/syllogism-logical-reasoning/",
+                        "type": "Step-by-Step Guide"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-reas-syl-1",
+                        "question": "Statements: (1) All mangoes are golden. (2) Some golden things are fruits. Conclusions: I. Some mangoes are fruits. II. Some golden things are mangoes. Which conclusion follows?",
+                        "options": ["Only conclusion I follows", "Only conclusion II follows", "Both I and II follow", "Neither I nor II follows"],
+                        "correct_index": 1,
+                        "explanation": "Since all mangoes are inside the 'golden' circle, some part of the golden circle is necessarily occupied by mangoes, so Conclusion II is definitely true. However, 'fruits' only overlaps with 'golden' and might not overlap with the 'mangoes' subset inside golden, so Conclusion I does not definitely follow. Only II follows."
+                    },
+                    {
+                        "id": "q-reas-syl-2",
+                        "question": "Statements: (1) No cat is a dog. (2) All dogs are animals. Conclusions: I. No cat is an animal. II. Some animals are dogs. Which conclusion follows?",
+                        "options": ["Only I follows", "Only II follows", "Both follow", "Neither follows"],
+                        "correct_index": 1,
+                        "explanation": "Since all dogs are animals, the subset of animals that are dogs guarantees that 'Some animals are dogs' (Conclusion II is valid). Cats cannot be dogs, but cats can still be animals (disproving I). Thus only Conclusion II follows."
+                    }
+                ]
+            },
+            {
+                "id": "topic-reas-blood-relations",
+                "title": "Blood Relations & Family Tree Notation",
+                "level": "Beginner to Intermediate",
+                "estimated_time": "35 mins",
+                "short_description": "Convert complex narrative statements into unambiguous family tree diagrams using standard symbols for gender, marriage, and generational levels.",
+                "key_concepts": [
+                    "Gender symbols: Square or (+) for Male; Circle or (-) for Female.",
+                    "Relationship symbols: Double horizontal line (=) for Married Couple; Single horizontal line (-) for Siblings; Vertical line (|) for Parent-Child.",
+                    "Generations: Grandparents (Level +2), Parents/Aunts/Uncles (Level +1), Self/Siblings/Cousins (Level 0), Children (Level -1).",
+                    "Paternal refers to father's side; Maternal refers to mother's side.",
+                    "Never assume gender from a name (e.g. 'Kiran', 'Alex') unless explicitly stated in the problem statement."
+                ],
+                "study_notes": "In 'pointing to a person' questions, always work backwards from the possessive pronoun: 'He is the son of the only daughter of my father'. (1) 'my father' -> speaker's father; (2) 'only daughter of my father' -> the speaker herself (if female) or speaker's sister; (3) 'son of...' -> nephew or son.",
+                "learning_materials": [
+                    {
+                        "title": "IndiaBIX: Blood Relation Questions & Answers",
+                        "url": "https://www.indiabix.com/logical-reasoning/blood-relation-test/",
+                        "type": "Practice Portal"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-reas-br-1",
+                        "question": "Pointing to a photograph, Rohit said, 'She is the daughter of my grandfather's only son.' How is the girl in the photograph related to Rohit?",
+                        "options": ["Mother", "Sister", "Cousin", "Aunt"],
+                        "correct_index": 1,
+                        "explanation": "Rohit's grandfather's only son is Rohit's father. The daughter of Rohit's father is Rohit's sister."
+                    },
+                    {
+                        "id": "q-reas-br-2",
+                        "question": "If A + B means A is the brother of B; A - B means A is the sister of B; and A * B means A is the father of B. Which of the following means that C is the son of M?",
+                        "options": ["M * C + N", "M - C + N", "C * M + N", "N + M * C"],
+                        "correct_index": 0,
+                        "explanation": "In 'M * C + N': M * C means M is the father of C. C + N means C is the brother of N (confirming C is male). Since M is the father and C is male, C is strictly the son of M."
+                    }
+                ]
+            },
+            {
+                "id": "topic-reas-seating",
+                "title": "Seating Arrangements (Linear & Circular)",
+                "level": "Intermediate to Advanced",
+                "estimated_time": "50 mins",
+                "short_description": "Master circular arrangements with people facing inward vs outward, linear rows facing north/south, and multi-variable matching puzzles.",
+                "key_concepts": [
+                    "Circular facing Center: Left = Clockwise direction; Right = Anti-Clockwise direction.",
+                    "Circular facing Outward: Left = Anti-Clockwise direction; Right = Clockwise direction.",
+                    "Linear facing North: Left = your actual left hand; Right = your actual right hand.",
+                    "Linear facing South: Left = your actual right hand; Right = your actual left hand.",
+                    "Always start building the arrangement from a definite positional statement (e.g. 'P sits third to the right of Q')."
+                ],
+                "study_notes": "Draw two parallel potential diagram cases when a statement gives two possibilities (e.g. 'A sits second to left or right of B'). As subsequent clues arrive, eliminate the invalid case. Never waste time guessing; let contradictions prune branches systematically.",
+                "learning_materials": [
+                    {
+                        "title": "IndiaBIX: Seating Arrangement Puzzles",
+                        "url": "https://www.indiabix.com/logical-reasoning/seating-arrangement/",
+                        "type": "Solved Puzzles"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-reas-seat-1",
+                        "question": "Eight people A, B, C, D, E, F, G, H sit around a circular table facing the center. A sits opposite D. B sits immediately to the right of A. F sits opposite B. Who is sitting immediately to the left of D?",
+                        "options": ["B", "E", "F", "C"],
+                        "correct_index": 2,
+                        "explanation": "Since all face the center: A is opposite D. B is immediately to the right of A (anti-clockwise). F is opposite B. Therefore F is directly adjacent to D on D's left (clockwise from D's perspective when facing inward)."
+                    }
+                ]
+            },
+            {
+                "id": "topic-reas-direction",
+                "title": "Direction Sense & Coordinate Displacements",
+                "level": "Beginner to Intermediate",
+                "estimated_time": "35 mins",
+                "short_description": "Calculate net displacement vectors, cardinal and intercardinal orientations, and shadow directions at sunrise and sunset.",
+                "key_concepts": [
+                    "Cardinal directions: North (+y), South (-y), East (+x), West (-x).",
+                    "Turns: Right turn from North is East; Left turn from North is West; Right turn from South is West.",
+                    "Shortest Distance: Pythagoras Theorem d = sqrt((Delta x)^2 + (Delta y)^2).",
+                    "Sunrise: Sun is in East; Shadows fall towards the West.",
+                    "Sunset: Sun is in West; Shadows fall towards the East. At noon, there is negligible shadow."
+                ],
+                "study_notes": "Treat every turn as a coordinate vector. Starting at (0, 0): Walk 5m North -> (0, 5). Turn right and walk 12m -> (12, 5). Distance from starting point = sqrt(12^2 + 5^2) = sqrt(144 + 25) = sqrt(169) = 13 meters. Direction is North-East.",
+                "learning_materials": [
+                    {
+                        "title": "IndiaBIX: Direction Sense Test",
+                        "url": "https://www.indiabix.com/logical-reasoning/direction-sense-test/",
+                        "type": "Practice Questions"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-reas-dir-1",
+                        "question": "A person walks 8 km towards North, turns right and walks 6 km. What is the shortest distance between the person's final position and starting point?",
+                        "options": ["10 km", "12 km", "14 km", "16 km"],
+                        "correct_index": 0,
+                        "explanation": "Shortest distance forms the hypotenuse of a right triangle with legs 8 km and 6 km: d = sqrt(8^2 + 6^2) = sqrt(64 + 36) = sqrt(100) = 10 km."
+                    }
+                ]
+            },
+            {
+                "id": "topic-reas-coding",
+                "title": "Coding-Decoding & Alphanumeric Series",
+                "level": "Beginner",
+                "estimated_time": "30 mins",
+                "short_description": "Master letter position values (A=1 to Z=26, EJOTY rule), reverse letter pairs (sum=27), and arithmetic pattern progressions.",
+                "key_concepts": [
+                    "Forward ranks: E=5, J=10, O=15, T=20, Y=25 (EJOTY).",
+                    "Opposite letter pairs sum to 27: A(1) - Z(26), B(2) - Y(25), C(3) - X(24), D(4) - W(23), E(5) - V(22).",
+                    "Common shifts: +1, +2, +3... or alternating +2, -1, +2, -1.",
+                    "Matrix & Number series: check differences of differences, prime numbers, squares (n^2 +- 1), and cubes (n^3 +- 1)."
+                ],
+                "study_notes": "Write out the 1-26 alphabet table with reverse letters on rough paper before the reasoning test begins. It saves 10-15 seconds on every coding-decoding and series question.",
+                "learning_materials": [
+                    {
+                        "title": "IndiaBIX: Coding and Decoding",
+                        "url": "https://www.indiabix.com/logical-reasoning/coding-and-decoding/",
+                        "type": "Solved Examples"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-reas-cd-1",
+                        "question": "If in a certain code language 'CALM' is coded as 'XAKM' (or opposite letters), how is 'LOVE' coded if each letter is replaced by its reverse alphabet letter (sum=27)?",
+                        "options": ["OLEV", "OLVE", "EVOL", "PMWF"],
+                        "correct_index": 0,
+                        "explanation": "Reverse pairs: L (12) -> O (15) [12+15=27]; O (15) -> L (12); V (22) -> E (5); E (5) -> V (22). Hence 'LOVE' becomes 'OLEV'."
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "category_id": "placement-prep",
+        "category_name": "Placement Preparation",
+        "aliases": ["Placement Preparation", "Campus Placements", "Campus Recruitment Training"],
+        "icon": "briefcase",
+        "description": "Comprehensive strategy, assessment blueprints, aptitude shortcuts, pseudocode evaluation, and GD frameworks for service & product companies.",
+        "education_levels": ["B.Tech", "Degree", "Diploma", "Postgraduate", "All"],
+        "topics": [
+            {
+                "id": "topic-pl-blueprint",
+                "title": "Campus Assessment Blueprint (TCS, Infosys, Cognizant, Wipro, Accenture)",
+                "level": "Intermediate",
+                "estimated_time": "45 mins",
+                "short_description": "Understand exam patterns, sectional time limits, negative marking rules, and topic weightages across tier-1 service and product hiring drives.",
+                "key_concepts": [
+                    "TCS NQT: Numerical Ability (20 Qs), Reasoning Ability (20 Qs), Verbal Ability (25 Qs), Advanced Coding (2 Qs in 90 mins).",
+                    "Infosys Springboard Assessment: Focuses heavily on Mathematical Reasoning, Cryptarithmetic puzzles, and Hands-on Python/Java coding.",
+                    "Cognizant GenC / GenC Next: Emphasizes Pseudocode tracing, debugging code snippets, and SQL query scenarios.",
+                    "Accenture: Critical Reasoning, Abstract Reasoning, MS Office/Cloud fundamentals MCQs, followed by a mandatory Coding round.",
+                    "Sectional Cutoff rule: You must pass every section individually; high marks in math cannot compensate for failing verbal reasoning."
+                ],
+                "study_notes": "Preparation strategy: Allocate 40% study time to Quantitative & Logical Reasoning, 35% to Hands-on Coding (DSA arrays, strings, hashing), and 25% to Technical MCQs (OS, DBMS, SQL, Computer Networks). Practice under strict timed mock conditions to prevent clock-freeze during actual proctored rounds.",
+                "learning_materials": [
+                    {
+                        "title": "PrepInsta: Company-Specific Placement Syllabus & Patterns",
+                        "url": "https://prepinsta.com/",
+                        "type": "Mock Tests & Patterns"
+                    },
+                    {
+                        "title": "GeeksforGeeks: Campus Placement Preparation Blueprint",
+                        "url": "https://www.geeksforgeeks.org/placements-gq/",
+                        "type": "Assessment Guide"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-pl-bp-1",
+                        "question": "In common campus recruitment assessments (such as TCS NQT or Infosys), what is the consequence of failing the sectional cutoff in Verbal Ability even if your Quantitative score is 100%?",
+                        "options": [
+                            "The candidate receives bonus marks",
+                            "The candidate is disqualified regardless of high overall marks",
+                            "The candidate is automatically assigned to a non-technical role",
+                            "The test system lowers the difficulty for subsequent sections"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "Campus drives enforce sectional cutoffs. Candidates must meet minimum threshold scores in each independent section (Aptitude, Reasoning, Verbal, Coding) to qualify for interview shortlisting."
+                    }
+                ]
+            },
+            {
+                "id": "topic-pl-pseudocode",
+                "title": "Pseudocode & Code Tracing Patterns",
+                "level": "Intermediate",
+                "estimated_time": "40 mins",
+                "short_description": "Master bitwise operator evaluations, nested loop tracking, recursion call tree unwinding, and short-circuit condition evaluation.",
+                "key_concepts": [
+                    "Bitwise AND (&): 1 only if both bits are 1. Bitwise OR (|): 1 if either bit is 1. Bitwise XOR (^): 1 if bits differ.",
+                    "Bitwise Left Shift (x << k) multiplies integer by 2^k. Right Shift (x >> k) divides integer by 2^k.",
+                    "Operator Precedence: Parentheses > Postfix > Unary > Multiplicative (*, /, %) > Additive (+, -) > Relational > Equality > Bitwise > Logical > Assignment.",
+                    "Short-circuit evaluation: In `A && B`, if A is false, B is NEVER executed. In `A || B`, if A is true, B is NEVER executed.",
+                    "Static variables in C/C++ retain their value across recursive function invocations."
+                ],
+                "study_notes": "Pseudocode questions are designed to catch sloppy trace habits. Draw a small trace table on paper with columns for each variable: `p`, `q`, `r`, and update values row by row for each iteration. For recursive questions, draw a tree showing argument values at each level and sum the returned results from the bottom up.",
+                "learning_materials": [
+                    {
+                        "title": "IndiaBIX: C Programming Pseudocode & Aptitude",
+                        "url": "https://www.indiabix.com/c-programming/questions-and-answers/",
+                        "type": "Code Tracing Questions"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-pl-pc-1",
+                        "question": "What is the evaluated output of the expression `12 ^ 9` (Bitwise XOR)?",
+                        "options": ["3", "5", "15", "21"],
+                        "correct_index": 1,
+                        "explanation": "12 in binary = 1100. 9 in binary = 1001. Performing XOR (different bits yield 1): 1100 ^ 1001 = 0101 in binary = 4 + 1 = 5."
+                    },
+                    {
+                        "id": "q-pl-pc-2",
+                        "question": "Given `int x = 5; int y = (x++ > 5) && (++x > 6);` What is the final value of x?",
+                        "options": ["5", "6", "7", "8"],
+                        "correct_index": 1,
+                        "explanation": "Post-increment `x++` evaluates to 5 in the condition `5 > 5`, which is False. Since the first operand of logical AND `&&` is False, short-circuit evaluation occurs and the second expression `(++x > 6)` is never evaluated. However, the post-increment of `x++` still finishes, setting x = 6."
+                    }
+                ]
+            },
+            {
+                "id": "topic-pl-resume",
+                "title": "ATS-Friendly Technical Resume Engineering",
+                "level": "Beginner to Intermediate",
+                "estimated_time": "35 mins",
+                "short_description": "Structure single-column clean markdown/PDF resumes, action verbs, quantified metric statements, and keyword matching for recruiter filters.",
+                "key_concepts": [
+                    "ATS (Applicant Tracking Systems) struggle to parse two-column tables, text boxes, icons, and embedded graphics.",
+                    "XYZ Formula by Google: Accomplished [X], as measured by [Y], by doing [Z].",
+                    "Include quantifiable impact: 'Reduced API response latency by 35% by implementing Redis caching'.",
+                    "Section hierarchy: Header (Contact, GitHub, LinkedIn) -> Education -> Technical Skills -> Projects -> Experience/Certifications.",
+                    "Tailor skill keywords to align with the specific job description (e.g. REST API, PostgreSQL, Git, Docker)."
+                ],
+                "study_notes": "Avoid vague bullet points like 'Worked on e-commerce website'. Instead write: 'Developed responsive full-stack bookstore application using React and Flask, integrating Razorpay payment gateway and supporting 50+ concurrent users with SQLite ACID transactions'.",
+                "learning_materials": [
+                    {
+                        "title": "GeeksforGeeks: How to Write an ATS-Friendly Resume",
+                        "url": "https://www.geeksforgeeks.org/how-to-write-a-resume-for-software-engineer/",
+                        "type": "Resume Guide"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-pl-res-1",
+                        "question": "Which of the following resume formats is most reliably parsed by automated Applicant Tracking Systems (ATS)?",
+                        "options": [
+                            "Two-column design with Canva graphic skill meters",
+                            "Clean, single-column text-based layout with clear standard headings in PDF or DOCX",
+                            "Image-based PNG/JPEG export to preserve custom fonts",
+                            "Multi-page resume embedded with icons and progress bars"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "ATS parsers read plain text sequentially from top to bottom. Single-column layouts with standard headings (Experience, Education, Skills) prevent parsing errors and misaligned text blocks common with tables or multi-column graphics."
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "category_id": "interview-prep",
+        "category_name": "Interview Preparation",
+        "aliases": ["Interview Preparation", "Technical Interview", "HR Interview", "System Design"],
+        "icon": "users",
+        "description": "Master technical interviews, low-level object-oriented design, system scalability, and behavioral questions using the STAR framework.",
+        "education_levels": ["B.Tech", "Degree", "Postgraduate", "All"],
+        "topics": [
+            {
+                "id": "topic-int-behavioral",
+                "title": "Behavioral & HR Interview Mastery (The STAR Method)",
+                "level": "Intermediate",
+                "estimated_time": "40 mins",
+                "short_description": "Structure authentic, impactful answers to behavioral and leadership questions using the Situation, Task, Action, Result methodology.",
+                "key_concepts": [
+                    "S - Situation: Set the context briefly (project, company, team, or class challenge). Keep under 20% of answer.",
+                    "T - Task: Explain your specific responsibility or objective in that scenario.",
+                    "A - Action: Detail the explicit steps YOU took, tools used, and problem-solving methodology (60% of answer).",
+                    "R - Result: Quantify outcomes, metrics, lessons learned, or efficiency gained (e.g. 'Delivered project 3 days ahead of schedule').",
+                    "Common questions: 'Tell me about a time you handled conflict', 'Describe your greatest technical failure and what you learned'."
+                ],
+                "study_notes": "Never speak negatively about past team members, professors, or employers. Reframe conflicts as professional differences in technical methodology. When asked 'What is your greatest weakness?', pick a genuine technical or organizational challenge that you are actively working to improve (e.g., 'I used to struggle with delegating tasks, so I took a course on agile sprint management and now use Trello/Jira boards').",
+                "learning_materials": [
+                    {
+                        "title": "GeeksforGeeks: HR Interview Questions and Answers",
+                        "url": "https://www.geeksforgeeks.org/common-interview-questions-and-answers-for-hr-round/",
+                        "type": "HR Questions Guide"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-int-star-1",
+                        "question": "What is the recommended distribution of time when answering a behavioral interview question using the STAR method?",
+                        "options": [
+                            "70% Situation/Context, 30% Result",
+                            "20% Situation & Task, 60% Action taken by you, 20% Quantified Result & learnings",
+                            "50% Describing personal feelings, 50% Explaining what other team members did",
+                            "100% on the final outcome"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "Interviewers evaluate your personal agency and problem-solving actions. Spending 60% of the response describing your specific actions demonstrates technical initiative and competence."
+                    }
+                ]
+            },
+            {
+                "id": "topic-int-sys-design",
+                "title": "System Design Fundamentals (Scalability & Architecture)",
+                "level": "Advanced",
+                "estimated_time": "55 mins",
+                "short_description": "Understand horizontal vs vertical scaling, load balancers, caching strategies, database replication vs sharding, and the CAP theorem.",
+                "key_concepts": [
+                    "Vertical Scaling (Scale-up): Adding CPU/RAM to a single server; has hardware ceilings and single-point-of-failure.",
+                    "Horizontal Scaling (Scale-out): Adding more identical servers behind a Load Balancer (Round Robin, Least Connections, IP Hash).",
+                    "Caching: Storing frequently accessed read data in-memory (Redis, Memcached) to reduce database load. Cache-aside vs Write-through.",
+                    "CAP Theorem: A distributed system can provide at most TWO of: Consistency, Availability, and Partition Tolerance (P is mandatory across networks).",
+                    "Database Sharding: Horizontally partitioning rows of a database across multiple physical database servers by shard key."
+                ],
+                "study_notes": "In system design interviews (e.g. 'Design URL Shortener' or 'Design Twitter Feed'): (1) Clarify functional and non-functional requirements (DAU, read/write ratio, latency target); (2) Back-of-the-envelope calculations (storage, bandwidth, QPS); (3) High-level design (Client -> DNS -> CDN -> Load Balancer -> Web App -> Cache -> DB); (4) Deep dive into bottlenecks and failure recovery.",
+                "learning_materials": [
+                    {
+                        "title": "GeeksforGeeks: System Design Primer & Concepts",
+                        "url": "https://www.geeksforgeeks.org/system-design-tutorial/",
+                        "type": "Architecture Guide"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-int-sd-1",
+                        "question": "According to the CAP Theorem, when a network partition (network communication failure between servers) occurs in a distributed system, what trade-off must be made?",
+                        "options": [
+                            "Trade-off between Performance and Cost",
+                            "Trade-off between Consistency (CP) and Availability (AP)",
+                            "Trade-off between Security and Encryption",
+                            "No trade-off is required; all three guarantees can be simultaneously preserved"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "Since physical network partitions are unavoidable in distributed systems (P is mandatory), a system must either return an error/wait (choosing Consistency over Availability) or return stale data (choosing Availability over Consistency)."
+                    },
+                    {
+                        "id": "q-int-sd-2",
+                        "question": "In the Cache-Aside (Lazy Loading) pattern, what happens when an application attempts to read a record?",
+                        "options": [
+                            "The database writes the record to cache automatically every hour",
+                            "The app checks the cache; on a cache miss, it reads from the DB, writes the result to cache, and returns it to the client",
+                            "The app writes directly to the disk without consulting the cache",
+                            "The cache queries all databases concurrently and merges the results"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "In Cache-Aside, the application first inspects the cache. If found (cache hit), it returns immediately. If missing (cache miss), it fetches from the database, updates the cache with a TTL, and returns the data."
+                    }
+                ]
+            },
+            {
+                "id": "topic-int-solid",
+                "title": "Object-Oriented Design & SOLID Principles",
+                "level": "Intermediate",
+                "estimated_time": "45 mins",
+                "short_description": "Master Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion for robust software architecture.",
+                "key_concepts": [
+                    "S - Single Responsibility Principle (SRP): A class should have one, and only one, reason to change.",
+                    "O - Open/Closed Principle (OCP): Software entities should be open for extension, but closed for modification.",
+                    "L - Liskov Substitution Principle (LSP): Subtypes must be substitutable for their base types without altering program correctness.",
+                    "I - Interface Segregation Principle (ISP): Clients should not be forced to depend on methods they do not use (prefer small, role-specific interfaces).",
+                    "D - Dependency Inversion Principle (DIP): High-level modules should not depend on low-level modules; both should depend on abstractions."
+                ],
+                "study_notes": "SOLID principles prevent architectural rot. Example of DIP: Rather than having a `PaymentProcessor` instantiate `new StripeClient()`, pass a generic `IPaymentGateway` interface in the constructor (`dependency injection`). This allows testing with mock payment gateways and switching providers without editing core business logic.",
+                "learning_materials": [
+                    {
+                        "title": "GeeksforGeeks: SOLID Principles Explained",
+                        "url": "https://www.geeksforgeeks.org/solid-principle-in-programming-understand-with-real-life-examples/",
+                        "type": "Design Principles"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-int-solid-1",
+                        "question": "Which SOLID principle is violated when a subclass `Square` inheriting from `Rectangle` alters the expected width and height behaviors such that substituting it breaks client code?",
+                        "options": ["Single Responsibility Principle", "Open/Closed Principle", "Liskov Substitution Principle", "Interface Segregation Principle"],
+                        "correct_index": 2,
+                        "explanation": "The classic Rectangle-Square problem violates the Liskov Substitution Principle (LSP). If client code expects setting width to not affect height, substituting a Square breaks that behavioral invariant."
+                    }
+                ]
+            },
+            {
+                "id": "topic-int-project-pitch",
+                "title": "Technical Project Walkthrough & Architecture Pitch",
+                "level": "Intermediate",
+                "estimated_time": "35 mins",
+                "short_description": "Structure a compelling 3-minute technical project explanation: user problem, architectural design, database choices, and trade-offs.",
+                "key_concepts": [
+                    "Start with the Problem: What real pain-point does the project solve?",
+                    "Architecture Blueprint: Frontend framework, backend framework, database, external APIs.",
+                    "Key Technical Hurdle: Explain the single most difficult bug or architectural challenge you overcame.",
+                    "Trade-off Rationale: Why you chose PostgreSQL over MongoDB or vice-versa.",
+                    "Metrics: Response time, concurrent users tested, test coverage percentage."
+                ],
+                "study_notes": "Never memorize a script. Draw the block diagram on the virtual whiteboard or paper: Client -> API Route -> Controller -> Service -> Repository -> Database. This proves you truly built the system yourself.",
+                "learning_materials": [
+                    {
+                        "title": "GeeksforGeeks: How to Present Your Final Year Project in Interviews",
+                        "url": "https://www.geeksforgeeks.org/how-to-present-your-project-in-an-interview/",
+                        "type": "Interview Preparation"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-int-proj-1",
+                        "question": "When an interviewer asks 'Why did you choose PostgreSQL over MongoDB for your project?', which response demonstrates the best engineering maturity?",
+                        "options": [
+                            "'Because PostgreSQL is more popular on GitHub.'",
+                            "'Because our data was highly relational with strict integrity constraints requiring ACID transactions and join queries.'",
+                            "'Because MongoDB is outdated and nobody uses NoSQL anymore.'",
+                            "'Because my professor told me to use it without explaining why.'"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "Justifying a technology choice based on data structure requirements, relational integrity, ACID guarantees, and query patterns demonstrates genuine software engineering judgment."
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "category_id": "engineering-prep",
+        "category_name": "Engineering Preparation",
+        "aliases": ["Engineering Preparation", "Core Engineering", "Core Engineering (ECE / EEE)", "Core Engineering (Mechanical / Civil)", "GATE"],
+        "icon": "cpu",
+        "description": "Foundational engineering principles, electrical circuit analysis, digital systems, thermodynamics, fluid dynamics, and mechanics of materials.",
+        "education_levels": ["B.Tech", "Diploma", "Degree", "Postgraduate", "All"],
+        "topics": [
+            {
+                "id": "topic-eng-circuits",
+                "title": "Circuit Theory & Network Theorems (ECE/EEE)",
+                "level": "Intermediate",
+                "estimated_time": "50 mins",
+                "short_description": "Analyze DC/AC networks with Kirchhoff's laws (KCL/KVL), Thévenin's and Norton's equivalent circuits, and Maximum Power Transfer.",
+                "key_concepts": [
+                    "Kirchhoff's Current Law (KCL): The algebraic sum of currents entering a node is zero (Conservation of Charge).",
+                    "Kirchhoff's Voltage Law (KVL): The algebraic sum of voltages in any closed loop is zero (Conservation of Energy).",
+                    "Thévenin's Theorem: Any linear two-terminal circuit can be replaced by an equivalent voltage source V_th in series with resistance R_th.",
+                    "Norton's Theorem: Any linear two-terminal circuit can be replaced by a current source I_n in parallel with resistance R_n (where R_n = R_th).",
+                    "Maximum Power Transfer Theorem: Maximum power is transferred from source to load when load resistance equals source resistance (R_L = R_th)."
+                ],
+                "study_notes": "To calculate R_th: Deactivate all independent sources (replace independent voltage sources with short circuits; replace independent current sources with open circuits) and compute the equivalent resistance across the load terminals.",
+                "learning_materials": [
+                    {
+                        "title": "All About Circuits: Electric Circuit Theory & DC Networks",
+                        "url": "https://www.allaboutcircuits.com/textbook/direct-current/",
+                        "type": "Textbook & Simulations"
+                    },
+                    {
+                        "title": "NPTEL: Basic Electrical Circuits (IIT Madras)",
+                        "url": "https://nptel.ac.in/",
+                        "type": "Video Lectures"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-eng-cir-1",
+                        "question": "A DC source has an internal open-circuit voltage of 24 V and an internal resistance of 6 Ohms. What load resistance R_L will absorb maximum power from this source?",
+                        "options": ["3 Ohms", "6 Ohms", "12 Ohms", "24 Ohms"],
+                        "correct_index": 1,
+                        "explanation": "According to the Maximum Power Transfer Theorem, maximum power is delivered to the load when the load resistance equals the internal Thévenin resistance: R_L = R_th = 6 Ohms."
+                    },
+                    {
+                        "id": "q-eng-cir-2",
+                        "question": "When deactivating independent sources to find the Thévenin resistance R_th, what must be done to independent voltage and current sources respectively?",
+                        "options": [
+                            "Short-circuit voltage sources; open-circuit current sources",
+                            "Open-circuit voltage sources; short-circuit current sources",
+                            "Short-circuit both voltage and current sources",
+                            "Leave both connected with 0 resistance"
+                        ],
+                        "correct_index": 0,
+                        "explanation": "An ideal voltage source has zero internal resistance, so setting its voltage to zero corresponds to a Short Circuit. An ideal current source has infinite internal resistance, so setting its current to zero corresponds to an Open Circuit."
+                    }
+                ]
+            },
+            {
+                "id": "topic-eng-digital-logic",
+                "title": "Digital Logic & Microprocessors",
+                "level": "Intermediate",
+                "estimated_time": "45 mins",
+                "short_description": "Master Boolean algebra, De Morgan's laws, Karnaugh maps (K-maps), flip-flops, multiplexers, and ALU architecture.",
+                "key_concepts": [
+                    "De Morgan's Laws: ~(A . B) = ~A + ~B; ~(A + B) = ~A . ~B.",
+                    "NAND and NOR are universal gates: Any digital circuit can be constructed solely using NAND or NOR gates.",
+                    "Karnaugh Map (K-map): Minimizes boolean expressions by grouping 1s in powers of two (1, 2, 4, 8, 16) using Gray code adjacency.",
+                    "Combinational vs Sequential: Combinational logic depends only on current inputs (Mux, Decoder, Adder); Sequential logic depends on current inputs and past states (Flip-flops, Counters).",
+                    "JK Flip-flop toggle condition: When J=1 and K=1, the output toggles on every active clock edge."
+                ],
+                "study_notes": "Flip-flops are the building blocks of registers and sequential memory. The SR flip-flop has an invalid/forbidden state when both S=1 and R=1. The JK flip-flop eliminates this invalid state by toggling. Master setup time (minimum time data must be stable before the clock edge) and hold time (minimum time data must remain stable after clock edge) to avoid metastability.",
+                "learning_materials": [
+                    {
+                        "title": "All About Circuits: Digital Electronics & Logic Gates",
+                        "url": "https://www.allaboutcircuits.com/textbook/digital/",
+                        "type": "Reference Guide"
+                    },
+                    {
+                        "title": "Virtual Labs: Digital Electronics Lab (IIT Delhi)",
+                        "url": "https://www.vlab.co.in/",
+                        "type": "Interactive Simulator"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-eng-dl-1",
+                        "question": "How many 2-to-1 Multiplexers are needed to construct a 4-to-1 Multiplexer?",
+                        "options": ["2", "3", "4", "5"],
+                        "correct_index": 1,
+                        "explanation": "To make a 4-to-1 MUX, two 2-to-1 MUXes are used in the first stage (selecting between I0, I1 and I2, I3 using select line S0), and a third 2-to-1 MUX in the second stage selects between their outputs using select line S1. Total = 2 + 1 = 3."
+                    }
+                ]
+            },
+            {
+                "id": "topic-eng-thermo",
+                "title": "Engineering Thermodynamics & Heat Transfer (Mech)",
+                "level": "Intermediate",
+                "estimated_time": "50 mins",
+                "short_description": "Review the laws of thermodynamics, Carnot cycle thermal efficiency, ideal gas relations, and Fourier's conduction law.",
+                "key_concepts": [
+                    "Zeroth Law establishes temperature measurement; First Law establishes conservation of energy (dQ = dU + dW).",
+                    "Second Law states entropy of an isolated system always increases; heat cannot spontaneously flow from colder to hotter body.",
+                    "Carnot Cycle Thermal Efficiency: eta = 1 - (T_L / T_H), where temperatures MUST be in Kelvin (Absolute).",
+                    "Conduction (Fourier's Law): q = -k * A * (dT / dx). Convection (Newton's Law): q = h * A * (T_s - T_inf).",
+                    "Stefan-Boltzmann Radiation Law: E = epsilon * sigma * A * T^4."
+                ],
+                "study_notes": "Thermal efficiency calculations are standard GATE and PSU exam questions. Always convert Celsius to Kelvin: K = C + 273.15! If a heat engine absorbs heat at 600 K and rejects heat at 300 K, max theoretical Carnot efficiency is 1 - (300/600) = 50%. Any real heat engine operates below this limit.",
+                "learning_materials": [
+                    {
+                        "title": "The Engineering ToolBox: Thermodynamics & Fluid Mechanics",
+                        "url": "https://www.engineeringtoolbox.com/",
+                        "type": "Technical Formulas"
+                    },
+                    {
+                        "title": "NPTEL: Basic Thermodynamics (IIT Kharagpur)",
+                        "url": "https://nptel.ac.in/",
+                        "type": "Lectures & Notes"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-eng-th-1",
+                        "question": "A Carnot heat engine operates between temperatures of 327 degrees C and 27 degrees C. What is the theoretical maximum thermal efficiency of this engine?",
+                        "options": ["30%", "40%", "50%", "60%"],
+                        "correct_index": 2,
+                        "explanation": "Convert to Kelvin: T_H = 327 + 273 = 600 K. T_L = 27 + 273 = 300 K. Carnot efficiency eta = 1 - (T_L / T_H) = 1 - (300 / 600) = 1 - 0.5 = 0.5 = 50%."
+                    }
+                ]
+            },
+            {
+                "id": "topic-eng-som",
+                "title": "Strength of Materials & Beam Deflection (Civil/Mech)",
+                "level": "Intermediate",
+                "estimated_time": "45 mins",
+                "short_description": "Analyze stress-strain curves, Hooke's Law, shear force and bending moment diagrams (SFD/BMD), and flexure formula.",
+                "key_concepts": [
+                    "Hooke's Law: Stress sigma = E * strain epsilon (within proportional limit).",
+                    "Flexure Formula: M / I = sigma / y = E / R.",
+                    "Shear Force is the rate of change of Bending Moment: dM/dx = V.",
+                    "Point of Contraflexure: The location along a beam where the Bending Moment changes sign (equals zero).",
+                    "Euler's Buckling Load for column pinned at both ends: P_cr = (pi^2 * E * I) / L^2."
+                ],
+                "study_notes": "Bending moment is maximum where shear force is zero or changes sign. For a simply supported beam of length L with a uniformly distributed load w: Max Bending Moment = (w * L^2) / 8 at midspan.",
+                "learning_materials": [
+                    {
+                        "title": "The Engineering ToolBox: Mechanics and Beams",
+                        "url": "https://www.engineeringtoolbox.com/",
+                        "type": "Formulas"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-eng-som-1",
+                        "question": "At what point on a loaded beam does the maximum bending moment occur?",
+                        "options": [
+                            "Where the shear force is maximum",
+                            "Where the shear force is zero or changes its sign",
+                            "At the exact position of highest deflection",
+                            "At the leftmost support always"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "Because dM/dx = V (Shear Force), the mathematical derivative of bending moment with respect to distance x is zero when shear force is zero. Hence, bending moment attains its local extremum (maximum) where shear force is zero or crosses zero."
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "category_id": "skill-dev",
+        "category_name": "Skill Development",
+        "aliases": ["Skill Development", "Professional Skills", "Tools & Technologies", "DevOps"],
+        "icon": "terminal",
+        "description": "Essential real-world development toolkits: Git version control, Linux command line automation, cloud infrastructure, Docker, and collaboration.",
+        "education_levels": ["B.Tech", "Degree", "Diploma", "Postgraduate", "All"],
+        "topics": [
+            {
+                "id": "topic-sk-git",
+                "title": "Git & GitHub Version Control Mastery",
+                "level": "Beginner to Intermediate",
+                "estimated_time": "40 mins",
+                "short_description": "Master Git architecture (working directory, index/staging, HEAD), branching, merge vs rebase, cherry-pick, and pull request workflows.",
+                "key_concepts": [
+                    "3 Git States: Working Directory (untracked/modified), Staging Area (`git add`), Git Repository (`git commit`).",
+                    "Branching: `git checkout -b feature` creates and switches to a new branch without affecting main.",
+                    "Merge vs Rebase: `git merge` preserves chronological history with a merge commit; `git rebase` creates a linear history by replaying commits on top of target branch.",
+                    "Resolving Merge Conflicts: Inspect conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`), make edits, stage with `git add`, and finalize commit.",
+                    "`git stash` temporarily shelves uncommitted local changes so you can switch branches without committing partial work."
+                ],
+                "study_notes": "Understanding HEAD is critical: HEAD is a pointer to the current branch reference. When checking out a specific commit hash rather than a branch name, you enter a 'detached HEAD' state. Use `git reset --soft HEAD~1` to undo a commit while leaving changes in the staging index.",
+                "learning_materials": [
+                    {
+                        "title": "GitHub Skills: Hands-on Interactive Git Tutorials",
+                        "url": "https://skills.github.com/",
+                        "type": "Interactive Labs"
+                    },
+                    {
+                        "title": "GeeksforGeeks: Git Tutorial for Beginners",
+                        "url": "https://www.geeksforgeeks.org/git-tutorial/",
+                        "type": "Study Notes"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-sk-git-1",
+                        "question": "Which Git command enables you to apply a specific, single commit from one branch onto your current active branch?",
+                        "options": ["git merge --single", "git cherry-pick <commit-hash>", "git rebase --copy", "git branch --pull"],
+                        "correct_index": 1,
+                        "explanation": "`git cherry-pick <commit-hash>` takes the patch introduced by a specific commit from any branch and applies it as a brand new commit on top of your current branch."
+                    },
+                    {
+                        "id": "q-sk-git-2",
+                        "question": "What is the primary difference between `git pull` and `git fetch`?",
+                        "options": [
+                            "`git fetch` downloads remote objects and updates remote branches without modifying your local working tree; `git pull` runs fetch followed by merge",
+                            "`git pull` only works on master; `git fetch` works on all branches",
+                            "`git fetch` deletes local uncommitted files",
+                            "There is no difference; they are exact aliases"
+                        ],
+                        "correct_index": 0,
+                        "explanation": "`git fetch` contacts the remote server and downloads new commits without modifying your local working branch. `git pull` executes `git fetch` followed immediately by `git merge` into your current branch."
+                    }
+                ]
+            },
+            {
+                "id": "topic-sk-linux",
+                "title": "Linux Command Line & Bash Automation",
+                "level": "Beginner to Intermediate",
+                "estimated_time": "45 mins",
+                "short_description": "Navigate the Linux directory hierarchy, configure POSIX file permissions (chmod/chown), pipe commands, and write automation scripts.",
+                "key_concepts": [
+                    "File permissions: r (4), w (2), x (1). `chmod 755 file` gives rwx to user, rx to group and others.",
+                    "Piping (`|`) connects standard output (stdout) of the left command to standard input (stdin) of the right command.",
+                    "Redirection: `>` overwrites file with stdout; `>>` appends stdout to file; `2>&1` redirects stderr to stdout.",
+                    "Essential CLI utilities: `grep` (pattern search), `find` (file discovery), `sed` (stream editor), `awk` (column processing), `tar` (archive).",
+                    "Process inspection: `ps aux`, `top`/`htop`, `kill -9 <PID>` (SIGKILL)."
+                ],
+                "study_notes": "All cloud backend servers run on Linux distributions (Ubuntu, Debian, RHEL). Knowing how to parse logs (`grep -i 'error' /var/log/syslog | awk '{print $1, $5}'`) and monitor system memory (`free -m`, `df -h`) is expected of every junior software and DevOps engineer.",
+                "learning_materials": [
+                    {
+                        "title": "Linux Journey: Free Interactive Linux Fundamentals",
+                        "url": "https://linuxjourney.com/",
+                        "type": "Interactive Guide"
+                    },
+                    {
+                        "title": "GeeksforGeeks: Essential Linux Commands List",
+                        "url": "https://www.geeksforgeeks.org/linux-commands/",
+                        "type": "Command Cheatsheet"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-sk-lin-1",
+                        "question": "What numeric permission code grants the file owner Read, Write, and Execute, while giving Group and Others only Read and Execute permissions?",
+                        "options": ["644", "755", "777", "700"],
+                        "correct_index": 1,
+                        "explanation": "Owner: r(4) + w(2) + x(1) = 7. Group: r(4) + x(1) = 5. Others: r(4) + x(1) = 5. Hence the numeric mode is 755."
+                    }
+                ]
+            },
+            {
+                "id": "topic-sk-cloud",
+                "title": "Cloud Computing & Docker Containerization",
+                "level": "Intermediate",
+                "estimated_time": "50 mins",
+                "short_description": "Understand cloud service models (IaaS/PaaS/SaaS), AWS/GCP essentials, Docker containers vs VMs, Dockerfiles, and images.",
+                "key_concepts": [
+                    "Cloud Models: IaaS (EC2/GCE: hardware virtualization), PaaS (Heroku/App Engine: platform managed), SaaS (Gmail/Drive: end-user software).",
+                    "Virtual Machines virtualize the hardware and include a full guest OS; Containers share the host OS kernel, making them lightweight and fast.",
+                    "Dockerfile keywords: `FROM` (base image), `WORKDIR` (directory), `COPY` (transfer files), `RUN` (build-time install), `CMD` (container startup execution).",
+                    "Object Storage (AWS S3, Google Cloud Storage) stores unstructured data with REST API access, high durability (99.999999999%), and infinite scalability.",
+                    "Container Port Mapping: `docker run -p 8080:80 nginx` maps host machine port 8080 to container internal port 80."
+                ],
+                "study_notes": "Containers ensure the classic developer lament 'it works on my machine' is solved by packaging the runtime, libraries, environment variables, and dependencies into an immutable image. Master the lifecycle: Dockerfile -> `docker build -t app:v1 .` -> `docker run -d -p 5000:5000 app:v1` -> `docker ps`.",
+                "learning_materials": [
+                    {
+                        "title": "Docker Documentation: Getting Started Guide",
+                        "url": "https://docs.docker.com/get-started/",
+                        "type": "Official Tutorial"
+                    },
+                    {
+                        "title": "GeeksforGeeks: Cloud Computing Architecture",
+                        "url": "https://www.geeksforgeeks.org/cloud-computing/",
+                        "type": "Architecture Primer"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-sk-doc-1",
+                        "question": "What is the primary architectural difference between a Docker container and a traditional Virtual Machine (VM)?",
+                        "options": [
+                            "Containers require a hypervisor and full guest operating system; VMs do not",
+                            "Containers share the host operating system kernel and isolate user space, while VMs run separate guest OS kernels on top of a hypervisor",
+                            "Containers cannot access internet networks",
+                            "Containers can only run Python applications"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "Docker containers eliminate the overhead of running a full guest OS by sharing the host Linux kernel. This makes containers start in milliseconds and use tens of megabytes of RAM compared to gigabytes for full VMs."
+                    }
+                ]
+            },
+            {
+                "id": "topic-sk-comm",
+                "title": "Professional Communication, Agile Standups & Clean Code",
+                "level": "Beginner to Intermediate",
+                "estimated_time": "30 mins",
+                "short_description": "Master asynchronous team communication, Scrum daily standups (What I did, What I will do, Blockers), and code review etiquette.",
+                "key_concepts": [
+                    "Agile 3 Standup Questions: (1) What did you complete yesterday? (2) What are you working on today? (3) Any impediments/blockers?",
+                    "PR Review Etiquette: Critique the code, not the author. Suggest constructive alternatives with code diffs.",
+                    "Clean Code: Descriptive variable names (`userAccountCount` over `uac`), single responsibility functions, and self-documenting code.",
+                    "Email Etiquette: Crisp subject lines, clear Call-to-Action (CTA), and professional sign-offs."
+                ],
+                "study_notes": "Technical communication is the differentiator between average and high-performing software engineers. Keep pull requests under 300 lines of diff to ensure thorough peer review.",
+                "learning_materials": [
+                    {
+                        "title": "Coursera: Communication in the 21st Century Workplace",
+                        "url": "https://www.coursera.org/",
+                        "type": "Course Reference"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-sk-comm-1",
+                        "question": "During a daily Agile Scrum standup meeting, which of the following should you report?",
+                        "options": [
+                            "A 15-minute line-by-line explanation of every bug fix",
+                            "The three key points: what you finished, what you plan to do next, and any blockers impeding your progress",
+                            "A detailed critique of code written by other team members",
+                            "A personal summary of weekend activities"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "Daily standups are time-boxed to 15 minutes across the whole team. Focus strictly on: completed items, immediate tasks, and blockers."
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "category_id": "web-dev",
+        "category_name": "Web Development",
+        "aliases": ["Web Development", "Web Development & Programming", "Frontend", "Full Stack Development"],
+        "icon": "globe",
+        "description": "Build responsive, accessible, interactive web applications using HTML5, modern CSS Grid/Flexbox, ES6+ JavaScript, and REST APIs.",
+        "education_levels": ["B.Tech", "Degree", "Diploma", "Intermediate", "All"],
+        "topics": [
+            {
+                "id": "topic-web-html-css",
+                "title": "Modern Semantic HTML5 & Responsive CSS (Flexbox & Grid)",
+                "level": "Beginner to Intermediate",
+                "estimated_time": "45 mins",
+                "short_description": "Write accessible semantic HTML markup and build modern responsive grid/flex layouts that adapt across mobile, tablet, and desktop viewports.",
+                "key_concepts": [
+                    "Semantic tags (`<header>`, `<main>`, `<nav>`, `<article>`, `<section>`, `<footer>`) improve accessibility (a11y) and SEO.",
+                    "CSS Box Model: Content -> Padding -> Border -> Margin. Set `box-sizing: border-box` to include padding and border in width calculations.",
+                    "Flexbox: One-dimensional layout (row or column). Key properties: `justify-content` (main axis), `align-items` (cross axis), `flex-wrap`.",
+                    "CSS Grid: Two-dimensional layout. Key properties: `grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))`, `gap`.",
+                    "Media Queries: Use mobile-first breakpoints (`@media (min-width: 768px)`) to progressively enhance layouts for larger screens."
+                ],
+                "study_notes": "Avoid 'div-soup'! Use `<button>` for user actions and `<a>` for navigational URL links. Always provide descriptive `alt` text for images (`alt='Company Logo'`). For centering any child element inside a parent div: `display: flex; justify-content: center; align-items: center;` or `display: grid; place-items: center;`.",
+                "learning_materials": [
+                    {
+                        "title": "MDN Web Docs: HTML & CSS Fundamentals",
+                        "url": "https://developer.mozilla.org/en-US/docs/Learn",
+                        "type": "Official Documentation"
+                    },
+                    {
+                        "title": "W3Schools: Responsive Web Design & CSS Flexbox",
+                        "url": "https://www.w3schools.com/css/css3_flexbox.asp",
+                        "type": "Interactive Editor"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-web-html-1",
+                        "question": "What is the effect of applying `box-sizing: border-box;` to an element with width: 200px, padding: 20px, and border: 5px?",
+                        "options": [
+                            "Total rendered width becomes 250px",
+                            "Total rendered width remains exactly 200px, with content width shrinking to accommodate padding and border",
+                            "Padding and border are ignored and set to 0",
+                            "It generates a CSS layout syntax error"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "Under the standard box model (`content-box`), padding and border are added to width (200 + 40 + 10 = 250px). With `border-box`, the specified width is the total outer box width, so content area automatically shrinks to (200 - 40 - 10) = 150px."
+                    },
+                    {
+                        "id": "q-web-css-1",
+                        "question": "In CSS Flexbox, which property aligns flex items along the cross axis (perpendicular to the main axis)?",
+                        "options": ["justify-content", "align-items", "flex-direction", "flex-grow"],
+                        "correct_index": 1,
+                        "explanation": "`justify-content` controls alignment along the main axis, while `align-items` controls alignment along the cross axis."
+                    }
+                ]
+            },
+            {
+                "id": "topic-web-js",
+                "title": "JavaScript ES6+, Closures, Async/Await & Event Loop",
+                "level": "Intermediate",
+                "estimated_time": "55 mins",
+                "short_description": "Master modern JavaScript fundamentals: block scoping (`let`/`const`), arrow functions, closures, promises, async/await, and call stack execution.",
+                "key_concepts": [
+                    "`var` is function-scoped and hoisted; `let` and `const` are block-scoped and live in Temporal Dead Zone until initialized.",
+                    "A Closure is the combination of a function bundled together with references to its surrounding lexical state (lexical environment).",
+                    "Event Loop order of execution: Synchronous Call Stack -> Microtask Queue (Promises, `queueMicrotask`) -> Task/Macrotask Queue (`setTimeout`, `setInterval`).",
+                    "Promises represent asynchronous completion with 3 states: Pending, Fulfilled (`resolve`), Rejected (`reject`).",
+                    "`async`/`await` provides clean syntactic sugar over Promises, allowing try/catch error handling for asynchronous operations."
+                ],
+                "study_notes": "Understanding how JavaScript executes asynchronous code is the #1 question in frontend interviews. JavaScript is single-threaded. When `setTimeout(fn, 0)` is called, it does NOT execute immediately; it is handed off to browser Web APIs and placed on the macrotask queue. Any pending Microtasks (resolved Promise `.then()` callbacks) execute BEFORE the macrotask queue is checked!",
+                "learning_materials": [
+                    {
+                        "title": "MDN Web Docs: JavaScript Guide & Reference",
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+                        "type": "Official Reference"
+                    },
+                    {
+                        "title": "freeCodeCamp: JavaScript Algorithms and Data Structures",
+                        "url": "https://www.freeCodeCamp.org/learn/javascript-algorithms-and-data-structures/",
+                        "type": "Interactive Curriculum"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-web-js-1",
+                        "question": "What is the console output order of the following snippet?\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));\nconsole.log(4);",
+                        "options": ["1, 2, 3, 4", "1, 4, 2, 3", "1, 4, 3, 2", "3, 1, 4, 2"],
+                        "correct_index": 2,
+                        "explanation": "Synchronous code runs first: prints 1, schedules setTimeout to macrotask queue, schedules Promise to microtask queue, prints 4. Next, all microtasks drain: prints 3. Finally, the event loop picks from the macrotask queue: prints 2. Order is strictly: 1, 4, 3, 2."
+                    },
+                    {
+                        "id": "q-web-js-2",
+                        "question": "What is a Closure in JavaScript?",
+                        "options": [
+                            "A function that closes the browser window upon completion",
+                            "A function bundled with access to variables in its outer lexical scope even after the outer function has returned",
+                            "An anonymous function that accepts no parameters",
+                            "A method used to terminate an infinite loop"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "A closure gives an inner function access to its outer function's scope variables even after the outer function has finished executing and returned."
+                    }
+                ]
+            },
+            {
+                "id": "topic-web-apis",
+                "title": "REST APIs, HTTP Methods & Asynchronous Fetch",
+                "level": "Intermediate",
+                "estimated_time": "40 mins",
+                "short_description": "Design clean REST endpoints, understand HTTP verbs, status codes, request headers, CORS policies, and client-side `fetch` consumption.",
+                "key_concepts": [
+                    "HTTP Verbs: GET (retrieve data, idempotent), POST (create new resource), PUT (replace resource), PATCH (partial update), DELETE (remove resource).",
+                    "HTTP Status Code Ranges: 2xx (Success, 200 OK, 201 Created), 3xx (Redirection), 4xx (Client Error, 400 Bad Request, 401 Unauthorized, 404 Not Found), 5xx (Server Error, 500 Internal).",
+                    "CORS (Cross-Origin Resource Sharing): Browser security mechanism requiring server to send `Access-Control-Allow-Origin` headers for cross-domain requests.",
+                    "JSON (JavaScript Object Notation): Standard lightweight data interchange format; serialize with `JSON.stringify()`, parse with `JSON.parse()`.",
+                    "Modern fetch: `const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });`"
+                ],
+                "study_notes": "Remember idempotence: An operation is idempotent if executing it multiple times produces the exact same server state. GET, PUT, and DELETE are idempotent. POST is NOT idempotent because repeating a POST creates duplicate resource records.",
+                "learning_materials": [
+                    {
+                        "title": "MDN Web Docs: Working with the Fetch API",
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API",
+                        "type": "Guide"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-web-api-1",
+                        "question": "Which HTTP status code is most appropriate when a client request successfully creates a new database user record?",
+                        "options": ["200 OK", "201 Created", "204 No Content", "302 Found"],
+                        "correct_index": 1,
+                        "explanation": "HTTP 201 Created indicates that the request was successful and resulted in the creation of a new resource on the server."
+                    }
+                ]
+            },
+            {
+                "id": "topic-web-react",
+                "title": "Frontend Component Architecture & State Management",
+                "level": "Intermediate",
+                "estimated_time": "45 mins",
+                "short_description": "Master component decomposition, one-way data flow, props vs state, hooks (`useState`, `useEffect`), and Virtual DOM reconciliation.",
+                "key_concepts": [
+                    "Virtual DOM: In-memory representation of real DOM; diffing algorithm minimizes costly browser reflows and repaints.",
+                    "State vs Props: Props are immutable arguments passed down from parent; State is local, mutable memory owned by the component.",
+                    "`useState`: Preserves value between renders and triggers re-render when the setter function is called.",
+                    "`useEffect`: Handles side effects (data fetching, subscriptions, DOM manipulation). Dependency array controls execution frequency.",
+                    "Lifting State Up: When two child components need access to the same state, move the state up to their closest common ancestor."
+                ],
+                "study_notes": "Rule of Hooks: Only call hooks at the top level of function components (never inside loops, conditions, or nested functions). In dependency arrays, omitting the array runs on every render; `[]` runs once on mount; `[dep]` runs only when `dep` changes.",
+                "learning_materials": [
+                    {
+                        "title": "React Official Documentation: Learn React",
+                        "url": "https://react.dev/learn",
+                        "type": "Official Interactive Docs"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-web-react-1",
+                        "question": "In React, what will happen if you provide an empty dependency array `[]` as the second argument to `useEffect`?",
+                        "options": [
+                            "The effect runs on every single re-render of the component",
+                            "The effect runs exactly once after the initial render (mount)",
+                            "The effect will never execute",
+                            "It throws an immediate runtime syntax error"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "An empty dependency array `[]` specifies that the effect does not depend on any props or state values, so React executes it only once when the component mounts."
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "category_id": "ai-datascience",
+        "category_name": "AI and Data Science",
+        "aliases": ["AI and Data Science", "AI & Data Science", "AI, ML & Data Science", "Machine Learning", "Data Science"],
+        "icon": "sparkles",
+        "description": "Build end-to-end data pipelines: NumPy/Pandas analysis, statistical hypothesis testing, supervised machine learning, model validation, and GenAI.",
+        "education_levels": ["B.Tech", "Degree", "Postgraduate", "All"],
+        "topics": [
+            {
+                "id": "topic-ai-python-data",
+                "title": "Python for Data Science (NumPy & Pandas)",
+                "level": "Intermediate",
+                "estimated_time": "45 mins",
+                "short_description": "Perform high-performance vectorized computations with NumPy ndarrays and manipulate structured datasets using Pandas DataFrames.",
+                "key_concepts": [
+                    "NumPy ndarray stores homogeneous data types in contiguous memory, enabling C-speed vectorized calculations without Python for-loops.",
+                    "Broadcasting: Rules allowing arithmetic operations between arrays of differing but compatible dimensions.",
+                    "Pandas Series (1D labelled array) and DataFrame (2D tabular structure with heterogeneous columns).",
+                    "Data cleaning operations: `df.isnull().sum()`, `df.dropna()`, `df.fillna(df['col'].median())`.",
+                    "Aggregation and grouping: `df.groupby('category')['sales'].agg(['mean', 'count'])`."
+                ],
+                "study_notes": "Avoid iterating through DataFrame rows with `for index, row in df.iterrows()` - it is notoriously slow! Always use vectorized operations (`df['total'] = df['price'] * df['qty']`) or `.apply()`. Master `.loc[row_indexer, col_indexer]` (label-based) versus `.iloc[row_indexer, col_indexer]` (integer position-based).",
+                "learning_materials": [
+                    {
+                        "title": "Kaggle Learn: Python and Pandas Micro-Courses",
+                        "url": "https://www.kaggle.com/learn",
+                        "type": "Interactive Notebooks"
+                    },
+                    {
+                        "title": "GeeksforGeeks: Pandas Tutorial & Data Analysis",
+                        "url": "https://www.geeksforgeeks.org/pandas-tutorial/",
+                        "type": "Code Examples"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-ai-pd-1",
+                        "question": "What is the key difference between `.loc` and `.iloc` in Pandas?",
+                        "options": [
+                            "`.loc` is for integer position-based indexing; `.iloc` is for label-based indexing",
+                            "`.loc` is for label-based indexing; `.iloc` is for integer 0-based position indexing",
+                            "`.loc` only works on columns; `.iloc` only works on rows",
+                            "There is no difference; they are exact synonyms"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "`.loc` selects rows and columns using their index labels or boolean arrays. `.iloc` selects rows and columns purely using integer positions (0 to length-1)."
+                    }
+                ]
+            },
+            {
+                "id": "topic-ai-supervised-ml",
+                "title": "Supervised Machine Learning & Evaluation Metrics",
+                "level": "Intermediate",
+                "estimated_time": "55 mins",
+                "short_description": "Understand linear/logistic regression, decision trees, random forests, overfitting vs underfitting, and metrics (Precision, Recall, F1, ROC-AUC).",
+                "key_concepts": [
+                    "Supervised Learning trains on labeled data (X -> y). Regression predicts continuous numbers; Classification predicts discrete classes.",
+                    "Cost Function & Gradient Descent: Iteratively updates weights w := w - alpha * dJ/dw to minimize prediction error J(w).",
+                    "Bias-Variance Tradeoff: High Bias = Underfitting (model too simplistic); High Variance = Overfitting (model memorizes training noise).",
+                    "Evaluation Metrics: Precision = TP / (TP + FP) (minimizes false alarms); Recall = TP / (TP + FN) (minimizes missed positives).",
+                    "F1-Score is the Harmonic Mean of Precision and Recall: 2 * (Precision * Recall) / (Precision + Recall)."
+                ],
+                "study_notes": "Choosing the right metric matters more than choosing the algorithm! In medical disease diagnosis or fraud detection where missing a positive case is catastrophic, high RECALL is critical. In email spam filtering where marking an important job offer as spam is unacceptable, high PRECISION is prioritized. Use K-Fold Cross Validation (e.g. K=5) to verify model generalization.",
+                "learning_materials": [
+                    {
+                        "title": "Google Developers: Machine Learning Crash Course",
+                        "url": "https://developers.google.com/machine-learning/crash-course",
+                        "type": "Interactive Course"
+                    },
+                    {
+                        "title": "Kaggle Learn: Intro to Machine Learning",
+                        "url": "https://www.kaggle.com/learn/intro-to-machine-learning",
+                        "type": "Notebook Practice"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-ai-ml-1",
+                        "question": "In a medical diagnostic test for a rare disease, 10 actual sick patients are tested. The model diagnoses 8 of them correctly as positive, but misclassifies 2 sick patients as healthy. What is the Recall of the model?",
+                        "options": ["60%", "75%", "80%", "90%"],
+                        "correct_index": 2,
+                        "explanation": "Recall = True Positives / (True Positives + False Negatives) = 8 / (8 + 2) = 8 / 10 = 80%."
+                    },
+                    {
+                        "id": "q-ai-ml-2",
+                        "question": "Which regularization technique adds the sum of absolute weights (|w|) to the loss function and has the property of producing sparse feature weights (setting some coefficients strictly to 0)?",
+                        "options": ["L2 Regularization (Ridge)", "L1 Regularization (Lasso)", "Dropout Regularization", "Batch Normalization"],
+                        "correct_index": 1,
+                        "explanation": "L1 Regularization (Lasso) penalizes absolute values of coefficients, driving non-essential feature weights to exactly zero, making it effective for automatic feature selection."
+                    }
+                ]
+            },
+            {
+                "id": "topic-ai-genai",
+                "title": "Deep Learning & Generative AI Foundations",
+                "level": "Advanced",
+                "estimated_time": "50 mins",
+                "short_description": "Explore artificial neural networks, activation functions, backpropagation, the Transformer self-attention architecture, and LLM prompt engineering.",
+                "key_concepts": [
+                    "Neural Network Layers: Input -> Hidden Layers (linear transformation z = W.x + b followed by non-linear activation) -> Output.",
+                    "Activation Functions: ReLU (max(0, x)) resolves vanishing gradients in deep networks; Sigmoid (0 to 1) for binary probability; Softmax for multi-class.",
+                    "Backpropagation calculates gradients of the loss with respect to each weight using the mathematical Chain Rule of calculus.",
+                    "Transformer Architecture: Replaced recurrent architectures (RNNs) with Self-Attention: Attention(Q, K, V) = softmax(Q.K^T / sqrt(d_k)) * V.",
+                    "Prompt Engineering: Zero-shot, Few-shot prompting, Chain-of-Thought (CoT), and Retrieval-Augmented Generation (RAG) to ground LLM responses."
+                ],
+                "study_notes": "Transformers process entire token sequences simultaneously in parallel rather than token-by-token sequentially like older LSTMs. Self-attention enables each token in a sentence to attend to every other token with different relevance weights, capturing long-distance semantic relationships with ease.",
+                "learning_materials": [
+                    {
+                        "title": "Google Developers: Generative AI Learning Path",
+                        "url": "https://developers.google.com/machine-learning",
+                        "type": "GenAI Courses"
+                    },
+                    {
+                        "title": "Kaggle Learn: Deep Learning with PyTorch & TensorFlow",
+                        "url": "https://www.kaggle.com/learn/deep-learning",
+                        "type": "Interactive Lessons"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-ai-dl-1",
+                        "question": "What is the primary advantage of the Rectified Linear Unit (ReLU) activation function over the Sigmoid function in deep neural networks?",
+                        "options": [
+                            "ReLU produces outputs strictly between -1 and +1",
+                            "ReLU mitigates the vanishing gradient problem for positive inputs because its derivative is a constant 1",
+                            "ReLU is computationally more complex to calculate than Sigmoid",
+                            "ReLU requires normalized inputs"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "For positive inputs (x > 0), the gradient of ReLU is always 1. This prevents gradients from shrinking exponentially to zero across deep layers (vanishing gradient problem), enabling effective training of deep architectures."
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "category_id": "school-foundation",
+        "category_name": "School & Foundation Learning",
+        "aliases": ["School & Foundation Learning", "School Subjects", "Mathematics", "Science", "Computer Basics", "Career Exploration"],
+        "icon": "book-open",
+        "description": "Essential board syllabus revision, 10th standard Mathematics, Physics, Chemistry, NTSE mental ability, and early coding literacy.",
+        "education_levels": ["10th", "School", "All"],
+        "topics": [
+            {
+                "id": "topic-sch-math-10",
+                "title": "10th Standard Mathematics: Quadratic Equations & Progressions",
+                "level": "Beginner",
+                "estimated_time": "40 mins",
+                "short_description": "Master quadratic equation root formulas, nature of roots using the discriminant D, and Arithmetic Progression (AP) nth term and sum formulas.",
+                "key_concepts": [
+                    "Standard quadratic form: ax^2 + bx + c = 0 (a != 0). Quadratic formula: x = (-b +- sqrt(b^2 - 4ac)) / (2a).",
+                    "Discriminant D = b^2 - 4ac: If D > 0 (two distinct real roots); If D = 0 (two equal real roots); If D < 0 (no real roots).",
+                    "Arithmetic Progression (AP): First term = a, common difference = d. n-th term formula: a_n = a + (n - 1) * d.",
+                    "Sum of first n terms of an AP: S_n = (n / 2) * [2a + (n - 1) * d] = (n / 2) * (first_term + last_term).",
+                    "Coordinate Geometry Distance Formula: d = sqrt((x2 - x1)^2 + (y2 - y1)^2)."
+                ],
+                "study_notes": "For board examinations and scholarship tests like NTSE, always verify the discriminant first before attempting factorization. When solving word problems (e.g. speed of stream, age problems), check that negative root values are properly rejected when dealing with physical quantities.",
+                "learning_materials": [
+                    {
+                        "title": "ePathshala (NCERT): 10th Mathematics Textbook",
+                        "url": "https://epathshala.nic.in/",
+                        "type": "Official NCERT e-Books"
+                    },
+                    {
+                        "title": "DIKSHA Portal: 10th Class Interactive Math Lessons",
+                        "url": "https://diksha.gov.in/",
+                        "type": "Govt Education Portal"
+                    },
+                    {
+                        "title": "Khan Academy India: Class 10 Math",
+                        "url": "https://www.khanacademy.org/",
+                        "type": "Video Lessons & Quizzes"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-sch-m-1",
+                        "question": "What is the nature of the roots of the quadratic equation 2x^2 - 4x + 3 = 0?",
+                        "options": ["Two distinct real roots", "Two equal real roots", "No real roots (imaginary)", "Rational and unequal"],
+                        "correct_index": 2,
+                        "explanation": "Here a = 2, b = -4, c = 3. Discriminant D = b^2 - 4ac = (-4)^2 - 4(2)(3) = 16 - 24 = -8. Since D < 0, the equation has no real roots."
+                    },
+                    {
+                        "id": "q-sch-m-2",
+                        "question": "In the Arithmetic Progression 4, 9, 14, 19, ..., what is the 15th term?",
+                        "options": ["69", "74", "79", "84"],
+                        "correct_index": 1,
+                        "explanation": "First term a = 4. Common difference d = 9 - 4 = 5. The n-th term formula is a_n = a + (n - 1) * d. For n = 15: a_15 = 4 + (15 - 1) * 5 = 4 + 14 * 5 = 4 + 70 = 74."
+                    }
+                ]
+            },
+            {
+                "id": "topic-sch-science-10",
+                "title": "10th Standard Science: Electricity & Chemical Reactions",
+                "level": "Beginner",
+                "estimated_time": "45 mins",
+                "short_description": "Review Ohm's Law, series and parallel resistor networks, electrical power, balancing chemical equations, and redox reactions.",
+                "key_concepts": [
+                    "Ohm's Law: V = I * R. Current is directly proportional to potential difference across a conductor at constant temperature.",
+                    "Series Resistors: R_eq = R1 + R2 + R3. Same current flows through all resistors; voltage divides.",
+                    "Parallel Resistors: 1 / R_eq = 1 / R1 + 1 / R2. Same voltage across all branches; current divides.",
+                    "Electrical Power: P = V * I = I^2 * R = V^2 / R. Commercial unit of electrical energy is kilowatt-hour (kWh).",
+                    "Chemical Reactions: Oxidation is gain of oxygen or loss of electrons; Reduction is loss of oxygen or gain of electrons."
+                ],
+                "study_notes": "When calculating equivalent resistance of two resistors in parallel: R_eq = (R1 * R2) / (R1 + R2). For example, two 6 Ohm resistors in parallel yield (6 * 6)/(6 + 6) = 36/12 = 3 Ohms. Parallel resistance is ALWAYS less than the smallest individual resistor!",
+                "learning_materials": [
+                    {
+                        "title": "ePathshala (NCERT): 10th Science Textbook",
+                        "url": "https://epathshala.nic.in/",
+                        "type": "Official NCERT"
+                    },
+                    {
+                        "title": "Khan Academy India: Physics & Chemistry Class 10",
+                        "url": "https://www.khanacademy.org/",
+                        "type": "Free Video Lessons"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-sch-sci-1",
+                        "question": "Two resistors of 6 Ohms and 12 Ohms are connected in parallel across a 12 V battery. What is the total current drawn from the battery?",
+                        "options": ["1 A", "2 A", "3 A", "4 A"],
+                        "correct_index": 2,
+                        "explanation": "Equivalent resistance R_eq = (6 * 12) / (6 + 12) = 72 / 18 = 4 Ohms. Total current I = V / R_eq = 12 V / 4 Ohms = 3 A."
+                    }
+                ]
+            },
+            {
+                "id": "topic-sch-mental-ability",
+                "title": "Mental Ability & NTSE Scholarship Aptitude Puzzles",
+                "level": "Beginner",
+                "estimated_time": "35 mins",
+                "short_description": "Sharpen pattern identification, spatial foldings, analogy logic, and number grids for state scholarship examinations.",
+                "key_concepts": [
+                    "Analogy: Identify relationship between pair A : B, then apply exact same rule to C : D.",
+                    "Odd Man Out: Classify 4 options into a common set; identify the one that breaks the mathematical or taxonomic rule.",
+                    "Dice & Cubes: In a standard die, opposite faces always sum to 7 (1-6, 2-5, 3-4).",
+                    "Letter Series: Trace step intervals between alphabet characters."
+                ],
+                "study_notes": "Mental ability tests measure cognitive flexibility rather than memorization. Practice looking at differences, prime factors, and geometrical symmetries.",
+                "learning_materials": [
+                    {
+                        "title": "NCERT NTSE Examination Portal",
+                        "url": "https://ncert.nic.in/",
+                        "type": "Official Scholarship Guide"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-sch-ma-1",
+                        "question": "Find the next number in the sequence: 2, 6, 12, 20, 30, ?",
+                        "options": ["36", "40", "42", "48"],
+                        "correct_index": 2,
+                        "explanation": "The differences between consecutive terms are increasing even numbers: 6 - 2 = 4; 12 - 6 = 6; 20 - 12 = 8; 30 - 20 = 10. The next difference must be 12. Therefore, next term = 30 + 12 = 42 (also n^2 + n: 1*2, 2*3, 3*4, 4*5, 5*6, 6*7 = 42)."
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "category_id": "entrance-exams",
+        "category_name": "Entrance Exams",
+        "aliases": ["Entrance Exams", "Physics & Chemistry", "Biology & Medical", "JEE", "NEET", "EAMCET"],
+        "icon": "graduation-cap",
+        "description": "Comprehensive blueprints, speed tips, and problem-solving techniques for JEE Main/Advanced, NEET-UG, and state engineering/medical entrances.",
+        "education_levels": ["Intermediate", "10+2", "All"],
+        "topics": [
+            {
+                "id": "topic-ee-calc",
+                "title": "JEE/EAMCET Mathematics: Calculus & Limits",
+                "level": "Advanced",
+                "estimated_time": "50 mins",
+                "short_description": "Master standard limits, L'Hospital's rule, differentiation chain rules, definite integrals, and area under standard curves.",
+                "key_concepts": [
+                    "Standard limits: lim (x->0) (sin x / x) = 1; lim (x->0) (tan x / x) = 1; lim (x->0) ((e^x - 1) / x) = 1.",
+                    "L'Hospital's Rule: For 0/0 or inf/inf indeterminate forms, differentiate numerator and denominator independently with respect to x.",
+                    "Product Rule: (u * v)' = u' * v + u * v'. Quotient Rule: (u / v)' = (u' * v - u * v') / v^2.",
+                    "Definite Integral Property: Integral from a to b of f(x) dx = Integral from a to b of f(a + b - x) dx (King's Property).",
+                    "Area between curves: Integral from a to b of [f(x) - g(x)] dx where f(x) >= g(x)."
+                ],
+                "study_notes": "King's property in definite integrals solves over 40% of JEE Main definite integral questions! When you replace x with (a + b - x) and add the original integral I to the modified integral I, terms often cancel cleanly to leave Integral(1 dx) = (b - a)/2.",
+                "learning_materials": [
+                    {
+                        "title": "National Test Abhyas (NTA): Official Mock Tests",
+                        "url": "https://www.nta.ac.in/",
+                        "type": "Official CBT Tests"
+                    },
+                    {
+                        "title": "ePathshala: NCERT Class 11 & 12 Mathematics",
+                        "url": "https://epathshala.nic.in/",
+                        "type": "Official Curriculum"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-ee-lim-1",
+                        "question": "Evaluate: lim (x -> 0) [(sin 3x) / (2x)]",
+                        "options": ["0", "1", "3/2", "Undefined"],
+                        "correct_index": 2,
+                        "explanation": "Rewrite as: (3/2) * lim (x -> 0) [(sin 3x) / (3x)]. Since lim (u -> 0) (sin u / u) = 1, the value is (3/2) * 1 = 3/2."
+                    }
+                ]
+            },
+            {
+                "id": "topic-ee-bio",
+                "title": "NEET Biology: Human Physiology & Genetics",
+                "level": "Intermediate",
+                "estimated_time": "50 mins",
+                "short_description": "Review high-yield NCERT biology: circulatory double circulation, kidney nephron filtration, Mendelian genetics, and DNA replication.",
+                "key_concepts": [
+                    "Double Circulation: Pulmonary circulation (Right ventricle -> Lungs -> Left atrium) and Systemic circulation (Left ventricle -> Body tissues -> Right atrium).",
+                    "Nephron Glomerular Filtration: Ultrafiltration under hydrostatic pressure in Bowman's capsule; selective tubular reabsorption in loop of Henle.",
+                    "Mendelian Dihybrid Cross: Phenotypic ratio of F2 generation is 9 : 3 : 3 : 1.",
+                    "DNA Structure: Double helix with antiparallel strands connected by hydrogen bonds (A = T with 2 bonds; G = C with 3 bonds).",
+                    "Central Dogma: DNA -> (Transcription) -> mRNA -> (Translation) -> Protein."
+                ],
+                "study_notes": "Over 90% of NEET-UG Biology questions are direct line-by-line questions from NCERT Class 11 and Class 12 Biology textbooks. Memorize all diagrams, figure captions, and summary points at the end of each NCERT chapter.",
+                "learning_materials": [
+                    {
+                        "title": "National Test Abhyas (NTA): NEET Official Mock Tests",
+                        "url": "https://www.nta.ac.in/",
+                        "type": "Official NTA Platform"
+                    },
+                    {
+                        "title": "DIKSHA: NCERT Class 12 Biology Portal",
+                        "url": "https://diksha.gov.in/",
+                        "type": "National Digital Portal"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-ee-bio-1",
+                        "question": "In a cross between two heterozygous pea plants for round and yellow seeds (RrYy x RrYy), what fraction of the offspring is expected to exhibit the double recessive phenotype (wrinkled, green seeds)?",
+                        "options": ["9/16", "3/16", "1/16", "1/4"],
+                        "correct_index": 2,
+                        "explanation": "In a classical Mendelian dihybrid cross, the phenotypic ratio is 9:3:3:1. The double recessive genotype (rryy) represents 1 out of 16 offspring, or 1/16."
+                    }
+                ]
+            },
+            {
+                "id": "topic-ee-chem",
+                "title": "Organic Chemistry Reaction Mechanisms & General Principles",
+                "level": "Advanced",
+                "estimated_time": "45 mins",
+                "short_description": "Master carbocation stabilities, nucleophilic substitutions (SN1 vs SN2), Markovnikov's addition, and inductive/resonance effects.",
+                "key_concepts": [
+                    "Carbocation Stability: 3-degree > 2-degree > 1-degree > methyl (due to hyperconjugation and +I inductive effects).",
+                    "SN1: Two-step mechanism via carbocation intermediate; favored by 3-degree substrates and polar protic solvents; results in racemization.",
+                    "SN2: One-step concerted mechanism with backside attack; favored by 1-degree substrates and polar aprotic solvents; results in Walden inversion.",
+                    "Markovnikov's Rule: In electrophilic addition to unsymmetrical alkenes, hydrogen attaches to the carbon having more hydrogen atoms.",
+                    "Resonance Effect (+R / -R): Delocalization of pi electrons stabilises conjugate bases (e.g. phenol acidity)."
+                ],
+                "study_notes": "Look at the substrate first: Primary alkyl halide -> overwhelmingly SN2. Tertiary alkyl halide -> overwhelmingly SN1. For secondary, check the nucleophile and solvent (strong nucleophile + aprotic solvent favors SN2).",
+                "learning_materials": [
+                    {
+                        "title": "ePathshala: NCERT Chemistry Class 12",
+                        "url": "https://epathshala.nic.in/",
+                        "type": "NCERT Chemistry"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-ee-chem-1",
+                        "question": "Which of the following alkyl halides undergoes nucleophilic substitution predominantly via the SN2 mechanism at the fastest rate?",
+                        "options": [
+                            "tert-Butyl bromide ((CH3)3C-Br)",
+                            "Methyl bromide (CH3-Br)",
+                            "Isopropyl bromide ((CH3)2CH-Br)",
+                            "Neopentyl bromide ((CH3)3C-CH2-Br)"
+                        ],
+                        "correct_index": 1,
+                        "explanation": "SN2 reactions occur through a backside attack that is extremely sensitive to steric hindrance. Methyl bromide has minimal steric crowding around the electrophilic carbon and therefore reacts fastest via SN2."
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "category_id": "lateral-entry",
+        "category_name": "Lateral Entry (ECET)",
+        "aliases": ["Lateral Entry (ECET)", "Technical MCQs", "Government Exams", "Polytechnic"],
+        "icon": "award",
+        "description": "Tailored for Diploma/Polytechnic students preparing for lateral entry engineering exams (ECET) and state technical junior engineer recruitments.",
+        "education_levels": ["Diploma", "Polytechnic", "All"],
+        "topics": [
+            {
+                "id": "topic-le-ecet-math",
+                "title": "Diploma ECET Mathematics: Matrices & Differential Equations",
+                "level": "Intermediate",
+                "estimated_time": "45 mins",
+                "short_description": "Master matrix determinants, eigenvalues, first-order differential equations, and integration by parts for state ECET lateral entry.",
+                "key_concepts": [
+                    "Matrix Determinants: For 2x2 matrix [[a, b], [c, d]], det = ad - bc. Inverse A^-1 = (1/det) * adj(A).",
+                    "Eigenvalues: Roots of the characteristic polynomial equation det(A - lambda * I) = 0.",
+                    "First-Order Linear Differential Equation: dy/dx + P(x)*y = Q(x). Integrating Factor IF = e^(integral P dx). Solution: y * IF = integral (Q * IF dx) + C.",
+                    "Integration by Parts: Integral (u * v dx) = u * Integral(v dx) - Integral(u' * [Integral v dx] dx). Rule: ILATE for choosing u.",
+                    "Laplace Transforms: L{1} = 1/s; L{e^(at)} = 1/(s - a); L{t^n} = n! / s^(n+1)."
+                ],
+                "study_notes": "In ECET, the engineering mathematics section contributes 50 marks. Focus on mastering shortcut methods for matrices and solving first-order linear differential equations using the integrating factor technique.",
+                "learning_materials": [
+                    {
+                        "title": "Spoken Tutorial (IIT Bombay): Diploma Technical Training",
+                        "url": "https://spoken-tutorial.org/",
+                        "type": "Govt Educational Portal"
+                    },
+                    {
+                        "title": "NPTEL: Engineering Mathematics Core",
+                        "url": "https://nptel.ac.in/",
+                        "type": "Lecture Modules"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-le-mat-1",
+                        "question": "What is the integrating factor (IF) for the linear differential equation dy/dx + (2/x) * y = x^3?",
+                        "options": ["2 ln x", "x^2", "1 / x^2", "e^(2x)"],
+                        "correct_index": 1,
+                        "explanation": "Here P(x) = 2/x. Integrating factor IF = e^(integral (2/x) dx) = e^(2 * ln x) = e^(ln(x^2)) = x^2."
+                    }
+                ]
+            },
+            {
+                "id": "topic-le-core-circuits",
+                "title": "Polytechnic Core Electrical & Electronics Principles",
+                "level": "Intermediate",
+                "estimated_time": "40 mins",
+                "short_description": "Single-phase AC circuits, impedance triangle (Z = sqrt(R^2 + X^2)), transformers, and rectifier circuits.",
+                "key_concepts": [
+                    "Single-phase AC: RMS value = Peak / sqrt(2) = 0.707 * V_m.",
+                    "Impedance Z = sqrt(R^2 + (X_L - X_C)^2). Power factor = R / Z = cos(phi).",
+                    "Transformer EMF Equation: E = 4.44 * f * N * Phi_m. Turns ratio = V1/V2 = N1/N2 = I2/I1.",
+                    "Semiconductor Diode: Forward bias allows current flow after barrier potential (0.7V for Silicon, 0.3V for Germanium)."
+                ],
+                "study_notes": "In AC circuits, pure inductors cause current to lag voltage by 90 degrees; pure capacitors cause current to lead voltage by 90 degrees. Remember mnemonic: CIVIL (In a Capacitor, I leads V; V leads I in an inductor L).",
+                "learning_materials": [
+                    {
+                        "title": "All About Circuits: Alternating Current AC Theory",
+                        "url": "https://www.allaboutcircuits.com/textbook/alternating-current/",
+                        "type": "Reference"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "q-le-ee-1",
+                        "question": "In a series R-L circuit with R = 3 Ohms and inductive reactance X_L = 4 Ohms, what is the total impedance Z and the power factor?",
+                        "options": ["Z = 5 Ohms, power factor = 0.6 lagging", "Z = 7 Ohms, power factor = 0.4 leading", "Z = 5 Ohms, power factor = 0.8 lagging", "Z = 1 Ohms, power factor = 1.0"],
+                        "correct_index": 0,
+                        "explanation": "Total impedance Z = sqrt(R^2 + X_L^2) = sqrt(3^2 + 4^2) = sqrt(9 + 16) = sqrt(25) = 5 Ohms. Power factor cos(phi) = R / Z = 3 / 5 = 0.6. Because it is inductive, the power factor is lagging."
+                    }
+                ]
+            }
+        ]
+    }
+]
+
+def main():
+    target_path = os.path.join(os.path.dirname(__file__), "..", "data", "practice_training_topics.json")
+    target_path = os.path.abspath(target_path)
+    with open(target_path, "w", encoding="utf-8") as f:
+        json.dump(PRACTICE_TRAINING_DATA, f, indent=2, ensure_ascii=False)
+    print(f"Successfully generated {target_path}")
+    print(f"Total categories: {len(PRACTICE_TRAINING_DATA)}")
+    total_topics = sum(len(cat["topics"]) for cat in PRACTICE_TRAINING_DATA)
+    total_questions = sum(len(topic.get("practice_questions", [])) for cat in PRACTICE_TRAINING_DATA for topic in cat["topics"])
+    print(f"Total topics: {total_topics}")
+    print(f"Total practice questions: {total_questions}")
+
+if __name__ == "__main__":
+    main()

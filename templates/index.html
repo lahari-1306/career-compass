@@ -899,9 +899,53 @@
             <!-- Rendered dynamically by app.js based on qualification -->
           </div>
 
-          <!-- Resource Cards Grid -->
-          <div id="prep-resource-grid" class="cards-grid">
-            <div class="loading-state"><div class="spinner"></div></div>
+          <!-- Dynamic Category Hero Banner -->
+          <div id="practice-category-banner" class="practice-cat-banner">
+            <!-- Rendered dynamically by app.js -->
+          </div>
+
+          <!-- Practice View Mode Switcher -->
+          <div class="practice-view-switcher" id="practice-view-switcher">
+            <button class="practice-switch-btn active" data-view="topics" onclick="switchPracticeViewMode('topics')">
+              <i data-lucide="book-open" class="icon-xs"></i> <span>Topics & Study Notes</span>
+            </button>
+            <button class="practice-switch-btn" data-view="quiz" onclick="switchPracticeViewMode('quiz')">
+              <i data-lucide="help-circle" class="icon-xs"></i> <span>Practice Questions & Quiz</span>
+            </button>
+            <button class="practice-switch-btn" data-view="platforms" onclick="switchPracticeViewMode('platforms')">
+              <i data-lucide="shield-check" class="icon-xs"></i> <span>Verified Platforms</span>
+            </button>
+          </div>
+
+          <!-- Interactive Practice Quiz Section -->
+          <div id="practice-quiz-wrapper" class="practice-section-block hidden">
+            <div id="practice-quiz-container">
+              <!-- Rendered dynamically by app.js -->
+            </div>
+          </div>
+
+          <!-- Topics & Study Notes Accordion Section -->
+          <div id="practice-topics-wrapper" class="practice-section-block">
+            <div id="practice-topics-container" class="topics-accordion-list">
+              <!-- Rendered dynamically by app.js -->
+            </div>
+          </div>
+
+          <!-- Verified Learning Platforms Section -->
+          <div id="practice-platforms-wrapper" class="practice-section-block">
+            <div class="section-subheading" style="margin-top: 1.5rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 0.4rem; margin: 0 0 0.2rem 0;">
+                  <i data-lucide="shield-check" class="icon-xs text-primary"></i> <span>Verified Learning Platforms & Portals</span>
+                </h4>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0;">Authorized official portals, free courseware, and certification platforms for this category.</p>
+              </div>
+            </div>
+
+            <!-- Resource Cards Grid -->
+            <div id="prep-resource-grid" class="cards-grid">
+              <div class="loading-state"><div class="spinner"></div></div>
+            </div>
           </div>
         </div>
 
