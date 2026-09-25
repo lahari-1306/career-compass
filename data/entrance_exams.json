@@ -65,7 +65,14 @@
     "timeline_status": "Conducted in May annually",
     "application_window": "March to April",
     "exam_pattern": "Computer Based Test (CBT), 160 questions, 160 marks, 3 hours duration. No negative marking.",
-    "official_website": "https://cets.apsche.ap.gov.in"
+    "official_website": "https://cets.apsche.ap.gov.in",
+    "rank_predictor": {
+      "title": "Rank Predictor",
+      "url": "https://aptsrank.in/",
+      "description": "Predict your EAMCET rank and explore colleges based on your rank and previous years' cutoff data. Find colleges and branches that may match your rank.",
+      "button_text": "Open Rank Predictor",
+      "disclaimer": "Rank and college predictions are estimates based on historical cutoff data. Actual admission outcomes may vary. Verify information through official counselling websites."
+    }
   },
   {
     "id": "exam-ecet",

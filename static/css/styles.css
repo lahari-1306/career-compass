@@ -4214,3 +4214,47 @@ img, svg {
   margin: 0 0 1.25rem;
 }
 
+/* ====================================================
+   EAMCET RANK PREDICTOR CARD & BANNER STYLES
+   ==================================================== */
+.rank-predictor-card {
+  border: 1px solid var(--primary-border, #93c5fd);
+  background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(37, 99, 235, 0.03) 100%);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.rank-predictor-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.15);
+  border-color: var(--primary);
+}
+
+.eamcet-predictor-banner {
+  background: var(--bg-surface-muted, #f8fafc);
+  border: 1px dashed var(--primary-border, #93c5fd);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.eamcet-predictor-banner:hover {
+  background: rgba(37, 99, 235, 0.05);
+  border-color: var(--primary);
+}
+
+.rank-disclaimer-box {
+  border-left: 3px solid var(--accent, #f59e0b) !important;
+}
+
+[data-theme="dark"] .rank-predictor-card {
+  background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(37, 99, 235, 0.08) 100%);
+  border-color: rgba(96, 165, 250, 0.3);
+}
+
+[data-theme="dark"] .eamcet-predictor-banner {
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(96, 165, 250, 0.3);
+}
+
+

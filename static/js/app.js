@@ -859,6 +859,35 @@ function renderCareerPaths(tabId) {
   // Render sub-branches or paths
   const list = sectionData.streams || sectionData.paths || sectionData.branches || [];
   list.forEach(item => {
+    if (item.is_rank_predictor) {
+      html += `
+        <div class="card rank-predictor-card" id="eamcet-rank-predictor-card">
+          <div class="card-header-row">
+            <h4 class="card-title" style="display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="calculator" class="icon-sm text-primary"></i> ${escapeHtml(item.title || 'Rank Predictor')}
+            </h4>
+            <span class="badge badge-success">EAMCET / EAPCET</span>
+          </div>
+          <div class="card-org">AP & TS EAMCET / EAPCET College & Branch Estimator</div>
+          <div class="card-body">
+            <p style="margin-bottom: 0.75rem; color: var(--text-secondary); line-height: 1.5;">
+              ${escapeHtml(item.details)}
+            </p>
+            <div class="rank-disclaimer-box" style="margin-top: 0.75rem; margin-bottom: 0.5rem; font-size: 0.78rem; color: var(--text-muted); background: var(--bg-surface-muted); padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); border-left: 3px solid var(--accent); line-height: 1.4;">
+              <i data-lucide="info" class="icon-xxs" style="vertical-align: -2px; margin-right: 0.25rem;"></i>
+              ${escapeHtml(item.disclaimer)}
+            </div>
+          </div>
+          <div class="card-footer" style="margin-top: auto; padding-top: 1rem;">
+            <a href="${escapeHtml(item.official_url || 'https://aptsrank.in/')}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.45rem; text-decoration: none; font-weight: 600; width: 100%; justify-content: center;">
+              <i data-lucide="external-link" class="icon-xs"></i> <span>${escapeHtml(item.button_text || 'Open Rank Predictor')}</span>
+            </a>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
     html += `
       <div class="card">
         <div class="card-header-row">
@@ -965,8 +994,31 @@ function renderCareerPaths(tabId) {
               <strong>${Array.isArray(item.entrance_exams) ? item.entrance_exams.join(', ') : item.entrance_exams}</strong>
             </div>
           ` : ''}
+          ${item.id === 'inter-eamcet' ? `
+            <div class="eamcet-predictor-banner" style="margin-top: 0.85rem; padding: 0.85rem; border-radius: var(--radius-sm); background: var(--bg-surface-muted); border: 1px dashed var(--primary); display: flex; flex-direction: column; gap: 0.4rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+                <span style="font-size: 0.88rem; font-weight: 700; color: var(--text-main); display: inline-flex; align-items: center; gap: 0.35rem;">
+                  <i data-lucide="calculator" class="icon-xs text-primary"></i> Rank Predictor Tool
+                </span>
+                <a href="https://aptsrank.in/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="font-size: 0.78rem; padding: 0.3rem 0.65rem; display: inline-flex; align-items: center; gap: 0.3rem; text-decoration: none;">
+                  <i data-lucide="external-link" class="icon-xxs"></i> Open Rank Predictor
+                </a>
+              </div>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0; line-height: 1.4;">
+                Predict your EAMCET rank and explore colleges based on your rank and previous years' cutoff data. Find colleges and branches that may match your rank.
+              </p>
+              <div style="font-size: 0.72rem; color: var(--text-muted); font-style: italic; line-height: 1.35; margin-top: 0.25rem;">
+                Rank and college predictions are estimates based on historical cutoff data. Actual admission outcomes may vary. Verify information through official counselling websites.
+              </div>
+            </div>
+          ` : ''}
         </div>
         <div class="card-footer">
+          ${item.id === 'inter-eamcet' ? `
+            <a href="https://aptsrank.in/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.35rem; text-decoration: none;">
+              <i data-lucide="calculator" class="icon-xs"></i> <span>Open Rank Predictor</span>
+            </a>
+          ` : ''}
           ${item.official_url ? `
             <a href="${item.official_url}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;">
               <i data-lucide="external-link" class="icon-xs"></i> ${t("common.official_portal", "Official Portal")}
@@ -1030,8 +1082,31 @@ function renderEntranceExams() {
           <div class="card-meta-item"><span>${t("exams.application_window", "Timeline")}:</span> <strong>${escapeHtml(exam.timeline_status)}</strong></div>
           <div class="card-meta-item"><span>${t("exams.pattern_label", "Subjects")}:</span> <strong>${escapeHtml(Array.isArray(exam.important_subjects) ? exam.important_subjects.join(', ') : exam.important_subjects)}</strong></div>
         </div>
+        ${(exam.id === 'exam-eapcet' || (exam.name && exam.name.toLowerCase().includes('eamcet'))) ? `
+          <div class="eamcet-predictor-banner" style="margin-top: 0.85rem; padding: 0.85rem; border-radius: var(--radius-sm); background: var(--bg-surface-muted); border: 1px dashed var(--primary); display: flex; flex-direction: column; gap: 0.4rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+              <span style="font-size: 0.88rem; font-weight: 700; color: var(--text-main); display: inline-flex; align-items: center; gap: 0.35rem;">
+                <i data-lucide="calculator" class="icon-xs text-primary"></i> Rank Predictor Tool
+              </span>
+              <a href="https://aptsrank.in/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="font-size: 0.78rem; padding: 0.3rem 0.65rem; display: inline-flex; align-items: center; gap: 0.3rem; text-decoration: none;">
+                <i data-lucide="external-link" class="icon-xxs"></i> Open Rank Predictor
+              </a>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0; line-height: 1.4;">
+              Predict your EAMCET rank and explore colleges based on your rank and previous years' cutoff data. Find colleges and branches that may match your rank.
+            </p>
+            <div style="font-size: 0.72rem; color: var(--text-muted); font-style: italic; line-height: 1.35; margin-top: 0.25rem;">
+              Rank and college predictions are estimates based on historical cutoff data. Actual admission outcomes may vary. Verify information through official counselling websites.
+            </div>
+          </div>
+        ` : ''}
       </div>
       <div class="card-footer">
+        ${(exam.id === 'exam-eapcet' || (exam.name && exam.name.toLowerCase().includes('eamcet'))) ? `
+          <a href="https://aptsrank.in/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.35rem; text-decoration: none;">
+            <i data-lucide="calculator" class="icon-xs"></i> <span>Open Rank Predictor</span>
+          </a>
+        ` : ''}
         <a href="${exam.official_website}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;">
           <i data-lucide="external-link" class="icon-xs"></i> ${t("common.official_portal", "Official Portal")}
         </a>

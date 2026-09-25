@@ -177,6 +177,39 @@
         "official_url": "https://jeemain.nta.nic.in"
       },
       {
+        "id": "inter-eamcet",
+        "category": "State EAMCET / EAPCET Entrance Examination",
+        "duration": "Annual State CET (May)",
+        "eligibility": "10+2 with MPC (for Engineering) or BiPC (for Agriculture / Pharmacy / Biotech) with min 45% marks (40% for reserved)",
+        "future_prospects": "Admission into 1st Year B.Tech, B.Pharmacy, B.Sc (Hons) Agriculture, and Pharm.D programs across Andhra Pradesh & Telangana state and private colleges.",
+        "details": "State Engineering, Agriculture & Pharmacy Common Entrance Test conducted by APSCHE (AP EAPCET) and TGCHE (TG EAPCET). Serves as the primary entrance exam for state university engineering colleges (JNTU, OU, AU) and reputed private engineering colleges.",
+        "entrance_exams": [
+          "State EAPCET / EAMCET (Engineering)",
+          "State EAPCET / EAMCET (Agriculture & Pharmacy)"
+        ],
+        "top_colleges": [
+          "JNTU Colleges (Hyderabad, Kakinada, Anantapur)",
+          "Osmania University College of Engineering (OUCE)",
+          "Andhra University College of Engineering (AUCE)",
+          "CBIT Hyderabad",
+          "Vasavi College of Engineering",
+          "VNR VJIET",
+          "VR Siddhartha Engineering College",
+          "GMRIT"
+        ],
+        "official_url": "https://cets.apsche.ap.gov.in"
+      },
+      {
+        "id": "inter-eamcet-rank-predictor",
+        "category": "Rank Predictor",
+        "title": "Rank Predictor",
+        "is_rank_predictor": true,
+        "details": "Predict your EAMCET rank and explore colleges based on your rank and previous years' cutoff data. Find colleges and branches that may match your rank.",
+        "button_text": "Open Rank Predictor",
+        "official_url": "https://aptsrank.in/",
+        "disclaimer": "Rank and college predictions are estimates based on historical cutoff data. Actual admission outcomes may vary. Verify information through official counselling websites."
+      },
+      {
         "id": "inter-medical",
         "category": "Medical, Healthcare & Life Sciences (BiPC)",
         "degrees": [
