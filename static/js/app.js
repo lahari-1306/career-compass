@@ -4556,6 +4556,9 @@ async function initPreparationHub() {
 }
 
 function updatePrepHubUserSummary() {
+  const card = document.getElementById('prep-hub-user-summary');
+  if (!card) return;
+
   const profile = (currentUser && currentUser.profile) ? currentUser.profile : getStoredRadarProfile();
   const qual = (currentUser && currentUser.qualification) || (profile && (profile.qualification || profile.education_level)) || 'B.Tech';
   const stream = (currentUser && currentUser.stream) || (profile && (profile.stream || profile.branch || profile.stream_or_branch)) || 'Computer Science & Engineering';
@@ -4581,6 +4584,9 @@ let currentTrackerSession = null;
 let trackerSessionStartTime = null;
 
 async function loadTrackerProgress() {
+  const panel = document.getElementById('tracker-dashboard-panel');
+  if (!panel) return;
+
   try {
     const [progRes, planRes] = await Promise.all([
       fetch('/api/tracker/progress'),
