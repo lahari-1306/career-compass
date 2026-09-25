@@ -83,7 +83,7 @@
         ],
         "lateral_entry": "Eligible for direct admission to 2nd year B.Tech via State ECET / JELET / LEET",
         "job_roles": "Junior Engineer (RRB JE, SSC JE), Plant Technician (L&T, Tata Motors, BHEL), Substation Operator, DRDO/ISRO Technical Assistant",
-        "official_url": "https://polycetap.nic.in"
+        "official_url": "https://apsbtet.ap.gov.in"
       },
       {
         "id": "10-iti",
@@ -99,7 +99,7 @@
           "Welder / Machinist / Motor Mechanic"
         ],
         "future_options": "Direct jobs as Railway ALP / Technician, PSU Apprentice, DRDO Technician A, or lateral entry into 2nd year Polytechnic Diploma",
-        "official_url": "https://ncvtmis.gov.in"
+        "official_url": "https://dgt.gov.in"
       },
       {
         "id": "10-defence",
@@ -198,7 +198,7 @@
           "KGMU",
           "State Govt Medical Colleges"
         ],
-        "official_url": "https://exams.nta.ac.in/NEET"
+        "official_url": "https://neet.nta.nic.in"
       },
       {
         "id": "inter-agri",
@@ -214,7 +214,7 @@
           "ICAR AIEEA (CUET UG)",
           "State EAPCET Agriculture Stream"
         ],
-        "official_url": "https://icar.org.in"
+        "official_url": "https://cuet.nta.nic.in"
       },
       {
         "id": "inter-law",
@@ -271,7 +271,7 @@
           "CUET UG (Central Universities)",
           "State University Entrance Exams"
         ],
-        "official_url": "https://cuetug.ntaonline.in"
+        "official_url": "https://cuet.nta.nic.in"
       },
       {
         "id": "inter-design",
@@ -372,7 +372,7 @@
             "scale": "State Engineering Scale"
           }
         ],
-        "official_url": "https://rrbapply.gov.in"
+        "official_url": "https://www.rrbapply.gov.in"
       },
       {
         "id": "dip-core-jobs",
@@ -419,7 +419,7 @@
           "Indian Navy Sailor (SSR / Artificer Apprentice)",
           "Indian Army Technical Cadre (Signals, EME, Engineers)"
         ],
-        "official_url": "https://airmenselection.cdac.in"
+        "official_url": "https://careerindianairforce.cdac.in"
       },
       {
         "id": "dip-entrepreneur",
@@ -471,7 +471,7 @@
           {
             "name": "SBI PO & Junior Associate",
             "org": "State Bank of India",
-            "url": "https://sbi.co.in/careers"
+            "url": "https://bank.sbi/careers"
           },
           {
             "name": "RBI Grade B Officer & Assistant",
@@ -514,7 +514,7 @@
           "State ICET / MAH MCA CET"
         ],
         "career_prospects": "Placement parity with B.Tech graduates for SDE, Cloud, and Data Science roles at Tier-1 product MNCs.",
-        "official_url": "https://www.nimcet.in"
+        "official_url": "https://nimcet.admissions.nic.in"
       },
       {
         "id": "deg-sciences",
@@ -524,7 +524,7 @@
           "CUET PG",
           "TIFR GS (Tata Institute of Fundamental Research)"
         ],
-        "official_url": "https://jam.iitd.ac.in"
+        "official_url": "https://jam2025.iitd.ac.in"
       },
       {
         "id": "deg-law",
@@ -547,7 +547,7 @@
           {
             "name": "Air Force Common Admission Test (AFCAT)",
             "branches": "Flying Branch, Ground Duty Technical & Non-Technical",
-            "url": "https://afcat.cdac.in"
+            "url": "https://careerindianairforce.cdac.in"
           },
           {
             "name": "NCC C-Certificate Special Entry",

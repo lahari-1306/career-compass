@@ -48,7 +48,7 @@
     "timeline_status": "Conducted on the first Sunday of May annually",
     "application_window": "February to March",
     "exam_pattern": "Pen and Paper (OMR) mode. 200 questions (attempt 180), 720 marks total. +4 for correct, -1 for incorrect.",
-    "official_website": "https://exams.nta.ac.in/NEET"
+    "official_website": "https://neet.nta.nic.in"
   },
   {
     "id": "exam-eapcet",
@@ -100,7 +100,7 @@
     "timeline_status": "Conducted in April / May annually",
     "application_window": "March to April",
     "exam_pattern": "Offline OMR test, 120 questions, 120 marks, 2 hours duration. No negative marking.",
-    "official_website": "https://polycetap.nic.in"
+    "official_website": "https://apsbtet.ap.gov.in"
   },
   {
     "id": "exam-cuet-ug",
@@ -117,7 +117,7 @@
     "timeline_status": "Conducted in May/June annually",
     "application_window": "February to March",
     "exam_pattern": "Hybrid (CBT & OMR) mode, multiple choice questions based on NCERT Class 12 syllabus.",
-    "official_website": "https://cuetug.ntaonline.in"
+    "official_website": "https://cuet.nta.nic.in"
   },
   {
     "id": "exam-cat",

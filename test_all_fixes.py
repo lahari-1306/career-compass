@@ -151,14 +151,24 @@ class TestCareerCompassFixes(unittest.TestCase):
         })
         self.assertEqual(signup_res.status_code, 201)
 
-        # When SMTP is not configured
+        # When SMTP is not configured, it returns 200 OK with reset_url and SMTP guidance (never blocking 503)
         if not EmailService.is_configured():
             forgot_res = self.client.post("/api/auth/forgot-password", json={
                 "email": test_email
             })
-            self.assertEqual(forgot_res.status_code, 503)
+            self.assertEqual(forgot_res.status_code, 200)
             data = forgot_res.get_json()
+            self.assertEqual(data.get("status"), "success")
+            self.assertFalse(data.get("smtp_configured", True))
+            self.assertIn("reset_url", data)
             self.assertIn("SMTP", data.get("message"))
+
+            # Test verify-reset-token endpoint with token extracted from reset_url
+            reset_url = data.get("reset_url", "")
+            extracted_token = reset_url.split("reset_token=")[1].split("#")[0]
+            verify_res = self.client.get(f"/api/auth/verify-reset-token?token={extracted_token}")
+            self.assertEqual(verify_res.status_code, 200)
+            self.assertTrue(verify_res.get_json().get("valid"))
 
         # Test token generation and password reset
         user = UserRepository.get_by_email(test_email)

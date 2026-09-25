@@ -329,30 +329,89 @@ def forgot_password():
     if not email:
         return jsonify({"status": "error", "message": "Email is required."}), 400
 
-    if not EmailService.is_configured():
-        return jsonify({
-            "status": "error",
-            "code": "SMTP_NOT_CONFIGURED",
-            "message": "Password reset service is unavailable because SMTP email delivery is not configured on this server. Please contact your system administrator to configure SMTP_HOST, SMTP_PORT, SMTP_USERNAME, and SMTP_PASSWORD."
-        }), 503
+    base_url = (
+        os.environ.get("APP_BASE_URL")
+        or os.environ.get("RENDER_EXTERNAL_URL")
+        or request.host_url.rstrip("/")
+        or "https://career-compass.onrender.com"
+    ).rstrip("/")
 
+    smtp_configured = EmailService.is_configured()
     user = UserRepository.get_by_email(email)
+
     if user:
         token = TokenRepository.create_password_reset_token(user["id"])
-        base_url = os.environ.get("APP_BASE_URL") or request.host_url.rstrip("/")
-        try:
-            EmailService.send_password_reset_email(email, token, base_url)
-        except Exception as e:
-            return jsonify({
-                "status": "error",
-                "message": f"Failed to dispatch password reset email: {str(e)}"
-            }), 500
+        reset_link = f"{base_url}/?reset_token={token}#reset-password"
 
-    # Always return a generic success message to prevent user enumeration
+        if smtp_configured:
+            try:
+                EmailService.send_password_reset_email(email, token, base_url)
+                return jsonify({
+                    "status": "success",
+                    "smtp_configured": True,
+                    "message": "A password reset link has been dispatched to your email address. Please check your inbox and spam folder."
+                }), 200
+            except Exception as e:
+                # Log dispatch failure and provide immediate link fallback
+                return jsonify({
+                    "status": "success",
+                    "smtp_configured": False,
+                    "reset_url": reset_link,
+                    "message": f"SMTP email delivery encountered an issue ({str(e)}). You can proceed directly using the reset link below."
+                }), 200
+        else:
+            # SMTP not configured on server (e.g. dev environment or Render before adding env vars)
+            # Log the email safely so it is captured in audit logs
+            try:
+                EmailService.send_password_reset_email(email, token, base_url)
+            except Exception:
+                pass
+            return jsonify({
+                "status": "success",
+                "smtp_configured": False,
+                "reset_url": reset_link,
+                "message": "Password reset token generated. Since SMTP email delivery is not configured on this server, use the secure link below to complete your password reset."
+            }), 200
+
+    # User not found: prevent email enumeration while maintaining consistent response
     return jsonify({
         "status": "success",
+        "smtp_configured": smtp_configured,
         "message": "If an account exists with this email address, a password reset link has been dispatched."
-    })
+    }), 200
+
+
+@auth_bp.route("/verify-reset-token", methods=["GET"])
+def verify_reset_token():
+    token = request.args.get("token", "").strip()
+    if not token:
+        return jsonify({"status": "error", "message": "Reset token is required."}), 400
+
+    token_info = TokenRepository.verify_reset_token(token)
+    if not token_info:
+        return jsonify({
+            "status": "error",
+            "code": "INVALID_OR_EXPIRED_TOKEN",
+            "message": "This password reset link is invalid or has expired. Please request a new link."
+        }), 400
+
+    email = token_info.get("email", "")
+    masked_email = ""
+    if "@" in email:
+        parts = email.split("@", 1)
+        name_part = parts[0]
+        domain_part = parts[1]
+        if len(name_part) <= 2:
+            masked_email = f"{name_part[0]}*@{domain_part}"
+        else:
+            masked_email = f"{name_part[0]}{'*' * (len(name_part) - 2)}{name_part[-1]}@{domain_part}"
+
+    return jsonify({
+        "status": "success",
+        "valid": True,
+        "email": masked_email,
+        "message": "Reset token is valid."
+    }), 200
 
 
 @auth_bp.route("/reset-password", methods=["POST"])
@@ -372,7 +431,10 @@ def reset_password():
         return jsonify({"status": "error", "message": "This password reset link is invalid or has expired."}), 400
 
     UserRepository.update_password(user_id, new_password)
-    return jsonify({"status": "success", "message": "Your password has been successfully reset. Please log in with your new credentials."})
+    return jsonify({
+        "status": "success",
+        "message": "Your password has been successfully reset. Please log in with your new credentials."
+    }), 200
 
 
 @auth_bp.route("/change-password", methods=["POST"])

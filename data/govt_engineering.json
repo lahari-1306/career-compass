@@ -36,7 +36,7 @@
     "age_limit": "Scientist B: 28 years (General), 31 (OBC), 33 (SC/ST). CEPTAM: 18 to 28 years.",
     "selection_process": "Scientist B: Shortlisting via valid GATE score (1:10 ratio) followed by in-depth Technical Interview. CEPTAM: Tier-I CBT (Screening) + Tier-II CBT (Core technical selection).",
     "salary_pay_scale": "Scientist B: 7th CPC Level 10 (Rs 56,100). STA-B: 7th CPC Level 6 (Rs 35,400). Plus Defence Research Allowances.",
-    "official_website": "https://www.drdo.gov.in/drdo/careers"
+    "official_website": "https://rac.gov.in"
   },
   {
     "id": "govt-barc",
@@ -60,7 +60,7 @@
     "age_limit": "18 to 33/36 years (with central relaxations).",
     "selection_process": "CBT Stage 1 (Maths, Reasoning, General Science, General Awareness - 100 marks) -> CBT Stage 2 (General Awareness, Physics & Chemistry, Computer Basics, Environment, Technical Abilities - 150 marks) -> Document Verification & Medical Examination.",
     "salary_pay_scale": "RRB JE: 7th CPC Level 6 (Rs 35,400 Basic + Railway allowances). RRB SSE: Level 7 (Rs 44,900 Basic).",
-    "official_website": "https://rrbapply.gov.in"
+    "official_website": "https://www.rrbapply.gov.in"
   },
   {
     "id": "govt-upsc-ese",

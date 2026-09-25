@@ -399,6 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
       showAuthView('reset');
       const resetTokenInput = document.getElementById('auth-reset-token');
       if (resetTokenInput) resetTokenInput.value = resetToken;
+      verifyResetToken(resetToken);
     }
   } catch (e) { console.error('Reset token check error:', e); }
   try { checkPushBanner(); } catch (e) { console.error('Push banner error:', e); }
@@ -3939,6 +3940,49 @@ async function handleAuthSignupSubmit(e) {
   }
 }
 
+async function verifyResetToken(token) {
+  const statusBox = document.getElementById('auth-reset-status');
+  const submitBtn = document.getElementById('auth-reset-btn-submit');
+  const pwdInput = document.getElementById('auth-reset-password');
+  const confirmInput = document.getElementById('auth-reset-confirm');
+
+  if (!token) {
+    if (statusBox) {
+      statusBox.innerHTML = 'Reset token is required or reset link is invalid. <button type="button" class="auth-link-btn" onclick="showAuthView(\'forgot\')" style="text-decoration:underline;margin-left:6px;font-weight:600;">Request a new link</button>';
+      statusBox.className = 'auth-alert-box alert-danger';
+      statusBox.classList.remove('hidden');
+    }
+    if (submitBtn) submitBtn.disabled = true;
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/auth/verify-reset-token?token=${encodeURIComponent(token)}`);
+    const data = await res.json();
+    if (res.ok && data.status === 'success') {
+      if (statusBox) {
+        statusBox.innerHTML = `<span>Resetting password for <strong>${data.email || 'your account'}</strong>. Enter your new password below.</span>`;
+        statusBox.className = 'auth-alert-box alert-info';
+        statusBox.classList.remove('hidden');
+      }
+      if (submitBtn) submitBtn.disabled = false;
+      if (pwdInput) pwdInput.disabled = false;
+      if (confirmInput) confirmInput.disabled = false;
+    } else {
+      if (statusBox) {
+        statusBox.innerHTML = `<span>${data.message || 'This password reset link is invalid or has expired.'}</span> <button type="button" class="auth-link-btn" onclick="showAuthView(\'forgot\')" style="text-decoration:underline;margin-left:8px;font-weight:600;">Request a new reset link</button>`;
+        statusBox.className = 'auth-alert-box alert-danger';
+        statusBox.classList.remove('hidden');
+      }
+      if (submitBtn) submitBtn.disabled = true;
+      if (pwdInput) pwdInput.disabled = true;
+      if (confirmInput) confirmInput.disabled = true;
+    }
+  } catch (err) {
+    console.error('Token verification error:', err);
+  }
+}
+
 async function handleAuthForgotSubmit(e) {
   e.preventDefault();
   const emailInput = document.getElementById('auth-forgot-email');
@@ -3974,9 +4018,33 @@ async function handleAuthForgotSubmit(e) {
     const data = await res.json();
     if (res.ok && data.status === 'success') {
       if (statusBox) {
-        statusBox.textContent = data.message || 'If an account exists with this email address, a password reset link has been dispatched.';
-        statusBox.className = 'auth-alert-box alert-success';
-        statusBox.classList.remove('hidden');
+        if (data.reset_url) {
+          statusBox.innerHTML = `
+            <div style="font-size:13.5px;line-height:1.5;">
+              <p style="margin:0 0 8px 0;font-weight:600;">✓ Password Reset Ready</p>
+              <p style="margin:0 0 10px 0;">${data.message}</p>
+              <div style="margin:10px 0 8px 0;">
+                <a href="${data.reset_url}" class="btn btn-primary" style="display:inline-block;padding:8px 16px;border-radius:6px;color:#fff;text-decoration:none;font-weight:600;font-size:13px;text-align:center;">
+                  Proceed to Reset Password &rarr;
+                </a>
+              </div>
+              <p style="margin:8px 0 0 0;font-size:12px;opacity:0.85;">
+                Direct URL: <code style="word-break:break-all;background:rgba(0,0,0,0.08);padding:2px 4px;border-radius:3px;">${data.reset_url}</code>
+              </p>
+            </div>
+          `;
+          statusBox.className = 'auth-alert-box alert-success';
+          statusBox.classList.remove('hidden');
+        } else {
+          statusBox.innerHTML = `
+            <div style="font-size:13.5px;line-height:1.5;">
+              <p style="margin:0 0 6px 0;font-weight:600;">✓ Reset Email Dispatched</p>
+              <p style="margin:0;">${data.message || 'Please check your registered email inbox (and spam folder) for instructions to set your new password.'}</p>
+            </div>
+          `;
+          statusBox.className = 'auth-alert-box alert-success';
+          statusBox.classList.remove('hidden');
+        }
       }
     } else {
       if (statusBox) {

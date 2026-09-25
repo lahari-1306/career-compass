@@ -59,7 +59,7 @@
     "training_academy": "4-Year B.Tech course at Indian Naval Academy (INA Ezhimala, Kerala) in Applied Electronics & Communication, Mechanical, or Electronics (degree awarded by JNU). All training expenses borne by Indian Navy.",
     "rank_on_commission": "Sub Lieutenant (Executive, Engineering, or Electrical Branch)",
     "pay_scale": "7th CPC Level 10 (Rs 56,100) + MSP Rs 15,500 + Sea Duty Allowances",
-    "official_website": "https://joinindiannavy.gov.in"
+    "official_website": "https://www.joinindiannavy.gov.in"
   },
   {
     "id": "def-agniveer-all",
@@ -114,7 +114,7 @@
     "training_academy": "Air Force Academy (Dundigal, Hyderabad) - 74 weeks for Flying & Tech; 52 weeks for Non-Tech",
     "rank_on_commission": "Flying Officer",
     "pay_scale": "7th CPC Level 10 (Rs 56,100) + MSP Rs 15,500 + Flying Allowance (Rs 25,000/mo for pilots)",
-    "official_website": "https://afcat.cdac.in"
+    "official_website": "https://careerindianairforce.cdac.in"
   },
   {
     "id": "def-army-tgc",
@@ -173,6 +173,6 @@
     "branches": "Executive (General Service, Hydro, IT, Pilot, Observer, Air Traffic Controller), Technical (Engineering Branch, Electrical Branch, Naval Architect)",
     "rank_on_commission": "Sub Lieutenant",
     "pay_scale": "7th CPC Level 10 (Rs 56,100) + MSP Rs 15,500 + Submarine/Flight/Sea allowances",
-    "official_website": "https://joinindiannavy.gov.in"
+    "official_website": "https://www.joinindiannavy.gov.in"
   }
 ]

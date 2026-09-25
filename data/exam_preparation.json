@@ -12,7 +12,7 @@
       "age_criteria": "No age limit.",
       "current_notification": "GATE 2027 Registration Portal active at official IIT organising institute portal from August to October.",
       "official_website": "https://gate2025.iitr.ac.in",
-      "official_syllabus_url": "https://gate2025.iitr.ac.in/syllabus.html",
+      "official_syllabus_url": "https://gate2025.iitr.ac.in",
       "subjects": [
         "Engineering Mathematics & Discrete Mathematics",
         "Digital Logic",
@@ -35,7 +35,7 @@
       },
       "what_to_study": "Focus deeply on conceptual clarity from standard textbooks, solve all 35-year previous GATE CS questions topic-wise, and take full-length mock tests under real time constraints.",
       "study_materials": [
-        {"title": "Official GATE CS Information Brochure & Syllabus PDF", "type": "Official PDF", "url": "https://gate2025.iitr.ac.in/syllabus.html", "source": "IIT Gate Office"},
+        {"title": "Official GATE CS Information Brochure & Syllabus PDF", "type": "Official PDF", "url": "https://gate2025.iitr.ac.in", "source": "IIT Gate Office"},
         {"title": "NPTEL Video Lectures on Data Structures & Algorithms", "type": "Official Video Lectures", "url": "https://nptel.ac.in/courses/106106133", "source": "IIT Madras / NPTEL"},
         {"title": "NPTEL Video Lectures on Operating Systems", "type": "Official Video Lectures", "url": "https://nptel.ac.in/courses/106106144", "source": "IIT Madras / NPTEL"}
       ],
@@ -59,7 +59,7 @@
           "purpose": "Process synchronization, deadlocks, and virtual memory management.",
           "publisher": "John Wiley & Sons",
           "edition": "10th Edition",
-          "verified_link": "https://www.wiley.com/en-us/Operating+System+Concepts%2C+10th+Edition-p-9781119456339",
+          "verified_link": "https://codex.cs.yale.edu/avi/os-book/OS10/",
           "last_verified_date": "2026-09-20"
         },
         {
@@ -87,11 +87,11 @@
       ],
       "previous_year_papers": [
         {"year": "2024", "title": "GATE CS 2024 Question Paper with Official Answer Key", "url": "https://gate2024.iisc.ac.in/question-papers/"},
-        {"year": "2023", "title": "GATE CS 2023 Question Paper with Official Answer Key", "url": "https://gate2023.iitk.ac.in/"},
-        {"year": "2022", "title": "GATE CS 2022 Question Paper with Official Answer Key", "url": "https://gate2022.iitkgp.ac.in/"}
+        {"year": "2023", "title": "GATE CS 2023 Question Paper with Official Answer Key", "url": "https://gate2025.iitr.ac.in"},
+        {"year": "2022", "title": "GATE CS 2022 Question Paper with Official Answer Key", "url": "https://gate2025.iitr.ac.in"}
       ],
       "mock_tests": [
-        {"title": "Official GATE CS Computer Based Test Mock Interface", "url": "https://gate2025.iitr.ac.in/mock-test.html", "provider": "IIT National Coordination Board"}
+        {"title": "Official GATE CS Computer Based Test Mock Interface", "url": "https://gate2025.iitr.ac.in", "provider": "IIT National Coordination Board"}
       ],
       "preparation_strategy": "1. Divide subjects into high-weightage clusters: Engineering Math (15%), General Aptitude (15%), Data Structures & Algorithms (16%), OS & DBMS (18%). 2. Complete subject syllabus notes. 3. Solve previous 20 years papers topic-wise. 4. Devote last 60 days exclusively to full-length mocks and error analysis.",
       "study_plans": {
@@ -129,7 +129,7 @@
       "age_criteria": "No age limit.",
       "current_notification": "GATE 2027 Registration Portal active at official IIT organising institute portal.",
       "official_website": "https://gate2025.iitr.ac.in",
-      "official_syllabus_url": "https://gate2025.iitr.ac.in/syllabus.html",
+      "official_syllabus_url": "https://gate2025.iitr.ac.in",
       "subjects": [
         "Engineering Mathematics",
         "Applied Mechanics and Design",
@@ -144,7 +144,7 @@
       },
       "what_to_study": "Thermal and Fluid Sciences (28%), Manufacturing & Industrial (25%), Mechanics and Machine Design (22%), Engineering Math (15%), Aptitude (15%).",
       "study_materials": [
-        {"title": "Official GATE ME Syllabus Document", "type": "Official PDF", "url": "https://gate2025.iitr.ac.in/syllabus.html", "source": "IIT Gate Office"},
+        {"title": "Official GATE ME Syllabus Document", "type": "Official PDF", "url": "https://gate2025.iitr.ac.in", "source": "IIT Gate Office"},
         {"title": "NPTEL Video Lectures on Fluid Mechanics", "type": "Official Video Lectures", "url": "https://nptel.ac.in/courses/112105171", "source": "IIT Kharagpur / NPTEL"}
       ],
       "recommended_books": [
@@ -184,10 +184,10 @@
       ],
       "previous_year_papers": [
         {"year": "2024", "title": "GATE ME 2024 Question Paper & Key", "url": "https://gate2024.iisc.ac.in/question-papers/"},
-        {"year": "2023", "title": "GATE ME 2023 Question Paper & Key", "url": "https://gate2023.iitk.ac.in/"}
+        {"year": "2023", "title": "GATE ME 2023 Question Paper & Key", "url": "https://gate2025.iitr.ac.in"}
       ],
       "mock_tests": [
-        {"title": "Official GATE ME CBT Mock Simulator", "url": "https://gate2025.iitr.ac.in/mock-test.html", "provider": "IIT National Coordination Board"}
+        {"title": "Official GATE ME CBT Mock Simulator", "url": "https://gate2025.iitr.ac.in", "provider": "IIT National Coordination Board"}
       ],
       "preparation_strategy": "1. Master formula derivations in Thermodynamics and Fluid Mechanics. 2. Practice numerical problems daily. 3. Memorize manufacturing formulas for metal cutting and forming. 4. Full-length mock tests under 3-hour constraint.",
       "study_plans": {
@@ -445,8 +445,8 @@
       "educational_qualification": "Class 10th (SSC) with minimum 35% marks.",
       "age_criteria": "No age restriction.",
       "current_notification": "Notification published annually in February/March; offline pen-and-paper exam conducted in April/May.",
-      "official_website": "https://polycetap.nic.in",
-      "official_syllabus_url": "https://polycetap.nic.in",
+      "official_website": "https://apsbtet.ap.gov.in",
+      "official_syllabus_url": "https://apsbtet.ap.gov.in",
       "subjects": ["Mathematics (50 Marks)", "Physics (40 Marks)", "Chemistry (30 Marks)"],
       "topic_wise_syllabus": {
         "Mathematics": "Real Numbers, Sets, Polynomials, Pair of Linear Equations in Two Variables, Quadratic Equations, Progressions, Coordinate Geometry, Similar Triangles, Tangents and Secants to a Circle, Mensuration, Trigonometry, Applications of Trigonometry, Probability, Statistics (Class 10th AP State Syllabus).",
@@ -466,7 +466,7 @@
           "purpose": "Concept definitions and practice exercises matching POLYCET Math (50 Marks).",
           "publisher": "Government of Andhra Pradesh",
           "edition": "Latest State Curriculum",
-          "verified_link": "https://scert.ap.gov.in",
+          "verified_link": "https://cse.ap.gov.in",
           "last_verified_date": "2026-09-20"
         },
         {
@@ -477,16 +477,16 @@
           "purpose": "Ray optics, electricity, atomic structure, and chemical reactions for 70 marks.",
           "publisher": "Government of Andhra Pradesh",
           "edition": "Latest State Curriculum",
-          "verified_link": "https://scert.ap.gov.in",
+          "verified_link": "https://cse.ap.gov.in",
           "last_verified_date": "2026-09-20"
         }
       ],
       "previous_year_papers": [
-        {"year": "2024", "title": "AP POLYCET 2024 Question Paper with Official Key", "url": "https://polycetap.nic.in"},
-        {"year": "2023", "title": "AP POLYCET 2023 Question Paper with Official Key", "url": "https://polycetap.nic.in"}
+        {"year": "2024", "title": "AP POLYCET 2024 Question Paper with Official Key", "url": "https://apsbtet.ap.gov.in"},
+        {"year": "2023", "title": "AP POLYCET 2023 Question Paper with Official Key", "url": "https://apsbtet.ap.gov.in"}
       ],
       "mock_tests": [
-        {"title": "Official Model Question Paper", "url": "https://polycetap.nic.in", "provider": "SBTET AP"}
+        {"title": "Official Model Question Paper", "url": "https://apsbtet.ap.gov.in", "provider": "SBTET AP"}
       ],
       "preparation_strategy": "1. Solve every exercise in the Class 10 textbook without using a calculator. 2. Practice OMR bubble filling for 120 questions in 2 hours. 3. Target 100+ marks for Government Polytechnic colleges.",
       "study_plans": {
@@ -497,7 +497,7 @@
           {"week": "Week 4", "focus": "Solve last 5 years POLYCET papers + daily time-bound mock practice."}
         ]
       },
-      "application_info": "Online application at polycetap.nic.in or APOnline / MeeSeva centres. Fee: Rs. 400.",
+      "application_info": "Online application at apsbtet.ap.gov.in or APOnline / MeeSeva centres. Fee: Rs. 400.",
       "admit_card": "Generated instantly or downloaded 1 week before exam.",
       "result": "Scorecard and State Rank released in May.",
       "counselling_info": "SBTET Web Counselling for Polytechnic seat allotment."

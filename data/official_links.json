@@ -30,7 +30,7 @@
       {
         "name": "NEET UG Portal (NTA)",
         "description": "National medical undergraduate entrance portal",
-        "url": "https://exams.nta.ac.in/NEET"
+        "url": "https://neet.nta.nic.in"
       },
       {
         "name": "Medical Counselling Committee (MCC)",
@@ -40,7 +40,7 @@
       {
         "name": "CUET UG Portal",
         "description": "Common University Entrance Test for Central Universities",
-        "url": "https://cuetug.ntaonline.in"
+        "url": "https://cuet.nta.nic.in"
       },
       {
         "name": "GATE Official Portal",
@@ -70,7 +70,7 @@
       {
         "name": "Join Indian Navy Official Portal",
         "description": "Executive, Technical, 10+2 B.Tech, and Agniveer Navy entries",
-        "url": "https://joinindiannavy.gov.in"
+        "url": "https://www.joinindiannavy.gov.in"
       },
       {
         "name": "Career Indian Air Force (IAF)",
@@ -80,7 +80,7 @@
       {
         "name": "AFCAT CDAC Portal",
         "description": "Air Force Common Admission Test online exam and results portal",
-        "url": "https://afcat.cdac.in"
+        "url": "https://careerindianairforce.cdac.in"
       },
       {
         "name": "Join Indian Coast Guard",
@@ -105,7 +105,7 @@
       {
         "name": "Railway Recruitment Board (RRB)",
         "description": "RRB ALP, RRB Technician, RRB JE, RRB NTPC online applications",
-        "url": "https://rrbapply.gov.in"
+        "url": "https://www.rrbapply.gov.in"
       },
       {
         "name": "Institute of Banking Personnel Selection (IBPS)",
@@ -120,7 +120,7 @@
       {
         "name": "DRDO Careers & RAC",
         "description": "Scientist B recruitment and CEPTAM technical staff admissions",
-        "url": "https://www.drdo.gov.in/drdo/careers"
+        "url": "https://rac.gov.in"
       },
       {
         "name": "BARC OCES Exam Portal",
@@ -140,7 +140,7 @@
       {
         "name": "All India Council for Technical Education (AICTE)",
         "description": "Regulator for engineering, diploma, management, and MCA institutions",
-        "url": "https://www.aicte-india.org"
+        "url": "https://www.aicte.gov.in"
       },
       {
         "name": "NCERT Textbooks Online",

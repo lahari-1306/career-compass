@@ -245,10 +245,13 @@ cp .env.example .env
 | `PORT` | HTTP port for server to listen on. | `5000` | `5000` |
 | `FLASK_ENV` | Application environment mode (`development` or `production`). | `production` | `production` |
 | `GEMINI_API_KEY` | Google Gemini API key for live AI Career Guide. | *None (uses offline engine)* | `AIzaSy...` |
-| `SMTP_HOST` | Outgoing SMTP host for email notifications. | *None* | `smtp.gmail.com` |
-| `SMTP_PORT` | SMTP port. | `587` | `587` |
-| `SMTP_USER` | SMTP username / email address. | *None* | `alerts@careercompass.in` |
-| `SMTP_PASS` | SMTP app password. | *None* | `your-app-password` |
+| `SMTP_HOST` | Outgoing SMTP host for email delivery (Gmail, Brevo, SendGrid, Resend). | *None* | `smtp.gmail.com` |
+| `SMTP_PORT` | SMTP port (587 for TLS, 465 for SSL). | `587` | `587` |
+| `SMTP_USERNAME` | SMTP account username or API email. | *None* | `your-email@gmail.com` |
+| `SMTP_PASSWORD` | SMTP password or Google App Password (16 chars). | *None* | `abcd efgh ijkl mnop` |
+| `MAIL_FROM` | Sender display name and email address. | `CareerCompass <noreply@careercompass.org>` | `"CareerCompass <your-email@gmail.com>"` |
+| `MAIL_USE_TLS` | Enable STARTTLS encryption. | `true` | `true` |
+| `APP_BASE_URL` | Base application URL for generating reset links. Auto-detected on Render. | `https://career-compass.onrender.com` | `https://career-compass.onrender.com` |
 
 ---
 
@@ -428,6 +431,12 @@ Career Compass is fully pre-configured for one-click deployment on Render:
    - `SECRET_KEY`: Enter a random 32-character secret key.
    - `FLASK_ENV`: `production`
    - `GEMINI_API_KEY`: *(Optional)* Your Google Gemini API key.
+   - `SMTP_HOST`: *(Optional for live email delivery)* e.g. `smtp.gmail.com` or `smtp-relay.brevo.com`
+   - `SMTP_PORT`: `587`
+   - `SMTP_USERNAME`: Your email or provider login
+   - `SMTP_PASSWORD`: Your 16-character App Password or API Key
+   - `MAIL_FROM`: `"CareerCompass <your-email@gmail.com>"`
+   *(Note: If SMTP is omitted, password reset tokens are logged to `data/email_logs.json` and rendered directly on-screen with an instant reset button, ensuring users are never blocked).*
 5. Click **Create Web Service**.
 
 Render will install dependencies, connect to PostgreSQL, automatically build all database tables and seed verified resources, and launch the website.

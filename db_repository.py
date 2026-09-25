@@ -198,6 +198,23 @@ class TokenRepository:
         return token
 
     @staticmethod
+    def verify_reset_token(token: str) -> Optional[Dict[str, Any]]:
+        if not token:
+            return None
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        now_str = now_ist_iso()
+        cursor.execute("""
+        SELECT t.user_id, t.expires_at, u.email, u.name
+        FROM password_reset_tokens t
+        JOIN users u ON t.user_id = u.id
+        WHERE t.token = ? AND t.used_at IS NULL AND t.expires_at > ?
+        """, (token, now_str))
+        row = cursor.fetchone()
+        conn.close()
+        return dict(row) if row else None
+
+    @staticmethod
     def verify_and_use_reset_token(token: str) -> Optional[int]:
         conn = get_db_connection()
         cursor = conn.cursor()

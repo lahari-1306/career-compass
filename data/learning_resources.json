@@ -467,7 +467,7 @@
     "id": "res-ncert-epathshala",
     "name": "ePathshala (NCERT / MoE)",
     "description": "Joint initiative of Ministry of Education and NCERT showcasing authentic digital textbooks (Class 1 to 12), audio, video, periodicals, and teacher resources in digital format.",
-    "official_url": "https://epathshala.nic.in",
+    "official_url": "https://epathshala.ncert.gov.in",
     "logo_url": "",
     "category": "School Subjects & Textbooks",
     "education_levels": [
@@ -506,7 +506,7 @@
     "language": "English, Hindi, Urdu",
     "free_features": "100% free access to all official NCERT textbook PDFs, e-Pub interactive books, flipbooks, and educational audio/video resources.",
     "paid_features": "None (government open education repository).",
-    "official_source": "https://epathshala.nic.in",
+    "official_source": "https://epathshala.ncert.gov.in",
     "verification_status": "VERIFIED",
     "last_verified": "2026-09-24",
     "created_at": "2026-09-24T21:18:00+05:30",
