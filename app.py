@@ -24,6 +24,11 @@ from db_repository import (
 )
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
+
+# Enable ProxyFix for reverse-proxy deployments (Render / Gunicorn / HTTPS termination)
+from werkzeug.middleware.proxy_fix import ProxyFix
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+
 app.register_blueprint(auth_bp)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -86,6 +91,10 @@ def add_security_and_cors_headers(response):
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "SAMEORIGIN"
     response.headers["X-XSS-Protection"] = "1; mode=block"
+    if request.path.endswith('.js') or request.path.endswith('.css') or request.path == '/':
+        response.headers["Cache-Control"] = "no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
     return response
 
 @app.errorhandler(404)

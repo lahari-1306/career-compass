@@ -2572,6 +2572,16 @@ img, svg {
   gap: 0.5rem;
 }
 
+.guest-auth-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.guest-auth-group.hidden {
+  display: none !important;
+}
+
 .user-profile-dropdown {
   position: relative;
 }

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="/static/css/styles.css?v=20260926c">
   <script>
     (function() {
       try {
@@ -136,6 +136,7 @@
                 </div>
               </div>
 
+              <div id="auth-login-success" class="auth-alert-box alert-success hidden"></div>
               <div id="auth-login-error" class="auth-alert-box alert-danger hidden"></div>
 
               <button type="submit" id="auth-login-btn-submit" class="btn btn-primary btn-block auth-submit-btn">
@@ -146,6 +147,11 @@
               <div class="auth-switch-prompt">
                 <span data-i18n="auth.new_to_cc">New to Career Compass?</span>
                 <button type="button" class="auth-link-btn" onclick="showAuthView('signup')" data-i18n="auth.sign_up_free">Create an account</button>
+              </div>
+              <div style="text-align: center; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px dashed var(--border-color, #e2e8f0);">
+                <button type="button" class="auth-link-btn" onclick="continueAsGuest()" style="font-size: 0.85rem; color: var(--text-secondary); display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+                  <span>Explore Website as Guest</span> <i data-lucide="arrow-right" class="icon-xs"></i>
+                </button>
               </div>
             </form>
           </div>
@@ -206,6 +212,11 @@
               <div class="auth-switch-prompt">
                 <span data-i18n="auth.already_have_account">Already have an account?</span>
                 <button type="button" class="auth-link-btn" onclick="showAuthView('login')" data-i18n="auth.sign_in_btn">Sign In</button>
+              </div>
+              <div style="text-align: center; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px dashed var(--border-color, #e2e8f0);">
+                <button type="button" class="auth-link-btn" onclick="continueAsGuest()" style="font-size: 0.85rem; color: var(--text-secondary); display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+                  <span>Explore Website as Guest</span> <i data-lucide="arrow-right" class="icon-xs"></i>
+                </button>
               </div>
             </form>
           </div>
@@ -427,6 +438,12 @@
       <div class="header-actions">
         <!-- User Authentication & Account Menu (Inside Authenticated Shell) -->
         <div id="auth-actions" class="auth-actions-group">
+          <!-- Guest buttons when unauthenticated in shell -->
+          <div id="guest-auth-actions" class="guest-auth-group hidden">
+            <button type="button" id="guest-signin-btn" class="btn btn-outline-primary btn-sm" onclick="openAuthModal('login')">Sign In</button>
+            <button type="button" id="guest-signup-btn" class="btn btn-primary btn-sm" onclick="openAuthModal('signup')">Create an Account</button>
+          </div>
+
           <div id="user-profile-menu" class="user-profile-dropdown">
             <button id="user-chip-btn" class="action-btn user-chip-btn" onclick="toggleUserDropdown()" title="Account & Profile Settings">
               <span id="user-avatar-initials" class="avatar-circle">U</span>
@@ -1824,6 +1841,7 @@
           </div>
           <input type="password" id="login-password" class="form-control" placeholder="Enter password" required autocomplete="current-password">
         </div>
+        <div id="login-success-msg" class="alert-box hidden" style="padding: 0.6rem 0.8rem; font-size: 0.82rem; color: #166534; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px;"></div>
         <div id="login-error-msg" class="alert-box hidden" style="padding: 0.6rem 0.8rem; font-size: 0.82rem; color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px;"></div>
         <button type="submit" class="btn btn-primary w-full" id="btn-login-submit">
           <i data-lucide="log-in" class="icon-xs"></i> <span>Sign In to Career Compass</span>
@@ -2117,7 +2135,7 @@
     </div>
   </div>
 
-  <script src="/static/js/locales.js"></script>
-  <script src="/static/js/app.js"></script>
+  <script src="/static/js/locales.js?v=20260926c"></script>
+  <script src="/static/js/app.js?v=20260926c"></script>
 </body>
 </html>

@@ -49,10 +49,10 @@ class UserRepository:
             """, (email.strip().lower(), pwd_hash, name.strip(), role, now_str, now_str))
             user_id = cursor.lastrowid
 
-            # Initialize empty education-aware profile (default is_onboarded = 0)
+            # Initialize education-aware profile (default is_onboarded = 1)
             cursor.execute("""
             INSERT INTO user_profiles (user_id, qualification, current_status, is_onboarded, created_at, updated_at)
-            VALUES (?, 'B.Tech', 'Final Year', 0, ?, ?)
+            VALUES (?, 'B.Tech', 'Final Year', 1, ?, ?)
             """, (user_id, now_str, now_str))
 
             # Initialize user preferences

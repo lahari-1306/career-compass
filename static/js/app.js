@@ -3662,6 +3662,7 @@ function showAuthView(viewName) {
   });
 
   const alerts = [
+    document.getElementById('auth-login-success'),
     document.getElementById('auth-login-error'),
     document.getElementById('auth-signup-error'),
     document.getElementById('auth-forgot-status'),
@@ -3714,23 +3715,17 @@ async function checkAuthStatus() {
     if (data.authenticated && data.user) {
       currentUser = data.user;
       
-      const isProfileComplete = data.profile && (data.profile.is_onboarded === 1 || data.profile.is_onboarded === '1' || data.profile.is_onboarded === true);
-
-      if (isProfileComplete) {
-        // Authenticated and profile is completed: show personalized dashboard directly
-        if (authScreen) authScreen.classList.add('hidden');
-        if (appShell) appShell.classList.remove('hidden');
-        renderUserAuthUI(data.user);
+      // Authenticated: show personalized dashboard directly
+      if (authScreen) authScreen.classList.add('hidden');
+      if (appShell) appShell.classList.remove('hidden');
+      document.getElementById('auth-modal')?.classList.add('hidden');
+      renderUserAuthUI(data.user);
+      if (data.profile) {
         setStoredRadarProfile(data.profile);
         updateRadarProfileChip(data.profile);
-        loadRadarAlerts();
-        loadTrackerProgress();
-      } else {
-        // Authenticated but profile setup is pending: show Profile Setup screen
-        if (appShell) appShell.classList.add('hidden');
-        if (authScreen) authScreen.classList.remove('hidden');
-        showAuthView('profile_setup');
       }
+      loadRadarAlerts();
+      loadTrackerProgress();
 
       if (typeof data.user?.unread_notifications === 'number') {
         const badge = document.getElementById('radar-unread-badge');
@@ -3844,6 +3839,7 @@ async function handleAuthLoginSubmit(e) {
   const emailInput = document.getElementById('auth-login-email');
   const passwordInput = document.getElementById('auth-login-password');
   const errBox = document.getElementById('auth-login-error');
+  const successBox = document.getElementById('auth-login-success');
   const submitBtn = document.getElementById('auth-login-btn-submit');
   const btnText = submitBtn?.querySelector('.btn-text');
   const btnSpinner = submitBtn?.querySelector('.btn-spinner');
@@ -3851,7 +3847,8 @@ async function handleAuthLoginSubmit(e) {
   const email = emailInput?.value?.trim() || '';
   const password = passwordInput?.value || '';
 
-  if (errBox) errBox.classList.add('hidden');
+  if (errBox) { errBox.classList.add('hidden'); errBox.textContent = ''; }
+  if (successBox) { successBox.classList.add('hidden'); successBox.textContent = ''; }
 
   if (!email || !email.includes('@') || !email.includes('.')) {
     if (errBox) {
@@ -3884,21 +3881,18 @@ async function handleAuthLoginSubmit(e) {
     const data = await res.json();
     if (res.ok && (data.status === 'success' || data.success === true)) {
       currentUser = data.user;
-      const isProfileComplete = data.profile && (data.profile.is_onboarded === 1 || data.profile.is_onboarded === '1' || data.profile.is_onboarded === true);
-
-      if (isProfileComplete) {
-        document.getElementById('auth-screen')?.classList.add('hidden');
-        document.getElementById('app-shell')?.classList.remove('hidden');
-        renderUserAuthUI(data.user);
+      document.getElementById('auth-screen')?.classList.add('hidden');
+      document.getElementById('app-shell')?.classList.remove('hidden');
+      document.getElementById('auth-modal')?.classList.add('hidden');
+      renderUserAuthUI(data.user);
+      if (data.profile) {
         setStoredRadarProfile(data.profile);
         updateRadarProfileChip(data.profile);
-        loadRadarAlerts();
-        loadTrackerProgress();
-        navigateToSection('home');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        showAuthView('profile_setup');
       }
+      loadRadarAlerts();
+      loadTrackerProgress();
+      navigateToSection('home');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       if (errBox) {
         errBox.textContent = data.message || t('auth.invalid_credentials', 'Invalid email or password. Please try again.');
@@ -3933,7 +3927,7 @@ async function handleAuthSignupSubmit(e) {
   const password = passwordInput?.value || '';
   const confirmPassword = confirmInput?.value || '';
 
-  if (errBox) errBox.classList.add('hidden');
+  if (errBox) { errBox.classList.add('hidden'); errBox.textContent = ''; }
 
   if (!fullName) {
     if (errBox) {
@@ -3987,15 +3981,35 @@ async function handleAuthSignupSubmit(e) {
     });
     const data = await res.json();
     if (res.ok && (data.status === 'success' || data.success === true)) {
-      currentUser = data.user;
-      // Post-registration: Show Profile Setup wizard
-      showAuthView('profile_setup');
+      // Clear signup form fields
+      if (nameInput) nameInput.value = '';
+      if (passwordInput) passwordInput.value = '';
+      if (confirmInput) confirmInput.value = '';
+
+      // Redirect to login page view
+      showAuthView('login');
+
+      // Pre-fill email in login form
+      const loginEmail = document.getElementById('auth-login-email');
+      if (loginEmail) loginEmail.value = email;
+      const loginPwd = document.getElementById('auth-login-password');
+      if (loginPwd) {
+        loginPwd.value = '';
+        loginPwd.focus();
+      }
+
+      // Display success message
+      const successBox = document.getElementById('auth-login-success');
+      if (successBox) {
+        successBox.textContent = 'Account created successfully! Please sign in with your email and password.';
+        successBox.classList.remove('hidden');
+      }
     } else {
       if (errBox) {
         let msg = data.message || 'Unable to create account. Please try a different email.';
         if (res.status === 409) {
           msg = (data.message || 'An account with this email already exists. Please sign in.') +
-                ' <a href="#" onclick="showAuthView(\'login\'); return false;" style="text-decoration: underline; font-weight: bold; margin-left: 6px;">Sign In Here &rarr;</a>';
+                ' <button type="button" class="auth-link-btn" onclick="showAuthView(\'login\')" style="text-decoration: underline; font-weight: bold; margin-left: 6px; color: inherit; background: none; border: none; cursor: pointer; padding: 0;">Sign In Here &rarr;</button>';
           errBox.innerHTML = msg;
         } else {
           errBox.textContent = msg;
@@ -4293,12 +4307,14 @@ async function handleProfileSetupSubmit(e) {
 
 function renderUserAuthUI(user) {
   const userMenu = document.getElementById('user-profile-menu');
+  const guestActions = document.getElementById('guest-auth-actions');
   const avatarInitials = document.getElementById('user-avatar-initials');
   const displayName = document.getElementById('user-display-name');
   const dropdownName = document.getElementById('dropdown-user-name');
   const dropdownEmail = document.getElementById('dropdown-user-email');
 
   if (userMenu) userMenu.classList.remove('hidden');
+  if (guestActions) guestActions.classList.add('hidden');
 
   const rawName = user.full_name || user.name || 'Student';
   const names = rawName.trim().split(' ');
@@ -4313,6 +4329,8 @@ function renderUserAuthUI(user) {
 function renderGuestAuthUI() {
   const userMenu = document.getElementById('user-profile-menu');
   if (userMenu) userMenu.classList.add('hidden');
+  const guestActions = document.getElementById('guest-auth-actions');
+  if (guestActions) guestActions.classList.remove('hidden');
 }
 
 function toggleUserDropdown() {
@@ -4340,19 +4358,328 @@ async function logoutUser() {
   showAuthView('login');
 }
 
-// Backward-compatible modal helpers (if referenced anywhere)
+function continueAsGuest() {
+  const authScreen = document.getElementById('auth-screen');
+  const appShell = document.getElementById('app-shell');
+  if (authScreen) authScreen.classList.add('hidden');
+  if (appShell) appShell.classList.remove('hidden');
+  renderGuestAuthUI();
+  navigateToSection('home');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  refreshIcons();
+}
+
+// Backward-compatible modal helpers & direct handlers
 function openAuthModal(initialTab = 'login') {
+  const modal = document.getElementById('auth-modal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    switchAuthTab(initialTab);
+    return;
+  }
   showAuthView(initialTab === 'signup' ? 'signup' : 'login');
   document.getElementById('app-shell')?.classList.add('hidden');
   document.getElementById('auth-screen')?.classList.remove('hidden');
 }
 
-function closeAuthModal() {
-  // no-op for full-screen auth
+function closeAuthModal(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('close-btn')) return;
+  const modal = document.getElementById('auth-modal');
+  if (modal) modal.classList.add('hidden');
 }
 
 function switchAuthTab(tab) {
+  // 1. Update modal tabs and form visibility
+  const tabLogin = document.getElementById('auth-tab-login');
+  const tabSignup = document.getElementById('auth-tab-signup');
+  const tabForgot = document.getElementById('auth-tab-forgot');
+  const formLogin = document.getElementById('form-auth-login');
+  const formSignup = document.getElementById('form-auth-signup');
+  const formForgot = document.getElementById('form-auth-forgot');
+
+  const loginErr = document.getElementById('login-error-msg');
+  const loginSuccess = document.getElementById('login-success-msg');
+  const signupErr = document.getElementById('signup-error-msg');
+  const forgotStatus = document.getElementById('forgot-status-msg');
+
+  if (loginErr) { loginErr.classList.add('hidden'); loginErr.textContent = ''; }
+  if (loginSuccess) { loginSuccess.classList.add('hidden'); loginSuccess.textContent = ''; }
+  if (signupErr) { signupErr.classList.add('hidden'); signupErr.textContent = ''; }
+  if (forgotStatus) { forgotStatus.classList.add('hidden'); forgotStatus.textContent = ''; }
+
+  if (tab === 'signup') {
+    if (tabSignup) tabSignup.classList.add('active');
+    if (tabLogin) tabLogin.classList.remove('active');
+    if (tabForgot) tabForgot.classList.remove('active');
+    if (formSignup) formSignup.classList.remove('hidden');
+    if (formLogin) formLogin.classList.add('hidden');
+    if (formForgot) formForgot.classList.add('hidden');
+  } else if (tab === 'forgot') {
+    if (tabForgot) tabForgot.classList.add('active');
+    if (tabLogin) tabLogin.classList.remove('active');
+    if (tabSignup) tabSignup.classList.remove('active');
+    if (formForgot) formForgot.classList.remove('hidden');
+    if (formLogin) formLogin.classList.add('hidden');
+    if (formSignup) formSignup.classList.add('hidden');
+  } else {
+    // Default to login
+    if (tabLogin) tabLogin.classList.add('active');
+    if (tabSignup) tabSignup.classList.remove('active');
+    if (tabForgot) tabForgot.classList.remove('active');
+    if (formLogin) formLogin.classList.remove('hidden');
+    if (formSignup) formSignup.classList.add('hidden');
+    if (formForgot) formForgot.classList.add('hidden');
+  }
+
+  // 2. Also synchronize auth screen view
   showAuthView(tab);
+}
+
+async function handleAuthLogin(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const emailInput = document.getElementById('login-email');
+  const passwordInput = document.getElementById('login-password');
+  const errBox = document.getElementById('login-error-msg');
+  const successBox = document.getElementById('login-success-msg');
+  const submitBtn = document.getElementById('btn-login-submit');
+
+  const email = emailInput?.value?.trim() || '';
+  const password = passwordInput?.value || '';
+
+  if (errBox) { errBox.classList.add('hidden'); errBox.textContent = ''; }
+  if (successBox) { successBox.classList.add('hidden'); successBox.textContent = ''; }
+
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    if (errBox) {
+      errBox.textContent = t('auth.validation_email', 'Please enter a valid email address.');
+      errBox.classList.remove('hidden');
+    }
+    emailInput?.focus();
+    return;
+  }
+
+  if (!password) {
+    if (errBox) {
+      errBox.textContent = t('auth.validation_password', 'Please enter your password.');
+      errBox.classList.remove('hidden');
+    }
+    passwordInput?.focus();
+    return;
+  }
+
+  if (submitBtn) submitBtn.disabled = true;
+
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (res.ok && (data.status === 'success' || data.success === true)) {
+      currentUser = data.user;
+      const modal = document.getElementById('auth-modal');
+      if (modal) modal.classList.add('hidden');
+      document.getElementById('auth-screen')?.classList.add('hidden');
+      document.getElementById('app-shell')?.classList.remove('hidden');
+      renderUserAuthUI(data.user);
+      if (data.profile) {
+        setStoredRadarProfile(data.profile);
+        updateRadarProfileChip(data.profile);
+      }
+      loadRadarAlerts();
+      loadTrackerProgress();
+      navigateToSection('home');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      if (errBox) {
+        errBox.textContent = data.message || t('auth.invalid_credentials', 'Invalid email or password. Please try again.');
+        errBox.classList.remove('hidden');
+      }
+    }
+  } catch (err) {
+    if (errBox) {
+      errBox.textContent = t('auth.server_error', 'Unable to sign in right now. Please try again.');
+      errBox.classList.remove('hidden');
+    }
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+  }
+}
+
+async function handleAuthSignup(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const nameInput = document.getElementById('signup-name');
+  const emailInput = document.getElementById('signup-email');
+  const qualInput = document.getElementById('signup-qual');
+  const branchInput = document.getElementById('signup-branch');
+  const passwordInput = document.getElementById('signup-password');
+  const confirmInput = document.getElementById('signup-password-confirm');
+  const errBox = document.getElementById('signup-error-msg');
+  const submitBtn = document.getElementById('btn-signup-submit');
+
+  const fullName = nameInput?.value?.trim() || '';
+  const email = emailInput?.value?.trim() || '';
+  const qual = qualInput?.value || 'B.Tech';
+  const branch = branchInput?.value || 'CSE';
+  const password = passwordInput?.value || '';
+  const confirmPassword = confirmInput?.value || '';
+
+  if (errBox) { errBox.classList.add('hidden'); errBox.textContent = ''; }
+
+  if (!fullName) {
+    if (errBox) {
+      errBox.textContent = t('auth.validation_name', 'Please enter your full name.');
+      errBox.classList.remove('hidden');
+    }
+    nameInput?.focus();
+    return;
+  }
+
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    if (errBox) {
+      errBox.textContent = t('auth.validation_email', 'Please enter a valid email address.');
+      errBox.classList.remove('hidden');
+    }
+    emailInput?.focus();
+    return;
+  }
+
+  if (password.length < 8) {
+    if (errBox) {
+      errBox.textContent = t('auth.validation_password_length', 'Password must be at least 8 characters long.');
+      errBox.classList.remove('hidden');
+    }
+    passwordInput?.focus();
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    if (errBox) {
+      errBox.textContent = t('auth.validation_password_match', 'Passwords do not match.');
+      errBox.classList.remove('hidden');
+    }
+    confirmInput?.focus();
+    return;
+  }
+
+  if (submitBtn) submitBtn.disabled = true;
+
+  try {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        full_name: fullName,
+        email: email,
+        password: password,
+        qualification: qual,
+        branch: branch
+      })
+    });
+    const data = await res.json();
+    if (res.ok && (data.status === 'success' || data.success === true)) {
+      if (nameInput) nameInput.value = '';
+      if (passwordInput) passwordInput.value = '';
+      if (confirmInput) confirmInput.value = '';
+
+      switchAuthTab('login');
+
+      const loginEmailInput = document.getElementById('login-email');
+      if (loginEmailInput) loginEmailInput.value = email;
+      const loginPwdInput = document.getElementById('login-password');
+      if (loginPwdInput) {
+        loginPwdInput.value = '';
+        loginPwdInput.focus();
+      }
+
+      const loginSuccessBox = document.getElementById('login-success-msg');
+      if (loginSuccessBox) {
+        loginSuccessBox.textContent = 'Account created successfully! Please sign in with your credentials.';
+        loginSuccessBox.classList.remove('hidden');
+      }
+    } else {
+      if (errBox) {
+        let msg = data.message || 'Unable to create account. Please try a different email.';
+        if (res.status === 409) {
+          msg = (data.message || 'An account with this email already exists. Please sign in.') +
+                ' <a href="#" onclick="switchAuthTab(\'login\'); return false;" style="text-decoration: underline; font-weight: bold; margin-left: 6px; color: inherit;">Sign In Here &rarr;</a>';
+          errBox.innerHTML = msg;
+        } else {
+          errBox.textContent = msg;
+        }
+        errBox.classList.remove('hidden');
+      }
+    }
+  } catch (err) {
+    if (errBox) {
+      errBox.textContent = t('auth.server_error', 'Connection failed. Please try again.');
+      errBox.classList.remove('hidden');
+    }
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+  }
+}
+
+async function handleAuthForgot(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const emailInput = document.getElementById('forgot-email');
+  const statusBox = document.getElementById('forgot-status-msg');
+  const submitBtn = document.getElementById('btn-forgot-submit');
+
+  const email = emailInput?.value?.trim() || '';
+
+  if (statusBox) statusBox.classList.add('hidden');
+
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    if (statusBox) {
+      statusBox.textContent = t('auth.validation_email', 'Please enter a valid email address.');
+      statusBox.style.color = '#b91c1c';
+      statusBox.style.background = '#fef2f2';
+      statusBox.style.border = '1px solid #fecaca';
+      statusBox.classList.remove('hidden');
+    }
+    emailInput?.focus();
+    return;
+  }
+
+  if (submitBtn) submitBtn.disabled = true;
+
+  try {
+    const res = await fetch('/api/auth/forgot-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'success') {
+      if (statusBox) {
+        statusBox.textContent = data.message || 'Reset instructions dispatched to your email.';
+        statusBox.style.color = '#166534';
+        statusBox.style.background = '#f0fdf4';
+        statusBox.style.border = '1px solid #bbf7d0';
+        statusBox.classList.remove('hidden');
+      }
+    } else {
+      if (statusBox) {
+        statusBox.textContent = data.message || 'Unable to process reset request.';
+        statusBox.style.color = '#b91c1c';
+        statusBox.style.background = '#fef2f2';
+        statusBox.style.border = '1px solid #fecaca';
+        statusBox.classList.remove('hidden');
+      }
+    }
+  } catch (err) {
+    if (statusBox) {
+      statusBox.textContent = t('auth.server_error', 'Connection failed. Please try again.');
+      statusBox.style.color = '#b91c1c';
+      statusBox.style.background = '#fef2f2';
+      statusBox.style.border = '1px solid #fecaca';
+      statusBox.classList.remove('hidden');
+    }
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+  }
 }
 
 function handleSignupQualChange() {
@@ -4836,7 +5163,7 @@ function switchPrepHubTab(tabName) {
 // PRACTICE & TRAINING: TOPICS, QUIZ & LEARNING PLATFORMS
 // ====================================================
 
-let currentSelectedResourceCategory = 'All';
+// Practice & Training state variables
 let currentPracticeTopics = [];
 let currentQuizQuestions = [];
 let currentQuizIndex = 0;
